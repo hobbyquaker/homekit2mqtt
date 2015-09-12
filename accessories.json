@@ -1,0 +1,223 @@
+{
+  "garten": {
+    "service": "Lightbulb",
+    "name": "Licht Garten",
+    "topic": {
+      "setOn": "hm/set/Licht Garten/STATE",
+      "statusOn": "hm/status/Licht Garten/STATE"
+    },
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0
+    }
+  },
+  "hobbyraum": {
+    "service": "Lightbulb",
+    "name": "Licht Hobbyraum",
+    "topic": {
+      "setOn": "hue/set/lights/Hobbyraum",
+      "setBrightness": "hue/set/lights/Hobbyraum",
+      "statusOn": "hue/status/lights/Hobbyraum",
+      "statusBrightness": "hue/status/lights/Hobbyraum",
+      "identify": "hue/set/lights/Hobbyraum/alarm"
+    },
+    "payload": {
+      "onTrue": 254,
+      "onFalse": 0,
+      "brightnessFactor": 2.54,
+      "identify": "select"
+    }
+
+  },
+  "esstisch": {
+    "service": "Lightbulb",
+    "name": "Licht Esstisch",
+    "topic": {
+      "setOn": "hm/set/Licht Esstisch/LEVEL",
+      "setBrightness": "hm/set/Licht Esstisch/LEVEL",
+      "statusOn": "hm/status/Licht Esstisch/LEVEL",
+      "statusBrightness": "hm/status/Licht Esstisch/LEVEL"
+    },
+    "payload": {
+      "brightnessFactor": 0.01,
+      "onTrue": 1.0,
+      "onFalse": 0.0
+    }
+
+  },
+  "arbeitsflaeche": {
+    "service": "Lightbulb",
+    "name": "Licht Arbeitsfläche",
+    "topic": {
+      "setOn": "hm/set/Licht Arbeitsfläche/STATE",
+      "statusOn": "hm/status/Licht Arbeitsfläche/STATE"
+    },
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0
+    }
+  },
+  "keller": {
+    "service": "Lightbulb",
+    "name": "Licht Keller",
+    "topic": {
+      "setOn": "hm/set/Licht Keller/STATE",
+      "statusOn": "hm/status/Licht Keller/STATE"
+    },
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0
+    }
+  },
+  "terrasse": {
+    "service": "Lightbulb",
+    "name": "Licht Terrasse",
+    "topic": {
+      "setOn": "hm/set/Aussenbeleuchtung/STATE",
+      "statusOn": "hm/status/Aussenbeleuchtung/STATE"
+    },
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0
+    }
+  },
+  "kueche": {
+    "service": "Lightbulb",
+    "name": "Licht Küche",
+    "topic": {
+      "setOn": "hm/set/Licht Küche/LEVEL",
+      "setBrightness": "hm/set/Licht Küche/LEVEL",
+      "statusOn": "hm/status/Licht Küche/LEVEL",
+      "statusBrightness": "hm/status/Licht Küche/LEVEL"
+    },
+    "payload": {
+      "brightnessFactor": 0.01,
+      "onTrue": 1.0,
+      "onFalse": 0.0
+    }
+
+  },
+  "wohnzimmer": {
+    "service": "Lightbulb",
+    "name": "Licht Wohnzimmer",
+    "topic": {
+      "setOn": "hm/set/Licht Wohnzimmer/LEVEL",
+      "setBrightness": "hm/set/Licht Wohnzimmer/LEVEL",
+      "statusOn": "hm/status/Licht Wohnzimmer/LEVEL",
+      "statusBrightness": "hm/status/Licht Wohnzimmer/LEVEL"
+    },
+    "payload": {
+      "brightnessFactor": 0.01,
+      "onTrue": 1.0,
+      "onFalse": 0.0
+    }
+
+  },
+  "schlafzimmer": {
+    "service": "Lightbulb",
+    "name": "Licht Schlafzimmer",
+    "topic": {
+      "setOn": "hm/set/Licht Schlafzimmer/LEVEL",
+      "setBrightness": "hm/set/Licht Schlafzimmer/LEVEL",
+      "statusOn": "hm/status/Licht Schlafzimmer/LEVEL",
+      "statusBrightness": "hm/status/Licht Schlafzimmer/LEVEL"
+    },
+    "payload": {
+      "brightnessFactor": 0.01,
+      "onTrue": 1.0,
+      "onFalse": 0.0
+    }
+
+  },
+  "kinderzimmer": {
+    "service": "Lightbulb",
+    "name": "Licht Kinderzimmer",
+    "topic": {
+      "setOn": "hm/set/Licht Kinderzimmer/LEVEL",
+      "setBrightness": "hm/set/Licht Kinderzimmer/LEVEL",
+      "statusOn": "hm/status/Licht Kinderzimmer/LEVEL",
+      "statusBrightness": "hm/status/Licht Kinderzimmer/LEVEL"
+    },
+    "payload": {
+      "brightnessFactor": 0.01,
+      "onTrue": 1.0,
+      "onFalse": 0.0
+    }
+
+  },
+  "arbeitszimmer": {
+    "service": "Lightbulb",
+    "name": "Licht Arbeitszimmer",
+    "topic": {
+      "setOn": "hm/set/Licht Arbeitszimmer/LEVEL",
+      "setBrightness": "hm/set/Licht Arbeitszimmer/LEVEL",
+      "statusOn": "hm/status/Licht Arbeitszimmer/LEVEL",
+      "statusBrightness": "hm/status/Licht Arbeitszimmer/LEVEL"
+    },
+    "payload": {
+      "brightnessFactor": 0.01,
+      "onTrue": 1.0,
+      "onFalse": 0.0
+    }
+
+  },
+  "bad": {
+    "service": "Lightbulb",
+    "name": "Licht Bad",
+    "topic": {
+      "setOn": "hm/set/Licht Bad/LEVEL",
+      "setBrightness": "hm/set/Licht Bad/LEVEL",
+      "statusOn": "hm/status/Licht Bad/LEVEL",
+      "statusBrightness": "hm/status/Licht Bad/LEVEL"
+    },
+    "payload": {
+      "brightnessFactor": 0.01,
+      "onTrue": 1.0,
+      "onFalse": 0.0
+    }
+
+  },
+  "bad_spiegel": {
+    "service": "Lightbulb",
+    "name": "Licht Bad Spiegel",
+    "topic": {
+      "setOn": "hm/set/Licht Bad Spiegel/LEVEL",
+      "setBrightness": "hm/set/Licht Bad Spiegel/LEVEL",
+      "statusOn": "hm/status/Licht Bad Spiegel/LEVEL"
+    },
+    "payload": {
+      "brightnessFactor": 0.01,
+      "onTrue": 1.0,
+      "onFalse": 0.0
+    }
+  },
+  "temp_terrasse": {
+    "service": "TemperatureSensor",
+    "name": "Temperatur Terrasse",
+    "topic": {
+      "statusTemperature": "hm/status/Wetterstation/TEMPERATURE"
+    }
+  },
+  "temp_aquarium": {
+    "service": "TemperatureSensor",
+    "name": "Temperatur Aquarium",
+    "topic": {
+      "statusTemperature": "cul/status/Temperatur Aquarium"
+    }
+  },
+  "keymatic": {
+    "service": "LockMechanism",
+    "name": "Keymatic",
+    "topic": {
+      "setLock": "hm/set/Keymatic Waschküche:1/STATE",
+      "statusLock": "hm/status/Keymatic Waschküche:1/STATE"
+    },
+    "payload": {
+      "lockUnsecured": "1",
+      "lockSecured": "0"
+    },
+    "manufacturer": "eQ-3",
+    "model": "Keymatic"
+  }
+
+}
