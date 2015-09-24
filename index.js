@@ -1,20 +1,16 @@
-var config = {
-    url: 'mqtt://172.16.23.100',
-    name: 'homekit'
-};
+var pkg = require('./package.json');
+var config = require('./config.js');
+var log = require('yalm');
 
-var log = {
-    info: console.log,
-    warn: console.log,
-    err: console.error
-};
+log(pkg.name + ' ' + pkg.version + ' starting');
+var Mqtt = require('mqtt');
 
-var Mqtt =      require('mqtt');
+log.info('loading HomeKit to MQTT mapping file');
+var mapping = require(config.m);
+
 
 var mqttStatus = {};
 var mqttCallbacks = {};
-
-
 
 var mqttConnected;
 
@@ -99,235 +95,12 @@ bridge.on('identify', function (paired, callback) {
 
 
 
-var accs = {
-    garten: {
-        service: 'Lightbulb',
-        name: 'Licht Garten',
-        topic: {
-            setOn: 'hm/set/Licht Garten/STATE',
-            statusOn: 'hm/status/Licht Garten/STATE'
-        },
-        payload: {
-            onTrue: 1,
-            onFalse: 0
-        }
-    },
-    hobbyraum: {
-        service: 'Lightbulb',
-        name: 'Licht Hobbyraum',
-        topic: {
-            setOn: 'hue/set/lights/Hobbyraum',
-            setBrightness: 'hue/set/lights/Hobbyraum',
-            statusOn: 'hue/status/lights/Hobbyraum',
-            statusBrightness: 'hue/status/lights/Hobbyraum',
-            identify: 'hue/set/lights/Hobbyraum/alarm'
-        },
-        payload: {
-            onTrue: 254,
-            onFalse: 0,
-            brightnessFactor: 2.54,
-            identify: 'select'
-        }
-
-    },
-    esstisch: {
-        service: 'Lightbulb',
-        name: 'Licht Esstisch',
-        topic: {
-            setOn: 'hm/set/Licht Esstisch/LEVEL',
-            setBrightness: 'hm/set/Licht Esstisch/LEVEL',
-            statusOn: 'hm/status/Licht Esstisch/LEVEL',
-            statusBrightness: 'hm/status/Licht Esstisch/LEVEL'
-        },
-        payload: {
-            brightnessFactor: 0.01,
-            onTrue: 1.0,
-            onFalse: 0.0
-        }
-
-    },
-    arbeitsflaeche: {
-        service: 'Lightbulb',
-        name: 'Licht Arbeitsfläche',
-        topic: {
-            setOn: 'hm/set/Licht Arbeitsfläche/STATE',
-            statusOn: 'hm/status/Licht Arbeitsfläche/STATE'
-        },
-        payload: {
-            onTrue: 1,
-            onFalse: 0
-        }
-    },
-    keller: {
-        service: 'Lightbulb',
-        name: 'Licht Keller',
-        topic: {
-            setOn: 'hm/set/Licht Keller/STATE',
-            statusOn: 'hm/status/Licht Keller/STATE'
-        },
-        payload: {
-            onTrue: 1,
-            onFalse: 0
-        }
-    },
-    terrasse: {
-        service: 'Lightbulb',
-        name: 'Licht Terrasse',
-        topic: {
-            setOn: 'hm/set/Aussenbeleuchtung/STATE',
-            statusOn: 'hm/status/Aussenbeleuchtung/STATE'
-        },
-        payload: {
-            onTrue: 1,
-            onFalse: 0
-        }
-    },
-    kueche: {
-        service: 'Lightbulb',
-        name: 'Licht Küche',
-        topic: {
-            setOn: 'hm/set/Licht Küche/LEVEL',
-            setBrightness: 'hm/set/Licht Küche/LEVEL',
-            statusOn: 'hm/status/Licht Küche/LEVEL',
-            statusBrightness: 'hm/status/Licht Küche/LEVEL'
-        },
-        payload: {
-            brightnessFactor: 0.01,
-            onTrue: 1.0,
-            onFalse: 0.0
-        }
-
-    },
-    wohnzimmer: {
-        service: 'Lightbulb',
-        name: 'Licht Wohnzimmer',
-        topic: {
-            setOn: 'hm/set/Licht Wohnzimmer/LEVEL',
-            setBrightness: 'hm/set/Licht Wohnzimmer/LEVEL',
-            statusOn: 'hm/status/Licht Wohnzimmer/LEVEL',
-            statusBrightness: 'hm/status/Licht Wohnzimmer/LEVEL'
-        },
-        payload: {
-            brightnessFactor: 0.01,
-            onTrue: 1.0,
-            onFalse: 0.0
-        }
-
-    },
-    schlafzimmer: {
-        service: 'Lightbulb',
-        name: 'Licht Schlafzimmer',
-        topic: {
-            setOn: 'hm/set/Licht Schlafzimmer/LEVEL',
-            setBrightness: 'hm/set/Licht Schlafzimmer/LEVEL',
-            statusOn: 'hm/status/Licht Schlafzimmer/LEVEL',
-            statusBrightness: 'hm/status/Licht Schlafzimmer/LEVEL'
-        },
-        payload: {
-            brightnessFactor: 0.01,
-            onTrue: 1.0,
-            onFalse: 0.0
-        }
-
-    },
-    kinderzimmer: {
-        service: 'Lightbulb',
-        name: 'Licht Kinderzimmer',
-        topic: {
-            setOn: 'hm/set/Licht Kinderzimmer/LEVEL',
-            setBrightness: 'hm/set/Licht Kinderzimmer/LEVEL',
-            statusOn: 'hm/status/Licht Kinderzimmer/LEVEL',
-            statusBrightness: 'hm/status/Licht Kinderzimmer/LEVEL'
-        },
-        payload: {
-            brightnessFactor: 0.01,
-            onTrue: 1.0,
-            onFalse: 0.0
-        }
-
-    },
-    arbeitszimmer: {
-        service: 'Lightbulb',
-        name: 'Licht Arbeitszimmer',
-        topic: {
-            setOn: 'hm/set/Licht Arbeitszimmer/LEVEL',
-            setBrightness: 'hm/set/Licht Arbeitszimmer/LEVEL',
-            statusOn: 'hm/status/Licht Arbeitszimmer/LEVEL',
-            statusBrightness: 'hm/status/Licht Arbeitszimmer/LEVEL'
-        },
-        payload: {
-            brightnessFactor: 0.01,
-            onTrue: 1.0,
-            onFalse: 0.0
-        }
-
-    },
-    bad: {
-        service: 'Lightbulb',
-        name: 'Licht Bad',
-        topic: {
-            setOn: 'hm/set/Licht Bad/LEVEL',
-            setBrightness: 'hm/set/Licht Bad/LEVEL',
-            statusOn: 'hm/status/Licht Bad/LEVEL',
-            statusBrightness: 'hm/status/Licht Bad/LEVEL'
-        },
-        payload: {
-            brightnessFactor: 0.01,
-            onTrue: 1.0,
-            onFalse: 0.0
-        }
-
-    },
-    bad_spiegel: {
-        service: 'Lightbulb',
-        name: 'Licht Bad Spiegel',
-        topic: {
-            setOn: 'hm/set/Licht Bad Spiegel/LEVEL',
-            setBrightness: 'hm/set/Licht Bad Spiegel/LEVEL',
-            statusOn: 'hm/status/Licht Bad Spiegel/LEVEL'
-        },
-        payload: {
-            brightnessFactor: 0.01,
-            onTrue: 1.0,
-            onFalse: 0.0
-        }
-    },
-    temp_terrasse: {
-        service: 'TemperatureSensor',
-        name: 'Temperatur Terrasse',
-        topic: {
-            statusTemperature: 'hm/status/Wetterstation/TEMPERATURE'
-        }
-    },
-    temp_aquarium: {
-        service: 'TemperatureSensor',
-        name: 'Temperatur Aquarium',
-        topic: {
-            statusTemperature: 'cul/status/Temperatur Aquarium'
-        }
-    },
-    keymatic: {
-        service: 'LockMechanism',
-        name: 'Keymatic',
-        topic: {
-            setLock: 'hm/set/Keymatic Waschküche:1/STATE',
-            statusLock: 'hm/status/Keymatic Waschküche:1/STATE'
-        },
-        payload: {
-            lockUnsecured: '1',
-            lockSecured: '0'
-        },
-        manufacturer: 'eQ-3',
-        model: 'Keymatic'
-    }
-
-};
 
 function identify(settings, paired, callback) {
     console.log('< hap', settings.name, 'identify', paired);
     if (settings.topic.identify) {
-        console.log('> mqtt', topic, settings.payload.identify);
-        mqtt.publish(topic, settings.payload.identify);
+        console.log('> mqtt', settings.topic.identify, settings.payload.identify);
+        mqtt.publish(settings.topic.identify, settings.payload.identify);
     }
     callback();
 }
@@ -344,27 +117,11 @@ function setInfos(acc, settings) {
 var createAccessory = {
     LockMechanism: function createAccessory_LockMechanism(settings) {
 
-
-        log.info('> mqtt subscribe', settings.topic.statusLock);
-        mqttSub(settings.topic.statusLock, function (val) {
-
-            if (val === settings.payload.lockSecured) {
-                lock.getService(Service.LockMechanism)
-                    .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED);
-            }
-            if (val === settings.payload.lockUnsecured) {
-                lock.getService(Service.LockMechanism)
-                    .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.UNSECURED);
-            }
-
-        });
-
-
         var lockUUID = uuid.generate('hap-nodejs:accessories:lock:' + settings.topic.setLock);
 
         var lock = new Accessory(settings.name, lockUUID);
 
-        setInfos(lock, settings)
+        setInfos(lock, settings);
 
         lock.on('identify', function (paired, callback) {
             identify(settings, paired, callback);
@@ -391,19 +148,38 @@ var createAccessory = {
                 }
             });
 
-        lock.getService(Service.LockMechanism)
-            .getCharacteristic(Characteristic.LockCurrentState)
-            .on('get', function(callback) {
-                console.log('< hap', settings.name, 'get', 'LockCurrentState', value);
+        if (settings.topic.statusLock) {
 
-                if (mqttStatus[settings.topic.statusLock] === settings.payload.lockSecured) {
-                    console.log('> hap', settings.name, 'LockCurrentState.SECURED');
-                    callback(err, Characteristic.LockCurrentState.SECURED);
-                } else {
-                    console.log('> hap', settings.name, 'LockCurrentState.UNSECURED');
-                    callback(err, Characteristic.LockCurrentState.UNSECURED);
+            log.info('> mqtt subscribe', settings.topic.statusLock);
+            mqttSub(settings.topic.statusLock, function (val) {
+
+                if (val === settings.payload.lockSecured) {
+                    lock.getService(Service.LockMechanism)
+                        .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED);
                 }
+                if (val === settings.payload.lockUnsecured) {
+                    lock.getService(Service.LockMechanism)
+                        .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.UNSECURED);
+                }
+
             });
+
+            lock.getService(Service.LockMechanism)
+                .getCharacteristic(Characteristic.LockCurrentState)
+                .on('get', function(callback) {
+                    console.log('< hap', settings.name, 'get', 'LockCurrentState');
+
+                    if (mqttStatus[settings.topic.statusLock] === settings.payload.lockSecured) {
+                        console.log('> hap', settings.name, 'LockCurrentState.SECURED');
+                        callback(null, Characteristic.LockCurrentState.SECURED);
+                    } else {
+                        console.log('> hap', settings.name, 'LockCurrentState.UNSECURED');
+                        callback(null, Characteristic.LockCurrentState.UNSECURED);
+                    }
+                });
+
+        }
+
 
         return lock;
 
@@ -457,57 +233,85 @@ var createAccessory = {
                 callback(null, on);
             });
 
+
+
         if (settings.topic.setBrightness) {
             light.getService(Service.Lightbulb)
                 .addCharacteristic(Characteristic.Brightness)
-                .on('get', function (callback) {
-                    console.log('< hap', settings.name, 'get', 'Brightness');
-                    var bri = mqttStatus[settings.topic.statusBrightness] / (settings.payload.brightnessFactor || 1);
-                    console.log('> hap', settings.name, bri);
-                    callback(null, bri);
-                })
                 .on('set', function (value, callback) {
                     console.log('< hap', settings.name, 'set', 'Brightness', value);
                     var bri = (value * (settings.payload.brightnessFactor || 1));
                     console.log('> mqtt', settings.topic.setBrightness, bri);
                     mqtt.publish(settings.topic.setBrightness, '' + bri);
                     callback();
-                })
+                });
+
+            if (settings.topic.statusBrightness) {
+                console.log('mqtt subscribe', settings.topic.statusBrightness);
+                mqtt.subscribe(settings.topic.statusBrightness);
+                light.getService(Service.Lightbulb)
+                    .getCharacteristic(Characteristic.Brightness)
+                    .on('get', function (callback) {
+                        console.log('< hap', settings.name, 'get', 'Brightness');
+                        var brightness = mqttStatus[settings.topic.statusBrightness] / settings.payload.brightnessFactor;
+
+                        console.log('> hap', settings.name, brightness);
+                        callback(null, brightness);
+                    });
+
+            }
+
         }
 
         if (settings.topic.setHue) {
             light.getService(Service.Lightbulb)
                 .addCharacteristic(Characteristic.Hue)
-                .on('get', function (callback) {
-                    console.log('< hap', settings.name, 'get', 'Hue');
-                    var hue = mqttStatus[settings.topic.statusHue] / (settings.payload.hueFactor || 1);
-                    console.log('> hap', settings.name, hue);
-                    callback(null, hue);
-                })
                 .on('set', function (value, callback) {
                     console.log('< hap', settings.name, 'set', 'Hue', value);
                     console.log('> mqtt', settings.topic.setHue, '' + (value * (settings.payload.hueFactor || 1)));
                     mqtt.publish(settings.topic.setHue, '' + (value * (settings.payload.hueFactor || 1)));
                     callback();
-                })
+                });
+            if (settings.topic.statusHue) {
+                console.log('mqtt subscribe', settings.topic.statusHue);
+                mqtt.subscribe(settings.topic.statusHue);
+                light.getService(Service.Lightbulb)
+                    .getCharacteristic(Characteristic.Hue)
+                    .on('get', function (callback) {
+                        console.log('< hap', settings.name, 'get', 'Hue');
+                        var hue = mqttStatus[settings.topic.statusHue] / settings.payload.hueFactor;
+
+                        console.log('> hap', settings.name, hue);
+                        callback(null, hue);
+                    });
+
+            }
         }
 
         if (settings.topic.setSaturation) {
             light.getService(Service.Lightbulb)
                 .addCharacteristic(Characteristic.Saturation)
-                .on('get', function (callback) {
-                    console.log('< hap', settings.name, 'get', 'Saturation');
-                    var sat = mqttStatus[settings.topic.statusSaturation] / (settings.payload.saturationFactor || 1);
-                    console.log('> hap', settings.name, sat);
-                    callback(null, sat);
-                })
-                .on('set', function (value, callback) {
+                 .on('set', function (value, callback) {
                     console.log('< hap', settings.name, 'set', 'Saturation', value);
                     var sat = (value * (settings.payload.saturationFactor || 1));
                     console.log('> mqtt', settings.topic.setSaturation, sat);
                     mqtt.publish(settings.topic.setSaturation, '' + sat);
                     callback();
-                })
+                });
+            if (settings.topic.statusSaturation) {
+                console.log('mqtt subscribe', settings.topic.statusSaturation);
+                mqtt.subscribe(settings.topic.statusSaturation);
+                light.getService(Service.Lightbulb)
+                    .getCharacteristic(Characteristic.Saturation)
+                    .on('get', function (callback) {
+                        console.log('< hap', settings.name, 'get', 'Saturation');
+                        var saturation = mqttStatus[settings.topic.statusSaturation] / settings.payload.saturationFactor;
+
+                        console.log('> hap', settings.name, saturation);
+                        callback(null, saturation);
+                    });
+
+            }
         }
 
 
@@ -535,22 +339,27 @@ var createAccessory = {
                 callback(); 
             });
 
-        sw.getService(Service.Switch)
-            .getCharacteristic(Characteristic.On)
-            .on('get', function (callback) {
-                console.log('< hap', settings.name, 'get', 'On');
-                var on = mqttStatus[settings.topic.statusOn] === settings.payload.onTrue;
-                console.log('> hap', settings.name, on);
-                callback(null, on);
-            });
-        
+        if (settings.topic.statusOn) {
+            console.log('mqtt subscribe', settings.topic.statusOn);
+            mqtt.subscribe(settings.topic.statusOn);
+            sw.getService(Service.Switch)
+                .getCharacteristic(Characteristic.On)
+                .on('get', function (callback) {
+                    console.log('< hap', settings.name, 'get', 'On');
+                    var on = mqttStatus[settings.topic.statusOn] === settings.payload.onTrue;
+                    console.log('> hap', settings.name, on);
+                    callback(null, on);
+                });
+
+        }
+
         return sw;
 
     }
 };
 
-for (var id in accs) {
-    var a = accs[id];
+for (var id in mapping) {
+    var a = mapping[id];
 
     if (createAccessory[a.service]) {
         bridge.addBridgedAccessory(createAccessory[a.service](a));

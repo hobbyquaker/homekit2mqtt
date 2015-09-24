@@ -1,73 +1,82 @@
 {
   "garten": {
-    "service": "Lightbulb",
-    "name": "Licht Garten",
+    "service":  "Lightbulb",
+    "name":     "Licht Garten",
     "topic": {
-      "setOn": "hm/set/Licht Garten/STATE",
-      "statusOn": "hm/status/Licht Garten/STATE"
+      "setOn":          "hm/set/Licht Garten/STATE",
+      "statusOn":       "hm/status/Licht Garten/STATE"
     },
     "payload": {
       "onTrue": 1,
       "onFalse": 0
-    }
+    },
+    "manufacturer": "Homematic",
+    "model": "Switch"
   },
   "hobbyraum": {
-    "service": "Lightbulb",
-    "name": "Licht Hobbyraum",
+    "service":  "Lightbulb",
+    "name":     "Licht Hobbyraum",
     "topic": {
-      "setOn": "hue/set/lights/Hobbyraum",
-      "setBrightness": "hue/set/lights/Hobbyraum",
-      "statusOn": "hue/status/lights/Hobbyraum",
+      "setOn":            "hue/set/lights/Hobbyraum",
+      "setBrightness":    "hue/set/lights/Hobbyraum",
+      "statusOn":         "hue/status/lights/Hobbyraum",
       "statusBrightness": "hue/status/lights/Hobbyraum",
-      "identify": "hue/set/lights/Hobbyraum/alarm"
+      "identify":         "hue/set/lights/Hobbyraum/alert"
     },
     "payload": {
       "onTrue": 254,
       "onFalse": 0,
       "brightnessFactor": 2.54,
       "identify": "select"
-    }
-
+    },
+    "manufacturer": "Hue",
+    "model": "Dimmer"
   },
   "esstisch": {
-    "service": "Lightbulb",
-    "name": "Licht Esstisch",
+    "service":  "Lightbulb",
+    "name":     "Licht Esstisch",
     "topic": {
-      "setOn": "hm/set/Licht Esstisch/LEVEL",
-      "setBrightness": "hm/set/Licht Esstisch/LEVEL",
-      "statusOn": "hm/status/Licht Esstisch/LEVEL",
+      "setOn":            "hm/set/Licht Esstisch/LEVEL",
+      "setBrightness":    "hm/set/Licht Esstisch/LEVEL",
+      "statusOn":         "hm/status/Licht Esstisch/LEVEL",
       "statusBrightness": "hm/status/Licht Esstisch/LEVEL"
     },
     "payload": {
       "brightnessFactor": 0.01,
       "onTrue": 1.0,
       "onFalse": 0.0
-    }
+    },
+    "manufacturer": "Homematic",
+    "model":        "Dimmer"
 
   },
   "arbeitsflaeche": {
-    "service": "Lightbulb",
-    "name": "Licht Arbeitsfläche",
+    "service":    "Lightbulb",
+    "name":       "Licht Arbeitsfläche",
     "topic": {
-      "setOn": "hm/set/Licht Arbeitsfläche/STATE",
-      "statusOn": "hm/status/Licht Arbeitsfläche/STATE"
+      "setOn":          "hm/set/Licht Arbeitsfläche/STATE",
+      "statusOn":       "hm/status/Licht Arbeitsfläche/STATE"
     },
     "payload": {
       "onTrue": 1,
       "onFalse": 0
-    }
+    },
+    "manufacturer": "Homematic",
+    "model": "Switch"
   },
   "keller": {
     "service": "Lightbulb",
     "name": "Licht Keller",
     "topic": {
-      "setOn": "hm/set/Licht Keller/STATE",
-      "statusOn": "hm/status/Licht Keller/STATE"
+      "setOn": "hm/set/Licht Kellertreppe/STATE",
+      "statusOn": "hm/status/Licht Kellertreppe/STATE"
     },
     "payload": {
       "onTrue": 1,
       "onFalse": 0
-    }
+    },
+    "manufacturer": "Homematic",
+    "model": "Dimmer"
   },
   "terrasse": {
     "service": "Lightbulb",
@@ -79,7 +88,9 @@
     "payload": {
       "onTrue": 1,
       "onFalse": 0
-    }
+    },
+    "manufacturer": "Homematic",
+    "model": "Dimmer"
   },
   "kueche": {
     "service": "Lightbulb",
@@ -94,7 +105,9 @@
       "brightnessFactor": 0.01,
       "onTrue": 1.0,
       "onFalse": 0.0
-    }
+    },
+    "manufacturer": "Homematic",
+    "model": "Dimmer"
 
   },
   "wohnzimmer": {
@@ -110,7 +123,9 @@
       "brightnessFactor": 0.01,
       "onTrue": 1.0,
       "onFalse": 0.0
-    }
+    },
+    "manufacturer": "Homematic",
+    "model": "Dimmer"
 
   },
   "schlafzimmer": {
@@ -126,7 +141,9 @@
       "brightnessFactor": 0.01,
       "onTrue": 1.0,
       "onFalse": 0.0
-    }
+    },
+    "manufacturer": "Homematic",
+    "model": "Dimmer"
 
   },
   "kinderzimmer": {
@@ -142,7 +159,9 @@
       "brightnessFactor": 0.01,
       "onTrue": 1.0,
       "onFalse": 0.0
-    }
+    },
+    "manufacturer": "Homematic",
+    "model": "Dimmer"
 
   },
   "arbeitszimmer": {
@@ -158,7 +177,9 @@
       "brightnessFactor": 0.01,
       "onTrue": 1.0,
       "onFalse": 0.0
-    }
+    },
+    "manufacturer": "Homematic",
+    "model": "Dimmer"
 
   },
   "bad": {
@@ -174,7 +195,9 @@
       "brightnessFactor": 0.01,
       "onTrue": 1.0,
       "onFalse": 0.0
-    }
+    },
+    "manufacturer": "Homematic",
+    "model": "Dimmer"
 
   },
   "bad_spiegel": {
@@ -189,21 +212,27 @@
       "brightnessFactor": 0.01,
       "onTrue": 1.0,
       "onFalse": 0.0
-    }
+    },
+    "manufacturer": "Homematic",
+    "model": "Dimmer"
   },
   "temp_terrasse": {
     "service": "TemperatureSensor",
     "name": "Temperatur Terrasse",
     "topic": {
       "statusTemperature": "hm/status/Wetterstation/TEMPERATURE"
-    }
+    },
+    "manufacturer": "Homematic",
+    "model": "Temperature"
   },
   "temp_aquarium": {
     "service": "TemperatureSensor",
     "name": "Temperatur Aquarium",
     "topic": {
       "statusTemperature": "cul/status/Temperatur Aquarium"
-    }
+    },
+    "manufacturer": "ELV",
+    "model": "HMS100T"
   },
   "keymatic": {
     "service": "LockMechanism",
@@ -216,8 +245,49 @@
       "lockUnsecured": "1",
       "lockSecured": "0"
     },
-    "manufacturer": "eQ-3",
+    "manufacturer": "Homematic",
     "model": "Keymatic"
+  },
+  "Lichterkette": {
+    "service":  "Lightbulb",
+    "name":     "Lichterkette Garten",
+    "topic": {
+      "setOn":            "hm/set/Lichterkette Garten/LEVEL",
+      "setBrightness":    "hm/set/Lichterkette Garten/LEVEL",
+      "statusOn":         "hm/status/Lichterkette Garten/LEVEL",
+      "statusBrightness": "hm/status/Lichterkette Garten/LEVEL"
+    },
+    "payload": {
+      "onTrue": 1.0,
+      "onFalse": 0.0
+    },
+    "manufacturer": "Homematic",
+    "model": "Switch"
+  },
+  "bad-led": {
+    "service":  "Lightbulb",
+    "name":     "Licht Bad LED",
+    "topic": {
+      "setOn":            "hue/set/lights/Bad",
+      "setBrightness":    "hue/set/lights/Bad",
+      "setHue":           "hue/set/lights/Bad/hue",
+      "setSaturation":    "hue/set/lights/Bad/sat",
+      "statusOn":         "hue/status/lights/Bad",
+      "statusBrightness": "hue/status/lights/Bad/sat",
+      "statusHue":        "hue/status/lights/Bad",
+      "statusSaturation": "hue/status/lights/Bad/hue",
+      "identify":         "hue/set/lights/Bad/alert"
+    },
+    "payload": {
+      "onTrue": 254,
+      "onFalse": 0,
+      "brightnessFactor": 2.54,
+      "hueFactor": 182.042,
+      "saturationFactor": 2.54,
+      "identify": "select"
+    },
+    "manufacturer": "Hue",
+    "model": "Dimmer"
   }
 
 }
