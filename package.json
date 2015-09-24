@@ -1,6 +1,6 @@
 {
   "name": "homekit2mqtt",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "HomeKit to MQTT bridge",
   "main": "index.js",
   "preferGlobal": true,
@@ -10,8 +10,10 @@
   "author": "Sebastian 'hobbyquaker' Raff <hq@ccu.io> (https://github.com/hobbyquaker)",
   "license": "MIT",
   "dependencies": {
-    "HAP-NodeJS": "git://github.com/KhaosT/HAP-NodeJS",
-    "mqtt": "^1.3.5"
+    "HAP-NodeJS": "git://github.com/hobbyquaker/HAP-NodeJS",
+    "mqtt": "^1.3.5",
+    "yalm": "^2.0.0",
+    "yargs": "^3.25.0"
   },
   "devDependencies": {},
   "repository": {
@@ -20,13 +22,13 @@
   },
   "keywords": [
     "homekit",
-    "siri",
+    "Siri",
     "MQTT",
     "Smart",
     "Home",
     "Internet",
     "of",
-    "Thing",
+    "Things",
     "IoT",
     "mqtt-smarthome"
   ],
