@@ -70,7 +70,7 @@ function mqttSub(topic, callback) {
 }
 
 console.log("HAP-NodeJS starting...");
-var HAP =               require('HAP-NodeJS');
+var HAP =               require('hap-nodejs');
 var uuid =              HAP.uuid;
 var Bridge =            HAP.Bridge;
 var Accessory =         HAP.Accessory;
