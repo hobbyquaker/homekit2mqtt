@@ -77,8 +77,8 @@ var Accessory =         HAP.Accessory;
 var Service =           HAP.Service;
 var Characteristic =    HAP.Characteristic;
 
-var storage =   require('HAP-NodeJS/node_modules/node-persist');
-var types =     require('HAP-NodeJS/accessories/types');
+var storage =   require('hap-nodejs/node_modules/node-persist');
+var types =     require('hap-nodejs/accessories/types');
 
 
 // Initialize our storage system
