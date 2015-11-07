@@ -115,6 +115,90 @@ function setInfos(acc, settings) {
 }
 
 var createAccessory = {
+
+    WindowCovering: function createAccessory_WindowCovering(settings) {
+        var shutterUUID = uuid.generate('hap-nodejs:accessories:windowCovering:' + settings.topic.setTargetPosition);
+        var shutter = new Accessory(settings.name, shutterUUID);
+        setInfos(shutter, settings);
+
+        shutter.addService(Service.WindowCovering, settings.name)
+            .getCharacteristic(Characteristic.TargetPosition)
+            .on('set', function (value, callback) {
+                console.log('< hap', settings.name, 'set', 'TargetPosition', value);
+                value = (value * (settings.payload.targetPositionFactor || 1));
+                console.log('> mqtt', settings.topic.setTargetPosition, value);
+                mqtt.publish(settings.topic.setTargetPosition, '' + value);
+                callback();
+            });
+
+        if (settings.topic.statusTargetPosition) {
+            console.log('mqtt subscribe', settings.topic.statusTargetPosition);
+            mqtt.subscribe(settings.topic.statusTargetPosition);
+            shutter.getService(Service.WindowCovering)
+                .getCharacteristic(Characteristic.TargetPosition)
+                .on('get', function (callback) {
+                    console.log('< hap', settings.name, 'get', 'TargetPosition');
+                    var position = mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1);
+
+                    console.log('> hap', settings.name, position);
+                    callback(null, position);
+                });
+
+        }
+        
+        
+
+        if (settings.topic.statusCurrentPosition) {
+            console.log('mqtt subscribe', settings.topic.statusCurrentPosition);
+            mqtt.subscribe(settings.topic.statusCurrentPosition);
+            shutter.getService(Service.WindowCovering)
+                .getCharacteristic(Characteristic.CurrentPosition)
+                .on('get', function (callback) {
+                    console.log('< hap', settings.name, 'get', 'CurrentPosition');
+                    var position = mqttStatus[settings.topic.statusCurrentPosition] / (settings.payload.currentPositionFactor || 1);
+
+                    console.log('> hap', settings.name, position);
+                    callback(null, position);
+                });
+
+        }
+
+        shutter.getService(Service.WindowCovering)
+            .getCharacteristic(Characteristic.CurrentPosition)
+            .on('set', function (value, callback) {
+                console.log('< hap', settings.name, 'set', 'CurrentPosition', value);
+                value = (value * (settings.payload.currentPositionFactor || 1));
+                console.log('> mqtt', settings.topic.setCurrentPosition, value);
+                mqtt.publish(settings.topic.setCurrentPosition, '' + value);
+                callback();
+            });
+
+        if (settings.topic.statusPositionStatus) {
+            console.log('mqtt subscribe', settings.topic.statusPositionStatus);
+            mqtt.subscribe(settings.topic.statusPositionStatus);
+            shutter.getService(Service.WindowCovering)
+                .getCharacteristic(Characteristic.PositionState)
+                .on('get', function (callback) {
+                    console.log('< hap', settings.name, 'get', 'PositionState');
+
+                    if (mqttStatus[settings.topic.statusPositionState] === settings.payload.positionStatusDecreasing) {
+                        console.log('> hap', settings.name, 'PositionState.DECREASING');
+                        callback(null, Characteristic.PositionState.DECREASING);
+                    } else if (mqttStatus[settings.topic.statusPositionState] === settings.payload.positionStatusIncreasing) {
+                        console.log('> hap', settings.name, 'PositionState.INCREASING');
+                        callback(null,  Characteristic.PositionState.INCREASING);
+                    } else {
+                        console.log('> hap', settings.name, 'PositionState.STOPPED');
+                        callback(null, Characteristic.PositionState.STOPPED);
+                    }
+
+                });
+
+        }
+
+        return shutter;
+
+    },
     LockMechanism: function createAccessory_LockMechanism(settings) {
 
         var lockUUID = uuid.generate('hap-nodejs:accessories:lock:' + settings.topic.setLock);
@@ -319,14 +403,10 @@ var createAccessory = {
 
     },
     Switch: function createAccessory_Switch(settings) {
-        
+
         var switchUUID = uuid.generate('hap-nodejs:accessories:switch:' + settings.topic.setOn);
         var sw = new Accessory(settings.name, switchUUID);
         setInfos(sw, settings);
-
-        sw.on('identify', function (paired, callback) {
-            identify(settings, paired, callback);
-        });
 
         sw.addService(Service.Switch, settings.name)
             .getCharacteristic(Characteristic.On)
@@ -336,7 +416,7 @@ var createAccessory = {
                 console.log('> mqtt', settings.topic.setOn, on);
                 mqtt.publish(settings.topic.setOn, '' + on);
                 powerOn = value;
-                callback(); 
+                callback();
             });
 
         if (settings.topic.statusOn) {
@@ -354,6 +434,27 @@ var createAccessory = {
         }
 
         return sw;
+
+    },
+    ContactSensor: function createAccessory_Switch(settings) {
+
+        var switchUUID = uuid.generate('hap-nodejs:accessories:contactSensor:' + settings.topic.statusContactSensorState);
+        var sensor = new Accessory(settings.name, switchUUID);
+        setInfos(sensor, settings);
+
+        sensor.addService(Service.ContactSensor, settings.name)
+            .getCharacteristic(Characteristic.ContactSensorState)
+            .on('get', function (callback) {
+                console.log('< hap', settings.name, 'get', 'ContactSensorState');
+                var contact =
+                    mqttStatus[settings.topic.statusContactSensorState] === settings.payload.onContactDetected ?
+                        Characteristic.ContactSensorState.CONTACT_DETECTED :
+                        Characteristic.ContactSensorState.CONTACT_NOT_DETECTED;
+                console.log('> hap', settings.name, contact);
+                callback(null, contact);
+            });
+
+        return sensor;
 
     }
 };
