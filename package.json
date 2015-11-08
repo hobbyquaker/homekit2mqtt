@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "description": "HomeKit to MQTT bridge",
   "main": "index.js",
+  "bin": {"homekit2mqtt": "./index.js"},
   "preferGlobal": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
