@@ -115,7 +115,6 @@ function setInfos(acc, settings) {
 }
 
 var createAccessory = {
-
     WindowCovering: function createAccessory_WindowCovering(settings) {
         var shutterUUID = uuid.generate('hap-nodejs:accessories:windowCovering:' + settings.topic.setTargetPosition);
         var shutter = new Accessory(settings.name, shutterUUID);
@@ -143,10 +142,7 @@ var createAccessory = {
                     console.log('> hap', settings.name, position);
                     callback(null, position);
                 });
-
         }
-        
-        
 
         if (settings.topic.statusCurrentPosition) {
             console.log('mqtt subscribe', settings.topic.statusCurrentPosition);
@@ -160,7 +156,6 @@ var createAccessory = {
                     console.log('> hap', settings.name, position);
                     callback(null, position);
                 });
-
         }
 
         shutter.getService(Service.WindowCovering)
@@ -193,7 +188,6 @@ var createAccessory = {
                     }
 
                 });
-
         }
 
         return shutter;
@@ -455,6 +449,155 @@ var createAccessory = {
             });
 
         return sensor;
+
+    },
+    Thermostat: function createAccessory_Thermostat(settings) {
+
+        var thermoUUID = uuid.generate('hap-nodejs:accessories:thermostat:' + settings.topic.setTargetTemperature);
+        var thermo = new Accessory(settings.name, thermoUUID);
+        setInfos(thermo, settings);
+
+        thermo.on('identify', function (paired, callback) {
+            identify(settings, paired, callback);
+        });
+
+        thermo.addService(Service.Thermostat, settings.name)
+            .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+            .on('set', function(value, callback) {
+                console.log('< hap', settings.name, 'set', 'TargetHeatingCoolingState', value);
+                if (settings.topic.setTargetHeatingCoolingState) {
+                    console.log('> mqtt', settings.topic.setTargetHeatingCoolingState, value);
+                    mqtt.publish(settings.topic.setTargetHeatingCoolingState, '' + value);
+                }
+                callback();
+            });
+
+        thermo.getService(Service.Thermostat)
+            .getCharacteristic(Characteristic.TargetTemperature)
+            .on('set', function(value, callback) {
+                console.log('< hap', settings.name, 'set', 'TargetTemperature', value);
+                console.log('> mqtt', settings.topic.setTargetTemperature, value);
+                mqtt.publish(settings.topic.setTargetTemperature, '' + value);
+                callback();
+            });
+
+        thermo.getService(Service.Thermostat)
+            .getCharacteristic(Characteristic.TemperatureDisplayUnits)
+            .on('set', function(value, callback) {
+                console.log('< hap', settings.name, 'set', 'TemperatureDisplayUnits', value);
+                console.log('> config', settings.name, 'TemperatureDisplayUnits', value);
+                settings.config.TemperatureDisplayUnits = value;
+                callback();
+            });
+
+        thermo.getService(Service.Thermostat)
+            .getCharacteristic(Characteristic.TemperatureDisplayUnits)
+            .on('get', function (callback) {
+                console.log('< hap', settings.name, 'get', 'TemperatureDisplayUnits');
+                console.log('> hap', settings.name, settings.config.TemperatureDisplayUnits);
+                callback(null, settings.config.TemperatureDisplayUnits);
+            });
+
+        mqtt.subscribe(settings.topic.statusCurrentTemperature);
+        thermo.getService(Service.Thermostat)
+            .getCharacteristic(Characteristic.CurrentTemperature)
+            .on('get', function (callback) {
+                console.log('< hap', settings.name, 'get', 'CurrentTemperature');
+                console.log('> hap', settings.name, mqttStatus[settings.topic.statusCurrentTemperature]);
+                callback(null, mqttStatus[settings.topic.statusCurrentTemperature]);
+            });
+
+        thermo.getService(Service.Thermostat)
+            .getCharacteristic(Characteristic.CurrentHeatingCoolingState)
+            .on('get', function (callback) {
+                console.log('< hap', settings.name, 'get', 'CurrentHeatingCoolingState');
+                var state;
+                if (mqttStatus[settings.topic.statusCurrentTemperature] < mqttStatus[settings.topic.statusTargetTemperature]) {
+                    state = 1;
+                } else {
+                    state = 0;
+                }
+                console.log('> hap', settings.name, state);
+                callback(null, state);
+            });
+
+        mqtt.subscribe(settings.topic.statusTargetTemperature);
+        thermo.getService(Service.Thermostat)
+            .getCharacteristic(Characteristic.TargetTemperature)
+            .on('get', function (callback) {
+                console.log('< hap', settings.name, 'get', 'TargetTemperature');
+                console.log('> hap', settings.name, mqttStatus[settings.topic.statusTargetTemperature]);
+                callback(null, mqttStatus[settings.topic.statusTargetTemperature]);
+            });
+
+        if (settings.topic.statusCurrentRelativeHumidity) {
+            mqtt.subscribe(settings.topic.statusCurrentRelativeHumidity)
+            thermo.getService(Service.Thermostat)
+                .getCharacteristic(Characteristic.CurrentRelativeHumidity)
+                .on('get', function (callback) {
+                    console.log('< hap', settings.name, 'get', 'CurrentRelativeHumidity');
+                    console.log('> hap', settings.name, mqttStatus[settings.topic.statusCurrentRelativeHumidity]);
+                    callback(null, mqttStatus[settings.topic.statusCurrentRelativeHumidity]);
+                });
+        }
+
+        if (settings.topic.setTargetRelativeHumidity) {
+            thermo.getService(Service.Thermostat)
+                .getCharacteristic(Characteristic.TargetRelativeHumidity)
+                .on('set', function(value, callback) {
+                    console.log('< hap', settings.name, 'set', 'TargetRelativeHumidity', value);
+                    console.log('> mqtt', settings.topic.setTargetRelativeHumidity, value);
+                    mqtt.publish(settings.topic.setTargetRelativeHumidity, '' + value);
+                    callback();
+                });
+        }
+
+        if (settings.topic.setCoolingThresholdTemperature) {
+            thermo.getService(Service.Thermostat)
+                .getCharacteristic(Characteristic.CoolingThresholdTemperature)
+                .on('set', function(value, callback) {
+                    console.log('< hap', settings.name, 'set', 'CoolingThresholdTemperature', value);
+                    console.log('> mqtt', settings.topic.setCoolingThresholdTemperature, value);
+                    mqtt.publish(settings.topic.setCoolingThresholdTemperature, '' + value);
+                    callback();
+                });
+        }
+
+        if (settings.topic.statusCoolingThresholdTemperature) {
+            mqtt.subscribe(settings.topic.statusCoolingThresholdTemperature)
+            thermo.getService(Service.Thermostat)
+                .getCharacteristic(Characteristic.CoolingThresholdTemperature)
+                .on('get', function (callback) {
+                    console.log('< hap', settings.name, 'get', 'CoolingThresholdTemperature');
+                    console.log('> hap', settings.name, mqttStatus[settings.topic.statusCoolingThresholdTemperature]);
+                    callback(null, mqttStatus[settings.topic.statusCoolingThresholdTemperature]);
+                });
+        }
+
+        if (settings.topic.setHeatingThresholdTemperature) {
+            mqtt.subscribe(settings.topic.setHeatingThresholdTemperature)
+            thermo.getService(Service.Thermostat)
+                .getCharacteristic(Characteristic.HeatingThresholdTemperature)
+                .on('set', function(value, callback) {
+                    console.log('< hap', settings.name, 'set', 'HeatingThresholdTemperature', value);
+                    console.log('> mqtt', settings.topic.setHeatingThresholdTemperature, value);
+                    mqtt.publish(settings.topic.setHeatingThresholdTemperature, '' + value);
+                    callback();
+                });
+        }
+
+        if (settings.topic.statusHeatingThresholdTemperature) {
+            mqtt.subscribe(settings.topic.statusHeatingThresholdTemperature)
+            thermo.getService(Service.Thermostat)
+                .getCharacteristic(Characteristic.HeatingThresholdTemperature)
+                .on('get', function (callback) {
+                    console.log('< hap', settings.name, 'get', 'HeatingThresholdTemperature');
+                    console.log('> hap', settings.name, mqttStatus[settings.topic.statusHeatingThresholdTemperature]);
+                    callback(null, mqttStatus[settings.topic.statusHeatingThresholdTemperature]);
+                });
+        }
+
+        return thermo;
 
     }
 };
