@@ -615,7 +615,7 @@ for (var id in mapping) {
 
 // Publish the Bridge on the local network.
 bridge.publish({
-    username: "CC:22:3D:E3:CE:F6",
+    username: "CC:22:3D:E3:CE:F7", // Changed from F6 to F7 in the end, works better for multiple bridges
     port: 51826,
     pincode: "031-45-154",
     category: Accessory.Categories.OTHER
