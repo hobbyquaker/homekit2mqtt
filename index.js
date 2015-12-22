@@ -436,6 +436,7 @@ var createAccessory = {
         var sensor = new Accessory(settings.name, switchUUID);
         setInfos(sensor, settings);
 
+        mqtt.subscribe(settings.topic.statusContactSensorState);
         sensor.addService(Service.ContactSensor, settings.name)
             .getCharacteristic(Characteristic.ContactSensorState)
             .on('get', function (callback) {
