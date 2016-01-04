@@ -11,13 +11,21 @@ var config = require('yargs')
         'n': 'name',
         'm': 'mapfile',
         'u': 'url',
-        'v': 'verbosity'
+        'v': 'verbosity',
+        'c': 'pincode',
+        'a': 'username',
+        'b': 'bridgename',
+        'p': 'port'
     })
     .default({
+        'c': '031-45-154',
         'u': 'mqtt://127.0.0.1',
-        'n': 'name',
+        'n': 'homekit',
         'm': '/opt/mqtt-smarthome/homekit2mqtt.json',
-        'v': 'info'
+        'v': 'info',
+        'a': 'CC:22:3D:E3:CE:F6',
+        'b': 'MQTT Bridge',
+        'p': 51826
     })
     //.config('config')
     .version(pkg.name + ' ' + pkg.version + '\n', 'version')
