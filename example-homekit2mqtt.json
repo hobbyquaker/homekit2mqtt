@@ -1,12 +1,12 @@
 {
-  "hm//Heizung Hobbyraum": {
+  "Thermostat1": {
     "service": "Thermostat",
-    "name": "Heizung Hobbyraum",
+    "name": "Thermostat1",
     "topic": {
-      "setTargetTemperature": "hm/set/Temperatur Hobbyraum Soll/SETPOINT",
-      "statusTargetTemperature": "hm/status/Temperatur Hobbyraum Soll/SETPOINT",
-      "statusCurrentTemperature": "hm/status/Temperatur Hobbyraum Ist/TEMPERATURE",
-      "statusCurrentRelativeHumidity": "hm/status/Temperatur Hobbyraum Ist/HUMIDITY"
+      "setTargetTemperature": "Thermostat1/set/TargetTemperature",
+      "statusTargetTemperature": "Thermostat1/status/TargetTemperature",
+      "statusCurrentTemperature": "Thermostat1/status/CurrentTemperature",
+      "statusCurrentRelativeHumidity": "Thermostat1/status/CurrentHumidity"
     },
     "payload": {
 
@@ -14,17 +14,17 @@
     "config": {
       "TemperatureDisplayUnits": 0
     },
-    "manufacturer": "Homematic",
-    "model": "CLIMATECONTROL_REGULATOR"
+    "manufacturer": "Generic",
+    "model": "Thermostat"
   },
-  "hm//Rollladen Garten": {
+  "WindowCovering1": {
     "service":  "WindowCovering",
-    "name": "Rollladen Garten",
+    "name": "Blind",
     "topic": {
-      "setTargetPosition":  "hm/set/Rollladen Garten/LEVEL",
-      "statusTargetPosition":  "hm/status/Rollladen Garten/LEVEL",
-      "statusCurrentPosition":  "hm/status/Rollladen Garten/LEVEL",
-      "statusPositionStatus":  "hm/status/Rollladen Garten/DIRECTION"
+      "setTargetPosition":  "WindowCovering1/set/TargetPosition",
+      "statusTargetPosition":  "WindowCovering1/status/TargetPosition",
+      "statusCurrentPosition":  "WindowCovering1/status/CurrentPosition",
+      "statusPositionStatus":  "WindowCovering1/status/PositionStatus"
     },
     "payload": {
       "targetPositionFactor": 0.01,
@@ -32,50 +32,32 @@
       "positionStatusIncreasing": 1,
       "positionStatusDecreasing": 2
     },
-    "manufacturer": "Homematic",
-    "model": "BLIND"
+    "manufacturer": "Generic",
+    "model": "WindowCovering"
   },
-  "hm//Rollladen Terrasse": {
-    "service":  "WindowCovering",
-    "name": "Rollladen Terrasse",
-    "topic": {
-      "setTargetPosition":  "hm/set/Rollladen Terrasse/LEVEL",
-      "statusTargetPosition":  "hm/status/Rollladen Terrasse/LEVEL",
-      "statusCurrentPosition":  "hm/status/Rollladen Terrasse/LEVEL",
-      "statusPositionStatus":  "hm/status/Rollladen Terrasse/DIRECTION"
-    },
-    "payload": {
-      "targetPositionFactor": 0.01,
-      "currentPositionFactor": 0.01,
-      "positionStatusIncreasing": 1,
-      "positionStatusDecreasing": 2
-    },
-    "manufacturer": "Homematic",
-    "model": "BLIND"
-  },
-  "hm//Licht Garten": {
+  "Lightbulb1": {
     "service":  "Lightbulb",
     "name":     "Licht Garten",
     "topic": {
-      "setOn":          "hm/set/Licht Garten/STATE",
-      "statusOn":       "hm/status/Licht Garten/STATE"
+      "setOn":          "Lightbulb1/set",
+      "statusOn":       "Lightbulb1/status"
     },
     "payload": {
       "onTrue": 1,
       "onFalse": 0
     },
-    "manufacturer": "Homematic",
-    "model": "SWITCH"
+    "manufacturer": "Generic",
+    "model": "Lightbulb"
   },
-  "hue//lights/Hobbyraum": {
+  "Lightbulb2": {
     "service":  "Lightbulb",
-    "name":     "Licht Hobbyraum",
+    "name":     "Lightbulb2",
     "topic": {
-      "setOn":            "hue/set/lights/Hobbyraum",
-      "setBrightness":    "hue/set/lights/Hobbyraum",
-      "statusOn":         "hue/status/lights/Hobbyraum",
-      "statusBrightness": "hue/status/lights/Hobbyraum",
-      "identify":         "hue/set/lights/Hobbyraum/alert"
+      "setOn":            "Lightbulb2/set",
+      "setBrightness":    "Lightbulb2/set/Brightness",
+      "statusOn":         "Lightbulb2/status",
+      "statusBrightness": "Lightbulb2/status/Brightness",
+      "identify":         "Lightbulb2/set/identify"
     },
     "payload": {
       "onTrue": 254,
@@ -83,256 +65,22 @@
       "brightnessFactor": 2.54,
       "identify": "select"
     },
-    "manufacturer": "Hue",
-    "model": "Dimmer"
+    "manufacturer": "Generic",
+    "model": "Lightbulb Dimmable"
   },
-  "hm//Licht Esstisch": {
+  "Lightbulb3": {
     "service":  "Lightbulb",
-    "name":     "Licht Esstisch",
+    "name":     "Lightbulb3",
     "topic": {
-      "setOn":            "hm/set/Licht Esstisch/LEVEL",
-      "setBrightness":    "hm/set/Licht Esstisch/LEVEL",
-      "statusOn":         "hm/status/Licht Esstisch/LEVEL",
-      "statusBrightness": "hm/status/Licht Esstisch/LEVEL"
-    },
-    "payload": {
-      "brightnessFactor": 0.01,
-      "onTrue": 1.0,
-      "onFalse": 0.0
-    },
-    "manufacturer": "Homematic",
-    "model":        "Dimmer"
-
-  },
-  "hm//Licht Arbeitsfläche": {
-    "service":    "Lightbulb",
-    "name":       "Licht Arbeitsfläche",
-    "topic": {
-      "setOn":          "hm/set/Licht Arbeitsfläche/STATE",
-      "statusOn":       "hm/status/Licht Arbeitsfläche/STATE"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0
-    },
-    "manufacturer": "Homematic",
-    "model": "SWITCH"
-  },
-  "hm//Licht Kellertreppe": {
-    "service": "Lightbulb",
-    "name": "Licht Keller",
-    "topic": {
-      "setOn": "hm/set/Licht Kellertreppe/STATE",
-      "statusOn": "hm/status/Licht Kellertreppe/STATE"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0
-    },
-    "manufacturer": "Homematic",
-    "model": "SWITCH"
-  },
-  "hm//Aussenbeleuchtung": {
-    "service": "Lightbulb",
-    "name": "Licht Terrasse",
-    "topic": {
-      "setOn": "hm/set/Aussenbeleuchtung/STATE",
-      "statusOn": "hm/status/Aussenbeleuchtung/STATE"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0
-    },
-    "manufacturer": "Homematic",
-    "model": "SWITCH"
-  },
-  "hm//Licht Küche": {
-    "service": "Lightbulb",
-    "name": "Licht Küche",
-    "topic": {
-      "setOn": "hm/set/Licht Küche/LEVEL",
-      "setBrightness": "hm/set/Licht Küche/LEVEL",
-      "statusOn": "hm/status/Licht Küche/LEVEL",
-      "statusBrightness": "hm/status/Licht Küche/LEVEL"
-    },
-    "payload": {
-      "brightnessFactor": 0.01,
-      "onTrue": 1.0,
-      "onFalse": 0.0
-    },
-    "manufacturer": "Homematic",
-    "model": "DIMMER"
-
-  },
-  "hm//Licht Wohnzimmer": {
-    "service": "Lightbulb",
-    "name": "Licht Wohnzimmer",
-    "topic": {
-      "setOn": "hm/set/Licht Wohnzimmer/LEVEL",
-      "setBrightness": "hm/set/Licht Wohnzimmer/LEVEL",
-      "statusOn": "hm/status/Licht Wohnzimmer/LEVEL",
-      "statusBrightness": "hm/status/Licht Wohnzimmer/LEVEL"
-    },
-    "payload": {
-      "brightnessFactor": 0.01,
-      "onTrue": 1.0,
-      "onFalse": 0.0
-    },
-    "manufacturer": "Homematic",
-    "model": "DIMMER"
-
-  },
-  "hm//Licht Schlafzimmer": {
-    "service": "Lightbulb",
-    "name": "Licht Schlafzimmer",
-    "topic": {
-      "setOn": "hm/set/Licht Schlafzimmer/LEVEL",
-      "setBrightness": "hm/set/Licht Schlafzimmer/LEVEL",
-      "statusOn": "hm/status/Licht Schlafzimmer/LEVEL",
-      "statusBrightness": "hm/status/Licht Schlafzimmer/LEVEL"
-    },
-    "payload": {
-      "brightnessFactor": 0.01,
-      "onTrue": 1.0,
-      "onFalse": 0.0
-    },
-    "manufacturer": "Homematic",
-    "model": "DIMMER"
-
-  },
-  "hm//Licht Kinderzimmer": {
-    "service": "Lightbulb",
-    "name": "Licht Kinderzimmer",
-    "topic": {
-      "setOn": "hm/set/Licht Kinderzimmer/LEVEL",
-      "setBrightness": "hm/set/Licht Kinderzimmer/LEVEL",
-      "statusOn": "hm/status/Licht Kinderzimmer/LEVEL",
-      "statusBrightness": "hm/status/Licht Kinderzimmer/LEVEL"
-    },
-    "payload": {
-      "brightnessFactor": 0.01,
-      "onTrue": 1.0,
-      "onFalse": 0.0
-    },
-    "manufacturer": "Homematic",
-    "model": "DIMMER"
-
-  },
-  "hm//Licht Arbeitszimmer": {
-    "service": "Lightbulb",
-    "name": "Licht Arbeitszimmer",
-    "topic": {
-      "setOn": "hm/set/Licht Arbeitszimmer/LEVEL",
-      "setBrightness": "hm/set/Licht Arbeitszimmer/LEVEL",
-      "statusOn": "hm/status/Licht Arbeitszimmer/LEVEL",
-      "statusBrightness": "hm/status/Licht Arbeitszimmer/LEVEL"
-    },
-    "payload": {
-      "brightnessFactor": 0.01,
-      "onTrue": 1.0,
-      "onFalse": 0.0
-    },
-    "manufacturer": "Homematic",
-    "model": "DIMMER"
-
-  },
-  "hm//Licht Bad": {
-    "service": "Lightbulb",
-    "name": "Licht Bad",
-    "topic": {
-      "setOn": "hm/set/Licht Bad/LEVEL",
-      "setBrightness": "hm/set/Licht Bad/LEVEL",
-      "statusOn": "hm/status/Licht Bad/LEVEL",
-      "statusBrightness": "hm/status/Licht Bad/LEVEL"
-    },
-    "payload": {
-      "brightnessFactor": 0.01,
-      "onTrue": 1.0,
-      "onFalse": 0.0
-    },
-    "manufacturer": "Homematic",
-    "model": "DIMMER"
-
-  },
-  "hm//Licht Bad Spiegel": {
-    "service": "Lightbulb",
-    "name": "Licht Bad Spiegel",
-    "topic": {
-      "setOn": "hm/set/Licht Bad Spiegel/LEVEL",
-      "setBrightness": "hm/set/Licht Bad Spiegel/LEVEL",
-      "statusOn": "hm/status/Licht Bad Spiegel/LEVEL",
-      "statusBrightness": "hm/status/Licht Bad Spiegel/LEVEL"
-    },
-    "payload": {
-      "brightnessFactor": 0.01,
-      "onTrue": 1.0,
-      "onFalse": 0.0
-    },
-    "manufacturer": "Homematic",
-    "model": "DIMMER"
-  },
-  "hm//Wetterstation": {
-    "service": "TemperatureSensor",
-    "name": "Temperatur Terrasse",
-    "topic": {
-      "statusTemperature": "hm/status/Wetterstation/TEMPERATURE"
-    },
-    "manufacturer": "Homematic",
-    "model": "Temperature"
-  },
-  "temp_aquarium": {
-    "service": "TemperatureSensor",
-    "name": "Temperatur Aquarium",
-    "topic": {
-      "statusTemperature": "cul/status/Temperatur Aquarium"
-    },
-    "manufacturer": "ELV",
-    "model": "HMS100T"
-  },
-  "hm//Keymatic Waschküche": {
-    "service": "LockMechanism",
-    "name": "Keymatic",
-    "topic": {
-      "setLock": "hm/set/Keymatic Waschküche:1/STATE",
-      "statusLock": "hm/status/Keymatic Waschküche:1/STATE"
-    },
-    "payload": {
-      "lockUnsecured": "1",
-      "lockSecured": "0"
-    },
-    "manufacturer": "Homematic",
-    "model": "Keymatic"
-  },
-  "hm//Lichterkette Garten": {
-    "service":  "Lightbulb",
-    "name":     "Lichterkette Garten",
-    "topic": {
-      "setOn":            "hm/set/Lichterkette Garten/LEVEL",
-      "setBrightness":    "hm/set/Lichterkette Garten/LEVEL",
-      "statusOn":         "hm/status/Lichterkette Garten/LEVEL",
-      "statusBrightness": "hm/status/Lichterkette Garten/LEVEL"
-    },
-    "payload": {
-      "onTrue": 1.0,
-      "onFalse": 0.0,
-      "brightnessFactor": 0.01
-    },
-    "manufacturer": "Homematic",
-    "model": "DIMMER"
-  },
-  "hue//lights/Bad": {
-    "service":  "Lightbulb",
-    "name":     "Licht Bad LED",
-    "topic": {
-      "setOn":            "hue/set/lights/Bad",
-      "setBrightness":    "hue/set/lights/Bad",
-      "setHue":           "hue/set/lights/Bad/hue",
-      "setSaturation":    "hue/set/lights/Bad/sat",
-      "statusOn":         "hue/status/lights/Bad",
-      "statusBrightness": "hue/status/lights/Bad/sat",
-      "statusHue":        "hue/status/lights/Bad",
-      "statusSaturation": "hue/status/lights/Bad/hue",
-      "identify":         "hue/set/lights/Bad/alert"
+      "setOn":            "Lightbulb3/set",
+      "setBrightness":    "Lightbulb3/set/Brightness",
+      "setHue":           "Lightbulb3/set/Hue",
+      "setSaturation":    "Lightbulb3/set/Saturation",
+      "statusOn":         "Lightbulb3/status",
+      "statusBrightness": "Lightbulb3/status/Brightness",
+      "statusHue":        "Lightbulb3/status/Hue",
+      "statusSaturation": "Lightbulb3/status/Saturation",
+      "identify":         "Lightbulb3/set/identify"
     },
     "payload": {
       "onTrue": 254,
@@ -342,22 +90,70 @@
       "saturationFactor": 2.54,
       "identify": "select"
     },
-    "manufacturer": "Hue",
-    "model": "color light"
+    "manufacturer": "Generic",
+    "model": "Lightbulb Color"
   },
-  "hm//Standby Fernseher": {
+  "Switch": {
     "service": "Switch",
     "name": "Steckdose Fernseher",
     "topic": {
-      "statusOn": "hm/status/Standby Fernseher/STATE",
-      "setOn": "hm/set/Standby Fernseher/STATE"
+      "statusOn": "Switch/status",
+      "setOn": "Switch/set"
     },
     "payload": {
       "onTrue": 1,
       "onFalse": 0
     },
-    "manufacturer": "Homematic",
-    "model": "SWITCH"
+    "manufacturer": "Generic",
+    "model": "Switch"
+  },
+  "MotionSensor": {
+    "service": "MotionSensor",
+    "name": "MotionSensor",
+    "topic": {
+      "statusMotionDetected": "MotionSensor/status"
+    },
+    "payload": {
+      "onMotionDetected": true
+    },
+    "manufacturer": "Generic",
+    "model": "MotionSensor"
+  },
+  "ContactSensor": {
+    "service": "ContactSensor",
+    "name": "ContactSensor",
+    "topic": {
+      "statusContactSensorState": "ContactSensor/status",
+      "statusLowBattery": "ContactSensor/status/LowBattery"
+    },
+    "payload": {
+      "onContactDetected": 0,
+      "onBatteryLow": 1
+    },
+    "manufacturer": "Generic",
+    "model": "ContactSensor"
+  },
+  "LockMechanism": {
+    "service": "LockMechanism",
+    "name": "LockMechanism",
+    "topic": {
+      "setLock": "LockMechanism/set",
+      "statusLock": "LockMechanism/status"
+    },
+    "payload": {
+      "lockUnsecured": "1",
+      "lockSecured": "0"
+    },
+    "manufacturer": "Generic",
+    "model": "LockMechanism"
+  },
+  "TemperatureSensor": {
+    "service": "TemperatureSensor",
+    "name": "TemperatureSensor",
+    "topic": {
+      "statusTemperature": "TemperatureSensor/Temperature"
+    },
+    "manufacturer": "Generic",
+    "model": "TemperatureSensor"
   }
-
 }

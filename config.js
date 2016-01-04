@@ -21,7 +21,7 @@ var config = require('yargs')
         'c': '031-45-154',
         'u': 'mqtt://127.0.0.1',
         'n': 'homekit',
-        'm': '/opt/mqtt-smarthome/homekit2mqtt.json',
+        'm': __dirname + '/example-homekit2mqtt.json',
         'v': 'info',
         'a': 'CC:22:3D:E3:CE:F6',
         'b': 'MQTT Bridge',
