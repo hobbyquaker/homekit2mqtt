@@ -130,7 +130,7 @@ function setInfos(acc, settings) {
 
 var createAccessory = {
     WindowCovering: function createAccessory_WindowCovering(settings) {
-        var shutterUUID = uuid.generate('hap-nodejs:accessories:windowCovering:' + settings.topic.setTargetPosition);
+        var shutterUUID = uuid.generate(settings.id);
         var shutter = new Accessory(settings.name, shutterUUID);
         setInfos(shutter, settings);
 
@@ -215,7 +215,7 @@ var createAccessory = {
     },
     LockMechanism: function createAccessory_LockMechanism(settings) {
 
-        var lockUUID = uuid.generate('hap-nodejs:accessories:lock:' + settings.topic.setLock);
+        var lockUUID = uuid.generate(settings.id);
 
         var lock = new Accessory(settings.name, lockUUID);
 
@@ -280,7 +280,7 @@ var createAccessory = {
     },
     TemperatureSensor: function createAccessory_TemperatureSensor(settings) {
 
-        var sensorUUID = uuid.generate('hap-nodejs:accessories:temperature-sensor:' + settings.topic.statusTemperature);
+        var sensorUUID = uuid.generate(settings.id);
         var sensor = new Accessory(settings.name, sensorUUID);
         setInfos(sensor, settings);
 
@@ -302,7 +302,7 @@ var createAccessory = {
     },
     Lightbulb: function createAccessory_Lightbulb(settings) {
 
-        var lightUUID = uuid.generate('hap-nodejs:accessories:light:' + settings.topic.setOn);
+        var lightUUID = uuid.generate(settings.id);
         var light = new Accessory(settings.name, lightUUID);
         setInfos(light, settings);
 
@@ -415,7 +415,7 @@ var createAccessory = {
     },
     Switch: function createAccessory_Switch(settings) {
 
-        var switchUUID = uuid.generate('hap-nodejs:accessories:switch:' + settings.topic.setOn);
+        var switchUUID = uuid.generate(settings.id);
         var sw = new Accessory(settings.name, switchUUID);
         setInfos(sw, settings);
 
@@ -448,7 +448,7 @@ var createAccessory = {
     },
     ContactSensor: function createAccessory_ContactSensor(settings) {
 
-        var switchUUID = uuid.generate('hap-nodejs:accessories:contactSensor:' + settings.topic.statusContactSensorState);
+        var switchUUID = uuid.generate(settings.id);
         var sensor = new Accessory(settings.name, switchUUID);
         setInfos(sensor, settings);
 
@@ -502,7 +502,7 @@ var createAccessory = {
     },
     MotionSensor: function createAccessory_MotionSensor(settings) {
 
-        var sensorUUID = uuid.generate('hap-nodejs:accessories:contactSensor:' + settings.topic.statusContactSensorState);
+        var sensorUUID = uuid.generate(settings.id);
         var sensor = new Accessory(settings.name, sensorUUID);
         setInfos(sensor, settings);
 
@@ -551,7 +551,7 @@ var createAccessory = {
     },
     Thermostat: function createAccessory_Thermostat(settings) {
 
-        var thermoUUID = uuid.generate('hap-nodejs:accessories:thermostat:' + settings.topic.setTargetTemperature);
+        var thermoUUID = uuid.generate(settings.id);
         var thermo = new Accessory(settings.name, thermoUUID);
         setInfos(thermo, settings);
 
@@ -708,6 +708,7 @@ var createAccessory = {
 var accCount = 0;
 Object.keys(mapping).forEach(function (id) {
     var a = mapping[id];
+    a.id = id;
     if (createAccessory[a.service]) {
         bridge.addBridgedAccessory(createAccessory[a.service](a));
         accCount++;
