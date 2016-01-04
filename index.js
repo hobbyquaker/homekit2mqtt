@@ -3,13 +3,13 @@
 var pkg = require('./package.json');
 var config = require('./config.js');
 var log = require('yalm');
-log.setLevel(config.v);
+log.setLevel(config.verbosity);
 
 log(pkg.name + ' ' + pkg.version + ' starting');
 var Mqtt = require('mqtt');
 
 log.info('loading HomeKit to MQTT mapping file');
-var mapping = require(config.m);
+var mapping = require(config.mapfile);
 
 
 var mqttStatus = {};
@@ -76,6 +76,15 @@ function mqttSub(topic, callback) {
 
 var pkgHap =            require('./node_modules/hap-nodejs/package.json');
 log.info('Starting HAP-NodeJS', pkgHap.version);
+
+// Initialize node-persist as HAP-NodeJS storage
+var persistDir =  process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + '/.homekit2mqtt/'; // TODO config option
+var storage =   require('hap-nodejs/node_modules/node-persist');
+storage.initSync({
+    //logging: function (msg) { log.debug('node-persist', msg); },
+    //dir: persistDir // FIXME seems like node-persist doesnt accept absolute paths :(
+});
+
 var HAP =               require('hap-nodejs');
 var uuid =              HAP.uuid;
 var Bridge =            HAP.Bridge;
@@ -83,24 +92,18 @@ var Accessory =         HAP.Accessory;
 var Service =           HAP.Service;
 var Characteristic =    HAP.Characteristic;
 
-var storage =   require('hap-nodejs/node_modules/node-persist');
-var types =     require('hap-nodejs/accessories/types');
+// Create Bridge which will host all Accessories
+var bridge = new Bridge(config.bridgename, uuid.generate(config.bridgename));
 
-// Initialize HAP-NodeJS storage
-storage.initSync();
-
-// Create Bridge which will host all loaded Accessories
-var bridge = new Bridge(config.b, uuid.generate(config.b));
-
-// Listen for bridge identification event
+// Listen for Bridge identification event
 bridge.on('identify', function (paired, callback) {
-    log('Bridge identify', paired);
+    log('< hap bridge identify', paired ? '(paired)' : '(unpaired)');
     callback();
 });
 
 // Handler for Accessory identification events
 function identify(settings, paired, callback) {
-    log.debug('< hap', settings.name, 'identify', paired);
+    log.debug('< hap', settings.name, 'identify', paired ? '(paired)' : '(unpaired)');
     if (settings.topic.identify) {
         log.debug('> mqtt', settings.topic.identify, settings.payload.identify);
         mqtt.publish(settings.topic.identify, settings.payload.identify);
@@ -232,7 +235,7 @@ var createAccessory = {
 
         if (settings.topic.statusLock) {
 
-            log.debug('> mqtt subscribe', settings.topic.statusLock);
+            log.debug('mqtt subscribe', settings.topic.statusLock);
             mqttSub(settings.topic.statusLock, function (val) {
 
                 if (val === settings.payload.lockSecured) {
@@ -272,7 +275,7 @@ var createAccessory = {
         var sensor = new Accessory(settings.name, sensorUUID);
         setInfos(sensor, settings);
 
-        log.debug('> mqtt subscribe', settings.topic.statusTemperature);
+        log.debug('mqtt subscribe', settings.topic.statusTemperature);
         mqtt.subscribe(settings.topic.statusTemperature);
 
         sensor.addService(Service.TemperatureSensor)
@@ -613,12 +616,32 @@ Object.keys(mapping).forEach(function (id) {
         log.err('unknown service', a.service, id);
     }
 });
-log.info('Created', accCount, 'HomeKit Accessories');
+log.info('hap Created', accCount, 'Accessories');
 
-log('Publishing HAP-NodeJS Bridge "' + config.b + '" username=' + config.a, 'port=' + config.p, 'pincode=' + config.c);
+log('hap Publishing Bridge "' + config.bridgename + '" username=' + config.username, 'port=' + config.port, 'pincode=' + config.c);
 bridge.publish({
-    username: config.a,
-    port: config.p,
+    username: config.username,
+    port: config.port,
     pincode: config.c,
     category: Accessory.Categories.OTHER
+});
+
+// Listen for bridge identification event
+bridge._server.on('listening', function () {
+    log('hap Bridge listening on port', config.port);
+});
+
+// Listen for bridge pair event
+bridge._server.on('pair', function (username, publickey) {
+    log('hap paired', username);
+});
+
+// Listen for bridge unpair event
+bridge._server.on('unpair', function (username) {
+    log('hap unpaired', username);
+});
+
+// Listen for bridge verify event
+bridge._server.on('verify', function () {
+    log('hap verify');
 });
