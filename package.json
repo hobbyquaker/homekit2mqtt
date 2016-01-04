@@ -3,7 +3,9 @@
   "version": "0.2.0",
   "description": "HomeKit to MQTT bridge",
   "main": "index.js",
-  "bin": {"homekit2mqtt": "./index.js"},
+  "bin": {
+    "homekit2mqtt": "./index.js"
+  },
   "preferGlobal": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +13,7 @@
   "author": "Sebastian 'hobbyquaker' Raff <hq@ccu.io> (https://github.com/hobbyquaker)",
   "license": "MIT",
   "dependencies": {
-    "hap-nodejs": "^0.0.3",
+    "hap-nodejs": "0.0.7",
     "mqtt": "^1.3.5",
     "yalm": "^2.0.0",
     "yargs": "^3.25.0"
