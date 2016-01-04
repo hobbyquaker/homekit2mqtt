@@ -442,6 +442,8 @@ var createAccessory = {
         var switchUUID = uuid.generate('hap-nodejs:accessories:contactSensor:' + settings.topic.statusContactSensorState);
         var sensor = new Accessory(settings.name, switchUUID);
         setInfos(sensor, settings);
+
+        mqtt.subscribe(settings.topic.statusContactSensorState);
         sensor.addService(Service.ContactSensor, settings.name)
             .getCharacteristic(Characteristic.ContactSensorState)
             .on('get', function (callback) {
