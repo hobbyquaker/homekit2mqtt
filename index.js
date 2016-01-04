@@ -24,8 +24,8 @@ mqtt.on('connect', function () {
     mqttConnected = true;
     log.info('mqtt connected ' + config.url);
     mqtt.publish(config.name + '/connected', '2', {retain: true});
-    log.info('mqtt subscribe', config.name + '/set/#');
-    mqtt.subscribe(config.name + '/set/#');
+    //log.info('mqtt subscribe', config.name + '/set/#');
+    //mqtt.subscribe(config.name + '/set/#');
 });
 
 mqtt.on('close', function () {
@@ -67,10 +67,17 @@ mqtt.on('message', function (topic, payload) {
 // MQTT subscribe function that provides a callback on incoming messages.
 // Not meant to be used with wildcards!
 function mqttSub(topic, callback) {
-    if (!mqttCallbacks[topic]) {
-        mqttCallbacks[topic] = [callback];
+    if (typeof callback === 'function') {
+        if (!mqttCallbacks[topic]) {
+            mqttCallbacks[topic] = [callback];
+            log.debug('mqtt subscribe', topic);
+            mqtt.subscribe(topic);
+        } else {
+            mqttCallbacks[topic].push(callback);
+        }
     } else {
-        mqttCallbacks[topic].push(callback);
+        log.debug('mqtt subscribe', topic);
+        mqtt.subscribe(topic);
     }
 }
 
@@ -103,7 +110,7 @@ bridge.on('identify', function (paired, callback) {
 
 // Handler for Accessory identification events
 function identify(settings, paired, callback) {
-    log.debug('< hap', settings.name, 'identify', paired ? '(paired)' : '(unpaired)');
+    log.debug('< hap identify', settings.name, paired ? '(paired)' : '(unpaired)');
     if (settings.topic.identify) {
         log.debug('> mqtt', settings.topic.identify, settings.payload.identify);
         mqtt.publish(settings.topic.identify, settings.payload.identify);
@@ -130,7 +137,7 @@ var createAccessory = {
         shutter.addService(Service.WindowCovering, settings.name)
             .getCharacteristic(Characteristic.TargetPosition)
             .on('set', function (value, callback) {
-                log.debug('< hap', settings.name, 'set', 'TargetPosition', value);
+                log.debug('< hap set', settings.name, 'TargetPosition', value);
                 value = (value * (settings.payload.targetPositionFactor || 1));
                 log.debug('> mqtt', settings.topic.setTargetPosition, value);
                 mqtt.publish(settings.topic.setTargetPosition, '' + value);
@@ -138,59 +145,65 @@ var createAccessory = {
             });
 
         if (settings.topic.statusTargetPosition) {
-            log.debug('mqtt subscribe', settings.topic.statusTargetPosition);
-            mqtt.subscribe(settings.topic.statusTargetPosition);
+            mqttSub(settings.topic.statusTargetPosition);
             shutter.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.TargetPosition)
                 .on('get', function (callback) {
-                    log.debug('< hap', settings.name, 'get', 'TargetPosition');
+                    log.debug('< hap get', settings.name, 'TargetPosition');
                     var position = mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1);
-
-                    log.debug('> hap', settings.name, position);
+                    log.debug('> hap re_get', settings.name, 'TargetPosition', position);
                     callback(null, position);
                 });
         }
 
         if (settings.topic.statusCurrentPosition) {
-            log.debug('mqtt subscribe', settings.topic.statusCurrentPosition);
-            mqtt.subscribe(settings.topic.statusCurrentPosition);
+            mqttSub(settings.topic.statusCurrentPosition, function (val) {
+                var pos = val / (settings.payload.currentPositionFactor || 1);
+                log.debug('> hap set', settings.name, 'CurrentPosition', pos);
+                shutter.getService(Service.WindowCovering)
+                    .setCharacteristic(Characteristic.CurrentPosition, pos)
+
+            });
             shutter.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.CurrentPosition)
                 .on('get', function (callback) {
-                    log.debug('< hap', settings.name, 'get', 'CurrentPosition');
+                    log.debug('< hap get', settings.name, 'CurrentPosition');
                     var position = mqttStatus[settings.topic.statusCurrentPosition] / (settings.payload.currentPositionFactor || 1);
 
-                    log.debug('> hap', settings.name, position);
+                    log.debug('> hap re_get', settings.name, 'CurrentPosition', position);
                     callback(null, position);
                 });
         }
 
-        shutter.getService(Service.WindowCovering)
-            .getCharacteristic(Characteristic.CurrentPosition)
-            .on('set', function (value, callback) {
-                log.debug('< hap', settings.name, 'set', 'CurrentPosition', value);
-                value = (value * (settings.payload.currentPositionFactor || 1));
-                log.debug('> mqtt', settings.topic.setCurrentPosition, value);
-                mqtt.publish(settings.topic.setCurrentPosition, '' + value);
-                callback();
-            });
-
         if (settings.topic.statusPositionStatus) {
-            log.debug('mqtt subscribe', settings.topic.statusPositionStatus);
-            mqtt.subscribe(settings.topic.statusPositionStatus);
+            mqttSub(settings.topic.statusPositionStatus, function (val) {
+                var pos;
+                if (val === settings.payload.positionStatusDecreasing) {
+                    pos = Characteristic.PositionState.DECREASING;
+                    log.debug('> hap set', settings.name, 'PositionState.DECREASING');
+                } else if (val === settings.payload.positionStatusIncreasing) {
+                    pos = Characteristic.PositionState.INCREASING;
+                    log.debug('> hap set', settings.name, 'PositionState.INCREASING');
+                } else {
+                    pos = Characteristic.PositionState.STOPPED;
+                    log.debug('> hap set', settings.name, 'PositionState.STOPPED');
+                }
+                shutter.getService(Service.WindowCovering)
+                    .setCharacteristic(Characteristic.PositionState, pos);
+            });
             shutter.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.PositionState)
                 .on('get', function (callback) {
-                    log.debug('< hap', settings.name, 'get', 'PositionState');
+                    log.debug('< hap get', settings.name, 'PositionState');
 
                     if (mqttStatus[settings.topic.statusPositionState] === settings.payload.positionStatusDecreasing) {
-                        log.debug('> hap', settings.name, 'PositionState.DECREASING');
+                        log.debug('> hap re_get', settings.name, 'PositionState.DECREASING');
                         callback(null, Characteristic.PositionState.DECREASING);
                     } else if (mqttStatus[settings.topic.statusPositionState] === settings.payload.positionStatusIncreasing) {
-                        log.debug('> hap', settings.name, 'PositionState.INCREASING');
+                        log.debug('> hap re_get', settings.name, 'PositionState.INCREASING');
                         callback(null,  Characteristic.PositionState.INCREASING);
                     } else {
-                        log.debug('> hap', settings.name, 'PositionState.STOPPED');
+                        log.debug('> hap re_get', settings.name, 'PositionState.STOPPED');
                         callback(null, Characteristic.PositionState.STOPPED);
                     }
 
@@ -215,7 +228,7 @@ var createAccessory = {
         lock.addService(Service.LockMechanism, settings.name)
             .getCharacteristic(Characteristic.LockTargetState)
             .on('set', function(value, callback) {
-                log.debug('< hap', settings.name, 'set', 'LockTargetState', value);
+                log.debug('< hap set', settings.name, 'LockTargetState', value);
 
                 if (value == Characteristic.LockTargetState.UNSECURED) {
                     log.debug('> mqtt publish', settings.topic.setLock, settings.payload.lockUnsecured);
@@ -235,39 +248,35 @@ var createAccessory = {
 
         if (settings.topic.statusLock) {
 
-            log.debug('mqtt subscribe', settings.topic.statusLock);
             mqttSub(settings.topic.statusLock, function (val) {
-
                 if (val === settings.payload.lockSecured) {
+                    log.debug('> hap set', settings.name, 'LockCurrentState.SECURED');
                     lock.getService(Service.LockMechanism)
                         .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED);
                 }
                 if (val === settings.payload.lockUnsecured) {
+                    log.debug('> hap set', settings.name, 'LockCurrentState.UNSECURED');
                     lock.getService(Service.LockMechanism)
                         .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.UNSECURED);
                 }
-
             });
 
             lock.getService(Service.LockMechanism)
                 .getCharacteristic(Characteristic.LockCurrentState)
                 .on('get', function(callback) {
-                    log.debug('< hap', settings.name, 'get', 'LockCurrentState');
+                    log.debug('< hap get', settings.name, 'LockCurrentState');
 
                     if (mqttStatus[settings.topic.statusLock] === settings.payload.lockSecured) {
-                        log.debug('> hap', settings.name, 'LockCurrentState.SECURED');
+                        log.debug('> hap re_get', settings.name, 'LockCurrentState.SECURED');
                         callback(null, Characteristic.LockCurrentState.SECURED);
                     } else {
-                        log.debug('> hap', settings.name, 'LockCurrentState.UNSECURED');
+                        log.debug('> hap re_get', settings.name, 'LockCurrentState.UNSECURED');
                         callback(null, Characteristic.LockCurrentState.UNSECURED);
                     }
                 });
-
         }
 
-
         return lock;
-
     },
     TemperatureSensor: function createAccessory_TemperatureSensor(settings) {
 
@@ -275,14 +284,17 @@ var createAccessory = {
         var sensor = new Accessory(settings.name, sensorUUID);
         setInfos(sensor, settings);
 
-        log.debug('mqtt subscribe', settings.topic.statusTemperature);
-        mqtt.subscribe(settings.topic.statusTemperature);
+        mqttSub(settings.topic.statusTemperature, function (val) {
+            log.debug('> hap set', settings.name, 'CurrentTemperature', mqttStatus[settings.topic.statusTemperature]);
+            sensor.getService(Service.TemperatureSensor)
+                .setCharacteristic(Characteristic.CurrentTemperature, val);
+        });
 
         sensor.addService(Service.TemperatureSensor)
             .getCharacteristic(Characteristic.CurrentTemperature)
             .on('get', function(callback) {
-                log.debug('< hap', settings.name, 'get', 'TemperatureSensor', 'CurrentTemperature');
-                log.debug('> hap', settings.name, mqttStatus[settings.topic.statusTemperature]);
+                log.debug('< hap get', settings.name, 'TemperatureSensor', 'CurrentTemperature');
+                log.debug('> hap re_get', settings.name, mqttStatus[settings.topic.statusTemperature]);
                 callback(null, mqttStatus[settings.topic.statusTemperature]);
             });
 
@@ -300,21 +312,22 @@ var createAccessory = {
 
         light.addService(Service.Lightbulb, settings.name)
             .getCharacteristic(Characteristic.On)
-            .on('set', function(value, callback) {
-                log.debug('< hap', settings.name, 'set', 'On', value);
+            .on('set', function (value, callback) {
+                log.debug('< hap set', settings.name, 'On', value);
                 var on = value ? settings.payload.onTrue : settings.payload.onFalse;
                 log.debug('> mqtt', settings.topic.setOn, on);
                 mqtt.publish(settings.topic.setOn, '' + on);
                 callback();
             });
 
+        mqttSub(settings.topic.statusOn);
+
         light.getService(Service.Lightbulb)
             .getCharacteristic(Characteristic.On)
             .on('get', function (callback) {
-                log.debug('< hap', settings.name, 'get', 'On');
-                var on = mqttStatus[settings.topic.statusOn] === settings.payload.onTrue;
-
-                log.debug('> hap', settings.name, on);
+                log.debug('< hap get', settings.name, 'On');
+                var on = mqttStatus[settings.topic.statusOn] !== settings.payload.onFalse;
+                log.debug('> hap re_get', settings.name, 'On', on);
                 callback(null, on);
             });
 
@@ -324,7 +337,7 @@ var createAccessory = {
             light.getService(Service.Lightbulb)
                 .addCharacteristic(Characteristic.Brightness)
                 .on('set', function (value, callback) {
-                    log.debug('< hap', settings.name, 'set', 'Brightness', value);
+                    log.debug('< hap set', settings.name, 'Brightness', value);
                     var bri = (value * (settings.payload.brightnessFactor || 1));
                     log.debug('> mqtt', settings.topic.setBrightness, bri);
                     mqtt.publish(settings.topic.setBrightness, '' + bri);
@@ -332,15 +345,14 @@ var createAccessory = {
                 });
 
             if (settings.topic.statusBrightness) {
-                log.debug('mqtt subscribe', settings.topic.statusBrightness);
-                mqtt.subscribe(settings.topic.statusBrightness);
+                mqttSub(settings.topic.statusBrightness);
                 light.getService(Service.Lightbulb)
                     .getCharacteristic(Characteristic.Brightness)
                     .on('get', function (callback) {
-                        log.debug('< hap', settings.name, 'get', 'Brightness');
+                        log.debug('< hap get', settings.name, 'Brightness');
                         var brightness = mqttStatus[settings.topic.statusBrightness] / settings.payload.brightnessFactor;
 
-                        log.debug('> hap', settings.name, brightness);
+                        log.debug('> hap re_get', settings.name, 'Brightness', brightness);
                         callback(null, brightness);
                     });
 
@@ -352,21 +364,20 @@ var createAccessory = {
             light.getService(Service.Lightbulb)
                 .addCharacteristic(Characteristic.Hue)
                 .on('set', function (value, callback) {
-                    log.debug('< hap', settings.name, 'set', 'Hue', value);
+                    log.debug('< hap set', settings.name, 'Hue', value);
                     log.debug('> mqtt', settings.topic.setHue, '' + (value * (settings.payload.hueFactor || 1)));
                     mqtt.publish(settings.topic.setHue, '' + (value * (settings.payload.hueFactor || 1)));
                     callback();
                 });
             if (settings.topic.statusHue) {
-                log.debug('mqtt subscribe', settings.topic.statusHue);
-                mqtt.subscribe(settings.topic.statusHue);
+                mqttSub(settings.topic.statusHue);
                 light.getService(Service.Lightbulb)
                     .getCharacteristic(Characteristic.Hue)
                     .on('get', function (callback) {
-                        log.debug('< hap', settings.name, 'get', 'Hue');
+                        log.debug('< hap get', settings.name, 'Hue');
                         var hue = mqttStatus[settings.topic.statusHue] / settings.payload.hueFactor;
 
-                        log.debug('> hap', settings.name, hue);
+                        log.debug('> hap re_get', settings.name, 'Hue', hue);
                         callback(null, hue);
                     });
 
@@ -377,22 +388,21 @@ var createAccessory = {
             light.getService(Service.Lightbulb)
                 .addCharacteristic(Characteristic.Saturation)
                  .on('set', function (value, callback) {
-                    log.debug('< hap', settings.name, 'set', 'Saturation', value);
+                    log.debug('< hap set', settings.name, 'Saturation', value);
                     var sat = (value * (settings.payload.saturationFactor || 1));
                     log.debug('> mqtt', settings.topic.setSaturation, sat);
                     mqtt.publish(settings.topic.setSaturation, '' + sat);
                     callback();
                 });
             if (settings.topic.statusSaturation) {
-                log.debug('mqtt subscribe', settings.topic.statusSaturation);
-                mqtt.subscribe(settings.topic.statusSaturation);
+                mqttSub(settings.topic.statusSaturation);
                 light.getService(Service.Lightbulb)
                     .getCharacteristic(Characteristic.Saturation)
                     .on('get', function (callback) {
-                        log.debug('< hap', settings.name, 'get', 'Saturation');
+                        log.debug('< hap get', settings.name, 'Saturation');
                         var saturation = mqttStatus[settings.topic.statusSaturation] / settings.payload.saturationFactor;
 
-                        log.debug('> hap', settings.name, saturation);
+                        log.debug('> hap re_get', settings.name, 'Saturation', saturation);
                         callback(null, saturation);
                     });
 
@@ -412,7 +422,7 @@ var createAccessory = {
         sw.addService(Service.Switch, settings.name)
             .getCharacteristic(Characteristic.On)
             .on('set', function(value, callback) {
-                log.debug('< hap', settings.name, 'set', 'On', value);
+                log.debug('< hap set', settings.name, 'On', value);
                 var on = value ? settings.payload.onTrue : settings.payload.onFalse;
                 log.debug('> mqtt', settings.topic.setOn, on);
                 mqtt.publish(settings.topic.setOn, '' + on);
@@ -421,14 +431,13 @@ var createAccessory = {
             });
 
         if (settings.topic.statusOn) {
-            log.debug('mqtt subscribe', settings.topic.statusOn);
-            mqtt.subscribe(settings.topic.statusOn);
+            mqttSub(settings.topic.statusOn);
             sw.getService(Service.Switch)
                 .getCharacteristic(Characteristic.On)
                 .on('get', function (callback) {
-                    log.debug('< hap', settings.name, 'get', 'On');
+                    log.debug('< hap get', settings.name, 'On');
                     var on = mqttStatus[settings.topic.statusOn] === settings.payload.onTrue;
-                    log.debug('> hap', settings.name, on);
+                    log.debug('> hap re_get', settings.name, 'On', on);
                     callback(null, on);
                 });
 
@@ -437,22 +446,105 @@ var createAccessory = {
         return sw;
 
     },
-    ContactSensor: function createAccessory_Switch(settings) {
+    ContactSensor: function createAccessory_ContactSensor(settings) {
 
         var switchUUID = uuid.generate('hap-nodejs:accessories:contactSensor:' + settings.topic.statusContactSensorState);
         var sensor = new Accessory(settings.name, switchUUID);
         setInfos(sensor, settings);
+
         sensor.addService(Service.ContactSensor, settings.name)
             .getCharacteristic(Characteristic.ContactSensorState)
             .on('get', function (callback) {
-                log.debug('< hap', settings.name, 'get', 'ContactSensorState');
-                var contact =
-                    mqttStatus[settings.topic.statusContactSensorState] === settings.payload.onContactDetected ?
-                        Characteristic.ContactSensorState.CONTACT_DETECTED :
-                        Characteristic.ContactSensorState.CONTACT_NOT_DETECTED;
-                log.debug('> hap', settings.name, contact);
+                log.debug('< hap get', settings.name, 'ContactSensorState');
+                var contact = mqttStatus[settings.topic.statusContactSensorState] === settings.payload.onContactDetected
+                    ? Characteristic.ContactSensorState.CONTACT_DETECTED
+                    : Characteristic.ContactSensorState.CONTACT_NOT_DETECTED;
+
+                log.debug('> hap re_get', settings.name, 'ContactSensorState', contact);
                 callback(null, contact);
             });
+
+        mqttSub(settings.topic.statusContactSensorState, function (val) {
+            var contact = val === settings.payload.onContactDetected
+                ? Characteristic.ContactSensorState.CONTACT_DETECTED
+                : Characteristic.ContactSensorState.CONTACT_NOT_DETECTED;
+            log.debug('> hap set', settings.name, 'ContactSensorState', contact);
+            sensor.getService(Service.ContactSensor)
+                .setCharacteristic(Characteristic.ContactSensorState, contact)
+        });
+
+        if (settings.topic.statusLowBattery) {
+            sensor.getService(Service.ContactSensor, settings.name)
+                .getCharacteristic(Characteristic.StatusLowBattery)
+                .on('get', function (callback) {
+                    log.debug('< hap get', settings.name, 'StatusLowBattery');
+                    var bat = mqttStatus[settings.topic.statusLowBattery] === settings.payload.onLowBattery
+                        ? Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW
+                        : Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
+                    log.debug('> hap re_get', settings.name, 'StatusLowBattery', bat);
+                    callback(null, bat);
+                });
+
+            mqttSub(settings.topic.statusLowBattery, function (val) {
+                var bat = val === settings.payload.onLowBattery
+                    ? Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW
+                    : Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
+                log.debug('> hap set', settings.name, 'StatusLowBattery', bat);
+                sensor.getService(Service.ContactSensor)
+                    .setCharacteristic(Characteristic.StatusLowBattery, bat)
+            });
+        }
+
+
+
+        return sensor;
+
+    },
+    MotionSensor: function createAccessory_MotionSensor(settings) {
+
+        var sensorUUID = uuid.generate('hap-nodejs:accessories:contactSensor:' + settings.topic.statusContactSensorState);
+        var sensor = new Accessory(settings.name, sensorUUID);
+        setInfos(sensor, settings);
+
+        sensor.addService(Service.MotionSensor, settings.name)
+            .getCharacteristic(Characteristic.MotionDetected)
+            .on('get', function (callback) {
+                log.debug('< hap get', settings.name, 'MotionDetected');
+                var motion = mqttStatus[settings.topic.statusMotionDetected] === settings.payload.onMotionDetected;
+
+                log.debug('> hap re_get', settings.name, 'MotionDetected', motion);
+                callback(null, motion);
+            });
+
+        mqttSub(settings.topic.statusMotionDetected, function (val) {
+            var motion = val === settings.payload.onMotionDetected;
+            log.debug('> hap set', settings.name, 'MotionDetected', motion);
+            sensor.getService(Service.MotionSensor)
+                .setCharacteristic(Characteristic.MotionDetected, motion)
+        });
+
+        if (settings.topic.statusLowBattery) {
+            sensor.addService(Service.ContactSensor, settings.name)
+                .getCharacteristic(Characteristic.StatusLowBattery)
+                .on('get', function (callback) {
+                    log.debug('< hap get', settings.name, 'StatusLowBattery');
+                    var bat = mqttStatus[settings.topic.statusLowBattery] === settings.payload.onLowBattery
+                        ? Characteristic.StatusLowBattery.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW
+                        : Characteristic.StatusLowBattery.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
+
+                    log.debug('> hap re_get', settings.name, 'StatusLowBattery', bat);
+                    callback(null, bat);
+                });
+
+            mqttSub(settings.topic.statusLowBattery, function (val) {
+                var bat = val === settings.payload.onLowBattery
+                    ? Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW
+                    : Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
+                log.debug('> hap set', settings.name, 'statusLowBattery', bat);
+                sensor.getService(Service.ContactSensor)
+                    .setCharacteristic(Characteristic.StatusLowBattery, bat)
+            });
+        }
 
         return sensor;
 
@@ -470,7 +562,7 @@ var createAccessory = {
         thermo.addService(Service.Thermostat, settings.name)
             .getCharacteristic(Characteristic.TargetHeatingCoolingState)
             .on('set', function(value, callback) {
-                log.debug('< hap', settings.name, 'set', 'TargetHeatingCoolingState', value);
+                log.debug('< hap set', settings.name, 'TargetHeatingCoolingState', value);
                 if (settings.topic.setTargetHeatingCoolingState) {
                     log.debug('> mqtt', settings.topic.setTargetHeatingCoolingState, value);
                     mqtt.publish(settings.topic.setTargetHeatingCoolingState, '' + value);
@@ -481,7 +573,7 @@ var createAccessory = {
         thermo.getService(Service.Thermostat)
             .getCharacteristic(Characteristic.TargetTemperature)
             .on('set', function(value, callback) {
-                log.debug('< hap', settings.name, 'set', 'TargetTemperature', value);
+                log.debug('< hap set', settings.name, 'TargetTemperature', value);
                 log.debug('> mqtt', settings.topic.setTargetTemperature, value);
                 mqtt.publish(settings.topic.setTargetTemperature, '' + value);
                 callback();
@@ -490,7 +582,7 @@ var createAccessory = {
         thermo.getService(Service.Thermostat)
             .getCharacteristic(Characteristic.TemperatureDisplayUnits)
             .on('set', function(value, callback) {
-                log.debug('< hap', settings.name, 'set', 'TemperatureDisplayUnits', value);
+                log.debug('< hap set', settings.name, 'TemperatureDisplayUnits', value);
                 log.debug('> config', settings.name, 'TemperatureDisplayUnits', value);
                 settings.config.TemperatureDisplayUnits = value;
                 callback();
@@ -499,48 +591,54 @@ var createAccessory = {
         thermo.getService(Service.Thermostat)
             .getCharacteristic(Characteristic.TemperatureDisplayUnits)
             .on('get', function (callback) {
-                log.debug('< hap', settings.name, 'get', 'TemperatureDisplayUnits');
-                log.debug('> hap', settings.name, settings.config.TemperatureDisplayUnits);
+                log.debug('< hap get', settings.name, 'TemperatureDisplayUnits');
+                log.debug('> hap re_get', settings.name, 'TemperatureDisplayUnits', settings.config.TemperatureDisplayUnits);
                 callback(null, settings.config.TemperatureDisplayUnits);
             });
 
-        mqtt.subscribe(settings.topic.statusCurrentTemperature);
+        mqttSub(settings.topic.statusCurrentTemperature);
         thermo.getService(Service.Thermostat)
             .getCharacteristic(Characteristic.CurrentTemperature)
             .on('get', function (callback) {
-                log.debug('< hap', settings.name, 'get', 'CurrentTemperature');
-                log.debug('> hap', settings.name, mqttStatus[settings.topic.statusCurrentTemperature]);
+                log.debug('< hap get', settings.name, 'CurrentTemperature');
+                log.debug('> hap re_get', settings.name, 'CurrentTemperature', mqttStatus[settings.topic.statusCurrentTemperature]);
                 callback(null, mqttStatus[settings.topic.statusCurrentTemperature]);
             });
 
         thermo.getService(Service.Thermostat)
             .getCharacteristic(Characteristic.CurrentHeatingCoolingState)
             .on('get', function (callback) {
-                log.debug('< hap', settings.name, 'get', 'CurrentHeatingCoolingState');
+                log.debug('< hap get', settings.name, 'CurrentHeatingCoolingState');
                 var state = 3;
-                log.debug('> hap', settings.name, state);
+                log.debug('> hap re_get', settings.name, 'CurrentHeatingCoolingState', state);
                 callback(null, state);
             });
 
         //thermo.getService(Service.Thermostat).setCharacteristic(Characteristic.CurrentHeatingCoolingState, 3);
 
-        mqtt.subscribe(settings.topic.statusTargetTemperature);
+        mqttSub(settings.topic.statusTargetTemperature/*, function (val) {
+            thermo.getService(Service.Thermostat)
+                .setCharacteristic(Characteristic.TargetTemperature, val);
+        }*/);
 
         thermo.getService(Service.Thermostat)
             .getCharacteristic(Characteristic.TargetTemperature)
             .on('get', function (callback) {
-                log.debug('< hap', settings.name, 'get', 'TargetTemperature');
-                log.debug('> hap', settings.name, mqttStatus[settings.topic.statusTargetTemperature]);
+                log.debug('< hap get', settings.name, 'TargetTemperature');
+                log.debug('> hap re_get', settings.name, 'TargetTemperature', mqttStatus[settings.topic.statusTargetTemperature]);
                 callback(null, mqttStatus[settings.topic.statusTargetTemperature]);
             });
 
         if (settings.topic.statusCurrentRelativeHumidity) {
-            mqtt.subscribe(settings.topic.statusCurrentRelativeHumidity);
+            mqttSub(settings.topic.statusCurrentRelativeHumidity, function (val) {
+                thermo.getService(Service.Thermostat)
+                    .setCharacteristic(Characteristic.CurrentRelativeHumidity, val)
+            });
             thermo.getService(Service.Thermostat)
                 .getCharacteristic(Characteristic.CurrentRelativeHumidity)
                 .on('get', function (callback) {
-                    log.debug('< hap', settings.name, 'get', 'CurrentRelativeHumidity');
-                    log.debug('> hap', settings.name, mqttStatus[settings.topic.statusCurrentRelativeHumidity]);
+                    log.debug('< hap get', settings.name, 'CurrentRelativeHumidity');
+                    log.debug('> hap re_get', settings.name, 'CurrentRelativeHumidity', mqttStatus[settings.topic.statusCurrentRelativeHumidity]);
                     callback(null, mqttStatus[settings.topic.statusCurrentRelativeHumidity]);
                 });
         }
@@ -549,7 +647,7 @@ var createAccessory = {
             thermo.getService(Service.Thermostat)
                 .getCharacteristic(Characteristic.TargetRelativeHumidity)
                 .on('set', function(value, callback) {
-                    log.debug('< hap', settings.name, 'set', 'TargetRelativeHumidity', value);
+                    log.debug('< hap set', settings.name, 'TargetRelativeHumidity', value);
                     log.debug('> mqtt', settings.topic.setTargetRelativeHumidity, value);
                     mqtt.publish(settings.topic.setTargetRelativeHumidity, '' + value);
                     callback();
@@ -560,30 +658,31 @@ var createAccessory = {
             thermo.getService(Service.Thermostat)
                 .getCharacteristic(Characteristic.CoolingThresholdTemperature)
                 .on('set', function(value, callback) {
-                    log.debug('< hap', settings.name, 'set', 'CoolingThresholdTemperature', value);
+                    log.debug('< hap set', settings.name, 'CoolingThresholdTemperature', value);
                     log.debug('> mqtt', settings.topic.setCoolingThresholdTemperature, value);
                     mqtt.publish(settings.topic.setCoolingThresholdTemperature, '' + value);
                     callback();
                 });
         }
 
+
         if (settings.topic.statusCoolingThresholdTemperature) {
-            mqtt.subscribe(settings.topic.statusCoolingThresholdTemperature);
+            mqttSub(settings.topic.statusCoolingThresholdTemperature);
             thermo.getService(Service.Thermostat)
                 .getCharacteristic(Characteristic.CoolingThresholdTemperature)
                 .on('get', function (callback) {
-                    log.debug('< hap', settings.name, 'get', 'CoolingThresholdTemperature');
-                    log.debug('> hap', settings.name, mqttStatus[settings.topic.statusCoolingThresholdTemperature]);
+                    log.debug('< hap get', settings.name, 'CoolingThresholdTemperature');
+                    log.debug('> hap re_get', settings.name, 'CoolingThresholdTemperature', mqttStatus[settings.topic.statusCoolingThresholdTemperature]);
                     callback(null, mqttStatus[settings.topic.statusCoolingThresholdTemperature]);
                 });
         }
 
         if (settings.topic.setHeatingThresholdTemperature) {
-            mqtt.subscribe(settings.topic.setHeatingThresholdTemperature);
+            mqttSub(settings.topic.setHeatingThresholdTemperature);
             thermo.getService(Service.Thermostat)
                 .getCharacteristic(Characteristic.HeatingThresholdTemperature)
                 .on('set', function(value, callback) {
-                    log.debug('< hap', settings.name, 'set', 'HeatingThresholdTemperature', value);
+                    log.debug('< hap set', settings.name, 'HeatingThresholdTemperature', value);
                     log.debug('> mqtt', settings.topic.setHeatingThresholdTemperature, value);
                     mqtt.publish(settings.topic.setHeatingThresholdTemperature, '' + value);
                     callback();
@@ -591,12 +690,12 @@ var createAccessory = {
         }
 
         if (settings.topic.statusHeatingThresholdTemperature) {
-            mqtt.subscribe(settings.topic.statusHeatingThresholdTemperature);
+            mqttSub(settings.topic.statusHeatingThresholdTemperature);
             thermo.getService(Service.Thermostat)
                 .getCharacteristic(Characteristic.HeatingThresholdTemperature)
                 .on('get', function (callback) {
-                    log.debug('< hap', settings.name, 'get', 'HeatingThresholdTemperature');
-                    log.debug('> hap', settings.name, mqttStatus[settings.topic.statusHeatingThresholdTemperature]);
+                    log.debug('< hap get', settings.name, 'HeatingThresholdTemperature');
+                    log.debug('> hap re_get', settings.name, 'HeatingThresholdTemperature', mqttStatus[settings.topic.statusHeatingThresholdTemperature]);
                     callback(null, mqttStatus[settings.topic.statusHeatingThresholdTemperature]);
                 });
         }
