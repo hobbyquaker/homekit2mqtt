@@ -7,16 +7,21 @@ HomeKit to MQTT bridge
 This project follows the [mqtt-smarthome architecture](https://github.com/mqtt-smarthome).
 I'm using this to control a multitude of MQTT-connected "Things" in my home automation through Siri and with HomeKit apps.
 
-## Getting Started
+## Installation
 
-**Note:** If you're running on Linux, you'll need to make sure you have the `libavahi-compat-libdnssd-dev` package installed.
+**Prerequisites:** 
+
+ * Linux or Mac OS X
+ * [Node.js](https://nodejs.org)
+ * If you're running on Linux, you'll need to make sure you have the `libavahi-compat-libdnssd-dev` package installed.
+
+
 
 ```
 sudo npm install -g homekit2mqtt
-homekit2mqtt --help
+homekit2mqtt -v debug
 ```  
 
- 
 ## Command Line Options
 
 <pre>
@@ -25,45 +30,173 @@ Usage: homekit2mqtt [options]
 Options:
   -v, --verbosity   possible values: "error", "warn", "info", "debug"
                                                                [default: "info"]
+                                                               
   -m, --mapfile     JSON file containing HomeKit Services to MQTT mapping
                     definitions. See Readme.
                               [default: "/opt/mqtt-smarthome/homekit2mqtt.json"]
+                              
   -n, --name        instance name. used as mqtt client id and as prefix for
                     connected topic                         [default: "homekit"]
-  -u, --url         mqtt broker url. See https://github.com/mqttjs/MQTT.js#
-                    connect-using-a-url            [default: "mqtt://127.0.0.1"]
+                    
+  -u, --url         mqtt broker url. 
+                    See https://github.com/mqttjs/MQTT.js#connect-using-a-url 
+                                                   [default: "mqtt://127.0.0.1"]
+                                                   
   -c, --pincode                                          [default: "031-45-154"]
+  
   -a, --username                                  [default: "CC:22:3D:E3:CE:F6"]
+  
   -b, --bridgename                                      [default: "MQTT Bridge"]
+  
   -p, --port                                                    [default: 51826]
-  --version         Show version number                                
-  -h, --help        Show help                                 
-                                            
+  
+  --version         Show version number     
+                             
+  -h, --help        Show help                                                                    
 </pre>
 
 ## Configuration
 
 You have to create a JSON file that defines devices and mappings from MQTT-topics and payloads to HomeKit-characteristics.
 
-See [example-homekit2mqtt.json](example-homekit2mqtt.json)
+See [example-homekit2mqtt.json](example-homekit2mqtt.json).
+
+
+Every Accessory is represented like this in the JSON file:
+
+```javascript
+  "TemperatureSensor": {                                    // Unique Name - used to generate the accessory UUID
+    "service": "TemperatureSensor",                         // HomeKit Service Type (see below)
+    "name": "TemperatureSensor",                            // Display Name
+    "topic": {                                              
+        // ... MQTT Topic Configuration ...
+    },
+    "payload": {
+        // ... MQTT Payload Configuration ...
+    },
+    "manufacturer": "Generic",                              // Additional Accessory Infos (optional)
+    "model": "TemperatureSensor"                            // Additional Accessory Infos (optional)
+  }
+```
+
 
 ### Supported Service Types
 
 #### WindowCovering
 
+topic
+
+* setTargetPosition
+* statusTargetPosition (optional)
+* statusCurrentPosition (optional)
+* statusPositionState (optional)
+
+payload
+
+* targetPositionFactor (default: `1`)
+* currentPositionFactor (default: `1`)
+* positionStatusIncreasing
+* positionStatusDecreasing
+
+
 #### LockMechanism
+
+topic
+
+* setLock
+* statusLock (optional)
+
+payload
+
+* lockUnsecured
+* lockSecured
+
 
 #### TemperatureSensor
 
+topic
+
+* statusTemperature
+
+
 #### Lightbulb
+
+topic
+
+* setOn
+* statusTemperature
+* setBrightness (optional)
+* statusBrightness (optional)
+* setHue (optional)
+* statusHue (optional)
+* setSaturation (optional)
+* statusSaturation (optional)
+
+payload
+
+* onTrue
+* onFalse
+* brightnessFactor (default: 1)
+* hueFactor (default: 1)
+* saturationFactor (default: 1)
+
 
 #### Switch
 
+topic
+
+* setOn
+* statusOn (optional)
+
+payload
+
+* onTrue
+* onFalse
+
+
 #### ContactSensor
+
+topic
+
+* statusContactSensorState
+* statusLowBattery (optional)
+
+payload
+
+* onContactDetected
+* onLowBattery
+
 
 #### MotionSensor
 
+topic
+
+* statusMotionDetected
+* statusLowBattery (optional)
+
+payload
+
+* onMotionDetected
+* onLowBattery
+
+
 #### Thermostat
+
+topic
+
+* setTargetTemperature
+* setTargetHeatingCoolingState (optional)
+* statusCurrentTemperature
+* statusTargetTemperature
+* statusCurrentRelativeHumidity (optional)
+* setCoolingThresholdTemperature (optional)
+* statusCoolingThresholdTemperature (optional)
+* setHeatingThresholdTemperature (optional)
+* statusHeatingThresholdTemperature (optional)
+
+config
+
+* TemperatureDisplayUnits
 
 ## License
 
