@@ -90,6 +90,7 @@ topic
 * statusTargetPosition (optional)
 * statusCurrentPosition (optional)
 * statusPositionState (optional)
+* identify (optional)
 
 payload
 
@@ -97,6 +98,7 @@ payload
 * currentPositionFactor (default: `1`)
 * positionStatusIncreasing
 * positionStatusDecreasing
+* identify (optional)
 
 
 #### LockMechanism
@@ -105,11 +107,13 @@ topic
 
 * setLock
 * statusLock (optional)
+* identify (optional)
 
 payload
 
 * lockUnsecured
 * lockSecured
+* identify (optional)
 
 
 #### TemperatureSensor
@@ -117,6 +121,23 @@ payload
 topic
 
 * statusTemperature
+* identify (optional)
+
+payload
+
+* identify (optional)
+
+
+#### HumiditySensor
+
+topic
+
+* statusHumidity
+* identify (optional)
+
+payload
+
+* identify (optional)
 
 
 #### Lightbulb
@@ -131,6 +152,7 @@ topic
 * statusHue (optional)
 * setSaturation (optional)
 * statusSaturation (optional)
+* identify (optional)
 
 payload
 
@@ -139,6 +161,7 @@ payload
 * brightnessFactor (default: 1)
 * hueFactor (default: 1)
 * saturationFactor (default: 1)
+* identify (optional)
 
 
 #### Switch
@@ -147,11 +170,13 @@ topic
 
 * setOn
 * statusOn (optional)
+* identify (optional)
 
 payload
 
 * onTrue
 * onFalse
+* identify (optional)
 
 
 #### ContactSensor
@@ -160,11 +185,13 @@ topic
 
 * statusContactSensorState
 * statusLowBattery (optional)
+* identify (optional)
 
 payload
 
 * onContactDetected
 * onLowBattery
+* identify (optional)
 
 
 #### MotionSensor
@@ -173,11 +200,13 @@ topic
 
 * statusMotionDetected
 * statusLowBattery (optional)
+* identify (optional)
 
 payload
 
 * onMotionDetected
 * onLowBattery
+* identify (optional)
 
 
 #### Thermostat
@@ -193,6 +222,11 @@ topic
 * statusCoolingThresholdTemperature (optional)
 * setHeatingThresholdTemperature (optional)
 * statusHeatingThresholdTemperature (optional)
+* identify (optional)
+
+payload
+
+* identify (optional)
 
 config
 
