@@ -43,6 +43,8 @@ mqtt.on('message', function (topic, payload) {
     payload = payload.toString();
     var state;
     try {
+        // todo - check for json objects in a less nasty way ;)
+        if (payload.indexOf('{') === -1) throw 'not an object';
         state = JSON.parse(payload).val;
     } catch (e) {
         if (payload === 'true') {
