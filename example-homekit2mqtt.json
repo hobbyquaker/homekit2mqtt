@@ -155,5 +155,14 @@
     },
     "manufacturer": "Generic",
     "model": "TemperatureSensor"
-  }
+  },
+  "LightSensor": {
+    "service": "LightSensor",
+    "name": "LightSensor",
+    "topic": {
+      "statusAmbientLightLevel": "LightSensor/Brightness"
+    },
+    "manufacturer": "Generic",
+    "model": "LightSensor"
+  },
 }
