@@ -1,6 +1,6 @@
 {
   "name": "homekit2mqtt",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "HomeKit to MQTT bridge",
   "main": "index.js",
   "bin": {
@@ -11,6 +11,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Sebastian 'hobbyquaker' Raff <hq@ccu.io> (https://github.com/hobbyquaker)",
+  "contributors": [
+    "Anders Eriksson https://github.com/tvillingett",
+    "zino4u https://github.com/zino4u",
+    "tedstriker https://github.com/tedstriker",
+    "Erik Granlund https://github.com/erikgranlund"
+  ],
   "license": "MIT",
   "dependencies": {
     "hap-nodejs": "0.3.2",
