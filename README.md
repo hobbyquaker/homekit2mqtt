@@ -232,6 +232,14 @@ config
 
 * TemperatureDisplayUnits
 
+
+#### LightSensor
+
+topic
+
+* statusAmbientLightLevel
+
+
 ## License
 
 MIT © [Sebastian Raff](https://github.com/hobbyquaker)
