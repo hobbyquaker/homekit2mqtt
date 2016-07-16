@@ -1,5 +1,8 @@
 # homekit2mqtt
 
+[![NPM version](https://badge.fury.io/js/homekit2mqtt.svg)](http://badge.fury.io/js/homekit2mqtt)
+[![License][mit-badge]][mit-url]
+
 HomeKit to MQTT bridge
 
 > Depends on [HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) by [KhaosT](https://github.com/KhaosT), all credits belong to him.
@@ -244,4 +247,8 @@ topic
 
 MIT © [Sebastian Raff](https://github.com/hobbyquaker)
 
+
+
+[mit-badge]: https://img.shields.io/badge/License-MIT-blue.svg?style=flat
+[mit-url]: LICENSE
 
