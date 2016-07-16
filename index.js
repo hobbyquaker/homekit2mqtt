@@ -344,7 +344,13 @@ var createAccessory = {
                 callback();
             });
 
-        mqttSub(settings.topic.statusOn);
+        //update status in homekit if exernal status gets updated
+        mqttSub(settings.topic.statusOn, function (val) {
+            log.debug('> hap set', settings.name, 'On', mqttStatus[settings.topic.statusOn]);
+            light.getService(Service.Lightbulb)
+                .getCharacteristic(Characteristic.On)
+                .getValue();
+        });
 
         light.getService(Service.Lightbulb)
             .getCharacteristic(Characteristic.On)
@@ -354,8 +360,6 @@ var createAccessory = {
                 log.debug('> hap re_get', settings.name, 'On', on);
                 callback(null, on);
             });
-
-
 
         if (settings.topic.setBrightness) {
             light.getService(Service.Lightbulb)
@@ -369,7 +373,15 @@ var createAccessory = {
                 });
 
             if (settings.topic.statusBrightness) {
-                mqttSub(settings.topic.statusBrightness);
+                
+                //update status in homekit if exernal status gets updated
+                mqttSub(settings.topic.statusBrightness, function(val) {
+                    log.debug('> hap set', settings.name, 'Brightness', mqttStatus[settings.topic.statusBrightness]);
+                    light.getService(Service.Lightbulb)
+                        .getCharacteristic(Characteristic.Brightness)
+                        .getValue();
+                });
+                
                 light.getService(Service.Lightbulb)
                     .getCharacteristic(Characteristic.Brightness)
                     .on('get', function (callback) {
