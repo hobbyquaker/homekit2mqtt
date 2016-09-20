@@ -2,7 +2,7 @@
 
 [![License][mit-badge]][mit-url]
 [![NPM version](https://badge.fury.io/js/homekit2mqtt.svg)](http://badge.fury.io/js/homekit2mqtt)
-[![Dependency Status](https://img.shields.io/gemnasium/hobbyquaker/dashbutton2mqtt.svg?maxAge=2592000)](https://gemnasium.com/github.com/hobbyquaker/dashbutton2mqtt)
+[![Dependency Status](https://img.shields.io/gemnasium/hobbyquaker/homekit2mqtt.svg?maxAge=2592000)](https://gemnasium.com/github.com/hobbyquaker/homekit2mqtt)
 
 
 HomeKit to MQTT bridge
