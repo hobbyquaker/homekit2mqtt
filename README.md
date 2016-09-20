@@ -1,4 +1,4 @@
-# homekit2mqtt
+# homekit2mqtt 🏡📱
 
 [![License][mit-badge]][mit-url]
 [![NPM version](https://badge.fury.io/js/homekit2mqtt.svg)](http://badge.fury.io/js/homekit2mqtt)
