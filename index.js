@@ -115,7 +115,7 @@ function identify(settings, paired, callback) {
     log.debug('< hap identify', settings.name, paired ? '(paired)' : '(unpaired)');
     if (settings.topic.identify) {
         log.debug('> mqtt', settings.topic.identify, settings.payload.identify);
-        mqtt.publish(settings.topic.identify, settings.payload.identify);
+        mqtt.publish(settings.topic.identify, '' + settings.payload.identify);
     }
     callback();
 }
@@ -234,14 +234,14 @@ var createAccessory = {
 
                 if (value == Characteristic.LockTargetState.UNSECURED) {
                     log.debug('> mqtt publish', settings.topic.setLock, settings.payload.lockUnsecured);
-                    mqtt.publish(settings.topic.setLock, settings.payload.lockUnsecured);
+                    mqtt.publish(settings.topic.setLock, '' + settings.payload.lockUnsecured);
 
                     callback();
 
                 } else if (value == Characteristic.LockTargetState.SECURED) {
 
                     log.debug('> mqtt publish', settings.topic.setLock, settings.payload.lockSecured);
-                    mqtt.publish(settings.topic.setLock, settings.payload.lockSecured);
+                    mqtt.publish(settings.topic.setLock, '' + settings.payload.lockSecured);
 
                     callback();
 
@@ -255,8 +255,7 @@ var createAccessory = {
                     log.debug('> hap set', settings.name, 'LockCurrentState.SECURED');
                     lock.getService(Service.LockMechanism)
                         .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED);
-                }
-                if (val === settings.payload.lockUnsecured) {
+                } else {
                     log.debug('> hap set', settings.name, 'LockCurrentState.UNSECURED');
                     lock.getService(Service.LockMechanism)
                         .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.UNSECURED);
@@ -366,7 +365,7 @@ var createAccessory = {
                 .addCharacteristic(Characteristic.Brightness)
                 .on('set', function (value, callback) {
                     log.debug('< hap set', settings.name, 'Brightness', value);
-                    var bri = (value * (settings.payload.brightnessFactor || 1));
+                    var bri = (value * (settings.payload.brightnessFactor || 1)) || 0;
                     log.debug('> mqtt', settings.topic.setBrightness, bri);
                     mqtt.publish(settings.topic.setBrightness, '' + bri);
                     callback();
@@ -386,7 +385,7 @@ var createAccessory = {
                     .getCharacteristic(Characteristic.Brightness)
                     .on('get', function (callback) {
                         log.debug('< hap get', settings.name, 'Brightness');
-                        var brightness = mqttStatus[settings.topic.statusBrightness] / settings.payload.brightnessFactor;
+                        var brightness = (mqttStatus[settings.topic.statusBrightness] / (settings.payload.brightnessFactor || 1)) || 0;
 
                         log.debug('> hap re_get', settings.name, 'Brightness', brightness);
                         callback(null, brightness);
@@ -411,7 +410,7 @@ var createAccessory = {
                     .getCharacteristic(Characteristic.Hue)
                     .on('get', function (callback) {
                         log.debug('< hap get', settings.name, 'Hue');
-                        var hue = mqttStatus[settings.topic.statusHue] / settings.payload.hueFactor;
+                        var hue = (mqttStatus[settings.topic.statusHue] / (settings.payload.hueFactor || 1)) || 0;
 
                         log.debug('> hap re_get', settings.name, 'Hue', hue);
                         callback(null, hue);
@@ -425,7 +424,7 @@ var createAccessory = {
                 .addCharacteristic(Characteristic.Saturation)
                  .on('set', function (value, callback) {
                     log.debug('< hap set', settings.name, 'Saturation', value);
-                    var sat = (value * (settings.payload.saturationFactor || 1));
+                    var sat = (value * (settings.payload.saturationFactor || 1)) || 0;
                     log.debug('> mqtt', settings.topic.setSaturation, sat);
                     mqtt.publish(settings.topic.setSaturation, '' + sat);
                     callback();
@@ -436,7 +435,7 @@ var createAccessory = {
                     .getCharacteristic(Characteristic.Saturation)
                     .on('get', function (callback) {
                         log.debug('< hap get', settings.name, 'Saturation');
-                        var saturation = mqttStatus[settings.topic.statusSaturation] / settings.payload.saturationFactor;
+                        var saturation = (mqttStatus[settings.topic.statusSaturation] / (settings.payload.saturationFactor || 1)) || 0;
 
                         log.debug('> hap re_get', settings.name, 'Saturation', saturation);
                         callback(null, saturation);
@@ -645,7 +644,7 @@ var createAccessory = {
             .getCharacteristic(Characteristic.CurrentHeatingCoolingState)
             .on('get', function (callback) {
                 log.debug('< hap get', settings.name, 'CurrentHeatingCoolingState');
-                var state = 3;
+                var state = 1; // HEATING
                 log.debug('> hap re_get', settings.name, 'CurrentHeatingCoolingState', state);
                 callback(null, state);
             });
