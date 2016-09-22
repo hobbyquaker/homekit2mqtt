@@ -50,7 +50,7 @@ Options:
   -a, --username                                  [default: "CC:22:3D:E3:CE:F6"]
   -b, --bridgename                                      [default: "MQTT Bridge"]
   -p, --port                                                    [default: 51826]
-                                                [default: 51826]
+                                            
                                                                  
 </pre>
 
