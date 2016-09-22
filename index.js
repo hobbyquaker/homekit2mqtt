@@ -83,6 +83,15 @@ function mqttSub(topic, callback) {
     }
 }
 
+function mqttPub(topic, payload, options) {
+    if (typeof payload === 'object') {
+        payload = JSON.stringify(payload);
+    } else if (typeof payload !== 'string') {
+        payload = '' + payload;
+    }
+    mqtt.publish(topic, payload, options);
+}
+
 var pkgHap =            require('./node_modules/hap-nodejs/package.json');
 log.info('using hap-nodejs version', pkgHap.version);
 
@@ -112,7 +121,7 @@ function identify(settings, paired, callback) {
     log.debug('< hap identify', settings.name, paired ? '(paired)' : '(unpaired)');
     if (settings.topic.identify) {
         log.debug('> mqtt', settings.topic.identify, settings.payload.identify);
-        mqtt.publish(settings.topic.identify, '' + settings.payload.identify);
+        mqttPub(settings.topic.identify, settings.payload.identify);
     }
     callback();
 }
@@ -139,7 +148,7 @@ var createAccessory = {
                 log.debug('< hap set', settings.name, 'TargetPosition', value);
                 value = (value * (settings.payload.targetPositionFactor || 1));
                 log.debug('> mqtt', settings.topic.setTargetPosition, value);
-                mqtt.publish(settings.topic.setTargetPosition, '' + value);
+                mqttPub(settings.topic.setTargetPosition, value);
                 callback();
             });
 
@@ -231,14 +240,14 @@ var createAccessory = {
 
                 if (value == Characteristic.LockTargetState.UNSECURED) {
                     log.debug('> mqtt publish', settings.topic.setLock, settings.payload.lockUnsecured);
-                    mqtt.publish(settings.topic.setLock, '' + settings.payload.lockUnsecured);
+                    mqttPub(settings.topic.setLock, settings.payload.lockUnsecured);
 
                     callback();
 
                 } else if (value == Characteristic.LockTargetState.SECURED) {
 
                     log.debug('> mqtt publish', settings.topic.setLock, settings.payload.lockSecured);
-                    mqtt.publish(settings.topic.setLock, '' + settings.payload.lockSecured);
+                    mqttPub(settings.topic.setLock, settings.payload.lockSecured);
 
                     callback();
 
@@ -336,7 +345,7 @@ var createAccessory = {
                 log.debug('< hap set', settings.name, 'On', value);
                 var on = value ? settings.payload.onTrue : settings.payload.onFalse;
                 log.debug('> mqtt', settings.topic.setOn, on);
-                mqtt.publish(settings.topic.setOn, '' + on);
+                mqttPub(settings.topic.setOn, on);
                 callback();
             });
 
@@ -364,7 +373,7 @@ var createAccessory = {
                     log.debug('< hap set', settings.name, 'Brightness', value);
                     var bri = (value * (settings.payload.brightnessFactor || 1)) || 0;
                     log.debug('> mqtt', settings.topic.setBrightness, bri);
-                    mqtt.publish(settings.topic.setBrightness, '' + bri);
+                    mqttPub(settings.topic.setBrightness, bri);
                     callback();
                 });
 
@@ -397,8 +406,8 @@ var createAccessory = {
                 .addCharacteristic(Characteristic.Hue)
                 .on('set', function (value, callback) {
                     log.debug('< hap set', settings.name, 'Hue', value);
-                    log.debug('> mqtt', settings.topic.setHue, '' + (value * (settings.payload.hueFactor || 1)));
-                    mqtt.publish(settings.topic.setHue, '' + (value * (settings.payload.hueFactor || 1)));
+                    log.debug('> mqtt', settings.topic.setHue, (value * (settings.payload.hueFactor || 1)));
+                    mqttPub(settings.topic.setHue, (value * (settings.payload.hueFactor || 1)));
                     callback();
                 });
             if (settings.topic.statusHue) {
@@ -423,7 +432,7 @@ var createAccessory = {
                     log.debug('< hap set', settings.name, 'Saturation', value);
                     var sat = (value * (settings.payload.saturationFactor || 1)) || 0;
                     log.debug('> mqtt', settings.topic.setSaturation, sat);
-                    mqtt.publish(settings.topic.setSaturation, '' + sat);
+                    mqttPub(settings.topic.setSaturation, sat);
                     callback();
                 });
             if (settings.topic.statusSaturation) {
@@ -457,7 +466,7 @@ var createAccessory = {
                 log.debug('< hap set', settings.name, 'On', value);
                 var on = value ? settings.payload.onTrue : settings.payload.onFalse;
                 log.debug('> mqtt', settings.topic.setOn, on);
-                mqtt.publish(settings.topic.setOn, '' + on);
+                mqttPub(settings.topic.setOn, on);
                 powerOn = value;
                 callback();
             });
@@ -595,7 +604,7 @@ var createAccessory = {
                 log.debug('< hap set', settings.name, 'TargetHeatingCoolingState', value);
                 if (settings.topic.setTargetHeatingCoolingState) {
                     log.debug('> mqtt', settings.topic.setTargetHeatingCoolingState, value);
-                    mqtt.publish(settings.topic.setTargetHeatingCoolingState, '' + value);
+                    mqttPub(settings.topic.setTargetHeatingCoolingState, value);
                 }
                 callback();
             });
@@ -605,7 +614,7 @@ var createAccessory = {
             .on('set', function(value, callback) {
                 log.debug('< hap set', settings.name, 'TargetTemperature', value);
                 log.debug('> mqtt', settings.topic.setTargetTemperature, value);
-                mqtt.publish(settings.topic.setTargetTemperature, '' + value);
+                mqttPub(settings.topic.setTargetTemperature, value);
                 callback();
             });
 
@@ -679,7 +688,7 @@ var createAccessory = {
                 .on('set', function(value, callback) {
                     log.debug('< hap set', settings.name, 'TargetRelativeHumidity', value);
                     log.debug('> mqtt', settings.topic.setTargetRelativeHumidity, value);
-                    mqtt.publish(settings.topic.setTargetRelativeHumidity, '' + value);
+                    mqttPub(settings.topic.setTargetRelativeHumidity, value);
                     callback();
                 });
         }
@@ -690,7 +699,7 @@ var createAccessory = {
                 .on('set', function(value, callback) {
                     log.debug('< hap set', settings.name, 'CoolingThresholdTemperature', value);
                     log.debug('> mqtt', settings.topic.setCoolingThresholdTemperature, value);
-                    mqtt.publish(settings.topic.setCoolingThresholdTemperature, '' + value);
+                    mqttPub(settings.topic.setCoolingThresholdTemperature, value);
                     callback();
                 });
         }
@@ -714,7 +723,7 @@ var createAccessory = {
                 .on('set', function(value, callback) {
                     log.debug('< hap set', settings.name, 'HeatingThresholdTemperature', value);
                     log.debug('> mqtt', settings.topic.setHeatingThresholdTemperature, value);
-                    mqtt.publish(settings.topic.setHeatingThresholdTemperature, '' + value);
+                    mqttPub(settings.topic.setHeatingThresholdTemperature, value);
                     callback();
                 });
         }
