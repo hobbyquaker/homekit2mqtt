@@ -256,21 +256,29 @@ var createAccessory = {
 
         if (settings.topic.statusLock) {
 
+            var initial = true;
+
             mqttSub(settings.topic.statusLock, function (val) {
                 if (val === settings.payload.lockSecured) {
                     log.debug('> hap set', settings.name, 'LockCurrentState.SECURED');
                     lock.getService(Service.LockMechanism)
                         .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED);
-                    log.debug('> hap set', settings.name, 'LockTargetState.SECURED');
-                    lock.getService(Service.LockMechanism)
-                        .setCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.SECURED);
+                    if (initial) {
+                        log.debug('> hap set', settings.name, 'LockTargetState.SECURED');
+                        lock.getService(Service.LockMechanism)
+                            .setCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.SECURED);
+                        initial = false;
+                    }
                 } else {
                     log.debug('> hap set', settings.name, 'LockCurrentState.UNSECURED');
                     lock.getService(Service.LockMechanism)
                         .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.UNSECURED);
-                    log.debug('> hap set', settings.name, 'LockTargetState.UNSECURED');
-                    lock.getService(Service.LockMechanism)
-                        .setCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.UNSECURED);
+                    if (initial) {
+                        log.debug('> hap set', settings.name, 'LockTargetState.UNSECURED');
+                        lock.getService(Service.LockMechanism)
+                            .setCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.UNSECURED);
+                        initial = false;
+                    }
                 }
             });
 
