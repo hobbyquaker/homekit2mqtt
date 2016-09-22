@@ -84,7 +84,7 @@ function mqttSub(topic, callback) {
 }
 
 var pkgHap =            require('./node_modules/hap-nodejs/package.json');
-log.info('Using HAP-NodeJS version', pkgHap.version);
+log.info('using hap-nodejs version', pkgHap.version);
 
 var HAP =               require('hap-nodejs');
 var uuid =              HAP.uuid;
