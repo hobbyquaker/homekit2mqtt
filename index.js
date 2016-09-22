@@ -8,7 +8,7 @@ log.setLevel(config.verbosity);
 log(pkg.name + ' ' + pkg.version + ' starting');
 var Mqtt = require('mqtt');
 
-log.info('loading HomeKit to MQTT mapping file');
+log.info('loading HomeKit to MQTT mapping file ' + config.mapfile);
 var mapping = require(config.mapfile);
 
 
@@ -84,7 +84,7 @@ function mqttSub(topic, callback) {
 }
 
 var pkgHap =            require('./node_modules/hap-nodejs/package.json');
-log.info('Starting HAP-NodeJS', pkgHap.version);
+log.info('Using HAP-NodeJS version', pkgHap.version);
 
 var HAP =               require('hap-nodejs');
 var uuid =              HAP.uuid;
@@ -526,8 +526,6 @@ var createAccessory = {
                     .setCharacteristic(Characteristic.StatusLowBattery, bat)
             });
         }
-
-
 
         return sensor;
 
