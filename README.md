@@ -37,7 +37,7 @@ Options:
                                                                [default: "info"]
   -m, --mapfile     JSON file containing HomeKit Services to MQTT mapping
                     definitions. See Readme.                           [default:
-         "/Users/basti/PhpstormProjects/homekit2mqtt/example-homekit2mqtt.json"]
+           "/usr/local/lib/node_modules/homekit2mqtt/example-homekit2mqtt.json"]
   -n, --name        instance name. used as mqtt client id and as prefix for
                     connected topic                         [default: "homekit"]
   -u, --url         mqtt broker url. See
