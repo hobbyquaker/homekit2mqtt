@@ -86,20 +86,17 @@ function mqttSub(topic, callback) {
 var pkgHap =            require('./node_modules/hap-nodejs/package.json');
 log.info('Starting HAP-NodeJS', pkgHap.version);
 
-// Initialize node-persist as HAP-NodeJS storage
-var persistDir =  process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + '/.homekit2mqtt/'; // TODO config option
-var storage =   require('hap-nodejs/node_modules/node-persist');
-storage.initSync({
-    //logging: function (msg) { log.debug('node-persist', msg); },
-    //dir: persistDir // FIXME seems like node-persist doesnt accept absolute paths :(
-});
-
 var HAP =               require('hap-nodejs');
 var uuid =              HAP.uuid;
 var Bridge =            HAP.Bridge;
 var Accessory =         HAP.Accessory;
 var Service =           HAP.Service;
 var Characteristic =    HAP.Characteristic;
+
+if (config.storagedir) {
+    log.info('using directory ' + config.storagedir + ' for persistent storage');
+}
+HAP.init(config.storagedir || undefined);
 
 // Create Bridge which will host all Accessories
 var bridge = new Bridge(config.bridgename, uuid.generate(config.bridgename));
