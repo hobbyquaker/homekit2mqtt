@@ -791,9 +791,9 @@ Object.keys(mapping).forEach(function (id) {
         log.err('unknown service', a.service, id);
     }
 });
-log.info('hap Created', accCount, 'Accessories');
+log.info('hap created', accCount, 'Accessories');
 
-log('hap Publishing Bridge "' + config.bridgename + '" username=' + config.username, 'port=' + config.port, 'pincode=' + config.c);
+log('hap publishing bridge "' + config.bridgename + '" username=' + config.username, 'port=' + config.port, 'pincode=' + config.c);
 bridge.publish({
     username: config.username,
     port: config.port,
