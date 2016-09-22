@@ -33,31 +33,25 @@ homekit2mqtt -v debug
 Usage: homekit2mqtt [options]
 
 Options:
-  -v, --verbosity   possible values: "error", "warn", "info", "debug"
+  -v, --verbosity       possible values: "error", "warn", "info", "debug"
                                                                [default: "info"]
-                                                               
-  -m, --mapfile     JSON file containing HomeKit Services to MQTT mapping
-                    definitions. See Readme.
-                              [default: "/opt/mqtt-smarthome/homekit2mqtt.json"]
-                              
-  -n, --name        instance name. used as mqtt client id and as prefix for
-                    connected topic                         [default: "homekit"]
-                    
-  -u, --url         mqtt broker url. 
-                    See https://github.com/mqttjs/MQTT.js#connect-using-a-url 
+  -m, --mapfile         JSON file containing HomeKit Services to MQTT mapping
+                        definitions. See Readme.                       [default:
+         "/Users/basti/PhpstormProjects/homekit2mqtt/example-homekit2mqtt.json"]
+  -n, --name            instance name. used as mqtt client id and as prefix for
+                        connected topic                     [default: "homekit"]
+  -u, --url             mqtt broker url. See
+                        https://github.com/mqttjs/MQTT.js#connect-using-a-url
                                                    [default: "mqtt://127.0.0.1"]
-                                                   
+  -s, --storagedir      directory to store homekit data
+  -h, --help            Show help                                      [boolean]
+  --homekit2mqtt 0.3.6  version
+                                                                       [boolean]
   -c, --pincode                                          [default: "031-45-154"]
-  
   -a, --username                                  [default: "CC:22:3D:E3:CE:F6"]
-  
   -b, --bridgename                                      [default: "MQTT Bridge"]
-  
   -p, --port                                                    [default: 51826]
-  
-  --version         Show version number     
-                             
-  -h, --help        Show help                                                                    
+                                                                 
 </pre>
 
 ## Configuration
