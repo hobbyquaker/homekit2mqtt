@@ -261,10 +261,16 @@ var createAccessory = {
                     log.debug('> hap set', settings.name, 'LockCurrentState.SECURED');
                     lock.getService(Service.LockMechanism)
                         .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED);
+                    log.debug('> hap set', settings.name, 'LockTargetState.SECURED');
+                    lock.getService(Service.LockMechanism)
+                        .setCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.SECURED);
                 } else {
                     log.debug('> hap set', settings.name, 'LockCurrentState.UNSECURED');
                     lock.getService(Service.LockMechanism)
                         .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.UNSECURED);
+                    log.debug('> hap set', settings.name, 'LockTargetState.UNSECURED');
+                    lock.getService(Service.LockMechanism)
+                        .setCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.UNSECURED);
                 }
             });
 
