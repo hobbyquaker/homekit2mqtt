@@ -7,6 +7,9 @@
     "homekit2mqtt": "./index.js"
   },
   "preferGlobal": true,
+  "engines": {
+    "node": ">=4.3.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
