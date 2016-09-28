@@ -239,6 +239,21 @@ topic
 * statusAmbientLightLevel
 
 
+#### Speaker
+
+topic 
+
+* setMute
+* setVolume (optional)
+* statusMute (optional)
+* statusVolume (optional)
+
+payload
+
+* muteTrue 
+* muteFalse
+* volumeFactor (optional)
+
 ## License
 
 MIT © [Sebastian Raff](https://github.com/hobbyquaker)
