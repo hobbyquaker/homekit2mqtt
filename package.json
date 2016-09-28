@@ -1,6 +1,6 @@
 {
   "name": "homekit2mqtt",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "HomeKit to MQTT bridge",
   "main": "index.js",
   "bin": {
@@ -19,7 +19,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "hap-nodejs": "0.3.2",
+    "hap-nodejs": "0.4.8",
     "mqtt": "^2.0.0",
     "yalm": "^4.0.2",
     "yargs": "^5.0.0"
