@@ -192,6 +192,19 @@ payload
 * onLowBattery
 * identify (optional)
 
+#### SmokeSensor
+
+topic
+
+* statusSmokeSensorState
+* statusLowBattery (optional)
+
+payload
+
+* onSmokeDetected
+* onLowBattery
+
+
 
 #### MotionSensor
 
