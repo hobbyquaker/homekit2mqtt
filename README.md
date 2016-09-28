@@ -81,49 +81,18 @@ Every Accessory is represented like this in the JSON file:
 
 ### Supported Service Types
 
-#### WindowCovering
+#### ContactSensor
 
 topic
 
-* setTargetPosition
-* statusTargetPosition (optional)
-* statusCurrentPosition (optional)
-* statusPositionState (optional)
+* statusContactSensorState
+* statusLowBattery (optional)
 * identify (optional)
 
 payload
 
-* targetPositionFactor (default: `1`)
-* currentPositionFactor (default: `1`)
-* positionStatusIncreasing
-* positionStatusDecreasing
-* identify (optional)
-
-
-#### LockMechanism
-
-topic
-
-* setLock
-* statusLock (optional)
-* identify (optional)
-
-payload
-
-* lockUnsecured
-* lockSecured
-* identify (optional)
-
-
-#### TemperatureSensor
-
-topic
-
-* statusTemperature
-* identify (optional)
-
-payload
-
+* onContactDetected
+* onLowBattery
 * identify (optional)
 
 
@@ -163,6 +132,72 @@ payload
 * identify (optional)
 
 
+#### LightSensor
+
+topic
+
+* statusAmbientLightLevel
+
+
+#### LockMechanism
+
+topic
+
+* setLock
+* statusLock (optional)
+* identify (optional)
+
+payload
+
+* lockUnsecured
+* lockSecured
+* identify (optional)
+
+
+#### MotionSensor
+
+topic
+
+* statusMotionDetected
+* statusLowBattery (optional)
+* identify (optional)
+
+payload
+
+* onMotionDetected
+* onLowBattery
+* identify (optional)
+
+
+#### SmokeSensor
+
+topic
+
+* statusSmokeSensorState
+* statusLowBattery (optional)
+
+payload
+
+* onSmokeDetected
+* onLowBattery
+
+
+#### Speaker
+
+topic 
+
+* setMute
+* setVolume (optional)
+* statusMute (optional)
+* statusVolume (optional)
+
+payload
+
+* muteTrue 
+* muteFalse
+* volumeFactor (optional)
+
+
 #### Switch
 
 topic
@@ -178,46 +213,15 @@ payload
 * identify (optional)
 
 
-#### ContactSensor
+#### TemperatureSensor
 
 topic
 
-* statusContactSensorState
-* statusLowBattery (optional)
+* statusTemperature
 * identify (optional)
 
 payload
 
-* onContactDetected
-* onLowBattery
-* identify (optional)
-
-#### SmokeSensor
-
-topic
-
-* statusSmokeSensorState
-* statusLowBattery (optional)
-
-payload
-
-* onSmokeDetected
-* onLowBattery
-
-
-
-#### MotionSensor
-
-topic
-
-* statusMotionDetected
-* statusLowBattery (optional)
-* identify (optional)
-
-payload
-
-* onMotionDetected
-* onLowBattery
 * identify (optional)
 
 
@@ -245,27 +249,25 @@ config
 * TemperatureDisplayUnits
 
 
-#### LightSensor
+#### WindowCovering
 
 topic
 
-* statusAmbientLightLevel
-
-
-#### Speaker
-
-topic 
-
-* setMute
-* setVolume (optional)
-* statusMute (optional)
-* statusVolume (optional)
+* setTargetPosition
+* statusTargetPosition (optional)
+* statusCurrentPosition (optional)
+* statusPositionState (optional)
+* identify (optional)
 
 payload
 
-* muteTrue 
-* muteFalse
-* volumeFactor (optional)
+* targetPositionFactor (default: `1`)
+* currentPositionFactor (default: `1`)
+* positionStatusIncreasing
+* positionStatusDecreasing
+* identify (optional)
+
+
 
 ## License
 
