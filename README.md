@@ -81,6 +81,18 @@ Every Accessory is represented like this in the JSON file:
 
 ### Supported Service Types
 
+#### CarbonDioxideSensor
+
+topic
+
+* statusCarbonDioxideDetected
+* statusLowBattery (optional)
+
+payload
+
+* onCarbonDioxideDetected
+* onLowBattery (optional)
+
 #### ContactSensor
 
 topic
@@ -92,7 +104,7 @@ topic
 payload
 
 * onContactDetected
-* onLowBattery
+* onLowBattery (optional)
 * identify (optional)
 
 
@@ -179,7 +191,7 @@ topic
 payload
 
 * onSmokeDetected
-* onLowBattery
+* onLowBattery (optional)
 
 
 #### Speaker
