@@ -126,22 +126,24 @@ function identify(settings, paired, callback) {
     callback();
 }
 
-// Set Accessory infos
-function setInfos(acc, settings) {
+function newAccessory(settings) {
+    var acc = new Accessory(settings.name, uuid.generate(settings.id));
     if (settings.manufacturer || settings.model || settings.serial) {
         acc.getService(Service.AccessoryInformation)
             .setCharacteristic(Characteristic.Manufacturer, settings.manufacturer || "-")
             .setCharacteristic(Characteristic.Model, settings.model || "-" )
             .setCharacteristic(Characteristic.SerialNumber, settings.serial || "-");
     }
+    acc.on('identify', function (paired, callback) {
+        identify(settings, paired, callback);
+    });
+    return acc;
 }
 
 var createAccessory = {
     CarbonDioxideSensor: function createAccessory_CarbonDioxideSensor(settings) {
 
-        var sensorUUID = uuid.generate(settings.id);
-        var sensor = new Accessory(settings.name, sensorUUID);
-        setInfos(sensor, settings);
+        var sensor = newAccessory(settings);
 
         sensor.addService(Service.CarbonDioxideSensor, settings.name)
             .getCharacteristic(Characteristic.CarbonDioxideDetected)
@@ -191,9 +193,7 @@ var createAccessory = {
     },
     ContactSensor: function createAccessory_ContactSensor(settings) {
 
-        var switchUUID = uuid.generate(settings.id);
-        var sensor = new Accessory(settings.name, switchUUID);
-        setInfos(sensor, settings);
+        var sensor = newAccessory(settings);
 
         sensor.addService(Service.ContactSensor, settings.name)
             .getCharacteristic(Characteristic.ContactSensorState)
@@ -243,9 +243,7 @@ var createAccessory = {
     },
     HumiditySensor: function createAccessory_HumiditySensor(settings) {
 
-        var sensorUUID = uuid.generate('hap-nodejs:accessories:humiditysensor:' + settings.topic.statusHumidity);
-        var sensor = new Accessory(settings.name, sensorUUID);
-        setInfos(sensor, settings);
+        var sensor = newAccessory(settings);
 
         mqttSub(settings.topic.statusHumidity, function (val) {
             log.debug('> hap set', settings.name, 'CurrentRelativeHumidity', mqttStatus[settings.topic.statusHumidity]);
@@ -265,13 +263,7 @@ var createAccessory = {
     },
     Lightbulb: function createAccessory_Lightbulb(settings) {
 
-        var lightUUID = uuid.generate(settings.id);
-        var light = new Accessory(settings.name, lightUUID);
-        setInfos(light, settings);
-
-        light.on('identify', function (paired, callback) {
-            identify(settings, paired, callback);
-        });
+        var light = newAccessory(settings);
 
         light.addService(Service.Lightbulb, settings.name)
             .getCharacteristic(Characteristic.On)
@@ -390,9 +382,7 @@ var createAccessory = {
     },
     LightSensor: function createAccessory_LightSensor(settings) {
 
-        var sensorUUID = uuid.generate(settings.id);
-        var sensor = new Accessory(settings.name, sensorUUID);
-        setInfos(sensor, settings);
+        var sensor = newAccessory(settings);
 
         mqttSub(settings.topic.statusAmbientLightLevel, function(val) {
             log.debug('> hap set', settings.name, 'CurrentAmbientLightLevel', mqttStatus[settings.topic.statusAmbientLightLevel]);
@@ -412,15 +402,7 @@ var createAccessory = {
     },
     LockMechanism: function createAccessory_LockMechanism(settings) {
 
-        var lockUUID = uuid.generate(settings.id);
-
-        var lock = new Accessory(settings.name, lockUUID);
-
-        setInfos(lock, settings);
-
-        lock.on('identify', function (paired, callback) {
-            identify(settings, paired, callback);
-        });
+        var lock = newAccessory(settings);
 
         lock.addService(Service.LockMechanism, settings.name)
             .getCharacteristic(Characteristic.LockTargetState)
@@ -490,9 +472,7 @@ var createAccessory = {
     },
     MotionSensor: function createAccessory_MotionSensor(settings) {
 
-        var sensorUUID = uuid.generate(settings.id);
-        var sensor = new Accessory(settings.name, sensorUUID);
-        setInfos(sensor, settings);
+        var sensor = newAccessory(settings);
 
         sensor.addService(Service.MotionSensor, settings.name)
             .getCharacteristic(Characteristic.MotionDetected)
@@ -539,9 +519,7 @@ var createAccessory = {
     },
     SmokeSensor: function createAccessory_SmokeSensor(settings) {
 
-        var switchUUID = uuid.generate(settings.id);
-        var sensor = new Accessory(settings.name, switchUUID);
-        setInfos(sensor, settings);
+        var sensor = newAccessory(settings);
 
         sensor.addService(Service.SmokeSensor, settings.name)
             .getCharacteristic(Characteristic.SmokeDetected)
@@ -590,9 +568,7 @@ var createAccessory = {
 
     },
     Speaker: function createAccessory_Speaker(settings) {
-        var speakerUUID = uuid.generate(settings.id);
-        var speaker = new Accessory(settings.name, speakerUUID);
-        setInfos(speaker, settings);
+        var speaker = newAccessory(settings);
 
         speaker.addService(Service.Speaker, settings.name)
             .getCharacteristic(Characteristic.Mute)
@@ -661,9 +637,7 @@ var createAccessory = {
     },
     Switch: function createAccessory_Switch(settings) {
 
-        var switchUUID = uuid.generate(settings.id);
-        var sw = new Accessory(settings.name, switchUUID);
-        setInfos(sw, settings);
+        var sw = newAccessory(settings);
 
         sw.addService(Service.Switch, settings.name)
             .getCharacteristic(Characteristic.On)
@@ -694,9 +668,7 @@ var createAccessory = {
     },
     TemperatureSensor: function createAccessory_TemperatureSensor(settings) {
 
-        var sensorUUID = uuid.generate(settings.id);
-        var sensor = new Accessory(settings.name, sensorUUID);
-        setInfos(sensor, settings);
+        var sensor = newAccessory(settings);
 
         mqttSub(settings.topic.statusTemperature, function (val) {
             log.debug('> hap set', settings.name, 'CurrentTemperature', mqttStatus[settings.topic.statusTemperature]);
@@ -716,13 +688,7 @@ var createAccessory = {
     },
     Thermostat: function createAccessory_Thermostat(settings) {
 
-        var thermoUUID = uuid.generate(settings.id);
-        var thermo = new Accessory(settings.name, thermoUUID);
-        setInfos(thermo, settings);
-
-        thermo.on('identify', function (paired, callback) {
-            identify(settings, paired, callback);
-        });
+        var thermo = newAccessory(settings);
 
         thermo.addService(Service.Thermostat, settings.name)
             .getCharacteristic(Characteristic.TargetHeatingCoolingState)
@@ -869,9 +835,7 @@ var createAccessory = {
 
     },
     WindowCovering: function createAccessory_WindowCovering(settings) {
-        var shutterUUID = uuid.generate(settings.id);
-        var shutter = new Accessory(settings.name, shutterUUID);
-        setInfos(shutter, settings);
+        var shutter = newAccessory(settings);
 
         shutter.addService(Service.WindowCovering, settings.name)
             .getCharacteristic(Characteristic.TargetPosition)
@@ -959,7 +923,7 @@ Object.keys(mapping).forEach(function (id) {
     var a = mapping[id];
     a.id = id;
     if (createAccessory[a.service]) {
-        log.debug('bridge.addBridgedAccessory ' + a.service + ' ' + a.name);
+        log.debug('addBridgedAccessory ' + a.service + ' ' + a.name);
         bridge.addBridgedAccessory(createAccessory[a.service](a));
         accCount++;
     } else {

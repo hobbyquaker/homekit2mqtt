@@ -87,11 +87,13 @@ topic
 
 * statusCarbonDioxideDetected
 * statusLowBattery (optional)
+* identify (optional)
 
 payload
 
 * onCarbonDioxideDetected
 * onLowBattery (optional)
+* identify (optional)
 
 #### ContactSensor
 
@@ -149,6 +151,11 @@ payload
 topic
 
 * statusAmbientLightLevel
+* identify (optional)
+
+payload
+
+* identify (optional)
 
 
 #### LockMechanism
@@ -187,12 +194,13 @@ topic
 
 * statusSmokeSensorState
 * statusLowBattery (optional)
+* identify (optional)
 
 payload
 
 * onSmokeDetected
 * onLowBattery (optional)
-
+* identify (optional)
 
 #### Speaker
 
@@ -202,13 +210,14 @@ topic
 * setVolume (optional)
 * statusMute (optional)
 * statusVolume (optional)
+* identify (optional)
 
 payload
 
 * muteTrue 
 * muteFalse
 * volumeFactor (optional)
-
+* identify (optional)
 
 #### Switch
 
