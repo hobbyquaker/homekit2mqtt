@@ -270,8 +270,10 @@ var createAccessory = {
             .on('set', function (value, callback) {
                 log.debug('< hap set', settings.name, 'On', value);
                 var on = value ? settings.payload.onTrue : settings.payload.onFalse;
-                log.debug('> mqtt', settings.topic.setOn, on);
-                mqttPub(settings.topic.setOn, on);
+                if (!on || mqttStatus[settings.topic.statusOn] === settings.payload.onFalse) {
+                    log.debug('> mqtt', settings.topic.setOn, on);
+                    mqttPub(settings.topic.setOn, on);
+                }
                 callback();
             });
 
