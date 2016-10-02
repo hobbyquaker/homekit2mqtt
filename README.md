@@ -18,14 +18,12 @@ I'm using this to control a multitude of MQTT-connected "Things" in my home auto
 
  * Linux or macOS
  * [Node.js](https://nodejs.org) 4.3.2 or higher
- * If you're running on Linux, you'll need to make sure you have the `libavahi-compat-libdnssd-dev` package installed.
+ * If you're running on Linux, you'll need to make sure you have the `libavahi-compat-libdnssd-dev` package installed:
+   `sudo apt-get install libavahi-compat-libdnssd-dev`
 
 
-
-```
-sudo npm install -g homekit2mqtt
-homekit2mqtt -v debug
-```  
+`sudo npm install -g homekit2mqtt --unsafe-perm`   
+`homekit2mqtt -v debug`  
 
 ## Command Line Options
 
