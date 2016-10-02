@@ -22,10 +22,10 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "hap-nodejs": "0.4.8",
+    "hap-nodejs": "0.4.11",
     "mqtt": "^2.0.0",
     "yalm": "^4.0.2",
-    "yargs": "^5.0.0"
+    "yargs": "^6.0.0"
   },
   "devDependencies": {},
   "repository": {
