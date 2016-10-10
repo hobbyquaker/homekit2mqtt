@@ -269,10 +269,10 @@ var createAccessory = {
             .getCharacteristic(Characteristic.On)
             .on('set', function (value, callback) {
                 log.debug('< hap set', settings.name, 'On', value);
-                var on = value ? settings.payload.onTrue : settings.payload.onFalse;
-                if (!on || mqttStatus[settings.topic.statusOn] === settings.payload.onFalse) {
-                    log.debug('> mqtt', settings.topic.setOn, on);
-                    mqttPub(settings.topic.setOn, on);
+                var payload = value ? settings.payload.onTrue : settings.payload.onFalse;
+                if (mqttStatus[settings.topic.statusOn] !== payload) {
+                    log.debug('> mqtt', settings.topic.setOn, payload);
+                    mqttPub(settings.topic.setOn, payload);
                 }
                 callback();
             });
