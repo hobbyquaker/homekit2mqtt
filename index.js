@@ -839,7 +839,6 @@ var createAccessory = {
     WindowCovering: function createAccessory_WindowCovering(settings) {
         var shutter = newAccessory(settings);
 
-        
         shutter.addService(Service.WindowCovering, settings.name)
             .getCharacteristic(Characteristic.TargetPosition)
             .on('set', function (value, callback) {
@@ -918,7 +917,6 @@ var createAccessory = {
 
                 });
         }
-        
 
         return shutter;
 
