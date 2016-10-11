@@ -281,7 +281,8 @@ topic
 payload
 
 * targetPositionFactor (default: `1`)
-* currentPositionFactor (default: `1`)
+* currentPositionFactor (default: `1`) 
+* roundTarget (boolean)
 * positionStatusIncreasing
 * positionStatusDecreasing
 * identify (optional)
