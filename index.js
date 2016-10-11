@@ -839,12 +839,13 @@ var createAccessory = {
     WindowCovering: function createAccessory_WindowCovering(settings) {
         var shutter = newAccessory(settings);
 
+        
         shutter.addService(Service.WindowCovering, settings.name)
             .getCharacteristic(Characteristic.TargetPosition)
             .on('set', function (value, callback) {
                 log.debug('< hap set', settings.name, 'TargetPosition', value);
                 value = (value * (settings.payload.targetPositionFactor || 1));
-                if (setting.payload.roundTarget === true) {
+                if (settings.payload.roundTarget === true) {
                     value = Math.round(value);
                 }
                 log.debug('> mqtt', settings.topic.setTargetPosition, value);
@@ -917,6 +918,7 @@ var createAccessory = {
 
                 });
         }
+        
 
         return shutter;
 
