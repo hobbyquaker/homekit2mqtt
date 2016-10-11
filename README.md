@@ -282,7 +282,7 @@ payload
 
 * targetPositionFactor (default: `1`)
 * currentPositionFactor (default: `1`) 
-* roundTarget (boolean)
+* roundTarget (boolean, optional)
 * positionStatusIncreasing
 * positionStatusDecreasing
 * identify (optional)
