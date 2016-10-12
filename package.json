@@ -1,6 +1,6 @@
 {
   "name": "homekit2mqtt",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "HomeKit to MQTT bridge",
   "main": "index.js",
   "bin": {
@@ -18,7 +18,9 @@
     "Anders Eriksson https://github.com/tvillingett",
     "zino4u https://github.com/zino4u",
     "tedstriker https://github.com/tedstriker",
-    "Erik Granlund https://github.com/erikgranlund"
+    "Erik Granlund https://github.com/erikgranlund",
+    "ddrd https://github.com/ddrd",
+    "Michael Teeuw https://github.com/MichMich"
   ],
   "license": "MIT",
   "dependencies": {
