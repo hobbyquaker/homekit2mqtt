@@ -125,7 +125,7 @@ payload
 topic
 
 * setOn
-* statusTemperature
+* statusOn (optional)
 * setBrightness (optional)
 * statusBrightness (optional)
 * setHue (optional)
@@ -282,8 +282,8 @@ payload
 
 * targetPositionFactor (default: `1`)
 * currentPositionFactor (default: `1`)
-* positionStatusIncreasing
-* positionStatusDecreasing
+* positionStatusIncreasing (optional)
+* positionStatusDecreasing (optional)
 * identify (optional)
 
 
