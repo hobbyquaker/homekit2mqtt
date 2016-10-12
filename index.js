@@ -271,8 +271,12 @@ var createAccessory = {
                 log.debug('< hap set', settings.name, 'On', value);
                 var payload = value ? settings.payload.onTrue : settings.payload.onFalse;
                 if (mqttStatus[settings.topic.statusOn] !== payload) {
-                    log.debug('> mqtt', settings.topic.setOn, payload);
-                    mqttPub(settings.topic.setOn, payload);
+                    // this should prevent flickering while dimming lights that use
+                    // the same topic for On and Brightness, e.g. Homematic Dimmers
+                    if ((settings.topic.setOn !== settings.topic.setBrightness) || !value) {
+                        log.debug('> mqtt', settings.topic.setOn, payload);
+                        mqttPub(settings.topic.setOn, payload);
+                    }
                 }
                 callback();
             });
