@@ -848,6 +848,9 @@ var createAccessory = {
             .on('set', function (value, callback) {
                 log.debug('< hap set', settings.name, 'TargetPosition', value);
                 value = (value * (settings.payload.targetPositionFactor || 1));
+                if (settings.payload.roundTarget === true) {
+                    value = Math.round(value);
+                }
                 log.debug('> mqtt', settings.topic.setTargetPosition, value);
                 mqttPub(settings.topic.setTargetPosition, value);
                 callback();
