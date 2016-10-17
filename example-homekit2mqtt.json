@@ -141,8 +141,8 @@
       "statusLock": "LockMechanism/status"
     },
     "payload": {
-      "lockUnsecured": "1",
-      "lockSecured": "0"
+      "lockUnsecured": 1,
+      "lockSecured": 0
     },
     "manufacturer": "Generic",
     "model": "LockMechanism"
