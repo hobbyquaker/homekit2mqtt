@@ -276,6 +276,12 @@ var createAccessory = {
                     if ((settings.topic.setOn !== settings.topic.setBrightness) || !value) {
                         log.debug('> mqtt', settings.topic.setOn, payload);
                         mqttPub(settings.topic.setOn, payload);
+                    } else {
+                        setTimeout(function () {
+                            if (!mqttStatus[settings.topic.statusBrightness]) {
+                                mqttPub(settings.topic.setOn, payload);
+                            }
+                        }, 300)
                     }
                 }
                 callback();
