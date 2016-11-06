@@ -93,6 +93,7 @@ payload
 * onLowBattery (optional)
 * identify (optional)
 
+
 #### CarbonMonoxideSensor
 
 topic
@@ -121,6 +122,7 @@ payload
 * onContactDetected
 * onLowBattery (optional)
 * identify (optional)
+
 
 #### Doorbell
 
@@ -248,6 +250,21 @@ payload
 * identify (optional)
 
 
+#### OccupancySensor
+
+topic
+
+* statusOccupancyDetected
+* statusLowBattery (optional)
+* identify (optional)
+
+payload
+
+* onOccupancyDetected
+* onLowBattery
+* identify (optional)
+
+
 #### StatelessProgrammableSwitch
 
 topic
@@ -290,6 +307,7 @@ payload
 * muteFalse
 * volumeFactor (optional)
 * identify (optional)
+
 
 #### Switch
 
@@ -368,7 +386,5 @@ payload
 MIT © [Sebastian Raff](https://github.com/hobbyquaker)
 
 
-
 [mit-badge]: https://img.shields.io/badge/License-MIT-blue.svg?style=flat
 [mit-url]: LICENSE
-
