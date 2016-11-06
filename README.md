@@ -93,7 +93,7 @@ payload
 * onLowBattery (optional)
 * identify (optional)
 
-#### CarbonDioxideSensor
+#### CarbonMonoxideSensor
 
 topic
 
