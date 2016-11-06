@@ -191,6 +191,56 @@ var createAccessory = {
         return sensor;
 
     },
+    CarbonMonoxideSensor: function createAccessory_CarbonMonoxideSensor(settings) {
+
+        var sensor = newAccessory(settings);
+
+        sensor.addService(Service.CarbonMonoxideSensor, settings.name)
+            .getCharacteristic(Characteristic.CarbonMonoxideDetected)
+            .on('get', function (callback) {
+                log.debug('< hap get', settings.name, 'CarbonMonoxideDetected');
+                var contact = mqttStatus[settings.topic.statusCarbonMonoxideDetected] === settings.payload.onCarbonMonoxideDetected
+                    ? Characteristic.CarbonMonoxideDetected.CO_LEVELS_ABNORMAL
+                    : Characteristic.CarbonMonoxideDetected.CO_LEVELS_NORMAL;
+
+                log.debug('> hap re_get', settings.name, 'CarbonMonoxideDetected', contact);
+                callback(null, contact);
+            });
+
+        mqttSub(settings.topic.statusCarbonMonoxideDetected, function (val) {
+            var contact = val === settings.payload.onCarbonMonoxideDetected
+                ? Characteristic.CarbonMonoxideDetected.CO_LEVELS_ABNORMAL
+                : Characteristic.CarbonMonoxideDetected.CO_LEVELS_NORMAL;
+            log.debug('> hap set', settings.name, 'CarbonMonoxideDetected', contact);
+            sensor.getService(Service.CarbonMonoxideSensor)
+                .setCharacteristic(Characteristic.CarbonMonoxideDetected, contact)
+        });
+
+        if (settings.topic.statusLowBattery) {
+            sensor.getService(Service.CarbonMonoxideSensor, settings.name)
+                .getCharacteristic(Characteristic.StatusLowBattery)
+                .on('get', function (callback) {
+                    log.debug('< hap get', settings.name, 'StatusLowBattery');
+                    var bat = mqttStatus[settings.topic.statusLowBattery] === settings.payload.onLowBattery
+                        ? Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW
+                        : Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
+                    log.debug('> hap re_get', settings.name, 'StatusLowBattery', bat);
+                    callback(null, bat);
+                });
+
+            mqttSub(settings.topic.statusLowBattery, function (val) {
+                var bat = val === settings.payload.onLowBattery
+                    ? Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW
+                    : Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
+                log.debug('> hap set', settings.name, 'StatusLowBattery', bat);
+                sensor.getService(Service.CarbonMonoxideSensor)
+                    .setCharacteristic(Characteristic.StatusLowBattery, bat)
+            });
+        }
+
+        return sensor;
+
+    },
     ContactSensor: function createAccessory_ContactSensor(settings) {
 
         var sensor = newAccessory(settings);
@@ -240,6 +290,20 @@ var createAccessory = {
 
         return sensor;
 
+    },
+    Doorbell: function createAccessory_Doorbell (settings) {
+        var sw = newAccessory(settings);
+
+        sw.addService(Service.Doorbell, settings.name);
+
+        mqttSub(settings.topic.statusEvent, function () {
+            log.debug('> hap set', settings.name, 'ProgrammableSwitchEvent', 1);
+            sw.getService(Service.Doorbell)
+                .setCharacteristic(Characteristic.ProgrammableSwitchEvent, 1)
+        });
+
+
+        return sw;
     },
     GarageDoorOpener: function createAccessory_GarageDoorOpener(settings) {
         /* Required Characteristics
@@ -808,6 +872,20 @@ var createAccessory = {
         return speaker;
 
     },
+    StatelessProgrammableSwitch: function createAccessory_StatelessProgrammableSwitch (settings) {
+        var sw = newAccessory(settings);
+
+        sw.addService(Service.StatelessProgrammableSwitch, settings.name);
+
+        mqttSub(settings.topic.statusEvent, function () {
+            log.debug('> hap set', settings.name, 'ProgrammableSwitchEvent', 1);
+            sw.getService(Service.StatelessProgrammableSwitch)
+                .setCharacteristic(Characteristic.ProgrammableSwitchEvent, 1)
+        });
+
+
+        return sw;
+    },
     Switch: function createAccessory_Switch(settings) {
 
         var sw = newAccessory(settings);
@@ -819,7 +897,6 @@ var createAccessory = {
                 var on = value ? settings.payload.onTrue : settings.payload.onFalse;
                 log.debug('> mqtt', settings.topic.setOn, on);
                 mqttPub(settings.topic.setOn, on);
-                powerOn = value;
                 callback();
             });
 

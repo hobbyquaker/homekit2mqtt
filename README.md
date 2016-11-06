@@ -93,6 +93,21 @@ payload
 * onLowBattery (optional)
 * identify (optional)
 
+#### CarbonDioxideSensor
+
+topic
+
+* statusCarbonMonoxideDetected
+* statusLowBattery (optional)
+* identify (optional)
+
+payload
+
+* onCarbonMonoxideDetected
+* onLowBattery (optional)
+* identify (optional)
+
+
 #### ContactSensor
 
 topic
@@ -105,6 +120,17 @@ payload
 
 * onContactDetected
 * onLowBattery (optional)
+* identify (optional)
+
+#### Doorbell
+
+topic
+
+* statusEvent
+* identify (optional)
+
+payload
+
 * identify (optional)
 
 
@@ -204,6 +230,18 @@ payload
 
 * onMotionDetected
 * onLowBattery
+* identify (optional)
+
+
+#### StatelessProgrammableSwitch
+
+topic
+
+* statusEvent
+* identify (optional)
+
+payload
+
 * identify (optional)
 
 
