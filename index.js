@@ -43,8 +43,8 @@ mqtt.on('close', function () {
     }
 });
 
-mqtt.on('error', function () {
-    log.error('mqtt error ' + config.url);
+mqtt.on('error', function (err) {
+    log.error('mqtt error ' + err);
 });
 
 mqtt.on('message', function (topic, payload) {
@@ -99,7 +99,7 @@ function mqttPub(topic, payload, options) {
         payload = '' + payload;
     }
     mqtt.publish(topic, payload, options, function (err) {
-        log.error('mqtt publish error', err);
+        log.error('mqtt publish error ' + err);
     });
 }
 
