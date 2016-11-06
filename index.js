@@ -28,6 +28,14 @@ mqtt.on('connect', function () {
     //mqtt.subscribe(config.name + '/set/#');
 });
 
+mqtt.on('reconnect', function () {
+    log.info('mqtt reconnect');
+});
+
+mqtt.on('offline', function () {
+    log.info('mqtt offline');
+});
+
 mqtt.on('close', function () {
     if (mqttConnected) {
         mqttConnected = false;
@@ -66,6 +74,7 @@ mqtt.on('message', function (topic, payload) {
     }
 });
 
+
 // MQTT subscribe function that provides a callback on incoming messages.
 // Not meant to be used with wildcards!
 function mqttSub(topic, callback) {
@@ -89,7 +98,9 @@ function mqttPub(topic, payload, options) {
     } else if (typeof payload !== 'string') {
         payload = '' + payload;
     }
-    mqtt.publish(topic, payload, options);
+    mqtt.publish(topic, payload, options, function (err) {
+        log.error('mqtt publish error', err);
+    });
 }
 
 var pkgHap =            require('./node_modules/hap-nodejs/package.json');
