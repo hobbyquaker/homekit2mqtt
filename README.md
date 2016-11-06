@@ -167,6 +167,21 @@ payload
 * identify (optional)
 
 
+#### LeakSensor
+
+topic
+
+* statusLeakDetected
+* statusLowBattery (optional)
+* identify (optional)
+
+payload
+
+* onLeakDetected
+* onLowBattery (optional)
+* identify (optional)
+
+
 #### Lightbulb
 
 topic
