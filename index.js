@@ -99,7 +99,7 @@ function mqttPub(topic, payload, options) {
         payload = '' + payload;
     }
     mqtt.publish(topic, payload, options, function (err) {
-        log.error('mqtt publish error ' + err);
+        iff (err) log.error('mqtt publish error ' + err);
     });
 }
 
