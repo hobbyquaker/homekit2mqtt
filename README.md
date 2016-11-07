@@ -246,7 +246,7 @@ topic
 payload
 
 * onMotionDetected
-* onLowBattery
+* onLowBattery (optional)
 * identify (optional)
 
 
@@ -261,7 +261,7 @@ topic
 payload
 
 * onOccupancyDetected
-* onLowBattery
+* onLowBattery (optional)
 * identify (optional)
 
 
