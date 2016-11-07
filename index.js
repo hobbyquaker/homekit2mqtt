@@ -16,6 +16,7 @@ var mqttStatus = {};
 var mqttCallbacks = {};
 
 var mqttConnected;
+var bridgeListening;
 
 log.info('mqtt trying to connect', config.url);
 var mqtt = Mqtt.connect(config.url, {will: {topic: config.name + '/connected', payload: '0', retain: true}});
@@ -23,7 +24,7 @@ var mqtt = Mqtt.connect(config.url, {will: {topic: config.name + '/connected', p
 mqtt.on('connect', function () {
     mqttConnected = true;
     log.info('mqtt connected ' + config.url);
-    mqtt.publish(config.name + '/connected', '2', {retain: true});
+    if (!bridgeListening) mqtt.publish(config.name + '/connected', '1', {retain: true});
     //log.info('mqtt subscribe', config.name + '/set/#');
     //mqtt.subscribe(config.name + '/set/#');
 });
@@ -1311,6 +1312,8 @@ bridge.publish({
 
 // Listen for bridge identification event
 bridge._server.on('listening', function () {
+    bridgeListening = true;
+    mqtt.publish(config.name + '/connected', '2', {retain: true});
     log('hap Bridge listening on port', config.port);
 });
 
