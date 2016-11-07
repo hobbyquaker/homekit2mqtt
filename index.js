@@ -11,11 +11,10 @@ var Mqtt = require('mqtt');
 log.info('loading HomeKit to MQTT mapping file ' + config.mapfile);
 var mapping = require(config.mapfile);
 
-
-var mqttStatus = {};
-var mqttCallbacks = {};
-
+var mqttStatus = {};        // Holds the payloads of the last-received message, key is the topic
+var mqttCallbacks = {};     // Holds an array of subscription callbacks, key is the topic (used in the function mqttSub)
 var mqttConnected;
+
 var bridgeListening;
 
 log.info('mqtt trying to connect', config.url);
@@ -25,8 +24,6 @@ mqtt.on('connect', function () {
     mqttConnected = true;
     log.info('mqtt connected ' + config.url);
     if (!bridgeListening) mqtt.publish(config.name + '/connected', '1', {retain: true});
-    //log.info('mqtt subscribe', config.name + '/set/#');
-    //mqtt.subscribe(config.name + '/set/#');
 });
 
 mqtt.on('reconnect', function () {
@@ -53,9 +50,13 @@ mqtt.on('message', function (topic, payload) {
     var state;
     try {
         // todo - check for json objects in a less nasty way ;)
-        if (payload.indexOf('{') === -1) throw 'not an object';
+        if (payload.indexOf('{') === -1) throw 'not an object'; // We have no use for arrays here.
+        // We got an Object - let's hope it follows mqtt-smarthome architecture and has an attribute "val"
+        // see https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/Architecture.md
         state = JSON.parse(payload).val;
     } catch (e) {
+        // Nasty type guessing.
+        // Do we really need to cast the strings "true" and "false" to bool?
         if (payload === 'true') {
             state = true;
         } else if (payload === 'false') {
@@ -93,6 +94,7 @@ function mqttSub(topic, callback) {
     }
 }
 
+// MQTT publish function, checks for valid topic and converts payload to string in a meaningful manner.
 function mqttPub(topic, payload, options) {
     if (!topic || (typeof topic !== 'string')) {
         log.error('mqttPub invalid topic', topic);
@@ -121,6 +123,8 @@ var Characteristic =    HAP.Characteristic;
 if (config.storagedir) {
     log.info('using directory ' + config.storagedir + ' for persistent storage');
 }
+// If storagedir is not set it uses HAP-Nodejs default
+// (usually /usr/local/lib/node_modules/homekit2mqtt/node_modules/node-persist/persist)
 HAP.init(config.storagedir || undefined);
 
 // Create Bridge which will host all Accessories
