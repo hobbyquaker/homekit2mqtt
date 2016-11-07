@@ -357,7 +357,7 @@ payload
 
 config
 
-* TemperatureDisplayUnits
+* TemperatureDisplayUnits (`0` = Celsius, `1` = Fahrenheit)
 
 
 #### WindowCovering
