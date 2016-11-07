@@ -93,14 +93,18 @@ function mqttSub(topic, callback) {
 }
 
 function mqttPub(topic, payload, options) {
-    if (typeof payload === 'object') {
-        payload = JSON.stringify(payload);
-    } else if (typeof payload !== 'string') {
-        payload = '' + payload;
+    if (!topic || (typeof topic !== 'string')) {
+        log.error('mqttPub invalid topic', topic);
+    } else {
+        if (typeof payload === 'object') {
+            payload = JSON.stringify(payload);
+        } else if (typeof payload !== 'string') {
+            payload = '' + payload;
+        }
+        mqtt.publish(topic, payload, options, function (err) {
+            if (err) log.error('mqtt publish error ' + err);
+        });
     }
-    mqtt.publish(topic, payload, options, function (err) {
-        iff (err) log.error('mqtt publish error ' + err);
-    });
 }
 
 var pkgHap =            require('./node_modules/hap-nodejs/package.json');
@@ -334,12 +338,12 @@ var createAccessory = {
                 log.debug('< hap set', settings.name, 'TargetDoorState', value);
                 if (value == Characteristic.TargetDoorState.OPEN) {
                     log.debug('> mqtt publish', settings.topic.setDoor, settings.payload.doorOpen);
-                    mqttPub(settings.topic.setLock, settings.payload.doorOpen);
+                    mqttPub(settings.topic.setDoor, settings.payload.doorOpen);
 
                     callback();
                 } else if (value == Characteristic.TargetDoorState.CLOSED) {
                     log.debug('> mqtt publish', settings.topic.setDoor, settings.payload.doorClosed);
-                    mqttPub(settings.topic.setLock, settings.payload.doorClosed);
+                    mqttPub(settings.topic.setDoor, settings.payload.doorClosed);
 
                     callback();
                 }
