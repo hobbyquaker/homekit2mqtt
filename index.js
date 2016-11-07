@@ -10,9 +10,6 @@ log(pkg.name + ' ' + pkg.version + ' starting');
 var fs =                require('fs');
 var Mqtt =              require('mqtt');
 
-log.info('loading HomeKit to MQTT mapping file ' + config.mapfile);
-var mapping =           require(config.mapfile);
-
 var mqttStatus = {};        // Holds the payloads of the last-received message, keys are the topics.
 var mqttCallbacks = {};     // Holds arrays of subscription callbacks, keys are the topics.
 var mqttConnected;
@@ -169,6 +166,9 @@ fs.readdirSync('./accessories').forEach(function (file) {
     createAccessory[acc] = require('./accessories/' + file)({mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic});
 });
 
+// Load and create all accessories
+log.info('loading HomeKit to MQTT mapping file ' + config.mapfile);
+var mapping = require(config.mapfile);
 var accCount = 0;
 Object.keys(mapping).forEach(function (id) {
     var a = mapping[id];
@@ -191,24 +191,20 @@ bridge.publish({
     category: Accessory.Categories.OTHER
 });
 
-// Listen for bridge identification event
 bridge._server.on('listening', function () {
     bridgeListening = true;
     mqtt.publish(config.name + '/connected', '2', {retain: true});
     log('hap Bridge listening on port', config.port);
 });
 
-// Listen for bridge pair event
 bridge._server.on('pair', function (username, publickey) {
     log('hap paired', username);
 });
 
-// Listen for bridge unpair event
 bridge._server.on('unpair', function (username) {
     log('hap unpaired', username);
 });
 
-// Listen for bridge verify event
 bridge._server.on('verify', function () {
     log('hap verify');
 });
