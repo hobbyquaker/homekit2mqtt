@@ -161,9 +161,9 @@ function newAccessory(settings) {
 
 var createAccessory = {};
 // import createAccessory functions
-fs.readdirSync('./accessories').forEach(function (file) {
+fs.readdirSync(__dirname + '/accessories').forEach(function (file) {
     var acc = file.replace(/\.js$/, '');
-    createAccessory[acc] = require('./accessories/' + file)({mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic});
+    createAccessory[acc] = require(__dirname + '/accessories/' + file)({mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic});
 });
 
 // Load and create all accessories
