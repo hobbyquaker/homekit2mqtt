@@ -4,9 +4,9 @@ module.exports = function (iface) {
 
     return function createAccessory_LockMechanism(settings) {
 
-        var lock = newAccessory(settings);
+        var acc = newAccessory(settings);
 
-        lock.addService(Service.LockMechanism, settings.name)
+        acc.addService(Service.LockMechanism, settings.name)
             .getCharacteristic(Characteristic.LockTargetState)
             .on('set', function(value, callback) {
                 log.debug('< hap set', settings.name, 'LockTargetState', value);
@@ -29,33 +29,27 @@ module.exports = function (iface) {
 
         if (settings.topic.statusLock) {
 
-            var initial = true;
-
             mqttSub(settings.topic.statusLock, function (val) {
                 if (val === settings.payload.lockSecured) {
                     log.debug('> hap set', settings.name, 'LockCurrentState.SECURED');
-                    lock.getService(Service.LockMechanism)
+                    acc.getService(Service.LockMechanism)
                         .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED);
-                    if (initial) {
-                        log.debug('> hap set', settings.name, 'LockTargetState.SECURED');
-                        lock.getService(Service.LockMechanism)
-                            .setCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.SECURED);
-                        initial = false;
-                    }
+                    log.debug('> hap update', settings.name, 'LockTargetState.SECURED');
+                    acc.getService(Service.LockMechanism)
+                        .updateCharacteristic(Characteristic.LockTargetState, Characteristic.LockCurrentState.SECURED);
+
                 } else {
                     log.debug('> hap set', settings.name, 'LockCurrentState.UNSECURED');
-                    lock.getService(Service.LockMechanism)
+                    acc.getService(Service.LockMechanism)
                         .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.UNSECURED);
-                    if (initial) {
-                        log.debug('> hap set', settings.name, 'LockTargetState.UNSECURED');
-                        lock.getService(Service.LockMechanism)
-                            .setCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.UNSECURED);
-                        initial = false;
-                    }
+                    log.debug('> hap update', settings.name, 'LockTargetState.UNSECURED');
+                    acc.getService(Service.LockMechanism)
+                        .updateCharacteristic(Characteristic.LockTargetState, Characteristic.LockCurrentState.UNSECURED);
+
                 }
             });
 
-            lock.getService(Service.LockMechanism)
+            acc.getService(Service.LockMechanism)
                 .getCharacteristic(Characteristic.LockCurrentState)
                 .on('get', function(callback) {
                     log.debug('< hap get', settings.name, 'LockCurrentState');
@@ -70,7 +64,7 @@ module.exports = function (iface) {
                 });
         }
 
-        return lock;
+        return acc;
     }
 
 };
