@@ -24,7 +24,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "hap-nodejs": "0.4.13",
+    "hap-nodejs": "0.4.15",
     "mqtt": "^2.0.1",
     "yalm": "^4.0.2",
     "yargs": "^6.3.0"
