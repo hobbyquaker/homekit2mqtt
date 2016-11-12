@@ -265,6 +265,23 @@ payload
 * identify (optional)
 
 
+#### Outlet
+
+topic
+
+* setOn
+* statusOutletInUse 
+* statusOn (optional)
+* identify (optional)
+
+payload
+
+* onTrue
+* onFalse
+* onOutletInUse
+* identify (optional)
+
+
 #### SecuritySystem
 
 topic 
