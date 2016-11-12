@@ -6,10 +6,10 @@ module.exports = function (iface) {
 
         var sensor = newAccessory(settings);
 
-        mqttSub(settings.topic.statusAmbientLightLevel, function(val) {
+        mqttSub(settings.topic.statusAmbientLightLevel, function (val) {
             log.debug('> hap set', settings.name, 'CurrentAmbientLightLevel', mqttStatus[settings.topic.statusAmbientLightLevel]);
             sensor.getService(Service.LightSensor)
-                .setCharacteristic(Characteristic.CurrentAmbientLightLevel,val);
+                .setCharacteristic(Characteristic.CurrentAmbientLightLevel, val);
         });
 
         sensor.addService(Service.LightSensor)
