@@ -32,7 +32,6 @@ module.exports = function (iface) {
             });
 
         if (settings.topic.statusDoor) {
-            var initial = true;
 
             /* TODO opening/closing/stopped
              Characteristic.CurrentDoorState.OPEN = 0;
@@ -47,22 +46,19 @@ module.exports = function (iface) {
                     log.debug('> hap set', settings.name, 'CurrentDoorState.CLOSED');
                     garage.getService(Service.GarageDoorOpener)
                         .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.CLOSED);
-                    if (initial) {
-                        log.debug('> hap set', settings.name, 'CurrentDoorState.CLOSED');
-                        garage.getService(Service.GarageDoorOpener)
-                            .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.CLOSED);
-                        initial = false;
-                    }
+                    log.debug('> hap update', settings.name, 'TargetDoorState.CLOSED');
+                    garage.getService(Service.GarageDoorOpener)
+                        .updateCharacteristic(Characteristic.TargetDoorState, Characteristic.CurrentDoorState.CLOSED);
+
+
                 } else {
                     log.debug('> hap set', settings.name, 'CurrentDoorState.OPEN');
                     garage.getService(Service.GarageDoorOpener)
                         .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.OPEN);
-                    if (initial) {
-                        log.debug('> hap set', settings.name, 'CurrentDoorState.OPEN');
-                        garage.getService(Service.GarageDoorOpener)
-                            .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.OPEN);
-                        initial = false;
-                    }
+                    log.debug('> hap update', settings.name, 'TargetDoorState.OPEN');
+                    garage.getService(Service.GarageDoorOpener)
+                        .updateCharacteristic(Characteristic.TargetDoorState, Characteristic.CurrentDoorState.OPEN);
+
                 }
             });
 
@@ -118,29 +114,24 @@ module.exports = function (iface) {
 
         if (settings.topic.statusLock) {
 
-            var initialLock = true;
 
             mqttSub(settings.topic.statusLock, function (val) {
                 if (val === settings.payload.lockSecured) {
                     log.debug('> hap set', settings.name, 'LockCurrentState.SECURED');
                     garage.getService(Service.LockMechanism)
                         .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED);
-                    if (initialLock) {
-                        log.debug('> hap set', settings.name, 'LockTargetState.SECURED');
-                        garage.getService(Service.LockMechanism)
-                            .setCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.SECURED);
-                        initialLock = false;
-                    }
+                    log.debug('> hap update', settings.name, 'LockCurrentState.SECURED');
+                    garage.getService(Service.LockMechanism)
+                        .updateCharacteristic(Characteristic.LockTargetState, Characteristic.LockCurrentState.SECURED);
+
                 } else {
                     log.debug('> hap set', settings.name, 'LockCurrentState.UNSECURED');
                     garage.getService(Service.LockMechanism)
                         .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.UNSECURED);
-                    if (initialLock) {
-                        log.debug('> hap set', settings.name, 'LockTargetState.UNSECURED');
-                        garage.getService(Service.LockMechanism)
-                            .setCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.UNSECURED);
-                        initialLock = false;
-                    }
+                    log.debug('> hap update', settings.name, 'LockCurrentState.UNSECURED');
+                    garage.getService(Service.LockMechanism)
+                        .updateCharacteristic(Characteristic.LockTargetState, Characteristic.LockCurrentState.UNSECURED);
+
                 }
             });
 
