@@ -265,6 +265,24 @@ payload
 * identify (optional)
 
 
+#### SecuritySystem
+
+topic 
+
+* setSecuritySystemTargetState
+* statusSecuritySystemCurrentState
+
+payload
+
+*can't be configured, uses following numbers*
+
+* 0 STAY_ARM
+* 1 AWAY_ARM
+* 2 NIGHT_ARM
+* 3 DISARM(ED)
+* 4 ALARM_TRIGGERED
+
+
 #### StatelessProgrammableSwitch
 
 topic
