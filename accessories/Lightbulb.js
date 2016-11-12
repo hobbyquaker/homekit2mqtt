@@ -28,12 +28,11 @@ module.exports = function (iface) {
                 callback();
             });
 
-        //update status in homekit if exernal status gets updated
         mqttSub(settings.topic.statusOn, function (val) {
-            log.debug('> hap set', settings.name, 'On', mqttStatus[settings.topic.statusOn]);
+            var on = mqttStatus[settings.topic.statusOn] !== settings.payload.onFalse;
+            log.debug('> hap set', settings.name, 'On', on);
             light.getService(Service.Lightbulb)
-                .getCharacteristic(Characteristic.On)
-                .getValue();
+                .updateCharacteristic(Characteristic.On, on);
         });
 
         light.getService(Service.Lightbulb)
@@ -58,12 +57,11 @@ module.exports = function (iface) {
 
             if (settings.topic.statusBrightness) {
 
-                //update status in homekit if exernal status gets updated
-                mqttSub(settings.topic.statusBrightness, function(val) {
-                    log.debug('> hap set', settings.name, 'Brightness', mqttStatus[settings.topic.statusBrightness]);
+                mqttSub(settings.topic.statusBrightness, function (val) {
+                    var brightness = (mqttStatus[settings.topic.statusBrightness] / (settings.payload.brightnessFactor || 1)) || 0;
+                    log.debug('> hap update', settings.name, 'Brightness', brightness);
                     light.getService(Service.Lightbulb)
-                        .getCharacteristic(Characteristic.Brightness)
-                        .getValue();
+                        .updateCharacteristic(Characteristic.Brightness, brightness);
                 });
 
                 light.getService(Service.Lightbulb)
@@ -71,7 +69,6 @@ module.exports = function (iface) {
                     .on('get', function (callback) {
                         log.debug('< hap get', settings.name, 'Brightness');
                         var brightness = (mqttStatus[settings.topic.statusBrightness] / (settings.payload.brightnessFactor || 1)) || 0;
-
                         log.debug('> hap re_get', settings.name, 'Brightness', brightness);
                         callback(null, brightness);
                     });
@@ -90,13 +87,17 @@ module.exports = function (iface) {
                     callback();
                 });
             if (settings.topic.statusHue) {
-                mqttSub(settings.topic.statusHue);
+                mqttSub(settings.topic.statusHue, function (val) {
+                    var hue = (val / (settings.payload.hueFactor || 1)) || 0;
+                    log.debug('> hap update', settings.name, 'Hue', hue);
+                    light.getService(Service.Lightbulb)
+                        .updateCharacteristic(Characteristic.Hue, hue)
+                });
                 light.getService(Service.Lightbulb)
                     .getCharacteristic(Characteristic.Hue)
                     .on('get', function (callback) {
                         log.debug('< hap get', settings.name, 'Hue');
                         var hue = (mqttStatus[settings.topic.statusHue] / (settings.payload.hueFactor || 1)) || 0;
-
                         log.debug('> hap re_get', settings.name, 'Hue', hue);
                         callback(null, hue);
                     });
@@ -115,20 +116,23 @@ module.exports = function (iface) {
                     callback();
                 });
             if (settings.topic.statusSaturation) {
-                mqttSub(settings.topic.statusSaturation);
+                mqttSub(settings.topic.statusSaturation, function (val) {
+                    var sat = (val / (settings.payload.saturationFactor || 1)) || 0;
+                    log.debug('> hap update', settings.name, 'Saturation', sat);
+                    light.getService(Service.Lightbulb)
+                        .updateCharacteristic(Characteristic.Saturation, sat)
+                });
                 light.getService(Service.Lightbulb)
                     .getCharacteristic(Characteristic.Saturation)
                     .on('get', function (callback) {
                         log.debug('< hap get', settings.name, 'Saturation');
                         var saturation = (mqttStatus[settings.topic.statusSaturation] / (settings.payload.saturationFactor || 1)) || 0;
-
                         log.debug('> hap re_get', settings.name, 'Saturation', saturation);
                         callback(null, saturation);
                     });
 
             }
         }
-
 
         return light;
 
