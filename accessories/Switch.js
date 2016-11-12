@@ -17,7 +17,13 @@ module.exports = function (iface) {
             });
 
         if (settings.topic.statusOn) {
-            mqttSub(settings.topic.statusOn);
+            mqttSub(settings.topic.statusOn, function (val) {
+                log.debug('< mqtt', settings.topic.statusOn, val);
+                var on = mqttStatus[settings.topic.statusOn] === settings.payload.onTrue;
+                log.debug('> hap update', settings.name, 'On', on);
+                sw.getService(Service.Switch)
+                    .updateCharacteristic(Characteristic.On, on);
+            });
             sw.getService(Service.Switch)
                 .getCharacteristic(Characteristic.On)
                 .on('get', function (callback) {
