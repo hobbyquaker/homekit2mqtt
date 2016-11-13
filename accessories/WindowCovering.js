@@ -19,7 +19,12 @@ module.exports = function (iface) {
             });
 
         if (settings.topic.statusTargetPosition) {
-            mqttSub(settings.topic.statusTargetPosition);
+            mqttSub(settings.topic.statusTargetPosition, function (val) {
+                var position = mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1);
+                log.debug('> hap update', settings.name, 'TargetPosition', position);
+                shutter.getService(Service.WindowCovering)
+                    .updateCharacteristic(Characteristic.TargetPosition)
+            });
             shutter.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.TargetPosition)
                 .on('get', function (callback) {
@@ -75,7 +80,7 @@ module.exports = function (iface) {
                         callback(null, Characteristic.PositionState.DECREASING);
                     } else if (mqttStatus[settings.topic.statusPositionState] === settings.payload.positionStatusIncreasing) {
                         log.debug('> hap re_get', settings.name, 'PositionState.INCREASING');
-                        callback(null,  Characteristic.PositionState.INCREASING);
+                        callback(null, Characteristic.PositionState.INCREASING);
                     } else {
                         log.debug('> hap re_get', settings.name, 'PositionState.STOPPED');
                         callback(null, Characteristic.PositionState.STOPPED);
