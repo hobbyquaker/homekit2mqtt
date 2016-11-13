@@ -416,6 +416,25 @@ config
 * TemperatureDisplayUnits (`0` = Celsius, `1` = Fahrenheit)
 
 
+#### Window
+
+topic
+
+* setTargetPosition
+* statusTargetPosition (optional)
+* statusCurrentPosition (optional)
+* statusPositionState (optional)
+* statusObstruction (optional)
+* identify (optional)
+
+payload
+
+* positionStatusIncreasing (optional)
+* positionStatusDecreasing (optional)
+* onObstructionDetected (optional)
+* identify (optional)
+
+
 #### WindowCovering
 
 topic
