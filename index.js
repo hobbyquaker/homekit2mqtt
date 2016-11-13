@@ -161,11 +161,12 @@ function newAccessory(settings) {
 }
 
 var createAccessory = {};
-// import createAccessory functions
-fs.readdirSync(__dirname + '/accessories').forEach(function (file) {
-    var acc = file.replace(/\.js$/, '');
-    createAccessory[acc] = require(__dirname + '/accessories/' + file)({mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic});
-});
+
+function loadAccessory(acc) {
+    var file = 'accessories/' + acc + '.js';
+    log.debug('loading', file);
+    createAccessory[acc] = require(__dirname + '/' + file)({mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic});
+}
 
 // Load and create all accessories
 log.info('loading HomeKit to MQTT mapping file ' + config.mapfile);
@@ -174,13 +175,12 @@ var accCount = 0;
 Object.keys(mapping).forEach(function (id) {
     var a = mapping[id];
     a.id = id;
-    if (createAccessory[a.service]) {
-        log.debug('addBridgedAccessory ' + a.service + ' ' + a.name);
-        bridge.addBridgedAccessory(createAccessory[a.service](a));
-        accCount++;
-    } else {
-        log.err('unknown service', a.service, id);
+    if (!createAccessory[a.service]) {
+        loadAccessory(a.service);
     }
+    log.debug('addBridgedAccessory ' + a.service + ' ' + a.name);
+    bridge.addBridgedAccessory(createAccessory[a.service](a));
+    accCount++;
 });
 log.info('hap created', accCount, 'Accessories');
 
