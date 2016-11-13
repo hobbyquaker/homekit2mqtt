@@ -136,6 +136,27 @@ payload
 * identify (optional)
 
 
+#### Fan
+
+topic
+
+* setOn
+* statusOn (optional)
+* setRotationSpeed (optional)
+* statusRotationSpeed (optional)
+* setRotationDirection (optional)
+* statusRotationDirection (optional)
+* identify (optional)
+
+payload
+
+* onTrue (optional, default true)
+* onFalse (optional, default false)
+* rotationSpeedFactor (optional, default 1)
+* rotationDirectionClockwise (optional, default 0)
+* rotationDirectionCounterClockwise (optional, default 1)
+* identify (optional)
+
 #### GarageDoorOpener
 
 topic
