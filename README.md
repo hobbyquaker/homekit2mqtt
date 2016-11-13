@@ -275,6 +275,24 @@ payload
 * identify (optional)
 
 
+#### Microphone
+
+topic 
+
+* setMute
+* setVolume (optional)
+* statusMute (optional)
+* statusVolume (optional)
+* identify (optional)
+
+payload
+
+* muteTrue 
+* muteFalse
+* volumeFactor (optional)
+* identify (optional)
+
+
 #### MotionSensor
 
 topic
