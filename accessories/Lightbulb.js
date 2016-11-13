@@ -58,7 +58,7 @@ module.exports = function (iface) {
             if (settings.topic.statusBrightness) {
 
                 mqttSub(settings.topic.statusBrightness, function (val) {
-                    var brightness = (mqttStatus[settings.topic.statusBrightness] / (settings.payload.brightnessFactor || 1)) || 0;
+                    var brightness = Math.round(mqttStatus[settings.topic.statusBrightness] / (settings.payload.brightnessFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Brightness', brightness);
                     light.getService(Service.Lightbulb)
                         .updateCharacteristic(Characteristic.Brightness, brightness);
@@ -68,7 +68,7 @@ module.exports = function (iface) {
                     .getCharacteristic(Characteristic.Brightness)
                     .on('get', function (callback) {
                         log.debug('< hap get', settings.name, 'Brightness');
-                        var brightness = (mqttStatus[settings.topic.statusBrightness] / (settings.payload.brightnessFactor || 1)) || 0;
+                        var brightness = Math.round(mqttStatus[settings.topic.statusBrightness] / (settings.payload.brightnessFactor || 1)) || 0;
                         log.debug('> hap re_get', settings.name, 'Brightness', brightness);
                         callback(null, brightness);
                     });
