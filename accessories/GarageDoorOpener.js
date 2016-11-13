@@ -77,16 +77,16 @@ module.exports = function (iface) {
                 });
         }
 
-        garage.getService(Service.GarageDoorOpener, settings.name)
-            .getCharacteristic(Characteristic.ObstructionDetected)
-            .on('get', function (callback) {
-                log.debug('< hap get', settings.name, 'ObstructionDetected');
-                var obstruction = mqttStatus[settings.topic.statusObstruction] === settings.payload.onObstructionDetected;
-                log.debug('> hap re_get', settings.name, 'ObstructionDetected', obstruction);
-                callback(null, obstruction);
-            });
-
         if (settings.topic.statusObstruction) {
+            garage.getService(Service.GarageDoorOpener, settings.name)
+                .getCharacteristic(Characteristic.ObstructionDetected)
+                .on('get', function (callback) {
+                    log.debug('< hap get', settings.name, 'ObstructionDetected');
+                    var obstruction = mqttStatus[settings.topic.statusObstruction] === settings.payload.onObstructionDetected;
+                    log.debug('> hap re_get', settings.name, 'ObstructionDetected', obstruction);
+                    callback(null, obstruction);
+                });
+
             mqttSub(settings.topic.statusObstruction, function (val) {
                 var obstruction = val === settings.payload.onObstructionDetected;
                 log.debug('> hap set', settings.name, 'ObstructionDetected', obstruction);
