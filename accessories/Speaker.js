@@ -17,9 +17,10 @@ module.exports = function (iface) {
 
         //update status in homekit if exernal status gets updated
         mqttSub(settings.topic.statusMute, function (val) {
-            log.debug('> hap update', settings.name, 'Mute', val);
+            var mute = val !== settings.topic.muteFalse;
+            log.debug('> hap update', settings.name, 'Mute', mute);
             speaker.getService(Service.Speaker)
-                .updateCharacteristic(Characteristic.Mute, val);
+                .updateCharacteristic(Characteristic.Mute, mute);
         });
 
         speaker.getService(Service.Speaker)
