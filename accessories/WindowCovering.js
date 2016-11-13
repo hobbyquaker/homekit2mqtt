@@ -10,9 +10,7 @@ module.exports = function (iface) {
             .on('set', function (value, callback) {
                 log.debug('< hap set', settings.name, 'TargetPosition', value);
                 value = (value * (settings.payload.targetPositionFactor || 1));
-                if (settings.payload.roundTarget === true) {
-                    value = Math.round(value);
-                }
+                if (settings.payload.roundTarget)  value = Math.round(value);
                 log.debug('> mqtt', settings.topic.setTargetPosition, value);
                 mqttPub(settings.topic.setTargetPosition, value);
                 callback();
@@ -20,16 +18,17 @@ module.exports = function (iface) {
 
         if (settings.topic.statusTargetPosition) {
             mqttSub(settings.topic.statusTargetPosition, function (val) {
-                var position = mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1);
+                var position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
                 log.debug('> hap update', settings.name, 'TargetPosition', position);
                 shutter.getService(Service.WindowCovering)
-                    .updateCharacteristic(Characteristic.TargetPosition)
+                    .updateCharacteristic(Characteristic.TargetPosition, position);
+
             });
             shutter.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.TargetPosition)
                 .on('get', function (callback) {
                     log.debug('< hap get', settings.name, 'TargetPosition');
-                    var position = mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1);
+                    var position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
                     log.debug('> hap re_get', settings.name, 'TargetPosition', position);
                     callback(null, position);
                 });
@@ -37,18 +36,17 @@ module.exports = function (iface) {
 
         if (settings.topic.statusCurrentPosition) {
             mqttSub(settings.topic.statusCurrentPosition, function (val) {
-                var pos = val / (settings.payload.currentPositionFactor || 1);
+                var pos = Math.round(val / (settings.payload.currentPositionFactor || 1));
                 log.debug('> hap set', settings.name, 'CurrentPosition', pos);
                 shutter.getService(Service.WindowCovering)
-                    .setCharacteristic(Characteristic.CurrentPosition, pos)
+                    .setCharacteristic(Characteristic.CurrentPosition, pos);
 
             });
             shutter.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.CurrentPosition)
                 .on('get', function (callback) {
                     log.debug('< hap get', settings.name, 'CurrentPosition');
-                    var position = mqttStatus[settings.topic.statusCurrentPosition] / (settings.payload.currentPositionFactor || 1);
-
+                    var position = Math.round(mqttStatus[settings.topic.statusCurrentPosition] / (settings.payload.currentPositionFactor || 1));
                     log.debug('> hap re_get', settings.name, 'CurrentPosition', position);
                     callback(null, position);
                 });
@@ -64,10 +62,6 @@ module.exports = function (iface) {
                     state = Characteristic.PositionState.INCREASING;
                     log.debug('> hap set', settings.name, 'PositionState.INCREASING');
                 } else {
-                    var position = mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1);
-                    log.debug('> hap update', settings.name, 'TargetPosition', position);
-                    shutter.getService(Service.WindowCovering)
-                        .updateCharacteristic(Characteristic.TargetPosition, position);
                     state = Characteristic.PositionState.STOPPED;
                     log.debug('> hap set', settings.name, 'PositionState.STOPPED');
                 }
