@@ -153,6 +153,7 @@ function newAccessory(settings) {
             .setCharacteristic(Characteristic.Model, settings.model || "-" )
             .setCharacteristic(Characteristic.SerialNumber, settings.serial || "-");
     }
+    if (!settings.payload) settings.payload = {};
     acc.on('identify', function (paired, callback) {
         identify(settings, paired, callback);
     });
