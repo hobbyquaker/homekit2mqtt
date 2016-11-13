@@ -56,19 +56,23 @@ module.exports = function (iface) {
 
         if (settings.topic.statusPositionStatus) {
             mqttSub(settings.topic.statusPositionStatus, function (val) {
-                var pos;
+                var state;
                 if (val === settings.payload.positionStatusDecreasing) {
-                    pos = Characteristic.PositionState.DECREASING;
+                    state = Characteristic.PositionState.DECREASING;
                     log.debug('> hap set', settings.name, 'PositionState.DECREASING');
                 } else if (val === settings.payload.positionStatusIncreasing) {
-                    pos = Characteristic.PositionState.INCREASING;
+                    state = Characteristic.PositionState.INCREASING;
                     log.debug('> hap set', settings.name, 'PositionState.INCREASING');
                 } else {
-                    pos = Characteristic.PositionState.STOPPED;
+                    var position = mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1);
+                    log.debug('> hap update', settings.name, 'TargetPosition', position);
+                    shutter.getService(Service.WindowCovering)
+                        .updateCharacteristic(Characteristic.TargetPosition, position);
+                    state = Characteristic.PositionState.STOPPED;
                     log.debug('> hap set', settings.name, 'PositionState.STOPPED');
                 }
                 shutter.getService(Service.WindowCovering)
-                    .setCharacteristic(Characteristic.PositionState, pos);
+                    .setCharacteristic(Characteristic.PositionState, state);
             });
             shutter.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.PositionState)
