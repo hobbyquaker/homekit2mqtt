@@ -124,6 +124,25 @@ payload
 * identify (optional)
 
 
+#### Door
+
+topic
+
+* setTargetPosition
+* statusTargetPosition (optional)
+* statusCurrentPosition (optional)
+* statusPositionState (optional)
+* statusObstruction (optional)
+* identify (optional)
+
+payload
+
+* positionStatusIncreasing (optional)
+* positionStatusDecreasing (optional)
+* onObstructionDetected (optional)
+* identify (optional)
+
+
 #### Doorbell
 
 topic
