@@ -69,10 +69,10 @@ module.exports = function (iface) {
 
                     if (mqttStatus[settings.topic.statusDoor] === settings.payload.doorClosed) {
                         log.debug('> hap re_get', settings.name, 'CurrentDoorState.CLOSED');
-                        callback(null, Characteristic.CurrentDoorState.SECURED);
+                        callback(null, Characteristic.CurrentDoorState.CLOSED);
                     } else {
                         log.debug('> hap re_get', settings.name, 'CurrentDoorState.OPEN');
-                        callback(null, Characteristic.CurrentDoorState.UNSECURED);
+                        callback(null, Characteristic.CurrentDoorState.OPEN);
                     }
                 });
         }
