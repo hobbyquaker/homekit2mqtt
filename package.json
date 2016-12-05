@@ -1,6 +1,6 @@
 {
   "name": "homekit2mqtt",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "HomeKit to MQTT bridge",
   "main": "index.js",
   "bin": {
@@ -8,7 +8,7 @@
   },
   "preferGlobal": true,
   "engines": {
-    "node": ">=5.10.0"
+    "node": ">=6.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,9 +25,9 @@
   "license": "MIT",
   "dependencies": {
     "hap-nodejs": "0.4.17",
-    "mqtt": "^2.0.1",
+    "mqtt": "^2.1.3",
     "yalm": "^4.0.2",
-    "yargs": "^6.3.0"
+    "yargs": "^6.5.0"
   },
   "devDependencies": {},
   "repository": {
