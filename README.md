@@ -17,7 +17,7 @@ I'm using this to control a multitude of MQTT-connected "Things" in my home auto
 **Prerequisites:** 
 
  * Debian, Ubuntu, Raspbian or macOS
- * [Node.js](https://nodejs.org) 5.10 or higher
+ * [Node.js](https://nodejs.org) 6 or higher
  * If you're running on Linux, you'll need to make sure you have the libavahi-compat-libdnssd-dev package installed:
    `sudo apt-get install libavahi-compat-libdnssd-dev`
 
