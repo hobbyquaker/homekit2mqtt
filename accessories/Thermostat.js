@@ -16,7 +16,7 @@ module.exports = function (iface) {
                         value = settings.payload.TargetHeatingCoolingState[value];
                     }
                     log.debug('> mqtt', settings.topic.setTargetHeatingCoolingState, value);
-                    mqttPub(settings.topic.setTargetHeatingCoolingState, value);
+                    mqttPub(settings.topic.setTargetHeatingCoolingState, value, settings.mqttPublishOptions);
                 }
                 callback();
             });
@@ -26,7 +26,7 @@ module.exports = function (iface) {
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'TargetTemperature', value);
                 log.debug('> mqtt', settings.topic.setTargetTemperature, value);
-                mqttPub(settings.topic.setTargetTemperature, value);
+                mqttPub(settings.topic.setTargetTemperature, value, settings.mqttPublishOptions);
                 callback();
             });
 
