@@ -43,7 +43,11 @@ module.exports = function (iface) {
                 callback(null, settings.config.TemperatureDisplayUnits);
             });
 
-        mqttSub(settings.topic.statusCurrentTemperature);
+        mqttSub(settings.topic.statusCurrentTemperature, function (val) {
+            log.debug('> hap set', settings.name, 'CurrentTemperature', mqttStatus[settings.topic.statusCurrentTemperature]);
+            thermo.getService(Service.Thermostat)
+                .setCharacteristic(Characteristic.CurrentTemperature, val);
+        });
         thermo.getService(Service.Thermostat)
             .getCharacteristic(Characteristic.CurrentTemperature)
             .on('get', callback => {
@@ -61,12 +65,11 @@ module.exports = function (iface) {
                 callback(null, state);
             });
 
-        // Thermo.getService(Service.Thermostat).setCharacteristic(Characteristic.CurrentHeatingCoolingState, 3);
-
-        mqttSub(settings.topic.statusTargetTemperature/* , function (val) {
-         thermo.getService(Service.Thermostat)
-         .setCharacteristic(Characteristic.TargetTemperature, val);
-         } */);
+        mqttSub(settings.topic.statusTargetTemperature, val => {
+            log.debug('> hap set', settings.name, 'TargetTemperature', val);
+            thermo.getService(Service.Thermostat)
+                .updateCharacteristic(Characteristic.TargetTemperature, val);
+        });
 
         thermo.getService(Service.Thermostat)
             .getCharacteristic(Characteristic.TargetTemperature)
