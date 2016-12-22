@@ -11,6 +11,10 @@ module.exports = function (iface) {
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'TargetHeatingCoolingState', value);
                 if (settings.topic.setTargetHeatingCoolingState) {
+                    if (settings.payload && settings.payload.TargetHeatingCoolingState &&
+                        settings.payload.TargetHeatingCoolingState[String(value)] !== undefined) {
+                        value = settings.payload.TargetHeatingCoolingState[value];
+                    }
                     log.debug('> mqtt', settings.topic.setTargetHeatingCoolingState, value);
                     mqttPub(settings.topic.setTargetHeatingCoolingState, value);
                 }
