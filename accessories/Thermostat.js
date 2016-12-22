@@ -50,6 +50,7 @@ module.exports = function (iface) {
         });
         thermo.getService(Service.Thermostat)
             .getCharacteristic(Characteristic.CurrentTemperature)
+            .setProps((settings.props || {}).CurrentTemperature || {})
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'CurrentTemperature');
                 log.debug('> hap re_get', settings.name, 'CurrentTemperature', mqttStatus[settings.topic.statusCurrentTemperature]);
@@ -73,6 +74,7 @@ module.exports = function (iface) {
 
         thermo.getService(Service.Thermostat)
             .getCharacteristic(Characteristic.TargetTemperature)
+            .setProps((settings.props || {}).TargetTemperature || {})
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'TargetTemperature');
                 log.debug('> hap re_get', settings.name, 'TargetTemperature', mqttStatus[settings.topic.statusTargetTemperature]);

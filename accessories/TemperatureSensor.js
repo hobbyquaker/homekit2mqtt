@@ -14,7 +14,7 @@ module.exports = function (iface) {
 
         sensor.addService(Service.TemperatureSensor)
             .getCharacteristic(Characteristic.CurrentTemperature)
-            .setProps({minValue: -100})
+            .setProps((settings.props || {}).CurrentTemperature || {minValue: -100})
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'TemperatureSensor', 'CurrentTemperature');
                 log.debug('> hap re_get', settings.name, mqttStatus[settings.topic.statusTemperature]);
