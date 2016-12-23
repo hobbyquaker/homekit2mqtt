@@ -50,7 +50,7 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusCurrentTemperature, function (val) {
             log.debug('> hap set', settings.name, 'CurrentTemperature', mqttStatus[settings.topic.statusCurrentTemperature]);
             thermo.getService(Service.Thermostat)
-                .setCharacteristic(Characteristic.CurrentTemperature, val);
+                .updateCharacteristic(Characteristic.CurrentTemperature, val);
         });
         thermo.getService(Service.Thermostat)
             .getCharacteristic(Characteristic.CurrentTemperature)
@@ -63,8 +63,9 @@ module.exports = function (iface) {
 
         if (settings.topic.statusCurrentHeatingCoolingState) {
             mqttSub(settings.topic.statusCurrentHeatingCoolingState, val => {
+                log.debug('> hap set', settings.name, 'CurrentHeatingCoolingState', val);
                 thermo.getService(Service.Thermostat)
-                    .setCharacteristic(Characteristic.CurrentHeatingCoolingState, val);
+                    .updateCharacteristic(Characteristic.CurrentHeatingCoolingState, val);
             });
             thermo.getService(Service.Thermostat)
                 .getCharacteristic(Characteristic.CurrentHeatingCoolingState)
@@ -93,7 +94,7 @@ module.exports = function (iface) {
         if (settings.topic.statusCurrentRelativeHumidity) {
             mqttSub(settings.topic.statusCurrentRelativeHumidity, val => {
                 thermo.getService(Service.Thermostat)
-                    .setCharacteristic(Characteristic.CurrentRelativeHumidity, val);
+                    .updateCharacteristic(Characteristic.CurrentRelativeHumidity, val);
             });
             thermo.getService(Service.Thermostat)
                 .getCharacteristic(Characteristic.CurrentRelativeHumidity)

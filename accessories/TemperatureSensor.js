@@ -9,7 +9,7 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusTemperature, val => {
             log.debug('> hap set', settings.name, 'CurrentTemperature', mqttStatus[settings.topic.statusTemperature]);
             sensor.getService(Service.TemperatureSensor)
-                .setCharacteristic(Characteristic.CurrentTemperature, val);
+                .updateCharacteristic(Characteristic.CurrentTemperature, val);
         });
 
         sensor.addService(Service.TemperatureSensor)
