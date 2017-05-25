@@ -1,5 +1,7 @@
+/* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
+
 module.exports = function (iface) {
-    var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     /*
     // Required Characteristics
@@ -14,11 +16,11 @@ module.exports = function (iface) {
     */
 
     return function createAccessory_Door(settings) {
-        var acc = newAccessory(settings);
+        const acc = newAccessory(settings);
 
         acc.addService(Service.Door, settings.name)
             .getCharacteristic(Characteristic.TargetPosition)
-            .on('set', function (value, callback) {
+            .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'TargetPosition', value);
                 value *= (settings.payload.targetPositionFactor || 1);
                 if (settings.payload.roundTarget) {
@@ -30,42 +32,42 @@ module.exports = function (iface) {
             });
 
         if (settings.topic.statusTargetPosition) {
-            mqttSub(settings.topic.statusTargetPosition, function (val) {
-                var position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
+            mqttSub(settings.topic.statusTargetPosition, val => {
+                const position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
                 log.debug('> hap update', settings.name, 'TargetPosition', position);
                 acc.getService(Service.Door)
                     .updateCharacteristic(Characteristic.TargetPosition, position);
             });
             acc.getService(Service.Door)
                 .getCharacteristic(Characteristic.TargetPosition)
-                .on('get', function (callback) {
+                .on('get', callback => {
                     log.debug('< hap get', settings.name, 'TargetPosition');
-                    var position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
+                    const position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
                     log.debug('> hap re_get', settings.name, 'TargetPosition', position);
                     callback(null, position);
                 });
         }
 
         if (settings.topic.statusCurrentPosition) {
-            mqttSub(settings.topic.statusCurrentPosition, function (val) {
-                var pos = Math.round(val / (settings.payload.currentPositionFactor || 1));
+            mqttSub(settings.topic.statusCurrentPosition, val => {
+                const pos = Math.round(val / (settings.payload.currentPositionFactor || 1));
                 log.debug('> hap set', settings.name, 'CurrentPosition', pos);
                 acc.getService(Service.Door)
                     .setCharacteristic(Characteristic.CurrentPosition, pos);
             });
             acc.getService(Service.Door)
                 .getCharacteristic(Characteristic.CurrentPosition)
-                .on('get', function (callback) {
+                .on('get', callback => {
                     log.debug('< hap get', settings.name, 'CurrentPosition');
-                    var position = Math.round(mqttStatus[settings.topic.statusCurrentPosition] / (settings.payload.currentPositionFactor || 1));
+                    const position = Math.round(mqttStatus[settings.topic.statusCurrentPosition] / (settings.payload.currentPositionFactor || 1));
                     log.debug('> hap re_get', settings.name, 'CurrentPosition', position);
                     callback(null, position);
                 });
         }
 
         if (settings.topic.statusPositionStatus) {
-            mqttSub(settings.topic.statusPositionStatus, function (val) {
-                var state;
+            mqttSub(settings.topic.statusPositionStatus, val => {
+                let state;
                 if (val === settings.payload.positionStatusDecreasing) {
                     state = Characteristic.PositionState.DECREASING;
                     log.debug('> hap set', settings.name, 'PositionState.DECREASING');
@@ -81,7 +83,7 @@ module.exports = function (iface) {
             });
             acc.getService(Service.Door)
                 .getCharacteristic(Characteristic.PositionState)
-                .on('get', function (callback) {
+                .on('get', callback => {
                     log.debug('< hap get', settings.name, 'PositionState');
 
                     if (mqttStatus[settings.topic.statusPositionState] === settings.payload.positionStatusDecreasing) {
@@ -100,15 +102,15 @@ module.exports = function (iface) {
         if (settings.topic.statusObstruction) {
             acc.getService(Service.GarageDoorOpener, settings.name)
                 .getCharacteristic(Characteristic.ObstructionDetected)
-                .on('get', function (callback) {
+                .on('get', callback => {
                     log.debug('< hap get', settings.name, 'ObstructionDetected');
-                    var obstruction = mqttStatus[settings.topic.statusObstruction] === settings.payload.onObstructionDetected;
+                    const obstruction = mqttStatus[settings.topic.statusObstruction] === settings.payload.onObstructionDetected;
                     log.debug('> hap re_get', settings.name, 'ObstructionDetected', obstruction);
                     callback(null, obstruction);
                 });
 
-            mqttSub(settings.topic.statusObstruction, function (val) {
-                var obstruction = val === settings.payload.onObstructionDetected;
+            mqttSub(settings.topic.statusObstruction, val => {
+                const obstruction = val === settings.payload.onObstructionDetected;
                 log.debug('> hap set', settings.name, 'ObstructionDetected', obstruction);
                 acc.getService(Service.GarageDoorOpener)
                     .setCharacteristic(Characteristic.ObstructionDetected, obstruction);

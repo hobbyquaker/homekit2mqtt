@@ -1,10 +1,12 @@
+/* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
+
 module.exports = function (iface) {
     // TODO
 
-    var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     return function createAccessory_SecuritySystem(settings) {
-        var acc = newAccessory(settings);
+        const acc = newAccessory(settings);
         // Required Characteristics
 
         /*
@@ -19,7 +21,7 @@ module.exports = function (iface) {
 
         acc.addService(Service.SecuritySystem, settings.name)
             .getCharacteristic(Characteristic.SecuritySystemTargetState)
-            .on('set', function (value, callback) {
+            .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'SecuritySystemTargetState', value);
                 /*
                 If (value === Characteristic.SecuritySystemTargetState.STAY_ARM) {
@@ -47,7 +49,7 @@ module.exports = function (iface) {
          Characteristic.SecuritySystemCurrentState.ALARM_TRIGGERED = 4;
          */
 
-        mqttSub(settings.topic.statusSecuritySystemCurrentState, function (val) {
+        mqttSub(settings.topic.statusSecuritySystemCurrentState, val => {
             /*
             If (val === settings.payload.STAY_ARM) {
                 val = Characteristic.SecuritySystemCurrentState.STAY_ARM;
@@ -72,9 +74,9 @@ module.exports = function (iface) {
 
         acc.getService(Service.SecuritySystem)
             .getCharacteristic(Characteristic.SecuritySystemCurrentState)
-            .on('get', function (callback) {
+            .on('get', callback => {
                 log.debug('< hap get', settings.name, 'SecuritySystemCurrentState');
-                var val = mqttStatus[settings.topic.statusSecuritySystemCurrentState];
+                const val = mqttStatus[settings.topic.statusSecuritySystemCurrentState];
                 /*
                 If (val === settings.payload.STAY_ARM) {
                     val = Characteristic.SecuritySystemCurrentState.STAY_ARM;

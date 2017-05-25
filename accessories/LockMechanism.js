@@ -1,20 +1,22 @@
+/* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
+
 module.exports = function (iface) {
-    var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     return function createAccessory_LockMechanism(settings) {
-        var acc = newAccessory(settings);
+        const acc = newAccessory(settings);
 
         acc.addService(Service.LockMechanism, settings.name)
             .getCharacteristic(Characteristic.LockTargetState)
-            .on('set', function (value, callback) {
+            .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'LockTargetState', value);
 
-                if (value == Characteristic.LockTargetState.UNSECURED) {
+                if (value === Characteristic.LockTargetState.UNSECURED) {
                     log.debug('> mqtt publish', settings.topic.setLock, settings.payload.lockUnsecured);
                     mqttPub(settings.topic.setLock, settings.payload.lockUnsecured);
 
                     callback();
-                } else if (value == Characteristic.LockTargetState.SECURED) {
+                } else if (value === Characteristic.LockTargetState.SECURED) {
                     log.debug('> mqtt publish', settings.topic.setLock, settings.payload.lockSecured);
                     mqttPub(settings.topic.setLock, settings.payload.lockSecured);
 
@@ -23,7 +25,7 @@ module.exports = function (iface) {
             });
 
         if (settings.topic.statusLock) {
-            mqttSub(settings.topic.statusLock, function (val) {
+            mqttSub(settings.topic.statusLock, val => {
                 if (val === settings.payload.lockSecured) {
                     log.debug('> hap set', settings.name, 'LockCurrentState.SECURED');
                     acc.getService(Service.LockMechanism)
@@ -43,7 +45,7 @@ module.exports = function (iface) {
 
             acc.getService(Service.LockMechanism)
                 .getCharacteristic(Characteristic.LockCurrentState)
-                .on('get', function (callback) {
+                .on('get', callback => {
                     log.debug('< hap get', settings.name, 'LockCurrentState');
 
                     if (mqttStatus[settings.topic.statusLock] === settings.payload.lockSecured) {

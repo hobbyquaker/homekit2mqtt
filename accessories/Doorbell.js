@@ -1,12 +1,14 @@
+/* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
+
 module.exports = function (iface) {
-    var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     return function createAccessory_Doorbell(settings) {
-        var sw = newAccessory(settings);
+        const sw = newAccessory(settings);
 
         sw.addService(Service.Doorbell, settings.name);
 
-        mqttSub(settings.topic.statusEvent, function () {
+        mqttSub(settings.topic.statusEvent, () => {
             log.debug('> hap set', settings.name, 'ProgrammableSwitchEvent', 1);
             sw.getService(Service.Doorbell)
                 .setCharacteristic(Characteristic.ProgrammableSwitchEvent, 1);
