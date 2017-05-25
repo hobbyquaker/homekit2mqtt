@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - '6'
+before_install:
+  - sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa -y
+  - sudo apt-get update -y
+  - sudo apt-get install mosquitto -y
+  - sudo apt-get install libavahi-compat-libdnssd-dev -y
