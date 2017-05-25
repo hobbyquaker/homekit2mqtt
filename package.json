@@ -24,14 +24,14 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "hap-nodejs": "0.4.17",
-    "mqtt": "^2.1.3",
+    "hap-nodejs": "0.4.25",
+    "mqtt": "^2.7.2",
     "yalm": "^4.0.2",
-    "yargs": "^6.5.0"
+    "yargs": "^8.0.1"
   },
   "devDependencies": {
-    "camo-purge": "^1.0.2",
-    "xo": "^0.18.2"
+    "camo-purge": "latest",
+    "xo": "latest"
   },
   "repository": {
     "type": "git",
