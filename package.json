@@ -7,6 +7,7 @@
     "homekit2mqtt": "./index.js"
   },
   "preferGlobal": true,
+  "engineStrict" : true,
   "engines": {
     "node": ">=6.0.0"
   },
