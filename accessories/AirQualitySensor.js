@@ -1,5 +1,4 @@
 module.exports = function (iface) {
-
     var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     /*
@@ -23,9 +22,7 @@ module.exports = function (iface) {
      Characteristic.AirQuality.POOR = 5;
      */
 
-
     return function createAccessory_AirQualitySensor(settings) {
         throw new Error('Service AirQualitySensor not yet implemented');
     };
-
 };

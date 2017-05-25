@@ -1,14 +1,12 @@
 module.exports = function (iface) {
-
     var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     return function createAccessory_Outlet(settings) {
-
         var acc = newAccessory(settings);
 
         acc.addService(Service.Outlet, settings.name)
             .getCharacteristic(Characteristic.On)
-            .on('set', function(value, callback) {
+            .on('set', function (value, callback) {
                 log.debug('< hap set', settings.name, 'On', value);
                 var on = value ? settings.payload.onTrue : settings.payload.onFalse;
                 log.debug('> mqtt', settings.topic.setOn, on);
@@ -41,11 +39,9 @@ module.exports = function (iface) {
             var inUse = val === settings.payload.onOutletInUse;
             log.debug('> hap set', settings.name, 'OutletInUse', inUse);
             acc.getService(Service.Outlet)
-                .setCharacteristic(Characteristic.OutletInUse, inUse)
+                .setCharacteristic(Characteristic.OutletInUse, inUse);
         });
 
         return acc;
-
-    }
-
+    };
 };

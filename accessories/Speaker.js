@@ -1,5 +1,4 @@
 module.exports = function (iface) {
-
     var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     return function createAccessory_Speaker(settings) {
@@ -15,7 +14,7 @@ module.exports = function (iface) {
                 callback();
             });
 
-        //update status in homekit if exernal status gets updated
+        // Update status in homekit if exernal status gets updated
         mqttSub(settings.topic.statusMute, function (val) {
             var mute = val !== settings.topic.muteFalse;
             log.debug('> hap update', settings.name, 'Mute', mute);
@@ -44,8 +43,7 @@ module.exports = function (iface) {
                 });
 
             if (settings.topic.statusVolume) {
-
-                mqttSub(settings.topic.statusVolume, function(val) {
+                mqttSub(settings.topic.statusVolume, function (val) {
                     log.debug('> hap update', settings.name, 'Volume', mqttStatus[settings.topic.statusVolume]);
                     speaker.getService(Service.Speaker)
                         .updateCharacteristic(Characteristic.Volume);
@@ -60,13 +58,9 @@ module.exports = function (iface) {
                         log.debug('> hap re_get', settings.name, 'Volume', volume);
                         callback(null, volume);
                     });
-
             }
-
         }
 
         return speaker;
-
-    }
-
+    };
 };

@@ -1,9 +1,7 @@
 module.exports = function (iface) {
-
     var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     return function createAccessory_Lightbulb(settings) {
-
         var light = newAccessory(settings);
 
         light.addService(Service.Lightbulb, settings.name)
@@ -12,7 +10,7 @@ module.exports = function (iface) {
                 log.debug('< hap set', settings.name, 'On', value);
                 var payload = value ? settings.payload.onTrue : settings.payload.onFalse;
                 if (mqttStatus[settings.topic.statusOn] !== payload) {
-                    // this should prevent flickering while dimming lights that use
+                    // This should prevent flickering while dimming lights that use
                     // the same topic for On and Brightness, e.g. Homematic Dimmers
                     if ((settings.topic.setOn !== settings.topic.setBrightness) || !value) {
                         log.debug('> mqtt', settings.topic.setOn, payload);
@@ -22,7 +20,7 @@ module.exports = function (iface) {
                             if (!mqttStatus[settings.topic.statusBrightness]) {
                                 mqttPub(settings.topic.setOn, payload);
                             }
-                        }, 300)
+                        }, 300);
                     }
                 }
                 callback();
@@ -56,7 +54,6 @@ module.exports = function (iface) {
                 });
 
             if (settings.topic.statusBrightness) {
-
                 mqttSub(settings.topic.statusBrightness, function (val) {
                     var brightness = Math.round(mqttStatus[settings.topic.statusBrightness] / (settings.payload.brightnessFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Brightness', brightness);
@@ -72,9 +69,7 @@ module.exports = function (iface) {
                         log.debug('> hap re_get', settings.name, 'Brightness', brightness);
                         callback(null, brightness);
                     });
-
             }
-
         }
 
         if (settings.topic.setHue) {
@@ -91,7 +86,7 @@ module.exports = function (iface) {
                     var hue = (val / (settings.payload.hueFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Hue', hue);
                     light.getService(Service.Lightbulb)
-                        .updateCharacteristic(Characteristic.Hue, hue)
+                        .updateCharacteristic(Characteristic.Hue, hue);
                 });
                 light.getService(Service.Lightbulb)
                     .getCharacteristic(Characteristic.Hue)
@@ -101,7 +96,6 @@ module.exports = function (iface) {
                         log.debug('> hap re_get', settings.name, 'Hue', hue);
                         callback(null, hue);
                     });
-
             }
         }
 
@@ -120,7 +114,7 @@ module.exports = function (iface) {
                     var sat = (val / (settings.payload.saturationFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Saturation', sat);
                     light.getService(Service.Lightbulb)
-                        .updateCharacteristic(Characteristic.Saturation, sat)
+                        .updateCharacteristic(Characteristic.Saturation, sat);
                 });
                 light.getService(Service.Lightbulb)
                     .getCharacteristic(Characteristic.Saturation)
@@ -130,12 +124,9 @@ module.exports = function (iface) {
                         log.debug('> hap re_get', settings.name, 'Saturation', saturation);
                         callback(null, saturation);
                     });
-
             }
         }
 
         return light;
-
-    }
-
+    };
 };

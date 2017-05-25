@@ -8,28 +8,28 @@ var config = require('yargs')
     .describe('s', 'directory to store homekit data')
     .describe('h', 'show help')
     .alias({
-        'h': 'help',
-        'n': 'name',
-        'm': 'mapfile',
-        'u': 'url',
-        'v': 'verbosity',
-        'c': 'pincode',
-        'a': 'username',
-        'b': 'bridgename',
-        'p': 'port',
-        's': 'storagedir'
+        h: 'help',
+        n: 'name',
+        m: 'mapfile',
+        u: 'url',
+        v: 'verbosity',
+        c: 'pincode',
+        a: 'username',
+        b: 'bridgename',
+        p: 'port',
+        s: 'storagedir'
     })
     .default({
-        'c': '031-45-154',
-        'u': 'mqtt://127.0.0.1',
-        'n': 'homekit',
-        'm': __dirname + '/example-homekit2mqtt.json',
-        'v': 'info',
-        'a': 'CC:22:3D:E3:CE:F6',
-        'b': 'MQTT Bridge',
-        'p': 51826
+        c: '031-45-154',
+        u: 'mqtt://127.0.0.1',
+        n: 'homekit',
+        m: __dirname + '/example-homekit2mqtt.json',
+        v: 'info',
+        a: 'CC:22:3D:E3:CE:F6',
+        b: 'MQTT Bridge',
+        p: 51826
     })
-    //.config('config')
+    // .config('config')
     .version()
     .help('help')
     .argv;

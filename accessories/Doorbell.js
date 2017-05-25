@@ -1,8 +1,7 @@
 module.exports = function (iface) {
-
     var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
-    return function createAccessory_Doorbell (settings) {
+    return function createAccessory_Doorbell(settings) {
         var sw = newAccessory(settings);
 
         sw.addService(Service.Doorbell, settings.name);
@@ -10,11 +9,9 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusEvent, function () {
             log.debug('> hap set', settings.name, 'ProgrammableSwitchEvent', 1);
             sw.getService(Service.Doorbell)
-                .setCharacteristic(Characteristic.ProgrammableSwitchEvent, 1)
+                .setCharacteristic(Characteristic.ProgrammableSwitchEvent, 1);
         });
 
-
         return sw;
-    }
-
+    };
 };

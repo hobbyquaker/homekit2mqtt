@@ -1,5 +1,4 @@
 module.exports = function (iface) {
-
     var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     /*
@@ -14,7 +13,6 @@ module.exports = function (iface) {
      this.addOptionalCharacteristic(Characteristic.Name);
      */
 
-
     return function createAccessory_Window(settings) {
         var acc = newAccessory(settings);
 
@@ -22,8 +20,10 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.TargetPosition)
             .on('set', function (value, callback) {
                 log.debug('< hap set', settings.name, 'TargetPosition', value);
-                value = (value * (settings.payload.targetPositionFactor || 1));
-                if (settings.payload.roundTarget)  value = Math.round(value);
+                value *= (settings.payload.targetPositionFactor || 1);
+                if (settings.payload.roundTarget) {
+                    value = Math.round(value);
+                }
                 log.debug('> mqtt', settings.topic.setTargetPosition, value);
                 mqttPub(settings.topic.setTargetPosition, value);
                 callback();
@@ -35,7 +35,6 @@ module.exports = function (iface) {
                 log.debug('> hap update', settings.name, 'TargetPosition', position);
                 acc.getService(Service.Window)
                     .updateCharacteristic(Characteristic.TargetPosition, position);
-
             });
             acc.getService(Service.Window)
                 .getCharacteristic(Characteristic.TargetPosition)
@@ -53,7 +52,6 @@ module.exports = function (iface) {
                 log.debug('> hap set', settings.name, 'CurrentPosition', pos);
                 acc.getService(Service.Window)
                     .setCharacteristic(Characteristic.CurrentPosition, pos);
-
             });
             acc.getService(Service.Window)
                 .getCharacteristic(Characteristic.CurrentPosition)
@@ -96,7 +94,6 @@ module.exports = function (iface) {
                         log.debug('> hap re_get', settings.name, 'PositionState.STOPPED');
                         callback(null, Characteristic.PositionState.STOPPED);
                     }
-
                 });
         }
 
@@ -114,12 +111,10 @@ module.exports = function (iface) {
                 var obstruction = val === settings.payload.onObstructionDetected;
                 log.debug('> hap set', settings.name, 'ObstructionDetected', obstruction);
                 acc.getService(Service.GarageDoorOpener)
-                    .setCharacteristic(Characteristic.ObstructionDetected, obstruction)
+                    .setCharacteristic(Characteristic.ObstructionDetected, obstruction);
             });
         }
 
-
         return acc;
     };
-
 };

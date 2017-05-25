@@ -1,5 +1,4 @@
 module.exports = function (iface) {
-
     var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     /*
@@ -24,5 +23,4 @@ module.exports = function (iface) {
     return function createAccessory_BatteryService(settings) {
         throw new Error('Service BatteryService not yet implemented');
     };
-
 };

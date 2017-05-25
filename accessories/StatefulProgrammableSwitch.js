@@ -1,5 +1,4 @@
 module.exports = function (iface) {
-
     var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     /*
@@ -14,5 +13,4 @@ module.exports = function (iface) {
     return function createAccessory_StatefulProgrammableSwitch(settings) {
         throw new Error('Service StatefulProgrammableSwitch not yet implemented');
     };
-
 };

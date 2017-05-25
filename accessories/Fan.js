@@ -1,9 +1,7 @@
 module.exports = function (iface) {
-
     var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     return function createAccessory_Fan(settings) {
-
         var acc = newAccessory(settings);
 
         if (typeof settings.payload.onTrue === 'undefined') {
@@ -24,7 +22,7 @@ module.exports = function (iface) {
 
         acc.addService(Service.Fan, settings.name)
             .getCharacteristic(Characteristic.On)
-            .on('set', function(value, callback) {
+            .on('set', function (value, callback) {
                 log.debug('< hap set', settings.name, 'On', value);
                 var on = value ? settings.payload.onTrue : settings.payload.onFalse;
                 log.debug('> mqtt', settings.topic.setOn, on);
@@ -37,7 +35,7 @@ module.exports = function (iface) {
                 var on = val === settings.payload.onTrue;
                 log.debug('> hap update', settings.name, 'On', on);
                 acc.getService(Service.Fan)
-                    .updateCharacteristic(Characteristic.On, on)
+                    .updateCharacteristic(Characteristic.On, on);
             });
             acc.getService(Service.Fan)
                 .getCharacteristic(Characteristic.On)
@@ -47,7 +45,6 @@ module.exports = function (iface) {
                     log.debug('> hap re_get', settings.name, 'On', on);
                     callback(null, on);
                 });
-
         }
 
         if (settings.topic.setRotationDirection) {
@@ -72,7 +69,7 @@ module.exports = function (iface) {
                     Characteristic.RotationDirection.CLOCKWISE;
                 log.debug('> hap update', settings.name, 'RotationDirection', dir);
                 acc.getService(Service.Fan)
-                    .updateCharacteristic(Characteristic.RotationDirection, dir)
+                    .updateCharacteristic(Characteristic.RotationDirection, dir);
             });
             acc.getService(Service.Fan)
                 .getCharacteristic(Characteristic.RotationDirection)
@@ -84,7 +81,6 @@ module.exports = function (iface) {
                     log.debug('> hap re_get', settings.name, 'RotationDirection', dir);
                     callback(null, dir);
                 });
-
         }
 
         if (settings.topic.setRotationSpeed) {
@@ -104,7 +100,7 @@ module.exports = function (iface) {
                 var speed = (val / (settings.payload.rotationSpeedFactor || 1)) || 0;
                 log.debug('> hap update', settings.name, 'RotationSpeed', speed);
                 acc.getService(Service.Fan)
-                    .updateCharacteristic(Characteristic.RotationSpeed, speed)
+                    .updateCharacteristic(Characteristic.RotationSpeed, speed);
             });
             acc.getService(Service.Fan)
                 .getCharacteristic(Characteristic.RotationSpeed)
@@ -114,11 +110,8 @@ module.exports = function (iface) {
                     log.debug('> hap re_get', settings.name, 'RotationSpeed', speed);
                     callback(null, speed);
                 });
-
         }
 
         return acc;
-
-    }
-
+    };
 };

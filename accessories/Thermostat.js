@@ -1,14 +1,12 @@
 module.exports = function (iface) {
-
     var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     return function createAccessory_Thermostat(settings) {
-
         var thermo = newAccessory(settings);
 
         thermo.addService(Service.Thermostat, settings.name)
             .getCharacteristic(Characteristic.TargetHeatingCoolingState)
-            .on('set', function(value, callback) {
+            .on('set', function (value, callback) {
                 log.debug('< hap set', settings.name, 'TargetHeatingCoolingState', value);
                 if (settings.topic.setTargetHeatingCoolingState) {
                     log.debug('> mqtt', settings.topic.setTargetHeatingCoolingState, value);
@@ -19,7 +17,7 @@ module.exports = function (iface) {
 
         thermo.getService(Service.Thermostat)
             .getCharacteristic(Characteristic.TargetTemperature)
-            .on('set', function(value, callback) {
+            .on('set', function (value, callback) {
                 log.debug('< hap set', settings.name, 'TargetTemperature', value);
                 log.debug('> mqtt', settings.topic.setTargetTemperature, value);
                 mqttPub(settings.topic.setTargetTemperature, value);
@@ -28,7 +26,7 @@ module.exports = function (iface) {
 
         thermo.getService(Service.Thermostat)
             .getCharacteristic(Characteristic.TemperatureDisplayUnits)
-            .on('set', function(value, callback) {
+            .on('set', function (value, callback) {
                 log.debug('< hap set', settings.name, 'TemperatureDisplayUnits', value);
                 log.debug('> config', settings.name, 'TemperatureDisplayUnits', value);
                 settings.config.TemperatureDisplayUnits = value;
@@ -61,12 +59,12 @@ module.exports = function (iface) {
                 callback(null, state);
             });
 
-        //thermo.getService(Service.Thermostat).setCharacteristic(Characteristic.CurrentHeatingCoolingState, 3);
+        // Thermo.getService(Service.Thermostat).setCharacteristic(Characteristic.CurrentHeatingCoolingState, 3);
 
-        mqttSub(settings.topic.statusTargetTemperature/*, function (val) {
+        mqttSub(settings.topic.statusTargetTemperature/* , function (val) {
          thermo.getService(Service.Thermostat)
          .setCharacteristic(Characteristic.TargetTemperature, val);
-         }*/);
+         } */);
 
         thermo.getService(Service.Thermostat)
             .getCharacteristic(Characteristic.TargetTemperature)
@@ -79,7 +77,7 @@ module.exports = function (iface) {
         if (settings.topic.statusCurrentRelativeHumidity) {
             mqttSub(settings.topic.statusCurrentRelativeHumidity, function (val) {
                 thermo.getService(Service.Thermostat)
-                    .setCharacteristic(Characteristic.CurrentRelativeHumidity, val)
+                    .setCharacteristic(Characteristic.CurrentRelativeHumidity, val);
             });
             thermo.getService(Service.Thermostat)
                 .getCharacteristic(Characteristic.CurrentRelativeHumidity)
@@ -93,7 +91,7 @@ module.exports = function (iface) {
         if (settings.topic.setTargetRelativeHumidity) {
             thermo.getService(Service.Thermostat)
                 .getCharacteristic(Characteristic.TargetRelativeHumidity)
-                .on('set', function(value, callback) {
+                .on('set', function (value, callback) {
                     log.debug('< hap set', settings.name, 'TargetRelativeHumidity', value);
                     log.debug('> mqtt', settings.topic.setTargetRelativeHumidity, value);
                     mqttPub(settings.topic.setTargetRelativeHumidity, value);
@@ -104,14 +102,13 @@ module.exports = function (iface) {
         if (settings.topic.setCoolingThresholdTemperature) {
             thermo.getService(Service.Thermostat)
                 .getCharacteristic(Characteristic.CoolingThresholdTemperature)
-                .on('set', function(value, callback) {
+                .on('set', function (value, callback) {
                     log.debug('< hap set', settings.name, 'CoolingThresholdTemperature', value);
                     log.debug('> mqtt', settings.topic.setCoolingThresholdTemperature, value);
                     mqttPub(settings.topic.setCoolingThresholdTemperature, value);
                     callback();
                 });
         }
-
 
         if (settings.topic.statusCoolingThresholdTemperature) {
             mqttSub(settings.topic.statusCoolingThresholdTemperature);
@@ -128,7 +125,7 @@ module.exports = function (iface) {
             mqttSub(settings.topic.setHeatingThresholdTemperature);
             thermo.getService(Service.Thermostat)
                 .getCharacteristic(Characteristic.HeatingThresholdTemperature)
-                .on('set', function(value, callback) {
+                .on('set', function (value, callback) {
                     log.debug('< hap set', settings.name, 'HeatingThresholdTemperature', value);
                     log.debug('> mqtt', settings.topic.setHeatingThresholdTemperature, value);
                     mqttPub(settings.topic.setHeatingThresholdTemperature, value);
@@ -148,7 +145,5 @@ module.exports = function (iface) {
         }
 
         return thermo;
-
-    }
-
+    };
 };

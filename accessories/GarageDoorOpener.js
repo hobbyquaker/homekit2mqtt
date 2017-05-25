@@ -1,5 +1,4 @@
 module.exports = function (iface) {
-
     var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     return function createAccessory_GarageDoorOpener(settings) {
@@ -11,7 +10,7 @@ module.exports = function (iface) {
          // Optional Characteristics
          this.addOptionalCharacteristic(Characteristic.LockCurrentState);
          this.addOptionalCharacteristic(Characteristic.LockTargetState);
-         this.addOptionalCharacteristic(Characteristic.Name);*/
+         this.addOptionalCharacteristic(Characteristic.Name); */
 
         var garage = newAccessory(settings);
         garage.addService(Service.GarageDoorOpener, settings.name)
@@ -32,7 +31,6 @@ module.exports = function (iface) {
             });
 
         if (settings.topic.statusDoor) {
-
             /* TODO opening/closing/stopped
              Characteristic.CurrentDoorState.OPEN = 0;
              Characteristic.CurrentDoorState.CLOSED = 1;
@@ -49,8 +47,6 @@ module.exports = function (iface) {
                     log.debug('> hap update', settings.name, 'TargetDoorState.CLOSED');
                     garage.getService(Service.GarageDoorOpener)
                         .updateCharacteristic(Characteristic.TargetDoorState, Characteristic.CurrentDoorState.CLOSED);
-
-
                 } else {
                     log.debug('> hap set', settings.name, 'CurrentDoorState.OPEN');
                     garage.getService(Service.GarageDoorOpener)
@@ -58,13 +54,12 @@ module.exports = function (iface) {
                     log.debug('> hap update', settings.name, 'TargetDoorState.OPEN');
                     garage.getService(Service.GarageDoorOpener)
                         .updateCharacteristic(Characteristic.TargetDoorState, Characteristic.CurrentDoorState.OPEN);
-
                 }
             });
 
             garage.getService(Service.GarageDoorOpener)
                 .getCharacteristic(Characteristic.CurrentDoorState)
-                .on('get', function(callback) {
+                .on('get', function (callback) {
                     log.debug('< hap get', settings.name, 'CurrentDoorState');
 
                     if (mqttStatus[settings.topic.statusDoor] === settings.payload.doorClosed) {
@@ -91,14 +86,14 @@ module.exports = function (iface) {
                 var obstruction = val === settings.payload.onObstructionDetected;
                 log.debug('> hap set', settings.name, 'ObstructionDetected', obstruction);
                 garage.getService(Service.GarageDoorOpener)
-                    .setCharacteristic(Characteristic.ObstructionDetected, obstruction)
+                    .setCharacteristic(Characteristic.ObstructionDetected, obstruction);
             });
         }
 
         if (settings.topic.setLock) {
             garage.getService(Service.GarageDoorOpener, settings.name)
                 .getCharacteristic(Characteristic.LockTargetState)
-                .on('set', function(value, callback) {
+                .on('set', function (value, callback) {
                     log.debug('< hap set', settings.name, 'LockTargetState', value);
                     if (value == Characteristic.LockTargetState.UNSECURED) {
                         log.debug('> mqtt publish', settings.topic.setLock, settings.payload.lockUnsecured);
@@ -113,8 +108,6 @@ module.exports = function (iface) {
         }
 
         if (settings.topic.statusLock) {
-
-
             mqttSub(settings.topic.statusLock, function (val) {
                 if (val === settings.payload.lockSecured) {
                     log.debug('> hap set', settings.name, 'LockCurrentState.SECURED');
@@ -123,7 +116,6 @@ module.exports = function (iface) {
                     log.debug('> hap update', settings.name, 'LockCurrentState.SECURED');
                     garage.getService(Service.LockMechanism)
                         .updateCharacteristic(Characteristic.LockTargetState, Characteristic.LockCurrentState.SECURED);
-
                 } else {
                     log.debug('> hap set', settings.name, 'LockCurrentState.UNSECURED');
                     garage.getService(Service.LockMechanism)
@@ -131,10 +123,8 @@ module.exports = function (iface) {
                     log.debug('> hap update', settings.name, 'LockCurrentState.UNSECURED');
                     garage.getService(Service.LockMechanism)
                         .updateCharacteristic(Characteristic.LockTargetState, Characteristic.LockCurrentState.UNSECURED);
-
                 }
             });
-
 
             garage.getService(Service.GarageDoorOpener)
                 .getCharacteristic(Characteristic.LockCurrentState)
@@ -152,7 +142,5 @@ module.exports = function (iface) {
         }
 
         return garage;
-
-    }
-
+    };
 };

@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
-var pkg =               require('./package.json');
-var config =            require('./config.js');
-var log =               require('yalm');
+var pkg = require('./package.json');
+var config = require('./config.js');
+var log = require('yalm');
 log.setLevel(config.verbosity);
 
 log(pkg.name + ' ' + pkg.version + ' starting');
 
-var fs =                require('fs');
-var Mqtt =              require('mqtt');
+var fs = require('fs');
+var Mqtt = require('mqtt');
 
 var mqttStatus = {};        // Holds the payloads of the last-received message, keys are the topics.
 var mqttCallbacks = {};     // Holds arrays of subscription callbacks, keys are the topics.
@@ -22,7 +22,9 @@ var mqtt = Mqtt.connect(config.url, {will: {topic: config.name + '/connected', p
 mqtt.on('connect', function () {
     mqttConnected = true;
     log.info('mqtt connected ' + config.url);
-    if (!bridgeListening) mqtt.publish(config.name + '/connected', '1', {retain: true});
+    if (!bridgeListening) {
+        mqtt.publish(config.name + '/connected', '1', {retain: true});
+    }
 });
 
 mqtt.on('reconnect', function () {
@@ -48,8 +50,10 @@ mqtt.on('message', function (topic, payload) {
     payload = payload.toString();
     var state;
     try {
-        // todo - check for json objects in a less nasty way ;)
-        if (payload.indexOf('{') === -1) throw 'not an object'; // We have no use for arrays here.
+        // Todo - check for json objects in a less nasty way ;)
+        if (payload.indexOf('{') === -1) {
+            throw 'not an object';
+        } // We have no use for arrays here.
         // We got an Object - let's hope it follows mqtt-smarthome architecture and has an attribute "val"
         // see https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/Architecture.md
         state = JSON.parse(payload).val;
@@ -74,7 +78,6 @@ mqtt.on('message', function (topic, payload) {
         });
     }
 });
-
 
 // MQTT subscribe function that provides a callback on incoming messages.
 // Not meant to be used with wildcards!
@@ -101,23 +104,25 @@ function mqttPub(topic, payload, options) {
         if (typeof payload === 'object') {
             payload = JSON.stringify(payload);
         } else if (typeof payload !== 'string') {
-            payload = '' + payload;
+            payload = String(payload);
         }
         mqtt.publish(topic, payload, options, function (err) {
-            if (err) log.error('mqtt publish error ' + err);
+            if (err) {
+                log.error('mqtt publish error ' + err);
+            }
         });
     }
 }
 
-var pkgHap =            require('./node_modules/hap-nodejs/package.json');
+var pkgHap = require('./node_modules/hap-nodejs/package.json');
 log.info('using hap-nodejs version', pkgHap.version);
 
-var HAP =               require('hap-nodejs');
-var uuid =              HAP.uuid;
-var Bridge =            HAP.Bridge;
-var Accessory =         HAP.Accessory;
-var Service =           HAP.Service;
-var Characteristic =    HAP.Characteristic;
+var HAP = require('hap-nodejs');
+var uuid = HAP.uuid;
+var Bridge = HAP.Bridge;
+var Accessory = HAP.Accessory;
+var Service = HAP.Service;
+var Characteristic = HAP.Characteristic;
 
 if (config.storagedir) {
     log.info('using directory ' + config.storagedir + ' for persistent storage');
@@ -149,11 +154,13 @@ function newAccessory(settings) {
     var acc = new Accessory(settings.name, uuid.generate(settings.id));
     if (settings.manufacturer || settings.model || settings.serial) {
         acc.getService(Service.AccessoryInformation)
-            .setCharacteristic(Characteristic.Manufacturer, settings.manufacturer || "-")
-            .setCharacteristic(Characteristic.Model, settings.model || "-" )
-            .setCharacteristic(Characteristic.SerialNumber, settings.serial || "-");
+            .setCharacteristic(Characteristic.Manufacturer, settings.manufacturer || '-')
+            .setCharacteristic(Characteristic.Model, settings.model || '-')
+            .setCharacteristic(Characteristic.SerialNumber, settings.serial || '-');
     }
-    if (!settings.payload) settings.payload = {};
+    if (!settings.payload) {
+        settings.payload = {};
+    }
     acc.on('identify', function (paired, callback) {
         identify(settings, paired, callback);
     });

@@ -1,5 +1,4 @@
 module.exports = function (iface) {
-
     var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     return function createAccessory_WindowCovering(settings) {
@@ -9,8 +8,10 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.TargetPosition)
             .on('set', function (value, callback) {
                 log.debug('< hap set', settings.name, 'TargetPosition', value);
-                value = (value * (settings.payload.targetPositionFactor || 1));
-                if (settings.payload.roundTarget)  value = Math.round(value);
+                value *= (settings.payload.targetPositionFactor || 1);
+                if (settings.payload.roundTarget) {
+                    value = Math.round(value);
+                }
                 log.debug('> mqtt', settings.topic.setTargetPosition, value);
                 mqttPub(settings.topic.setTargetPosition, value);
                 callback();
@@ -22,7 +23,6 @@ module.exports = function (iface) {
                 log.debug('> hap update', settings.name, 'TargetPosition', position);
                 shutter.getService(Service.WindowCovering)
                     .updateCharacteristic(Characteristic.TargetPosition, position);
-
             });
             shutter.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.TargetPosition)
@@ -40,7 +40,6 @@ module.exports = function (iface) {
                 log.debug('> hap set', settings.name, 'CurrentPosition', pos);
                 shutter.getService(Service.WindowCovering)
                     .setCharacteristic(Characteristic.CurrentPosition, pos);
-
             });
             shutter.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.CurrentPosition)
@@ -83,12 +82,9 @@ module.exports = function (iface) {
                         log.debug('> hap re_get', settings.name, 'PositionState.STOPPED');
                         callback(null, Characteristic.PositionState.STOPPED);
                     }
-
                 });
         }
 
         return shutter;
-
-    }
-
+    };
 };

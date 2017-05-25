@@ -1,5 +1,4 @@
 module.exports = function (iface) {
-
     var {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     /*
@@ -30,7 +29,6 @@ module.exports = function (iface) {
      */
 
     return function createAccessory_LockManagement(settings) {
-      throw new Error('Service LockManagement not yet implemented');
+        throw new Error('Service LockManagement not yet implemented');
     };
-
 };
