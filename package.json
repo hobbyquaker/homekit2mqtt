@@ -11,7 +11,7 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "camo-purge && xo --space 4 --no-esnext"
   },
   "author": "Sebastian 'hobbyquaker' Raff <hq@ccu.io> (https://github.com/hobbyquaker)",
   "contributors": [
@@ -29,7 +29,10 @@
     "yalm": "^4.0.2",
     "yargs": "^6.5.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "camo-purge": "^1.0.2",
+    "xo": "^0.18.2"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/hobbyquaker/homekit2mqtt"
