@@ -1,25 +1,27 @@
 #!/usr/bin/env node
 
-var pkg = require('./package.json');
-var config = require('./config.js');
-var log = require('yalm');
+const path = require('path');
+const Mqtt = require('mqtt');
+const log = require('yalm');
+const HAP = require('hap-nodejs');
+const pkgHap = require('./node_modules/hap-nodejs/package.json');
+const pkg = require('./package.json');
+const config = require('./config.js');
+
 log.setLevel(config.verbosity);
 
 log(pkg.name + ' ' + pkg.version + ' starting');
 
-var fs = require('fs');
-var Mqtt = require('mqtt');
+const mqttStatus = {};        // Holds the payloads of the last-received message, keys are the topics.
+const mqttCallbacks = {};     // Holds arrays of subscription callbacks, keys are the topics.
+let mqttConnected;
 
-var mqttStatus = {};        // Holds the payloads of the last-received message, keys are the topics.
-var mqttCallbacks = {};     // Holds arrays of subscription callbacks, keys are the topics.
-var mqttConnected;
-
-var bridgeListening;
+let bridgeListening;
 
 log.info('mqtt trying to connect', config.url);
-var mqtt = Mqtt.connect(config.url, {will: {topic: config.name + '/connected', payload: '0', retain: true}});
+const mqtt = Mqtt.connect(config.url, {will: {topic: config.name + '/connected', payload: '0', retain: true}});
 
-mqtt.on('connect', function () {
+mqtt.on('connect', () => {
     mqttConnected = true;
     log.info('mqtt connected ' + config.url);
     if (!bridgeListening) {
@@ -27,53 +29,53 @@ mqtt.on('connect', function () {
     }
 });
 
-mqtt.on('reconnect', function () {
+mqtt.on('reconnect', () => {
     log.info('mqtt reconnect');
 });
 
-mqtt.on('offline', function () {
+mqtt.on('offline', () => {
     log.info('mqtt offline');
 });
 
-mqtt.on('close', function () {
+mqtt.on('close', () => {
     if (mqttConnected) {
         mqttConnected = false;
         log.info('mqtt closed ' + config.url);
     }
 });
 
-mqtt.on('error', function (err) {
+mqtt.on('error', err => {
     log.error('mqtt error ' + err);
 });
 
-mqtt.on('message', function (topic, payload) {
+mqtt.on('message', (topic, payload) => {
     payload = payload.toString();
-    var state;
+    let state;
     try {
         // Todo - check for json objects in a less nasty way ;)
         if (payload.indexOf('{') === -1) {
-            throw 'not an object';
+            throw new Error('not an object');
         } // We have no use for arrays here.
         // We got an Object - let's hope it follows mqtt-smarthome architecture and has an attribute "val"
         // see https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/Architecture.md
         state = JSON.parse(payload).val;
-    } catch (e) {
+    } catch (err) {
         // Nasty type guessing.
         // Do we really need to cast the strings "true" and "false" to bool?
         if (payload === 'true') {
             state = true;
         } else if (payload === 'false') {
             state = false;
-        } else if (!isNaN(payload)) {
-            state = parseFloat(payload);
-        } else {
+        } else if (isNaN(payload)) {
             state = payload;
+        } else {
+            state = parseFloat(payload);
         }
     }
     log.debug('< mqtt', topic, state);
     mqttStatus[topic] = state;
     if (mqttCallbacks[topic]) {
-        mqttCallbacks[topic].forEach(function (cb) {
+        mqttCallbacks[topic].forEach(cb => {
             cb(state);
         });
     }
@@ -83,12 +85,12 @@ mqtt.on('message', function (topic, payload) {
 // Not meant to be used with wildcards!
 function mqttSub(topic, callback) {
     if (typeof callback === 'function') {
-        if (!mqttCallbacks[topic]) {
+        if (mqttCallbacks[topic]) {
+            mqttCallbacks[topic].push(callback);
+        } else {
             mqttCallbacks[topic] = [callback];
             log.debug('mqtt subscribe', topic);
             mqtt.subscribe(topic);
-        } else {
-            mqttCallbacks[topic].push(callback);
         }
     } else {
         log.debug('mqtt subscribe', topic);
@@ -106,7 +108,7 @@ function mqttPub(topic, payload, options) {
         } else if (typeof payload !== 'string') {
             payload = String(payload);
         }
-        mqtt.publish(topic, payload, options, function (err) {
+        mqtt.publish(topic, payload, options, err => {
             if (err) {
                 log.error('mqtt publish error ' + err);
             }
@@ -114,15 +116,13 @@ function mqttPub(topic, payload, options) {
     }
 }
 
-var pkgHap = require('./node_modules/hap-nodejs/package.json');
 log.info('using hap-nodejs version', pkgHap.version);
 
-var HAP = require('hap-nodejs');
-var uuid = HAP.uuid;
-var Bridge = HAP.Bridge;
-var Accessory = HAP.Accessory;
-var Service = HAP.Service;
-var Characteristic = HAP.Characteristic;
+const uuid = HAP.uuid;
+const Bridge = HAP.Bridge;
+const Accessory = HAP.Accessory;
+const Service = HAP.Service;
+const Characteristic = HAP.Characteristic;
 
 if (config.storagedir) {
     log.info('using directory ' + config.storagedir + ' for persistent storage');
@@ -132,10 +132,10 @@ if (config.storagedir) {
 HAP.init(config.storagedir || undefined);
 
 // Create Bridge which will host all Accessories
-var bridge = new Bridge(config.bridgename, uuid.generate(config.bridgename));
+const bridge = new Bridge(config.bridgename, uuid.generate(config.bridgename));
 
 // Listen for Bridge identification event
-bridge.on('identify', function (paired, callback) {
+bridge.on('identify', (paired, callback) => {
     log('< hap bridge identify', paired ? '(paired)' : '(unpaired)');
     callback();
 });
@@ -151,7 +151,7 @@ function identify(settings, paired, callback) {
 }
 
 function newAccessory(settings) {
-    var acc = new Accessory(settings.name, uuid.generate(settings.id));
+    const acc = new Accessory(settings.name, uuid.generate(settings.id));
     if (settings.manufacturer || settings.model || settings.serial) {
         acc.getService(Service.AccessoryInformation)
             .setCharacteristic(Characteristic.Manufacturer, settings.manufacturer || '-')
@@ -161,26 +161,26 @@ function newAccessory(settings) {
     if (!settings.payload) {
         settings.payload = {};
     }
-    acc.on('identify', function (paired, callback) {
+    acc.on('identify', (paired, callback) => {
         identify(settings, paired, callback);
     });
     return acc;
 }
 
-var createAccessory = {};
+const createAccessory = {};
 
 function loadAccessory(acc) {
-    var file = 'accessories/' + acc + '.js';
+    const file = 'accessories/' + acc + '.js';
     log.debug('loading', file);
-    createAccessory[acc] = require(__dirname + '/' + file)({mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic});
+    createAccessory[acc] = require(path.join(__dirname, file))({mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic});
 }
 
 // Load and create all accessories
 log.info('loading HomeKit to MQTT mapping file ' + config.mapfile);
-var mapping = require(config.mapfile);
-var accCount = 0;
-Object.keys(mapping).forEach(function (id) {
-    var a = mapping[id];
+const mapping = require(config.mapfile);
+let accCount = 0;
+Object.keys(mapping).forEach(id => {
+    const a = mapping[id];
     a.id = id;
     if (!createAccessory[a.service]) {
         loadAccessory(a.service);
@@ -199,20 +199,20 @@ bridge.publish({
     category: Accessory.Categories.OTHER
 });
 
-bridge._server.on('listening', function () {
+bridge._server.on('listening', () => {
     bridgeListening = true;
     mqtt.publish(config.name + '/connected', '2', {retain: true});
     log('hap Bridge listening on port', config.port);
 });
 
-bridge._server.on('pair', function (username, publickey) {
+bridge._server.on('pair', username => {
     log('hap paired', username);
 });
 
-bridge._server.on('unpair', function (username) {
+bridge._server.on('unpair', username => {
     log('hap unpaired', username);
 });
 
-bridge._server.on('verify', function () {
+bridge._server.on('verify', () => {
     log('hap verify');
 });
