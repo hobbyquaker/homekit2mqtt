@@ -7,7 +7,7 @@
     "homekit2mqtt": "./index.js"
   },
   "preferGlobal": true,
-  "engineStrict" : true,
+  "engineStrict": true,
   "engines": {
     "node": ">=6.0.0"
   },
@@ -33,6 +33,9 @@
   },
   "devDependencies": {
     "camo-purge": "latest",
+    "mocha": "latest",
+    "should": "latest",
+    "stream-splitter": "latest",
     "xo": "latest"
   },
   "repository": {
