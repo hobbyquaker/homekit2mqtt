@@ -446,7 +446,7 @@ props (optional)
 topic
 
 * setTargetTemperature
-* setTargetHeatingCoolingState (optional)
+* setTargetHeatingCoolingState (optional) -  - (0 = off, 1 = heat, 2 = cool)
 * statusCurrentTemperature
 * statusTargetTemperature
 * statusCurrentRelativeHumidity (optional)
@@ -454,6 +454,7 @@ topic
 * statusCoolingThresholdTemperature (optional)
 * setHeatingThresholdTemperature (optional)
 * statusHeatingThresholdTemperature (optional)
+* statusCurrentHeatingCoolingState (optional) - (0 = off, 1 = heat, 2 = cool)
 * identify (optional)
 
 payload
