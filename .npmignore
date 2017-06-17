@@ -1,4 +1,6 @@
 .idea
-conf
-index.js.orig
-todo
+persist
+.nyc_output
+coverage
+.travis.yml
+test.js
