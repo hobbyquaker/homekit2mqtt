@@ -4,3 +4,5 @@ persist
 coverage
 .travis.yml
 test.js
+codecov.yml
+coverage.lcov

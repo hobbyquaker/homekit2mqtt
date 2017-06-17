@@ -4,3 +4,4 @@ node_modules
 persist
 .nyc_output
 coverage
+coverage.lcov
