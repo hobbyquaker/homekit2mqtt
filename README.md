@@ -464,6 +464,17 @@ config
 
 * TemperatureDisplayUnits (`0` = Celsius, `1` = Fahrenheit)
 
+props (optional)
+
+* currentTemperature - an object containing properties for the currentTemperature characteristic:
+  * minValue
+  * maxValue
+  * minStep
+
+* targetTemperature - an object containing properties for the currentTemperature characteristic:
+  * minValue
+  * maxValue
+  * minStep
 
 #### Window
 
