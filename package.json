@@ -12,7 +12,7 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "test": "camo-purge && xo --space 4 --no-esnext"
+    "test": "camo-purge ; xo --space 4 --no-esnext --ignore test.js && mocha test.js"
   },
   "author": "Sebastian 'hobbyquaker' Raff <hq@ccu.io> (https://github.com/hobbyquaker)",
   "contributors": [
