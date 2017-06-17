@@ -429,9 +429,16 @@ payload
 
 * identify (optional)
 
-config
+config 
 
 * fahrenheit (optional) - set to true if your sensor publishes degree fahrenheit on mqtt.
+
+props (optional)
+
+* currentTemperature - an object containing properties for the currentTemperature characteristic:
+  * minValue
+  * maxValue
+  * minStep
 
 
 #### Thermostat
