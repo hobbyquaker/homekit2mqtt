@@ -429,6 +429,10 @@ payload
 
 * identify (optional)
 
+config
+
+* fahrenheit (optional) - set to true if your sensor publishes degree fahrenheit on mqtt.
+
 
 #### Thermostat
 
