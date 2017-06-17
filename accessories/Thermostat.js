@@ -74,6 +74,15 @@ module.exports = function (iface) {
                     log.debug('> hap re_get', settings.name, 'CurrentHeatingCoolingState', mqttStatus[settings.topic.statusCurrentHeatingCoolingState]);
                     callback(null, mqttStatus[settings.topic.statusCurrentHeatingCoolingState]);
                 });
+        } else {
+            thermo.getService(Service.Thermostat)
+            .getCharacteristic(Characteristic.CurrentHeatingCoolingState)
+            .on('get', callback => {
+                log.debug('< hap get', settings.name, 'CurrentHeatingCoolingState');
+                const state = 1; // HEATING as default
+                log.debug('> hap re_get', settings.name, 'CurrentHeatingCoolingState', state);
+                callback(null, state);
+            });
         }
 
         mqttSub(settings.topic.statusTargetTemperature, val => {
