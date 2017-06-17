@@ -9,12 +9,12 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusTemperature, val => {
             log.debug('> hap set', settings.name, 'CurrentTemperature', mqttStatus[settings.topic.statusTemperature]);
             sensor.getService(Service.TemperatureSensor)
-                .setCharacteristic(Characteristic.CurrentTemperature, val);
+                .updateCharacteristic(Characteristic.CurrentTemperature, val);
         });
 
         sensor.addService(Service.TemperatureSensor)
             .getCharacteristic(Characteristic.CurrentTemperature)
-            .setProps({minValue: -100})
+            .setProps((settings.props || {}).CurrentTemperature || {minValue: -100})
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'TemperatureSensor', 'CurrentTemperature');
                 log.debug('> hap re_get', settings.name, mqttStatus[settings.topic.statusTemperature]);
