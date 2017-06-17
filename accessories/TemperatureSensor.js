@@ -1,15 +1,15 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
-function convertTemperature(settings, value) {
-    if (settings.config && settings.config.fahrenheit) {
-        log.debug('converting', value, '°F to °C');
-        return (value - 32) / 1.8;
-    }
-    return value;
-}
-
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+
+    function convertTemperature(settings, value) {
+        if (settings.config && settings.config.fahrenheit) {
+            log.debug('converting', value, '°F to °C');
+            return (value - 32) / 1.8;
+        }
+        return value;
+    }
 
     return function createAccessory_TemperatureSensor(settings) {
         const sensor = newAccessory(settings);
