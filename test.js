@@ -167,7 +167,11 @@ describe('hap-client - homekit2mqtt connection', function () {
         subscribe('homekit', /hap paired/, () => {
             done();
         });
-        cp.exec('echo "031-45-154" | ' + clientCmd + ' pair');
+        cp.exec('echo "031-45-154" | ' + clientCmd + ' pair', (err, stdout, stderr) => {
+            console.log('client err', err);
+            console.log('client stdout', stdout);
+            console.log('client stderr', stderr);
+        });
     });
     it('should be able to dump accessories', (done) => {
         cp.exec(clientCmd + ' dump', (err, stdout, stderr) => {
