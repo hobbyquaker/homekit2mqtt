@@ -39,7 +39,7 @@
     "should": "latest",
     "stream-splitter": "latest",
     "xo": "latest",
-    "hap-client-tool": "hobbyquaker/hap-client-tool"
+    "hap-client-cli": "latest"
   },
   "repository": {
     "type": "git",
