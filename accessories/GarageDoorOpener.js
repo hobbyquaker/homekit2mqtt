@@ -33,14 +33,6 @@ module.exports = function (iface) {
             });
 
         if (settings.topic.statusDoor) {
-            /* TODO opening/closing/stopped
-             Characteristic.CurrentDoorState.OPEN = 0;
-             Characteristic.CurrentDoorState.CLOSED = 1;
-             Characteristic.CurrentDoorState.OPENING = 2;
-             Characteristic.CurrentDoorState.CLOSING = 3;
-             Characteristic.CurrentDoorState.STOPPED = 4;
-             */
-
             mqttSub(settings.topic.statusDoor, val => {
                 if (val === settings.payload.doorClosed) {
                     log.debug('> hap set', settings.name, 'CurrentDoorState.CLOSED');
@@ -49,6 +41,27 @@ module.exports = function (iface) {
                     log.debug('> hap update', settings.name, 'TargetDoorState.CLOSED');
                     garage.getService(Service.GarageDoorOpener)
                         .updateCharacteristic(Characteristic.TargetDoorState, Characteristic.CurrentDoorState.CLOSED);
+                } else if (val === settings.payload.doorOpening) {
+                    log.debug('> hap set', settings.name, 'CurrentDoorState.OPENING');
+                    garage.getService(Service.GarageDoorOpener)
+                        .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.OPENING);
+                    log.debug('> hap update', settings.name, 'TargetDoorState.OPEN');
+                    garage.getService(Service.GarageDoorOpener)
+                        .updateCharacteristic(Characteristic.TargetDoorState, Characteristic.CurrentDoorState.OPEN);
+                } else if (val === settings.payload.doorClosing) {
+                    log.debug('> hap set', settings.name, 'CurrentDoorState.CLOSING');
+                    garage.getService(Service.GarageDoorOpener)
+                        .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.CLOSING);
+                    log.debug('> hap update', settings.name, 'TargetDoorState.CLOSED');
+                    garage.getService(Service.GarageDoorOpener)
+                        .updateCharacteristic(Characteristic.TargetDoorState, Characteristic.CurrentDoorState.CLOSED);
+                } else if (val === settings.payload.doorStopped) {
+                    log.debug('> hap set', settings.name, 'CurrentDoorState.STOPPED');
+                    garage.getService(Service.GarageDoorOpener)
+                        .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.STOPPED);
+                    log.debug('> hap update', settings.name, 'TargetDoorState.STOPPED');
+                    garage.getService(Service.GarageDoorOpener)
+                        .updateCharacteristic(Characteristic.TargetDoorState, Characteristic.CurrentDoorState.STOPPED);
                 } else {
                     log.debug('> hap set', settings.name, 'CurrentDoorState.OPEN');
                     garage.getService(Service.GarageDoorOpener)
