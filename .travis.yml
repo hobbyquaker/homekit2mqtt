@@ -6,5 +6,5 @@ before_install:
   - sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa -y
   - sudo apt-get update -y
   - sudo apt-get install mosquitto -y
-  - sudo apt-get install libsecret-1-0 -y
+  - sudo apt-get install libsecret-1-dev -y
   - sudo apt-get install libavahi-compat-libdnssd-dev -y
