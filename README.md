@@ -193,6 +193,9 @@ payload
 
 * doorOpen
 * doorClosed
+* doorOpening
+* doorClosing
+* doorStopped
 * lockUnsecured (optional)
 * lockSecured (optional)
 * onObstructionDetected (optional)
