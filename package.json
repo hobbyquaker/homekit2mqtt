@@ -38,7 +38,8 @@
     "nyc": "latest",
     "should": "latest",
     "stream-splitter": "latest",
-    "xo": "latest"
+    "xo": "latest",
+    "hap-client-tool": "hobbyquaker/hap-client-tool"
   },
   "repository": {
     "type": "git",

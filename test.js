@@ -6,7 +6,10 @@ const cp = require('child_process');
 const path = require('path');
 const streamSplitter = require('stream-splitter');
 const Mqtt = require('mqtt');
+
 mqtt = Mqtt.connect('mqtt://127.0.0.1');
+
+const config = require('./example-homekit2mqtt.json');
 
 const homekitCmd = path.join(__dirname, '/index.js');
 const homekitArgs = ['-v', 'debug'];
@@ -17,6 +20,10 @@ const homekitSubscriptions = {};
 const homekitBuffer = [];
 
 let subIndex = 0;
+
+const clientCmd = path.join(__dirname, '/node_modules/.bin/hap-client-tool -d 127.0.0.1 -p 51826');
+let clientAccs;
+
 
 const mqttSubscriptions = {};
 function mqttSubscribe(topic, callback) {
@@ -151,14 +158,92 @@ describe('homekit2mqtt - mqtt connection', () => {
     });
 });
 
+let aidSwitch;
+let iidSwitch;
 
-describe('homekit2mqtt - mqtt operations', () => {
-    it('should receive a status via mqtt and update it on hap', function (done) {
+describe('hap-client - homekit2mqtt connection', function () {
+    this.timeout(5000);
+    it('should pair without error', (done) => {
+        subscribe('homekit', /hap paired/, () => {
+            done();
+        });
+        cp.exec('echo "031-45-154" | ' + clientCmd + ' pair');
+    });
+    it('should be able to dump accessories', (done) => {
+        cp.exec(clientCmd + ' dump', (err, stdout, stderr) => {
+            clientAccs = JSON.parse(stdout).accessories;
+
+            clientAccs.forEach(acc => {
+                acc.services.forEach(service => {
+                    if (service.Name === 'Switch') {
+                        aidSwitch = acc.aid;
+                        service.characteristics.forEach(ch => {
+                            if (ch.Name === 'On') {
+                                iidSwitch = ch.iid;
+
+                            }
+                        });
+
+                    }
+                });
+            });
+            // add one because the bridge itself is also an accessory
+            if (clientAccs.length === (Object.keys(config).length + 1)) {
+                done();
+            }
+        });
+    });
+    it('should get the status of the switch', (done) => {
+        cp.exec(clientCmd + ' get --aid ' + aidSwitch + ' --iid ' + iidSwitch, (err, stdout, stderr) => {
+            if (stdout === 'false\n') {
+                done();
+            }
+        });
+    });
+});
+
+describe('mqtt - homekit2mqtt - client', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(12000);
         subscribe('homekit', /hap update Steckdose Fernseher On true/, () => {
             done();
+
         });
         mqtt.publish('Switch/status', '1');
+    });
+    it('client should get the status of the switch', (done) => {
+        cp.exec(clientCmd + ' get --aid ' + aidSwitch + ' --iid ' + iidSwitch, (err, stdout, stderr) => {
+            if (stdout === 'true\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update Steckdose Fernseher On false/, () => {
+            done();
+
+        });
+        mqtt.publish('Switch/status', '0');
+    });
+    it('client should get the status of the switch', (done) => {
+        cp.exec(clientCmd + ' get --aid ' + aidSwitch + ' --iid ' + iidSwitch, (err, stdout, stderr) => {
+            if (stdout === 'false\n') {
+                done();
+            }
+        });
+    });
+});
+
+describe('client - homekit2mqtt - mqtt', () => {
+    it('homekit2mqtt should publish on mqtt after client did a set', (done) => {
+        mqttSubscribe('Switch/set', payload => {
+            if (payload === '1') {
+                done();
+            }
+        });
+        cp.exec(clientCmd + ' set --aid ' + aidSwitch + ' --iid ' + iidSwitch + ' true');
+
     });
 });
 
