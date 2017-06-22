@@ -4,7 +4,7 @@ const config = require('yargs')
     .describe('v', 'possible values: "error", "warn", "info", "debug"')
     .describe('m', 'JSON file containing HomeKit Services to MQTT mapping definitions. See Readme.')
     .describe('n', 'instance name. used as mqtt client id and as prefix for connected topic')
-    .describe('u', 'mqtt broker url. See https://github.com/mqttjs/MQTT.js#connect-using-a-url')
+    .describe('u', 'mqtt broker url. See https://github.com/mqttjs/MQTT.js/wiki/mqtt')
     .describe('s', 'directory to store homekit data')
     .describe('h', 'show help')
     .alias({

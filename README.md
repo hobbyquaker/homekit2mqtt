@@ -40,8 +40,8 @@ Options:
            "/usr/local/lib/node_modules/homekit2mqtt/example-homekit2mqtt.json"]
   -n, --name        instance name. used as mqtt client id and as prefix for
                     connected topic                         [default: "homekit"]
-  -u, --url         mqtt broker url. See
-                    https://github.com/mqttjs/MQTT.js#connect-using-a-url
+  -u, --url         mqtt broker url. See 
+                    https://github.com/mqttjs/MQTT.js/wiki/mqtt
                                                    [default: "mqtt://127.0.0.1"]
   -s, --storagedir  directory to store homekit data
   -h, --help        Show help                                          [boolean]
