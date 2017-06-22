@@ -6,6 +6,7 @@ const config = require('yargs')
     .describe('n', 'instance name. used as mqtt client id and as prefix for connected topic')
     .describe('u', 'mqtt broker url. See https://github.com/mqttjs/MQTT.js/wiki/mqtt')
     .describe('s', 'directory to store homekit data')
+    .describe('p', 'port hm2mqtt is listening on')
     .describe('h', 'show help')
     .alias({
         h: 'help',
