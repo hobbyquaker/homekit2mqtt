@@ -15,3 +15,10 @@ before_script:
       sh -e /etc/init.d/xvfb start
       sleep 3
     fi
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libsecret-1-dev
+      - gnome-keyring
