@@ -170,7 +170,7 @@ describe('hap-client - homekit2mqtt connection', function () {
         cp.exec('dbus-launch', (err, stdout, stderr) => {
             console.log('dbus err', err);
             console.log('dbus stdout', stdout);
-            console.log('dbus stderr', stddbus
+            console.log('dbus stderr', stderr);
         });
 
         cp.exec('echo "031-45-154" | ' + clientCmd + ' pair', (err, stdout, stderr) => {
