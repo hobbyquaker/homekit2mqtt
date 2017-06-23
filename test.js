@@ -174,26 +174,48 @@ describe('start dbus', function () {
 });
 
 describe('hap-client - homekit2mqtt connection', function () {
-    console.log('--- setting timeout to 60000');
-    this.timeout(60000);
-    it('should pair without error', (done) => {
+    it('should pair without error', function (done)  {
+        console.log('--- setting timeout to 60000');
+        this.timeout(60000);
         console.log('--- subscribing...');
         subscribe('homekit', /hap paired/, () => {
-            done();
+            setTimeout(function () {
+                done();
+            }, 5000);
         });
 
 
         console.log('--- trying to pair...');
+        var pair = cp.spawn(path.join(__dirname, '/node_modules/.bin/hap-client-tool'), ['-d', '127.0.0.1', '-p', '51826', 'pair']);
+
+        setTimeout(function () {
+            pair.stdin.write('031-45-154\n');
+        }, 1000);
+
+        var pairPipeOut = pair.stdout.pipe(streamSplitter('\n'));
+        var pairPipeErr = pair.stderr.pipe(streamSplitter('\n'));
+        pairPipeOut.on('token', data => {
+            console.log('pair', data.toString());
+        });
+
+        pairPipeErr.on('token', data => {
+            console.log('pair', data.toString());
+        });
+        /*
         cp.exec('echo "031-45-154" | ' + clientCmd + ' pair', (err, stdout, stderr) => {
             console.log('client err', err);
             console.log('client stdout', stdout);
             console.log('client stderr', stderr);
 
         });
+        */
     });
     it('should be able to dump accessories', (done) => {
         cp.exec(clientCmd + ' dump', (err, stdout, stderr) => {
-            clientAccs = JSON.parse(stdout).accessories;
+            console.log('dump err', err);
+            console.log('dump stdout', stdout);
+            console.log('dump stderr', stderr);
+            var clientAccs = JSON.parse(stdout).accessories;
 
             clientAccs.forEach(acc => {
                 acc.services.forEach(service => {
