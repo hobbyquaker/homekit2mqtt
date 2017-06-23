@@ -162,7 +162,7 @@ let aidSwitch;
 let iidSwitch;
 
 describe('hap-client - homekit2mqtt connection', function () {
-    this.timeout(5000);
+    this.timeout(60000);
     it('should pair without error', (done) => {
         subscribe('homekit', /hap paired/, () => {
             done();
