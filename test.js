@@ -174,13 +174,16 @@ describe('start dbus', function () {
 });
 
 describe('hap-client - homekit2mqtt connection', function () {
+    console.log('--- setting timeout to 60000');
     this.timeout(60000);
     it('should pair without error', (done) => {
+        console.log('--- subscribing...');
         subscribe('homekit', /hap paired/, () => {
             done();
         });
 
 
+        console.log('--- trying to pair...');
         cp.exec('echo "031-45-154" | ' + clientCmd + ' pair', (err, stdout, stderr) => {
             console.log('client err', err);
             console.log('client stdout', stdout);
