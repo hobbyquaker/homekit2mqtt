@@ -190,7 +190,7 @@ describe('hap-client - homekit2mqtt connection', function () {
 
         setTimeout(function () {
             pair.stdin.write('031-45-154\n');
-        }, 1000);
+        }, 5000);
 
         var pairPipeOut = pair.stdout.pipe(streamSplitter('\n'));
         var pairPipeErr = pair.stderr.pipe(streamSplitter('\n'));
