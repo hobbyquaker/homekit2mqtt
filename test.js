@@ -186,10 +186,12 @@ describe('hap-client - homekit2mqtt connection', function () {
 
 
         console.log('--- trying to pair...');
-        var pair = cp.spawn(path.join(__dirname, '/node_modules/.bin/hap-client-tool'), ['-d', '127.0.0.1', '-p', '51826', 'pair']);
+        var pair = cp.spawn(path.join(__dirname, '/node_modules/.bin/hap-client-tool'), ['-d', '127.0.0.1', '-p', '51826', 'pair'], {shell: true});
 
         setTimeout(function () {
+            console.log('--- writing pin to stdin');
             pair.stdin.write('031-45-154\n');
+            pair.stdin.write('\n');
         }, 5000);
 
         var pairPipeOut = pair.stdout.pipe(streamSplitter('\n'));
