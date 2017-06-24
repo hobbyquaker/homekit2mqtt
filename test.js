@@ -174,14 +174,15 @@ describe('start dbus', function () {
 });
 
 describe('hap-client - homekit2mqtt connection', function () {
+    this.timeout(180000);
     it('should pair without error', function (done)  {
         console.log('--- setting timeout to 60000');
-        this.timeout(60000);
+        this.timeout(180000);
         console.log('--- subscribing...');
         subscribe('homekit', /hap paired/, () => {
             setTimeout(function () {
                 done();
-            }, 5000);
+            }, 3000);
         });
 
 
@@ -197,12 +198,20 @@ describe('hap-client - homekit2mqtt connection', function () {
         pair.on('error', (err) => {
             console.log('--- pair error - Failed to start child process.', err);
         });
+        pair.stdout.on('data', data => {
+            console.log('pair stdout', data.toString());
+        });
+        pair.stderr.on('data', data => {
+            console.log('pair stderr', data.toString());
+        });
+
         setTimeout(function () {
             console.log('--- writing pin to stdin');
             pair.stdin.write('031-45-154\n');
             pair.stdin.write('\n');
-        }, 5000);
+        }, 15000);
 
+        /*
         var pairPipeOut = pair.stdout.pipe(streamSplitter('\n'));
         var pairPipeErr = pair.stderr.pipe(streamSplitter('\n'));
         pairPipeOut.on('token', data => {
@@ -212,7 +221,7 @@ describe('hap-client - homekit2mqtt connection', function () {
         pairPipeErr.on('token', data => {
             console.log('pair', data.toString());
         });
-        /*
+
         cp.exec('echo "031-45-154" | ' + clientCmd + ' pair', (err, stdout, stderr) => {
             console.log('client err', err);
             console.log('client stdout', stdout);
