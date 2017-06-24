@@ -186,13 +186,16 @@ describe('hap-client - homekit2mqtt connection', function () {
 
 
         console.log('--- trying to pair...');
-        var pair = cp.spawn(path.join(__dirname, '/node_modules/.bin/hap-client-tool'), ['-d', '127.0.0.1', '-p', '51826', 'pair'], {shell: true});
+        var pair = cp.spawn(path.join(__dirname, '/node_modules/.bin/hap-client-tool'), ['-d', '127.0.0.1', '-p', '51826', 'pair']);
 
         pair.on('close', (code) => {
-            console.log(`--- pair - child process exited with code ${code}`);
+            console.log(`--- pair close - child process exited with code ${code}`);
+        });
+        pair.on('exit', (code) => {
+            console.log(`--- pair exit- child process exited with code ${code}`);
         });
         pair.on('error', (err) => {
-            console.log('--- pair - Failed to start child process.', err);
+            console.log('--- pair error - Failed to start child process.', err);
         });
         setTimeout(function () {
             console.log('--- writing pin to stdin');
