@@ -199,17 +199,18 @@ describe('hap-client - homekit2mqtt connection', function () {
             console.log('--- pair error - Failed to start child process.', err);
         });
         pair.stdout.on('data', data => {
-            console.log('pair stdout', data.toString());
+            data = data.toString();
+            console.log('pair stdout', data);
+            if (data.match(/pin code/)) {
+                console.log('--- writing pin to stdin');
+                pair.stdin.write('031-45-154\n');
+                pair.stdin.write('\n');
+            }
         });
         pair.stderr.on('data', data => {
             console.log('pair stderr', data.toString());
         });
 
-        setTimeout(function () {
-            console.log('--- writing pin to stdin');
-            pair.stdin.write('031-45-154\n');
-            pair.stdin.write('\n');
-        }, 15000);
 
         /*
         var pairPipeOut = pair.stdout.pipe(streamSplitter('\n'));
@@ -232,9 +233,6 @@ describe('hap-client - homekit2mqtt connection', function () {
     });
     it('should be able to dump accessories', (done) => {
         cp.exec(clientCmd + ' dump', (err, stdout, stderr) => {
-            console.log('dump err', err);
-            console.log('dump stdout', stdout);
-            console.log('dump stderr', stderr);
             var clientAccs = JSON.parse(stdout).accessories;
 
             clientAccs.forEach(acc => {
