@@ -28,7 +28,7 @@ module.exports = function (iface) {
                 });
         }
 
-        acc.addService(Service.Outlet, settings.name)
+        acc.getService(Service.Outlet)
             .getCharacteristic(Characteristic.OutletInUse)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'OutletInUse');
