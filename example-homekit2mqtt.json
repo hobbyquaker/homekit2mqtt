@@ -168,7 +168,24 @@
     "manufacturer": "Generic",
     "model": "CarbonMonoxideSensor"
   },
-  
+
+
+  "CarbonDioxideSensor": {
+    "service": "CarbonDioxideSensor",
+    "name": "CarbonDioxideSensor",
+    "topic": {
+      "statusCarbonDioxideDetected": "CarbonDioxideSensor/status",
+      "statusLowBattery": "CarbonDioxideSensor/status/LowBattery"
+    },
+    "payload": {
+      "onCarbonDioxideDetected": 1,
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "CarbonDioxideSensor"
+  },
+
+
   "LockMechanism": {
     "service": "LockMechanism",
     "name": "LockMechanism",
