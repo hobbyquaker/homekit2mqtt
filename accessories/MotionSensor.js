@@ -29,8 +29,8 @@ module.exports = function (iface) {
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
                     const bat = mqttStatus[settings.topic.statusLowBattery] !== settings.payload.onLowBattery ?
-                        Characteristic.StatusLowBattery.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
-                        Characteristic.StatusLowBattery.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
+                        Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
+                        Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
 
                     log.debug('> hap re_get', settings.name, 'StatusLowBattery', bat);
                     callback(null, bat);
