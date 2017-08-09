@@ -586,4 +586,4 @@ function testLowBattery(name) {
 setTimeout(() => {
     homekit.kill();
     process.exit(1);
-}, 30000);
+}, 180000);
