@@ -24,7 +24,7 @@ module.exports = function (iface) {
         });
 
         if (settings.topic.statusLowBattery) {
-            sensor.addService(Service.ContactSensor, settings.name)
+            sensor.getService(Service.MotionSensor, settings.name)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -41,7 +41,7 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                sensor.getService(Service.ContactSensor)
+                sensor.getService(Service.MotionSensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
