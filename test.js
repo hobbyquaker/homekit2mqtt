@@ -189,7 +189,7 @@ if (process.platform !== 'darwin') {
 
 describe('hap-client - homekit2mqtt connection', function () {
     this.timeout(180000);
-    it('should pair without error', function (done)  {
+    it('should pair without error', function (done) {
         this.timeout(180000);
         subscribe('homekit', /hap paired/, () => {
             setTimeout(function () {
@@ -223,7 +223,8 @@ describe('hap-client - homekit2mqtt connection', function () {
         });
 
     });
-    it('should be able to dump accessories', (done) => {
+    it('should be able to dump accessories', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' dump', (err, stdout, stderr) => {
             const clientAccs = JSON.parse(stdout).accessories;
 
@@ -250,7 +251,8 @@ describe('hap-client - homekit2mqtt connection', function () {
             }
         });
     });
-    it('should get the status of the switch', (done) => {
+    it('should get the status of the switch', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.Switch1 + ' --iid ' + iid.Switch1.On, (err, stdout, stderr) => {
             if (stdout === 'false\n') {
                 done();
@@ -267,7 +269,8 @@ describe('mqtt - homekit2mqtt - client', () => {
         });
         mqtt.publish('Switch/status', '1');
     });
-    it('client should get the status of the switch', (done) => {
+    it('client should get the status of the switch', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.Switch1 + ' --iid ' + iid.Switch1.On, (err, stdout, stderr) => {
             if (stdout === 'true\n') {
                 done();
@@ -281,7 +284,8 @@ describe('mqtt - homekit2mqtt - client', () => {
         });
         mqtt.publish('Switch/status', '0');
     });
-    it('client should get the status of the switch', (done) => {
+    it('client should get the status of the switch', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.Switch1 + ' --iid ' + iid.Switch1.On, (err, stdout, stderr) => {
             if (stdout === 'false\n') {
                 done();
@@ -291,7 +295,8 @@ describe('mqtt - homekit2mqtt - client', () => {
 });
 
 describe('Switch', () => {
-    it('homekit2mqtt should publish on mqtt after client did a set', (done) => {
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(12000);
         let id = mqttSubscribe('Switch/set', payload => {
             if (payload === '1') {
                 mqttUnsubscribe('Switch/set', id);
@@ -303,7 +308,8 @@ describe('Switch', () => {
         cp.exec(cmd);
     });
 
-    it('homekit2mqtt should publish on mqtt after client did a set', (done) => {
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(12000);
         mqttSubscribe('Switch/set', payload => {
             if (payload === '0') {
                 done();
@@ -324,7 +330,8 @@ describe('TemperatureSensor', () => {
         });
         mqtt.publish('TemperatureSensor/Temperature', '21');
     });
-    it('client should get the temperature', (done) => {
+    it('client should get the temperature', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.TemperatureSensor + ' --iid ' + iid.TemperatureSensor.CurrentTemperature, (err, stdout, stderr) => {
             if (stdout === '21\n') {
                 done();
@@ -343,7 +350,8 @@ describe('TemperatureSensor Fahrenheit', () => {
         });
         mqtt.publish('TemperatureSensorF/Temperature', '68');
     });
-    it('client should get the temperature', (done) => {
+    it('client should get the temperature', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.TemperatureSensorF + ' --iid ' + iid.TemperatureSensorF.CurrentTemperature, (err, stdout, stderr) => {
             if (stdout === '20\n') {
                 done();
@@ -360,7 +368,8 @@ describe('ContactSensor ContactSensorState', () => {
         });
         mqtt.publish('ContactSensor/status', '1');
     });
-    it('client should get the status of the ContactSensor', (done) => {
+    it('client should get the status of the ContactSensor', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.ContactSensor + ' --iid ' + iid.ContactSensor.ContactSensorState, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -374,7 +383,8 @@ describe('ContactSensor ContactSensorState', () => {
         });
         mqtt.publish('ContactSensor/status', '0');
     });
-    it('client should get the status of the ContactSensor', (done) => {
+    it('client should get the status of the ContactSensor', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.ContactSensor + ' --iid ' + iid.ContactSensor.ContactSensorState, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -393,7 +403,8 @@ describe('MotionSensor MotionSensorState', () => {
         });
         mqtt.publish('MotionSensor/status', '1');
     });
-    it('client should get the status of the MotionSensor', (done) => {
+    it('client should get the status of the MotionSensor', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.MotionSensor + ' --iid ' + iid.MotionSensor.MotionDetected, (err, stdout, stderr) => {
             if (stdout === 'true\n') {
                 done();
@@ -407,7 +418,8 @@ describe('MotionSensor MotionSensorState', () => {
         });
         mqtt.publish('MotionSensor/status', '0');
     });
-    it('client should get the status of the MotionSensor', (done) => {
+    it('client should get the status of the MotionSensor', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.MotionSensor + ' --iid ' + iid.MotionSensor.MotionDetected, (err, stdout, stderr) => {
             if (stdout === 'false\n') {
                 done();
@@ -426,7 +438,8 @@ describe('SmokeSensor SmokeSensorState', () => {
         });
         mqtt.publish('SmokeSensor/status', '1');
     });
-    it('client should get the status of the SmokeSensor', (done) => {
+    it('client should get the status of the SmokeSensor', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.SmokeSensor + ' --iid ' + iid.SmokeSensor.SmokeDetected, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -440,7 +453,8 @@ describe('SmokeSensor SmokeSensorState', () => {
         });
         mqtt.publish('SmokeSensor/status', '0');
     });
-    it('client should get the status of the SmokeSensor', (done) => {
+    it('client should get the status of the SmokeSensor', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.SmokeSensor + ' --iid ' + iid.SmokeSensor.SmokeDetected, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -459,7 +473,8 @@ describe('CarbonMonoxideSensor CarbonMonoxideSensorState', () => {
         });
         mqtt.publish('CarbonMonoxideSensor/status', '1');
     });
-    it('client should get the status of the CarbonMonoxideSensor', (done) => {
+    it('client should get the status of the CarbonMonoxideSensor', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.CarbonMonoxideSensor + ' --iid ' + iid.CarbonMonoxideSensor.CarbonMonoxideDetected, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -473,7 +488,8 @@ describe('CarbonMonoxideSensor CarbonMonoxideSensorState', () => {
         });
         mqtt.publish('CarbonMonoxideSensor/status', '0');
     });
-    it('client should get the status of the CarbonMonoxideSensor', (done) => {
+    it('client should get the status of the CarbonMonoxideSensor', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.CarbonMonoxideSensor + ' --iid ' + iid.CarbonMonoxideSensor.CarbonMonoxideDetected, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -492,7 +508,8 @@ describe('CarbonDioxideSensor CarbonDioxideSensorState', () => {
         });
         mqtt.publish('CarbonDioxideSensor/status', '1');
     });
-    it('client should get the status of the CarbonDioxideSensor', (done) => {
+    it('client should get the status of the CarbonDioxideSensor', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.CarbonDioxideSensor + ' --iid ' + iid.CarbonDioxideSensor.CarbonDioxideDetected, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -506,7 +523,8 @@ describe('CarbonDioxideSensor CarbonDioxideSensorState', () => {
         });
         mqtt.publish('CarbonDioxideSensor/status', '0');
     });
-    it('client should get the status of the CarbonDioxideSensor', (done) => {
+    it('client should get the status of the CarbonDioxideSensor', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.CarbonDioxideSensor + ' --iid ' + iid.CarbonDioxideSensor.CarbonDioxideDetected, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -525,7 +543,8 @@ describe('LeakSensor LeakSensorState', () => {
         });
         mqtt.publish('LeakSensor/status', '1');
     });
-    it('client should get the status of the LeakSensor', (done) => {
+    it('client should get the status of the LeakSensor', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.LeakSensor + ' --iid ' + iid.LeakSensor.LeakDetected, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -539,7 +558,8 @@ describe('LeakSensor LeakSensorState', () => {
         });
         mqtt.publish('LeakSensor/status', '0');
     });
-    it('client should get the status of the LeakSensor', (done) => {
+    it('client should get the status of the LeakSensor', function (done) {
+        this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.LeakSensor + ' --iid ' + iid.LeakSensor.LeakDetected, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -551,7 +571,7 @@ describe('LeakSensor LeakSensorState', () => {
 testLowBattery('LeakSensor');
 
 function testLowBattery(name) {
-    describe(name + ' StatusLowBattery', () => {
+    describe(name + ' StatusLowBattery', function () {
         it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
             this.timeout(12000);
             subscribe('homekit', new RegExp('hap update ' + name + ' StatusLowBattery 1'), () => {
@@ -559,7 +579,8 @@ function testLowBattery(name) {
             });
             mqtt.publish(name + '/status/LowBattery', '{"val":1}');
         });
-        it('client should get the status of the ' + name, (done) => {
+        it('client should get the status of the ' + name, function (done) {
+            this.timeout(12000);
             cp.exec(clientCmd + ' get --aid ' + aid[name] + ' --iid ' + iid[name].StatusLowBattery, (err, stdout, stderr) => {
                 if (stdout === '1\n') {
                     done();
@@ -573,7 +594,8 @@ function testLowBattery(name) {
             });
             mqtt.publish(name + '/status/LowBattery', '{"val":0}');
         });
-        it('client should get the status of the MotionSensor', (done) => {
+        it('client should get the status of the MotionSensor', function (done) {
+            this.timeout(12000);
             cp.exec(clientCmd + ' get --aid ' + aid[name] + ' --iid ' + iid[name].StatusLowBattery, (err, stdout, stderr) => {
                 if (stdout === '0\n') {
                     done();
@@ -586,4 +608,4 @@ function testLowBattery(name) {
 setTimeout(() => {
     homekit.kill();
     process.exit(1);
-}, 180000);
+}, 600000);
