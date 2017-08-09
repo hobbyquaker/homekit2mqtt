@@ -451,6 +451,39 @@ describe('SmokeSensor SmokeSensorState', () => {
 
 testLowBattery('SmokeSensor');
 
+describe('CarbonMonoxideSensor CarbonMonoxideSensorState', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update CarbonMonoxideSensor CarbonMonoxideDetected 1/, () => {
+            done();
+        });
+        mqtt.publish('CarbonMonoxideSensor/status', '1');
+    });
+    it('client should get the status of the CarbonMonoxideSensor', (done) => {
+        cp.exec(clientCmd + ' get --aid ' + aid.CarbonMonoxideSensor + ' --iid ' + iid.CarbonMonoxideSensor.CarbonMonoxideDetected, (err, stdout, stderr) => {
+            if (stdout === '1\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update CarbonMonoxideSensor CarbonMonoxideDetected 0/, () => {
+            done();
+        });
+        mqtt.publish('CarbonMonoxideSensor/status', '0');
+    });
+    it('client should get the status of the CarbonMonoxideSensor', (done) => {
+        cp.exec(clientCmd + ' get --aid ' + aid.CarbonMonoxideSensor + ' --iid ' + iid.CarbonMonoxideSensor.CarbonMonoxideDetected, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+});
+
+testLowBattery('CarbonMonoxideSensor');
+
 function testLowBattery(name) {
     describe(name + ' StatusLowBattery', () => {
         it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
