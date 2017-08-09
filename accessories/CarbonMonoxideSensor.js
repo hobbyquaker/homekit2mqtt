@@ -33,6 +33,7 @@ module.exports = function (iface) {
                 .updateCharacteristic(Characteristic.CarbonMonoxideDetected, contact);
         });
 
+        /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
             sensor.getService(Service.CarbonMonoxideSensor, settings.name)
                 .getCharacteristic(Characteristic.StatusLowBattery)
