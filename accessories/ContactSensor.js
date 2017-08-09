@@ -27,6 +27,7 @@ module.exports = function (iface) {
                 .updateCharacteristic(Characteristic.ContactSensorState, contact);
         });
 
+        /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
             sensor.getService(Service.ContactSensor, settings.name)
                 .getCharacteristic(Characteristic.StatusLowBattery)
