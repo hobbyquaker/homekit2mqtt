@@ -39,7 +39,7 @@ module.exports = function (iface) {
             });
 
         if (settings.topic.statusLowBattery) {
-            sensor.addService(Service.TemperatureSensor, settings.name)
+            sensor.getService(Service.TemperatureSensor, settings.name)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
