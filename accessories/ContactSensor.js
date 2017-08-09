@@ -22,9 +22,9 @@ module.exports = function (iface) {
             const contact = val === settings.payload.onContactDetected ?
                 Characteristic.ContactSensorState.CONTACT_DETECTED :
                 Characteristic.ContactSensorState.CONTACT_NOT_DETECTED;
-            log.debug('> hap set', settings.name, 'ContactSensorState', contact);
+            log.debug('> hap update', settings.name, 'ContactSensorState', contact);
             sensor.getService(Service.ContactSensor)
-                .setCharacteristic(Characteristic.ContactSensorState, contact);
+                .updateCharacteristic(Characteristic.ContactSensorState, contact);
         });
 
         if (settings.topic.statusLowBattery) {
@@ -43,9 +43,9 @@ module.exports = function (iface) {
                 const bat = val !== settings.payload.onLowBattery ?
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
-                log.debug('> hap set', settings.name, 'StatusLowBattery', bat);
+                log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
                 sensor.getService(Service.ContactSensor)
-                    .setCharacteristic(Characteristic.StatusLowBattery, bat);
+                    .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
 
