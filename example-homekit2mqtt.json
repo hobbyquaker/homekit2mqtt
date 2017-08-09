@@ -157,7 +157,11 @@
     "service": "TemperatureSensor",
     "name": "TemperatureSensor",
     "topic": {
-      "statusTemperature": "TemperatureSensor/Temperature"
+      "statusTemperature": "TemperatureSensor/Temperature",
+      "statusLowBattery": "TemperatureSensor/status/LowBattery"
+    },
+    "payload": {
+      "onLowBattery": 1
     },
     "manufacturer": "Generic",
     "model": "TemperatureSensor"
