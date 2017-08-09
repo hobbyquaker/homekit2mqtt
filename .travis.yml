@@ -26,7 +26,7 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - libsecret-1-dev
-      - gnome-keyri
+      - gnome-keyring
       - libavahi-compat-libdnssd-dev
 install:
 - nvm install 6
