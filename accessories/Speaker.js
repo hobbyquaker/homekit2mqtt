@@ -16,13 +16,15 @@ module.exports = function (iface) {
                 callback();
             });
 
-        // Update status in homekit if exernal status gets updated
-        mqttSub(settings.topic.statusMute, val => {
-            const mute = val !== settings.topic.muteFalse;
-            log.debug('> hap update', settings.name, 'Mute', mute);
-            speaker.getService(Service.Speaker)
-                .updateCharacteristic(Characteristic.Mute, mute);
-        });
+        if (settings.topic.statusMute) {
+            // Update status in homekit if exernal status gets updated
+            mqttSub(settings.topic.statusMute, val => {
+                const mute = val !== settings.topic.muteFalse;
+                log.debug('> hap update', settings.name, 'Mute', mute);
+                speaker.getService(Service.Speaker)
+                    .updateCharacteristic(Characteristic.Mute, mute);
+            });
+        }
 
         speaker.getService(Service.Speaker)
             .getCharacteristic(Characteristic.Mute)
