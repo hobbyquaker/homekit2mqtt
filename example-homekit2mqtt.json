@@ -160,6 +160,20 @@
     "manufacturer": "Generic",
     "model": "TemperatureSensor"
   },
+
+  "TemperatureSensorF": {
+    "service": "TemperatureSensor",
+    "name": "TemperatureSensorF",
+    "topic": {
+      "statusTemperature": "TemperatureSensorF/Temperature"
+    },
+    "config": {
+      "fahrenheit": true
+    },
+    "manufacturer": "Generic",
+    "model": "TemperatureSensor"
+  },
+
   "LightSensor": {
     "service": "LightSensor",
     "name": "LightSensor",
