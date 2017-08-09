@@ -1,4 +1,34 @@
 {
+  "ContactSensor": {
+    "service": "ContactSensor",
+    "name": "ContactSensor",
+    "topic": {
+      "statusContactSensorState": "ContactSensor/status",
+      "statusLowBattery": "ContactSensor/status/LowBattery"
+    },
+    "payload": {
+      "onContactDetected": 0,
+      "onBatteryLow": 1
+    },
+    "manufacturer": "Generic",
+    "model": "ContactSensor"
+  },
+
+  "Lightbulb1": {
+    "service":  "Lightbulb",
+    "name":     "Licht Garten",
+    "topic": {
+      "setOn":          "Lightbulb1/set",
+      "statusOn":       "Lightbulb1/status"
+    },
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0
+    },
+    "manufacturer": "Generic",
+    "model": "Lightbulb"
+  },
+
   "Thermostat1": {
     "service": "Thermostat",
     "name": "Thermostat1",
@@ -35,20 +65,7 @@
     "manufacturer": "Generic",
     "model": "WindowCovering"
   },
-  "Lightbulb1": {
-    "service":  "Lightbulb",
-    "name":     "Licht Garten",
-    "topic": {
-      "setOn":          "Lightbulb1/set",
-      "statusOn":       "Lightbulb1/status"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0
-    },
-    "manufacturer": "Generic",
-    "model": "Lightbulb"
-  },
+
   "Lightbulb2": {
     "service":  "Lightbulb",
     "name":     "Lightbulb2",
@@ -95,7 +112,7 @@
   },
   "Switch": {
     "service": "Switch",
-    "name": "Steckdose Fernseher",
+    "name": "Switch1",
     "topic": {
       "statusOn": "Switch/status",
       "setOn": "Switch/set"
@@ -119,20 +136,7 @@
     "manufacturer": "Generic",
     "model": "MotionSensor"
   },
-  "ContactSensor": {
-    "service": "ContactSensor",
-    "name": "ContactSensor",
-    "topic": {
-      "statusContactSensorState": "ContactSensor/status",
-      "statusLowBattery": "ContactSensor/status/LowBattery"
-    },
-    "payload": {
-      "onContactDetected": 0,
-      "onBatteryLow": 1
-    },
-    "manufacturer": "Generic",
-    "model": "ContactSensor"
-  },
+
   "LockMechanism": {
     "service": "LockMechanism",
     "name": "LockMechanism",
