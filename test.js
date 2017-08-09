@@ -433,6 +433,69 @@ describe('ContactSensor StatusLowBattery', () => {
     });
 });
 
+
+describe('MotionSensor MotionSensorState', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update MotionSensor MotionDetected true/, () => {
+            done();
+        });
+        mqtt.publish('MotionSensor/status', '1');
+    });
+    it('client should get the status of the MotionSensor', (done) => {
+        cp.exec(clientCmd + ' get --aid ' + aid.MotionSensor + ' --iid ' + iid.MotionSensor.MotionDetected, (err, stdout, stderr) => {
+            if (stdout === 'true\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update MotionSensor MotionDetected false/, () => {
+            done();
+        });
+        mqtt.publish('MotionSensor/status', '0');
+    });
+    it('client should get the status of the MotionSensor', (done) => {
+        cp.exec(clientCmd + ' get --aid ' + aid.MotionSensor + ' --iid ' + iid.MotionSensor.MotionDetected, (err, stdout, stderr) => {
+            if (stdout === 'false\n') {
+                done();
+            }
+        });
+    });
+});
+describe('MotionSensor StatusLowBattery', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update MotionSensor StatusLowBattery 1/, () => {
+            done();
+        });
+        mqtt.publish('MotionSensor/status/LowBattery', '{"val":1}');
+    });
+    it('client should get the status of the MotionSensor', (done) => {
+        cp.exec(clientCmd + ' get --aid ' + aid.MotionSensor + ' --iid ' + iid.MotionSensor.StatusLowBattery, (err, stdout, stderr) => {
+            if (stdout === '1\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update MotionSensor StatusLowBattery 0/, () => {
+            done();
+        });
+        mqtt.publish('MotionSensor/status/LowBattery', '{"val":0}');
+    });
+    it('client should get the status of the MotionSensor', (done) => {
+        cp.exec(clientCmd + ' get --aid ' + aid.MotionSensor + ' --iid ' + iid.MotionSensor.StatusLowBattery, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+});
+
+
 setTimeout(() => {
     homekit.kill();
     process.exit(1);
