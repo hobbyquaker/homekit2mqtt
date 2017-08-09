@@ -517,6 +517,39 @@ describe('CarbonDioxideSensor CarbonDioxideSensorState', () => {
 
 testLowBattery('CarbonDioxideSensor');
 
+describe('LeakSensor LeakSensorState', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update LeakSensor LeakDetected 1/, () => {
+            done();
+        });
+        mqtt.publish('LeakSensor/status', '1');
+    });
+    it('client should get the status of the LeakSensor', (done) => {
+        cp.exec(clientCmd + ' get --aid ' + aid.LeakSensor + ' --iid ' + iid.LeakSensor.LeakDetected, (err, stdout, stderr) => {
+            if (stdout === '1\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update LeakSensor LeakDetected 0/, () => {
+            done();
+        });
+        mqtt.publish('LeakSensor/status', '0');
+    });
+    it('client should get the status of the LeakSensor', (done) => {
+        cp.exec(clientCmd + ' get --aid ' + aid.LeakSensor + ' --iid ' + iid.LeakSensor.LeakDetected, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+});
+
+testLowBattery('LeakSensor');
+
 function testLowBattery(name) {
     describe(name + ' StatusLowBattery', () => {
         it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
