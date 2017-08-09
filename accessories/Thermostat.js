@@ -93,7 +93,7 @@ module.exports = function (iface) {
 
         thermo.getService(Service.Thermostat)
             .getCharacteristic(Characteristic.TargetTemperature)
-            .setProps((settings.props || {}).TargetTemperature || {})
+            .setProps((settings.props || {}).TargetTemperature || {minValue: 4})
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'TargetTemperature');
                 log.debug('> hap re_get', settings.name, 'TargetTemperature', mqttStatus[settings.topic.statusTargetTemperature]);

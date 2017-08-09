@@ -439,7 +439,7 @@ config
 
 props (optional)
 
-* currentTemperature - an object containing properties for the currentTemperature characteristic:
+* CurrentTemperature - an object containing properties for the currentTemperature characteristic:
   * minValue
   * maxValue
   * minStep
@@ -471,12 +471,12 @@ config
 
 props (optional)
 
-* currentTemperature - an object containing properties for the currentTemperature characteristic:
+* CurrentTemperature - an object containing properties for the currentTemperature characteristic:
   * minValue
   * maxValue
   * minStep
 
-* targetTemperature - an object containing properties for the currentTemperature characteristic:
+* TargetTemperature - an object containing properties for the currentTemperature characteristic:
   * minValue
   * maxValue
   * minStep

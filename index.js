@@ -84,6 +84,7 @@ mqtt.on('message', (topic, payload) => {
 // MQTT subscribe function that provides a callback on incoming messages.
 // Not meant to be used with wildcards!
 function mqttSub(topic, callback) {
+    topic = String(topic);
     if (typeof callback === 'function') {
         if (mqttCallbacks[topic]) {
             mqttCallbacks[topic].push(callback);
