@@ -12,7 +12,12 @@ mqtt = Mqtt.connect('mqtt://127.0.0.1');
 const config = require('./example-homekit2mqtt.json');
 
 const homekitCmd = path.join(__dirname, '/index.js');
-const homekitArgs = ['-v', 'debug'];
+
+function randomHex() {
+    return ('0' + Math.floor(Math.random() * 0xff)).slice(-2);
+}
+
+const homekitArgs = ['-v', 'debug', '-a', 'CC:22:3D:' + randomHex() + ':' + randomHex() + ':' + randomHex()];
 let homekit;
 let homekitPipeOut;
 let homekitPipeErr;
@@ -161,17 +166,20 @@ describe('homekit2mqtt - mqtt connection', () => {
 let aidSwitch;
 let iidSwitch;
 
-describe('start dbus', function () {
-    this.timeout(60000);
-    it('should start dbus', done => {
-        cp.exec('dbus-launch', (err, stdout, stderr) => {
-            console.log('dbus err', err);
-            console.log('dbus stdout', stdout);
-            console.log('dbus stderr', stderr);
-            setTimeout(done, 3000);
+if (process.platform !== 'darwin') {
+    describe('start dbus', function () {
+        this.timeout(60000);
+        it('should start dbus', done => {
+            cp.exec('dbus-launch', (err, stdout, stderr) => {
+                console.log('dbus err', err);
+                console.log('dbus stdout', stdout);
+                console.log('dbus stderr', stderr);
+                setTimeout(done, 3000);
+            });
         });
     });
-});
+}
+
 
 describe('hap-client - homekit2mqtt connection', function () {
     this.timeout(180000);

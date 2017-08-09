@@ -12,7 +12,8 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "test": "camo-purge ; xo --space 4 --no-esnext --ignore test.js && nyc mocha test.js && nyc report --reporter=text-lcov | codecov"
+    "test": "camo-purge ; xo --space 4 --no-esnext --ignore test.js && nyc mocha test.js && nyc report --reporter=text-lcov | codecov",
+    "testonly": "mocha test.js"
   },
   "author": "Sebastian 'hobbyquaker' Raff <hq@ccu.io> (https://github.com/hobbyquaker)",
   "contributors": [
@@ -34,12 +35,12 @@
   "devDependencies": {
     "camo-purge": "latest",
     "codecov.io": "latest",
+    "hap-client-cli": "latest",
     "mocha": "latest",
     "nyc": "latest",
     "should": "latest",
     "stream-splitter": "latest",
-    "xo": "latest",
-    "hap-client-cli": "latest"
+    "xo": "latest"
   },
   "repository": {
     "type": "git",
