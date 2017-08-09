@@ -185,7 +185,21 @@
     "model": "CarbonDioxideSensor"
   },
 
-
+  "LeakSensor": {
+    "service": "LeakSensor",
+    "name": "LeakSensor",
+    "topic": {
+      "statusLeakDetected": "LeakSensor/status",
+      "statusLowBattery": "LeakSensor/status/LowBattery"
+    },
+    "payload": {
+      "onLeakDetected": 1,
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "LeakSensor"
+  },
+  
   "LockMechanism": {
     "service": "LockMechanism",
     "name": "LockMechanism",
