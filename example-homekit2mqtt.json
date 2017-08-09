@@ -164,5 +164,19 @@
     },
     "manufacturer": "Generic",
     "model": "LightSensor"
+  },
+  "Speaker": {
+    "service": "Speaker",
+    "name": "Speaker",
+    "topic": {
+      "setMute": "speaker/set/mute",
+      "statusMute": "speaker/status/mute",
+      "setVolume": "speaker/set/volume",
+      "statusVolume": "speaker/status/volume"
+    },
+    "payload": {
+      "muteTrue": "mute",
+      "muteFalse": "unmute"
+    }
   }
 }
