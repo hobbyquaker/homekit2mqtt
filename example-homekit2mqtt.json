@@ -128,10 +128,12 @@
     "service": "MotionSensor",
     "name": "MotionSensor",
     "topic": {
-      "statusMotionDetected": "MotionSensor/status"
+      "statusMotionDetected": "MotionSensor/status",
+      "statusLowBattery": "MotionSensor/status/LowBattery"
     },
     "payload": {
-      "onMotionDetected": true
+      "onMotionDetected": 1,
+      "onLowBattery": 1
     },
     "manufacturer": "Generic",
     "model": "MotionSensor"
