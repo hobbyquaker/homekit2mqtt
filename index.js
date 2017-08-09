@@ -111,6 +111,7 @@ function mqttPub(topic, payload, options) {
             payload = String(payload);
         }
         mqtt.publish(topic, payload, options, err => {
+            /* istanbul ignore next */
             if (err) {
                 log.error('mqtt publish error ' + err);
             }
@@ -126,6 +127,7 @@ const Accessory = HAP.Accessory;
 const Service = HAP.Service;
 const Characteristic = HAP.Characteristic;
 
+/* istanbul ignore next */
 if (config.storagedir) {
     log.info('using directory ' + config.storagedir + ' for persistent storage');
 }
