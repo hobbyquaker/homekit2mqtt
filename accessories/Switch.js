@@ -16,6 +16,7 @@ module.exports = function (iface) {
                 callback();
             });
 
+        /* istanbul ignore else  */
         if (settings.topic.statusOn) {
             mqttSub(settings.topic.statusOn, val => {
                 log.debug('< mqtt', settings.topic.statusOn, val);
