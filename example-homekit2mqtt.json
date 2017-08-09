@@ -153,6 +153,21 @@
     "manufacturer": "Generic",
     "model": "SmokeSensor"
   },
+
+  "CarbonMonoxideSensor": {
+    "service": "CarbonMonoxideSensor",
+    "name": "CarbonMonoxideSensor",
+    "topic": {
+      "statusCarbonMonoxideDetected": "CarbonMonoxideSensor/status",
+      "statusLowBattery": "CarbonMonoxideSensor/status/LowBattery"
+    },
+    "payload": {
+      "onCarbonMonoxideDetected": 1,
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "CarbonMonoxideSensor"
+  },
   
   "LockMechanism": {
     "service": "LockMechanism",
