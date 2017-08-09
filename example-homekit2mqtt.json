@@ -8,7 +8,7 @@
     },
     "payload": {
       "onContactDetected": 0,
-      "onBatteryLow": 1
+      "onLowBattery": 1
     },
     "manufacturer": "Generic",
     "model": "ContactSensor"
