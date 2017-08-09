@@ -15,7 +15,7 @@ module.exports = function (iface) {
         const sensor = newAccessory(settings);
 
         mqttSub(settings.topic.statusTemperature, val => {
-            log.debug('> hap set', settings.name, 'CurrentTemperature', mqttStatus[settings.topic.statusTemperature]);
+            log.debug('> hap update', settings.name, 'CurrentTemperature', mqttStatus[settings.topic.statusTemperature]);
             sensor.getService(Service.TemperatureSensor)
                 .updateCharacteristic(Characteristic.CurrentTemperature, convertTemperature(settings, val));
         });
