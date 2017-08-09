@@ -33,6 +33,7 @@ module.exports = function (iface) {
                 .updateCharacteristic(Characteristic.LeakDetected, contact);
         });
 
+        /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
             sensor.getService(Service.LeakSensor, settings.name)
                 .getCharacteristic(Characteristic.StatusLowBattery)
