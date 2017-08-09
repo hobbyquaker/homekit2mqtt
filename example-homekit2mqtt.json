@@ -139,6 +139,21 @@
     "model": "MotionSensor"
   },
 
+  "SmokeSensor": {
+    "service": "SmokeSensor",
+    "name": "SmokeSensor",
+    "topic": {
+      "statusSmokeDetected": "SmokeSensor/status",
+      "statusLowBattery": "SmokeSensor/status/LowBattery"
+    },
+    "payload": {
+      "onSmokeDetected": 1,
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "SmokeSensor"
+  },
+  
   "LockMechanism": {
     "service": "LockMechanism",
     "name": "LockMechanism",
