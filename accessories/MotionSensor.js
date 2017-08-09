@@ -18,9 +18,9 @@ module.exports = function (iface) {
 
         mqttSub(settings.topic.statusMotionDetected, val => {
             const motion = val === settings.payload.onMotionDetected;
-            log.debug('> hap set', settings.name, 'MotionDetected', motion);
+            log.debug('> hap update', settings.name, 'MotionDetected', motion);
             sensor.getService(Service.MotionSensor)
-                .setCharacteristic(Characteristic.MotionDetected, motion);
+                .updateCharacteristic(Characteristic.MotionDetected, motion);
         });
 
         if (settings.topic.statusLowBattery) {
@@ -40,9 +40,9 @@ module.exports = function (iface) {
                 const bat = val !== settings.payload.onLowBattery ?
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
-                log.debug('> hap set', settings.name, 'statusLowBattery', bat);
+                log.debug('> hap update', settings.name, 'statusLowBattery', bat);
                 sensor.getService(Service.ContactSensor)
-                    .setCharacteristic(Characteristic.StatusLowBattery, bat);
+                    .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
 
