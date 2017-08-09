@@ -40,7 +40,7 @@ module.exports = function (iface) {
                 const bat = val !== settings.payload.onLowBattery ?
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
-                log.debug('> hap update', settings.name, 'statusLowBattery', bat);
+                log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
                 sensor.getService(Service.ContactSensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
