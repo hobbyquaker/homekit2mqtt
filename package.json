@@ -12,7 +12,7 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "test": "camo-purge ; xo --space 4 --no-esnext --ignore test.js && nyc mocha test.js && nyc report --reporter=text-lcov | codecov",
+    "test": "camo-purge ; xo --space 4 --no-esnext --ignore test.js && nyc mocha test.js && nyc report --reporter=text-lcov | coveralls --force",
     "testonly": "mocha test.js",
     "testcov": "nyc mocha test.js"
   },
@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "camo-purge": "latest",
-    "codecov.io": "latest",
+    "coveralls": "latest",
     "hap-client-cli": "latest",
     "mocha": "latest",
     "nyc": "latest",
