@@ -1,5 +1,12 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
+/*
+ this.addOptionalCharacteristic(Characteristic.StatusActive);
+ this.addOptionalCharacteristic(Characteristic.StatusFault);
+ this.addOptionalCharacteristic(Characteristic.StatusTampered);
+ this.addOptionalCharacteristic(Characteristic.StatusLowBattery);
+ */
+
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
@@ -7,9 +14,9 @@ module.exports = function (iface) {
         const sensor = newAccessory(settings);
 
         mqttSub(settings.topic.statusAmbientLightLevel, val => {
-            log.debug('> hap set', settings.name, 'CurrentAmbientLightLevel', mqttStatus[settings.topic.statusAmbientLightLevel]);
+            log.debug('> hap update', settings.name, 'CurrentAmbientLightLevel', mqttStatus[settings.topic.statusAmbientLightLevel]);
             sensor.getService(Service.LightSensor)
-                .setCharacteristic(Characteristic.CurrentAmbientLightLevel, val);
+                .updateCharacteristic(Characteristic.CurrentAmbientLightLevel, val);
         });
 
         sensor.addService(Service.LightSensor)

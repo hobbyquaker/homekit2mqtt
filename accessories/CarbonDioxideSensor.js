@@ -1,5 +1,11 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off", no-negated-condition: "off" */
 
+/*
+ this.addOptionalCharacteristic(Characteristic.StatusActive);
+ this.addOptionalCharacteristic(Characteristic.StatusFault);
+ this.addOptionalCharacteristic(Characteristic.StatusTampered);
+ */
+
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
@@ -22,9 +28,9 @@ module.exports = function (iface) {
             const contact = val === settings.payload.onCarbonDioxideDetected ?
                 Characteristic.CarbonDioxideDetected.CO2_LEVELS_ABNORMAL :
                 Characteristic.CarbonDioxideDetected.CO2_LEVELS_NORMAL;
-            log.debug('> hap set', settings.name, 'CarbonDioxideDetected', contact);
+            log.debug('> hap update', settings.name, 'CarbonDioxideDetected', contact);
             sensor.getService(Service.CarbonDioxideSensor)
-                .setCharacteristic(Characteristic.CarbonDioxideDetected, contact);
+                .updateCharacteristic(Characteristic.CarbonDioxideDetected, contact);
         });
 
         if (settings.topic.statusLowBattery) {
@@ -43,9 +49,9 @@ module.exports = function (iface) {
                 const bat = val !== settings.payload.onLowBattery ?
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
-                log.debug('> hap set', settings.name, 'StatusLowBattery', bat);
+                log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
                 sensor.getService(Service.CarbonDioxideSensor)
-                    .setCharacteristic(Characteristic.StatusLowBattery, bat);
+                    .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
 

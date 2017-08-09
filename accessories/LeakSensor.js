@@ -1,5 +1,11 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off", no-negated-condition: "off" */
 
+/* TODO
+ this.addOptionalCharacteristic(Characteristic.StatusActive);
+ this.addOptionalCharacteristic(Characteristic.StatusFault);
+ this.addOptionalCharacteristic(Characteristic.StatusTampered);
+ */
+
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
@@ -22,9 +28,9 @@ module.exports = function (iface) {
             const contact = val === settings.payload.onLeakDetected ?
                 Characteristic.LeakDetected.LEAK_DETECTED :
                 Characteristic.LeakDetected.LEAK_NOT_DETECTED;
-            log.debug('> hap set', settings.name, 'LeakDetected', contact);
+            log.debug('> hap update', settings.name, 'LeakDetected', contact);
             sensor.getService(Service.LeakSensor)
-                .setCharacteristic(Characteristic.LeakDetected, contact);
+                .updateCharacteristic(Characteristic.LeakDetected, contact);
         });
 
         if (settings.topic.statusLowBattery) {
@@ -43,9 +49,9 @@ module.exports = function (iface) {
                 const bat = val !== settings.payload.onLowBattery ?
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
-                log.debug('> hap set', settings.name, 'StatusLowBattery', bat);
+                log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
                 sensor.getService(Service.LeakSensor)
-                    .setCharacteristic(Characteristic.StatusLowBattery, bat);
+                    .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
 
