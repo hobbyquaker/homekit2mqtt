@@ -44,6 +44,7 @@ mqtt.on('close', () => {
     }
 });
 
+/* istanbul ignore next */
 mqtt.on('error', err => {
     log.error('mqtt error ' + err);
 });
@@ -136,12 +137,14 @@ HAP.init(config.storagedir || undefined);
 const bridge = new Bridge(config.bridgename, uuid.generate(config.bridgename));
 
 // Listen for Bridge identification event
+/* istanbul ignore next */
 bridge.on('identify', (paired, callback) => {
     log('< hap bridge identify', paired ? '(paired)' : '(unpaired)');
     callback();
 });
 
 // Handler for Accessory identification events
+/* istanbul ignore next */
 function identify(settings, paired, callback) {
     log.debug('< hap identify', settings.name, paired ? '(paired)' : '(unpaired)');
     if (settings.topic.identify) {
@@ -162,6 +165,7 @@ function newAccessory(settings) {
     if (!settings.payload) {
         settings.payload = {};
     }
+    /* istanbul ignore next */
     acc.on('identify', (paired, callback) => {
         identify(settings, paired, callback);
     });
@@ -210,10 +214,12 @@ bridge._server.on('pair', username => {
     log('hap paired', username);
 });
 
+/* istanbul ignore next */
 bridge._server.on('unpair', username => {
     log('hap unpaired', username);
 });
 
+/* istanbul ignore next */
 bridge._server.on('verify', () => {
     log('hap verify');
 });
