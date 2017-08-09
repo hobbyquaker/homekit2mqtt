@@ -1,8 +1,8 @@
 os:
-  - linux
   - osx
-osx_image: xcode8.3
+  - linux
 dist: trusty
+osx_image: xcode8.3
 language: node_js
 node_js:
   - '6'
@@ -12,6 +12,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew services start mosquitto                                 ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa -y  ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -y                                      ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install mosquitto -y                           ; fi
 before_script:
   - |
     if [ $TRAVIS_OS_NAME != osx ]; then
@@ -24,7 +25,6 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - mosquitto
       - libsecret-1-dev
       - gnome-keyri
       - libavahi-compat-libdnssd-dev
@@ -32,3 +32,17 @@ install:
 - nvm install 6
 - npm install
 
+script:
+- npm test
+
+
+#dist: trusty
+#language: node_js
+#node_js:
+#  - '6'
+#before_install:
+#  - sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa -y
+#  - sudo apt-get update -y
+#  - sudo apt-get install mosquitto -y
+#  - sudo apt-get install libsecret-1-dev -y
+#  - sudo apt-get install libavahi-compat-libdnssd-dev -y
