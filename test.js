@@ -34,18 +34,24 @@ const mqttSubscriptions = {};
 function mqttSubscribe(topic, callback) {
     if (mqttSubscriptions[topic]) {
         mqttSubscriptions[topic].push(callback);
+        return mqttSubscriptions[topic] - 1;
     } else {
         mqttSubscriptions[topic] = [callback];
         mqtt.subscribe(topic);
+        return 0;
     }
 }
 mqtt.on('message', (topic, payload) => {
     if (mqttSubscriptions[topic]) {
-        mqttSubscriptions[topic].forEach(callback => {
+        mqttSubscriptions[topic].forEach((callback, index) => {
             callback(payload.toString());
         });
     }
 });
+
+function mqttUnsubscribe(topic, id) {
+    mqttSubscriptions[topic].splice(id, 1);
+}
 
 function subscribe(type, rx, cb) {
     subIndex += 1;
@@ -163,8 +169,8 @@ describe('homekit2mqtt - mqtt connection', () => {
     });
 });
 
-let aidSwitch;
-let iidSwitch;
+let aid = {};
+let iid = {};
 
 if (process.platform !== 'darwin') {
     describe('start dbus', function () {
@@ -241,22 +247,25 @@ describe('hap-client - homekit2mqtt connection', function () {
     });
     it('should be able to dump accessories', (done) => {
         cp.exec(clientCmd + ' dump', (err, stdout, stderr) => {
-            var clientAccs = JSON.parse(stdout).accessories;
+            const clientAccs = JSON.parse(stdout).accessories;
 
             clientAccs.forEach(acc => {
+                let name;
+                let iidTmp = {};
+
                 acc.services.forEach(service => {
-                    if (service.Name === 'Switch') {
-                        aidSwitch = acc.aid;
-                        service.characteristics.forEach(ch => {
-                            if (ch.Name === 'On') {
-                                iidSwitch = ch.iid;
+                    service.characteristics.forEach(ch => {
+                        iidTmp[String(ch.Name).replace(/ /g, '')] = ch.iid;
+                        if (ch.Name === 'Name') {
+                            name = ch.value
+                        }
+                    });
 
-                            }
-                        });
-
-                    }
                 });
+                aid[name] = acc.aid;
+                iid[name] = iidTmp;
             });
+
             // add one because the bridge itself is also an accessory
             if (clientAccs.length === (Object.keys(config).length + 1)) {
                 done();
@@ -264,7 +273,7 @@ describe('hap-client - homekit2mqtt connection', function () {
         });
     });
     it('should get the status of the switch', (done) => {
-        cp.exec(clientCmd + ' get --aid ' + aidSwitch + ' --iid ' + iidSwitch, (err, stdout, stderr) => {
+        cp.exec(clientCmd + ' get --aid ' + aid.Switch1 + ' --iid ' + iid.Switch1.On, (err, stdout, stderr) => {
             if (stdout === 'false\n') {
                 done();
             }
@@ -275,14 +284,13 @@ describe('hap-client - homekit2mqtt connection', function () {
 describe('mqtt - homekit2mqtt - client', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(12000);
-        subscribe('homekit', /hap update Steckdose Fernseher On true/, () => {
+        subscribe('homekit', /hap update Switch1 On true/, () => {
             done();
-
         });
         mqtt.publish('Switch/status', '1');
     });
     it('client should get the status of the switch', (done) => {
-        cp.exec(clientCmd + ' get --aid ' + aidSwitch + ' --iid ' + iidSwitch, (err, stdout, stderr) => {
+        cp.exec(clientCmd + ' get --aid ' + aid.Switch1 + ' --iid ' + iid.Switch1.On, (err, stdout, stderr) => {
             if (stdout === 'true\n') {
                 done();
             }
@@ -290,14 +298,13 @@ describe('mqtt - homekit2mqtt - client', () => {
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(12000);
-        subscribe('homekit', /hap update Steckdose Fernseher On false/, () => {
+        subscribe('homekit', /hap update Switch1 On false/, () => {
             done();
-
         });
         mqtt.publish('Switch/status', '0');
     });
     it('client should get the status of the switch', (done) => {
-        cp.exec(clientCmd + ' get --aid ' + aidSwitch + ' --iid ' + iidSwitch, (err, stdout, stderr) => {
+        cp.exec(clientCmd + ' get --aid ' + aid.Switch1 + ' --iid ' + iid.Switch1.On, (err, stdout, stderr) => {
             if (stdout === 'false\n') {
                 done();
             }
@@ -305,15 +312,46 @@ describe('mqtt - homekit2mqtt - client', () => {
     });
 });
 
-describe('client - homekit2mqtt - mqtt', () => {
+describe('Switch', () => {
     it('homekit2mqtt should publish on mqtt after client did a set', (done) => {
-        mqttSubscribe('Switch/set', payload => {
+        let id = mqttSubscribe('Switch/set', payload => {
             if (payload === '1') {
+                mqttUnsubscribe('Switch/set', id);
                 done();
             }
         });
-        cp.exec(clientCmd + ' set --aid ' + aidSwitch + ' --iid ' + iidSwitch + ' true');
+        const cmd = clientCmd + ' set --aid ' + aid.Switch1 + ' --iid ' + iid.Switch1.On + ' 1';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
 
+    it('homekit2mqtt should publish on mqtt after client did a set', (done) => {
+        mqttSubscribe('Switch/set', payload => {
+            if (payload === '0') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.Switch1 + ' --iid ' + iid.Switch1.On + ' 0';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+
+});
+
+describe('TemperatureSensor', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update TemperatureSensor CurrentTemperature 21/, () => {
+            done();
+        });
+        mqtt.publish('TemperatureSensor/Temperature', '21');
+    });
+    it('client should get the temperature', (done) => {
+        cp.exec(clientCmd + ' get --aid ' + aid.TemperatureSensor + ' --iid ' + iid.TemperatureSensor.CurrentTemperature, (err, stdout, stderr) => {
+            if (stdout === '21\n') {
+                done();
+            }
+        });
     });
 });
 
