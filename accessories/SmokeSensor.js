@@ -33,6 +33,7 @@ module.exports = function (iface) {
                 .updateCharacteristic(Characteristic.SmokeDetected, smoke);
         });
 
+        /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
             sensor.getService(Service.SmokeSensor, settings.name)
                 .getCharacteristic(Characteristic.StatusLowBattery)
