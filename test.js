@@ -190,60 +190,38 @@ if (process.platform !== 'darwin') {
 describe('hap-client - homekit2mqtt connection', function () {
     this.timeout(180000);
     it('should pair without error', function (done)  {
-        console.log('--- setting timeout to 60000');
         this.timeout(180000);
-        console.log('--- subscribing...');
         subscribe('homekit', /hap paired/, () => {
             setTimeout(function () {
                 done();
             }, 3000);
         });
 
-
-        console.log('--- trying to pair...');
+        //console.log('--- trying to pair...');
         var pair = cp.spawn(path.join(__dirname, '/node_modules/.bin/hap-client-tool'), ['-d', '127.0.0.1', '-p', '51826', 'pair']);
 
         pair.on('close', (code) => {
-            console.log(`--- pair close - child process exited with code ${code}`);
+            //console.log(`--- pair close - child process exited with code ${code}`);
         });
         pair.on('exit', (code) => {
-            console.log(`--- pair exit- child process exited with code ${code}`);
+            //console.log(`--- pair exit- child process exited with code ${code}`);
         });
         pair.on('error', (err) => {
-            console.log('--- pair error - Failed to start child process.', err);
+            //console.log('--- pair error - Failed to start child process.', err);
         });
         pair.stdout.on('data', data => {
             data = data.toString();
-            console.log('pair stdout', data);
+            //console.log('pair stdout', data);
             if (data.match(/pin code/)) {
-                console.log('--- writing pin to stdin');
+                //console.log('--- writing pin to stdin');
                 pair.stdin.write('031-45-154\n');
                 pair.stdin.write('\n');
             }
         });
         pair.stderr.on('data', data => {
-            console.log('pair stderr', data.toString());
+            //console.log('pair stderr', data.toString());
         });
 
-
-        /*
-        var pairPipeOut = pair.stdout.pipe(streamSplitter('\n'));
-        var pairPipeErr = pair.stderr.pipe(streamSplitter('\n'));
-        pairPipeOut.on('token', data => {
-            console.log('pair', data.toString());
-        });
-
-        pairPipeErr.on('token', data => {
-            console.log('pair', data.toString());
-        });
-
-        cp.exec('echo "031-45-154" | ' + clientCmd + ' pair', (err, stdout, stderr) => {
-            console.log('client err', err);
-            console.log('client stdout', stdout);
-            console.log('client stderr', stderr);
-
-        });
-        */
     });
     it('should be able to dump accessories', (done) => {
         cp.exec(clientCmd + ' dump', (err, stdout, stderr) => {
