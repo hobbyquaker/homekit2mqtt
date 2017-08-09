@@ -355,6 +355,23 @@ describe('TemperatureSensor', () => {
     });
 });
 
+describe('TemperatureSensor Fahrenheit', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update TemperatureSensorF CurrentTemperature 20/, () => {
+            done();
+        });
+        mqtt.publish('TemperatureSensorF/Temperature', '68');
+    });
+    it('client should get the temperature', (done) => {
+        cp.exec(clientCmd + ' get --aid ' + aid.TemperatureSensorF + ' --iid ' + iid.TemperatureSensorF.CurrentTemperature, (err, stdout, stderr) => {
+            if (stdout === '20\n') {
+                done();
+            }
+        });
+    });
+});
+
 setTimeout(() => {
     homekit.kill();
     process.exit(1);
