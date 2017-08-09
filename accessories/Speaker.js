@@ -11,7 +11,7 @@ module.exports = function (iface) {
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'Mute', value);
                 const mute = value ? settings.payload.muteTrue : settings.payload.muteFalse;
-                log.debug('> mqtt', settings.topic.setOn, mute);
+                log.debug('> mqtt', settings.topic.setMute, mute);
                 mqttPub(settings.topic.setMute, mute);
                 callback();
             });
@@ -19,7 +19,7 @@ module.exports = function (iface) {
         if (settings.topic.statusMute) {
             // Update status in homekit if exernal status gets updated
             mqttSub(settings.topic.statusMute, val => {
-                const mute = val !== settings.topic.muteFalse;
+                const mute = val === settings.payload.muteTrue;
                 log.debug('> hap update', settings.name, 'Mute', mute);
                 speaker.getService(Service.Speaker)
                     .updateCharacteristic(Characteristic.Mute, mute);
@@ -30,7 +30,7 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.Mute)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'Mute');
-                const mute = mqttStatus[settings.topic.statusMute] !== settings.payload.muteFalse;
+                const mute = mqttStatus[settings.topic.statusMute] === settings.payload.muteTrue;
                 log.debug('> hap re_get', settings.name, 'Mute', mute);
                 callback(null, mute);
             });
@@ -47,10 +47,11 @@ module.exports = function (iface) {
                 });
 
             if (settings.topic.statusVolume) {
-                mqttSub(settings.topic.statusVolume, val => {
-                    log.debug('> hap update', settings.name, 'Volume', mqttStatus[settings.topic.statusVolume]);
+                mqttSub(settings.topic.statusVolume, value => {
+                    const volume = (value / (settings.payload.volumeFactor || 1)) || 0;
+                    log.debug('> hap update', settings.name, 'Volume', volume);
                     speaker.getService(Service.Speaker)
-                        .updateCharacteristic(Characteristic.Volume);
+                        .updateCharacteristic(Characteristic.Volume, volume);
                 });
 
                 speaker.getService(Service.Speaker)
