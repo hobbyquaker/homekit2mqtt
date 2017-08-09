@@ -13,7 +13,8 @@
   },
   "scripts": {
     "test": "camo-purge ; xo --space 4 --no-esnext --ignore test.js && nyc mocha test.js && nyc report --reporter=text-lcov | codecov",
-    "testonly": "mocha test.js"
+    "testonly": "mocha test.js",
+    "testcov": "nyc mocha test.js"
   },
   "author": "Sebastian 'hobbyquaker' Raff <hq@ccu.io> (https://github.com/hobbyquaker)",
   "contributors": [
