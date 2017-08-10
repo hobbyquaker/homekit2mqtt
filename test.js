@@ -137,6 +137,7 @@ describe('start homekit2mqtt', () => {
         startHomekit();
     });
     it('should create accessories', function (done) {
+        this.timeout(20000);
         subscribe('homekit', /hap created [0-9]+ Accessories/, () => {
             done();
         });
