@@ -11,6 +11,7 @@ module.exports = function (iface) {
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'LockTargetState', value);
 
+                /* istanbul ignore else */
                 if (value === Characteristic.LockTargetState.UNSECURED) {
                     log.debug('> mqtt publish', settings.topic.setLock, settings.payload.lockUnsecured);
                     mqttPub(settings.topic.setLock, settings.payload.lockUnsecured);
@@ -24,6 +25,7 @@ module.exports = function (iface) {
                 }
             });
 
+        /* istanbul ignore else */
         if (settings.topic.statusLock) {
             mqttSub(settings.topic.statusLock, val => {
                 if (val === settings.payload.lockSecured) {

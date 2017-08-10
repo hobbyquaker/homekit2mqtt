@@ -23,6 +23,7 @@ module.exports = function (iface) {
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'TargetPosition', value);
                 value *= (settings.payload.targetPositionFactor || 1);
+                /* istanbul ignore next */
                 if (settings.payload.roundTarget) {
                     value = Math.round(value);
                 }
