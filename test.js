@@ -196,30 +196,35 @@ describe('hap-client - homekit2mqtt pairing', function () {
             }, 3000);
         });
 
-        //console.log('--- trying to pair...');
-        var pair = cp.spawn(path.join(__dirname, '/node_modules/.bin/hap-client-tool'), ['-d', '127.0.0.1', '-p', '51826', 'pair']);
+        console.log('--- trying to pair...');
+        try {
+            var pair = cp.spawn(path.join(__dirname, '/node_modules/.bin/hap-client-tool'), ['-d', '127.0.0.1', '-p', '51826', 'pair']);
 
-        pair.on('close', (code) => {
-            //console.log(`--- pair close - child process exited with code ${code}`);
-        });
-        pair.on('exit', (code) => {
-            //console.log(`--- pair exit- child process exited with code ${code}`);
-        });
-        pair.on('error', (err) => {
-            //console.log('--- pair error - Failed to start child process.', err);
-        });
-        pair.stdout.on('data', data => {
-            data = data.toString();
-            //console.log('pair stdout', data);
-            if (data.match(/pin code/)) {
-                //console.log('--- writing pin to stdin');
-                pair.stdin.write('031-45-154\n');
-                pair.stdin.write('\n');
-            }
-        });
-        pair.stderr.on('data', data => {
-            //console.log('pair stderr', data.toString());
-        });
+            pair.on('close', (code) => {
+                console.log(`--- pair close - child process exited with code ${code}`);
+            });
+            pair.on('exit', (code) => {
+                console.log(`--- pair exit- child process exited with code ${code}`);
+            });
+            pair.on('error', (err) => {
+                console.log('--- pair error - Failed to start child process.', err);
+            });
+            pair.stdout.on('data', data => {
+                data = data.toString();
+                console.log('pair stdout', data);
+                if (data.match(/pin code/)) {
+                    console.log('--- writing pin to stdin');
+                    pair.stdin.write('031-45-154\n');
+                    pair.stdin.write('\n');
+                }
+            });
+            pair.stderr.on('data', data => {
+                console.log('pair stderr', data.toString());
+            });
+        } catch (err) {
+            console.log('...', err);
+        }
+
 
     });
     
@@ -237,8 +242,12 @@ describe('hap-client - homekit2mqtt', function () {
             if (err) {
                 done(err);
             }
-            const clientAccs = JSON.parse(stdout).accessories;
-
+            let clientAccs;
+            try {
+                clientAccs = JSON.parse(stdout).accessories;
+            } catch (err) {
+                done(err);
+            }
             clientAccs.forEach(acc => {
                 let name;
                 let iidTmp = {};
@@ -259,6 +268,8 @@ describe('hap-client - homekit2mqtt', function () {
             // add one because the bridge itself is also an accessory
             if (clientAccs.length === (Object.keys(config).length + 1)) {
                 done();
+            } else {
+                done(new Error('wrong clientAccs length'));
             }
         });
     });
