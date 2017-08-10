@@ -191,7 +191,9 @@ describe('hap-client - homekit2mqtt pairing', function () {
     it('should pair without error', function (done) {
         this.timeout(180000);
         subscribe('homekit', /hap paired/, () => {
-            done();
+            setTimeout(function () {
+                done();
+            }, 3000);
         });
 
         //console.log('--- trying to pair...');
@@ -232,6 +234,9 @@ describe('hap-client - homekit2mqtt', function () {
 
         cp.exec(clientCmd + ' dump', {maxBuffer: 1024 * 2048}, (err, stdout, stderr) => {
             console.log(err, stderr);
+            if (err) {
+                done(err);
+            }
             const clientAccs = JSON.parse(stdout).accessories;
 
             clientAccs.forEach(acc => {
