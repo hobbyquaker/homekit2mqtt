@@ -208,10 +208,12 @@ topic
 
 * statusHumidity
 * identify (optional)
+* statusLowBattery (optional)
 
 payload
 
 * identify (optional)
+* onLowBattery (optional)
 
 
 #### LeakSensor
@@ -428,10 +430,12 @@ topic
 
 * statusTemperature
 * identify (optional)
+* statusLowBattery (optional)
 
 payload
 
 * identify (optional)
+* onLowBattery (optional)
 
 config 
 
