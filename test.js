@@ -191,9 +191,7 @@ describe('hap-client - homekit2mqtt pairing', function () {
     it('should pair without error', function (done) {
         this.timeout(180000);
         subscribe('homekit', /hap paired/, () => {
-            setTimeout(function () {
-                done();
-            }, 3000);
+            done();
         });
 
         //console.log('--- trying to pair...');
