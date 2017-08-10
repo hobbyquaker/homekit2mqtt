@@ -171,7 +171,7 @@ describe('homekit2mqtt - mqtt connection', () => {
 
 let aid = {};
 let iid = {};
-
+/*
 if (process.platform !== 'darwin' && process.env.TRAVIS) {
     describe('start dbus', function () {
         this.timeout(60000);
@@ -184,7 +184,7 @@ if (process.platform !== 'darwin' && process.env.TRAVIS) {
         });
     });
 }
-
+*/
 
 describe('hap-client - homekit2mqtt pairing', function () {
     this.timeout(180000);
