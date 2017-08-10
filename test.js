@@ -275,9 +275,6 @@ describe('hap-client - homekit2mqtt', function () {
     });
 });
 
-
-/*
-
 describe('Fan', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(12000);
@@ -1283,7 +1280,7 @@ describe('Speaker Volume', () => {
 
 
 
- */
+
 
 describe('WindowCovering CurrentPosition', () => {
 
@@ -1754,6 +1751,128 @@ describe('Door Obstruction', () => {
 
 
 });
+
+describe('GarageDoorOpener CurrentDoorState', () => {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update GarageDoorOpener CurrentDoorState.OPEN/, () => {
+            done();
+        });
+        mqtt.publish('GarageDoorOpener/status', '4');
+    });
+    it('client should get the status of the GarageDoorOpener', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.CurrentDoorState, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update GarageDoorOpener CurrentDoorState.CLOSED/, () => {
+            done();
+        });
+        mqtt.publish('GarageDoorOpener/status', '0');
+    });
+    it('client should get the status of the GarageDoorOpener', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.CurrentDoorState, (err, stdout, stderr) => {
+            if (stdout === '1\n') {
+                done();
+            }
+        });
+    });
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update GarageDoorOpener CurrentDoorState.OPENING/, () => {
+            done();
+        });
+        mqtt.publish('GarageDoorOpener/status', '1');
+    });
+    it('client should get the status of the GarageDoorOpener', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.CurrentDoorState, (err, stdout, stderr) => {
+            if (stdout === '2\n') {
+                done();
+            }
+        });
+    });
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update GarageDoorOpener CurrentDoorState.CLOSING/, () => {
+            done();
+        });
+        mqtt.publish('GarageDoorOpener/status', '2');
+    });
+    it('client should get the status of the GarageDoorOpener', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.CurrentDoorState, (err, stdout, stderr) => {
+            if (stdout === '3\n') {
+                done();
+            }
+        });
+    });
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update GarageDoorOpener CurrentDoorState.STOPPED/, () => {
+            done();
+        });
+        mqtt.publish('GarageDoorOpener/status', '3');
+    });
+    it('client should get the status of the GarageDoorOpener', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.CurrentDoorState, (err, stdout, stderr) => {
+            if (stdout === '4\n') {
+                done();
+            }
+        });
+    });
+
+});
+
+
+describe('GarageDoorOpener Obstruction', () => {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update GarageDoorOpener ObstructionDetected false/, () => {
+            done();
+        });
+        mqtt.publish('GarageDoorOpener/status/Obstruction', '0');
+    });
+    it('client should get the status of the GarageDoorOpener', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.ObstructionDetected, (err, stdout, stderr) => {
+            console.log(stdout);
+            if (stdout === 'false\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update GarageDoorOpener ObstructionDetected true/, () => {
+            done();
+        });
+        mqtt.publish('GarageDoorOpener/status/Obstruction', '1');
+    });
+    it('client should get the status of the GarageDoorOpener', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.ObstructionDetected, (err, stdout, stderr) => {
+            if (stdout === 'true\n') {
+                done();
+            }
+        });
+    });
+
+
+});
+
 
 
 function testLowBattery(name) {

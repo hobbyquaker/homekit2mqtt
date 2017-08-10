@@ -126,7 +126,8 @@
       "doorOpening": 1,
       "doorClosing": 2,
       "doorStopped": 3,
-      "doorOpen": 4
+      "doorOpen": 4,
+      "onObstructionDetected": 1
     },
     "manufacturer": "Generic",
     "model": "GarageDoorOpener"
