@@ -24,19 +24,23 @@ const mqtt = Mqtt.connect(config.url, {will: {topic: config.name + '/connected',
 mqtt.on('connect', () => {
     mqttConnected = true;
     log.info('mqtt connected ' + config.url);
+    /* istanbul ignore if */
     if (!bridgeListening) {
         mqtt.publish(config.name + '/connected', '1', {retain: true});
     }
 });
 
+/* istanbul ignore next */
 mqtt.on('reconnect', () => {
     log.info('mqtt reconnect');
 });
 
+/* istanbul ignore next */
 mqtt.on('offline', () => {
     log.info('mqtt offline');
 });
 
+/* istanbul ignore next */
 mqtt.on('close', () => {
     if (mqttConnected) {
         mqttConnected = false;
@@ -75,6 +79,7 @@ mqtt.on('message', (topic, payload) => {
     }
     log.debug('< mqtt', topic, state);
     mqttStatus[topic] = state;
+    /* istanbul ignore else */
     if (mqttCallbacks[topic]) {
         mqttCallbacks[topic].forEach(cb => {
             cb(state);
