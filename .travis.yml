@@ -8,13 +8,17 @@ before_install:
   - sudo apt-get install mosquitto -y
   - sudo apt-get install libsecret-1-dev -y
   - sudo apt-get install libavahi-compat-libdnssd-dev -y
+  - sudo apt-get install gnome-keyring -y
+  - sudo apt-get install xvfb -y
 before_script:
   - |
     if [ $TRAVIS_OS_NAME != osx ]; then
       export DISPLAY=:99.0
       sh -e /etc/init.d/xvfb start
       sleep 3
+      dbus-launch /usr/bin/python -c "import gnomekeyring;gnomekeyring.create_sync('login', '');"
     fi
+
 addons:
   apt:
     sources:
