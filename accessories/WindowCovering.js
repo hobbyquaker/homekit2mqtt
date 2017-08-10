@@ -10,7 +10,9 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.TargetPosition)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'TargetPosition', value);
+                /* istanbul ignore next */
                 value *= (settings.payload.targetPositionFactor || 1);
+                /* istanbul ignore if */
                 if (settings.payload.roundTarget) {
                     value = Math.round(value);
                 }
@@ -19,8 +21,10 @@ module.exports = function (iface) {
                 callback();
             });
 
+        /* istanbul ignore else */
         if (settings.topic.statusTargetPosition) {
             mqttSub(settings.topic.statusTargetPosition, val => {
+                /* istanbul ignore next */
                 const position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
                 log.debug('> hap update', settings.name, 'TargetPosition', position);
                 shutter.getService(Service.WindowCovering)
@@ -30,44 +34,49 @@ module.exports = function (iface) {
                 .getCharacteristic(Characteristic.TargetPosition)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'TargetPosition');
+                    /* istanbul ignore next */
                     const position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
                     log.debug('> hap re_get', settings.name, 'TargetPosition', position);
                     callback(null, position);
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusCurrentPosition) {
             mqttSub(settings.topic.statusCurrentPosition, val => {
+                /* istanbul ignore next */
                 const pos = Math.round(val / (settings.payload.currentPositionFactor || 1));
-                log.debug('> hap set', settings.name, 'CurrentPosition', pos);
+                log.debug('> hap update', settings.name, 'CurrentPosition', pos);
                 shutter.getService(Service.WindowCovering)
-                    .setCharacteristic(Characteristic.CurrentPosition, pos);
+                    .updateCharacteristic(Characteristic.CurrentPosition, pos);
             });
             shutter.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.CurrentPosition)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'CurrentPosition');
+                    /* istanbul ignore next */
                     const position = Math.round(mqttStatus[settings.topic.statusCurrentPosition] / (settings.payload.currentPositionFactor || 1));
                     log.debug('> hap re_get', settings.name, 'CurrentPosition', position);
                     callback(null, position);
                 });
         }
 
-        if (settings.topic.statusPositionStatus) {
-            mqttSub(settings.topic.statusPositionStatus, val => {
+        /* istanbul ignore else */
+        if (settings.topic.statusPositionState) {
+            mqttSub(settings.topic.statusPositionState, val => {
                 let state;
                 if (val === settings.payload.positionStatusDecreasing) {
                     state = Characteristic.PositionState.DECREASING;
-                    log.debug('> hap set', settings.name, 'PositionState.DECREASING');
+                    log.debug('> hap update', settings.name, 'PositionState.DECREASING');
                 } else if (val === settings.payload.positionStatusIncreasing) {
                     state = Characteristic.PositionState.INCREASING;
-                    log.debug('> hap set', settings.name, 'PositionState.INCREASING');
+                    log.debug('> hap update', settings.name, 'PositionState.INCREASING');
                 } else {
                     state = Characteristic.PositionState.STOPPED;
-                    log.debug('> hap set', settings.name, 'PositionState.STOPPED');
+                    log.debug('> hap update', settings.name, 'PositionState.STOPPED');
                 }
                 shutter.getService(Service.WindowCovering)
-                    .setCharacteristic(Characteristic.PositionState, state);
+                    .updateCharacteristic(Characteristic.PositionState, state);
             });
             shutter.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.PositionState)

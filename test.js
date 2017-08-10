@@ -276,8 +276,7 @@ describe('hap-client - homekit2mqtt', function () {
 });
 
 
-
-
+/*
 
 describe('Fan', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
@@ -1281,6 +1280,145 @@ describe('Speaker Volume', () => {
         cp.exec(cmd);
     });
 });
+
+
+*/
+
+
+describe('WindowCovering CurrentPosition', () => {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update WindowCovering CurrentPosition 100/, () => {
+            done();
+        });
+        mqtt.publish('WindowCovering/status/CurrentPosition', '1');
+    });
+    it('client should get the status of the switch', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.CurrentPosition, (err, stdout, stderr) => {
+            if (stdout === '100\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update WindowCovering CurrentPosition 0/, () => {
+            done();
+        });
+        mqtt.publish('WindowCovering/status/CurrentPosition', '0');
+    });
+    it('client should get the status of the WindowCovering', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.CurrentPosition, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+
+});
+
+describe('WindowCovering TargetPosition', () => {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update WindowCovering TargetPosition 100/, () => {
+            done();
+        });
+        mqtt.publish('WindowCovering/status/TargetPosition', '1');
+    });
+    it('client should get the status of the switch', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.TargetPosition, (err, stdout, stderr) => {
+            if (stdout === '100\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update WindowCovering TargetPosition 0/, () => {
+            done();
+        });
+        mqtt.publish('WindowCovering/status/TargetPosition', '0');
+    });
+    it('client should get the status of the WindowCovering', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.TargetPosition, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(12000);
+        mqttSubscribe('WindowCovering/set/TargetPosition', payload => {
+            if (payload === '0.5') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.TargetPosition + ' 50';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+});
+
+
+describe('WindowCovering PositionState', () => {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update WindowCovering PositionState.INCREASING/, () => {
+            done();
+        });
+        mqtt.publish('WindowCovering/status/PositionState', '1');
+    });
+    it('client should get the status of the WindowCovering', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.PositionState, (err, stdout, stderr) => {
+            if (stdout === '1\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update WindowCovering PositionState.DECREASING/, () => {
+            done();
+        });
+        mqtt.publish('WindowCovering/status/PositionState', '2');
+    });
+    it('client should get the status of the WindowCovering', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.PositionState, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update WindowCovering PositionState.STOPPED/, () => {
+            done();
+        });
+        mqtt.publish('WindowCovering/status/PositionState', '0');
+    });
+    it('client should get the status of the WindowCovering', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.PositionState, (err, stdout, stderr) => {
+            if (stdout === '2\n') {
+                done();
+            }
+        });
+    });
+
+});
+
+
+
 
 function testLowBattery(name) {
     describe(name + ' StatusLowBattery', function () {

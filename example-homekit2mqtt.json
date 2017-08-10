@@ -462,12 +462,12 @@
 
   "WindowCovering": {
     "service":  "WindowCovering",
-    "name": "Blind",
+    "name": "WindowCovering",
     "topic": {
       "setTargetPosition":  "WindowCovering/set/TargetPosition",
       "statusTargetPosition":  "WindowCovering/status/TargetPosition",
       "statusCurrentPosition":  "WindowCovering/status/CurrentPosition",
-      "statusPositionStatus":  "WindowCovering/status/PositionStatus"
+      "statusPositionState":  "WindowCovering/status/PositionState"
     },
     "payload": {
       "targetPositionFactor": 0.01,
