@@ -31,6 +31,7 @@ module.exports = function (iface) {
                 callback();
             });
 
+        /* istanbul ignore else */
         if (settings.topic.statusTargetPosition) {
             mqttSub(settings.topic.statusTargetPosition, val => {
                 const position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
@@ -48,12 +49,13 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusCurrentPosition) {
             mqttSub(settings.topic.statusCurrentPosition, val => {
                 const pos = Math.round(val / (settings.payload.currentPositionFactor || 1));
-                log.debug('> hap set', settings.name, 'CurrentPosition', pos);
+                log.debug('> hap update', settings.name, 'CurrentPosition', pos);
                 acc.getService(Service.Door)
-                    .setCharacteristic(Characteristic.CurrentPosition, pos);
+                    .updateCharacteristic(Characteristic.CurrentPosition, pos);
             });
             acc.getService(Service.Door)
                 .getCharacteristic(Characteristic.CurrentPosition)
@@ -65,21 +67,22 @@ module.exports = function (iface) {
                 });
         }
 
-        if (settings.topic.statusPositionStatus) {
-            mqttSub(settings.topic.statusPositionStatus, val => {
+        /* istanbul ignore else */
+        if (settings.topic.statusPositionState) {
+            mqttSub(settings.topic.statusPositionState, val => {
                 let state;
                 if (val === settings.payload.positionStatusDecreasing) {
                     state = Characteristic.PositionState.DECREASING;
-                    log.debug('> hap set', settings.name, 'PositionState.DECREASING');
+                    log.debug('> hap update', settings.name, 'PositionState.DECREASING');
                 } else if (val === settings.payload.positionStatusIncreasing) {
                     state = Characteristic.PositionState.INCREASING;
-                    log.debug('> hap set', settings.name, 'PositionState.INCREASING');
+                    log.debug('> hap update', settings.name, 'PositionState.INCREASING');
                 } else {
                     state = Characteristic.PositionState.STOPPED;
-                    log.debug('> hap set', settings.name, 'PositionState.STOPPED');
+                    log.debug('> hap update', settings.name, 'PositionState.STOPPED');
                 }
                 acc.getService(Service.Door)
-                    .setCharacteristic(Characteristic.PositionState, state);
+                    .updateCharacteristic(Characteristic.PositionState, state);
             });
             acc.getService(Service.Door)
                 .getCharacteristic(Characteristic.PositionState)
@@ -99,8 +102,9 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusObstruction) {
-            acc.getService(Service.GarageDoorOpener, settings.name)
+            acc.getService(Service.Door, settings.name)
                 .getCharacteristic(Characteristic.ObstructionDetected)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'ObstructionDetected');
@@ -111,9 +115,9 @@ module.exports = function (iface) {
 
             mqttSub(settings.topic.statusObstruction, val => {
                 const obstruction = val === settings.payload.onObstructionDetected;
-                log.debug('> hap set', settings.name, 'ObstructionDetected', obstruction);
-                acc.getService(Service.GarageDoorOpener)
-                    .setCharacteristic(Characteristic.ObstructionDetected, obstruction);
+                log.debug('> hap update', settings.name, 'ObstructionDetected', obstruction);
+                acc.getService(Service.Door)
+                    .updateCharacteristic(Characteristic.ObstructionDetected, obstruction);
             });
         }
 

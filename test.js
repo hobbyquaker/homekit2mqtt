@@ -1510,7 +1510,6 @@ describe('Window PositionState', () => {
     it('client should get the status of the Window', function (done) {
         this.timeout(12000);
         cp.exec(clientCmd + ' get --aid ' + aid.Window + ' --iid ' + iid.Window.PositionState, (err, stdout, stderr) => {
-            console.log(stdout);
             if (stdout === '1\n') {
                 done();
             }
@@ -1586,6 +1585,175 @@ describe('Window Obstruction', () => {
 
 });
 
+
+
+describe('Door CurrentPosition', () => {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update Door CurrentPosition 100/, () => {
+            done();
+        });
+        mqtt.publish('Door/status/CurrentPosition', '100');
+    });
+    it('client should get the status of the switch', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.CurrentPosition, (err, stdout, stderr) => {
+            if (stdout === '100\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update Door CurrentPosition 0/, () => {
+            done();
+        });
+        mqtt.publish('Door/status/CurrentPosition', '0');
+    });
+    it('client should get the status of the Door', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.CurrentPosition, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+
+});
+
+describe('Door TargetPosition', () => {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update Door TargetPosition 100/, () => {
+            done();
+        });
+        mqtt.publish('Door/status/TargetPosition', '100');
+    });
+    it('client should get the status of the switch', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.TargetPosition, (err, stdout, stderr) => {
+            if (stdout === '100\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update Door TargetPosition 0/, () => {
+            done();
+        });
+        mqtt.publish('Door/status/TargetPosition', '0');
+    });
+    it('client should get the status of the Door', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.TargetPosition, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(12000);
+        mqttSubscribe('Door/set/TargetPosition', payload => {
+            if (payload === '50') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.Door + ' --iid ' + iid.Door.TargetPosition + ' 50';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+});
+
+describe('Door PositionState', () => {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update Door PositionState.INCREASING/, () => {
+            done();
+        });
+        mqtt.publish('Door/status/PositionState', '1');
+    });
+    it('client should get the status of the Door', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.PositionState, (err, stdout, stderr) => {
+            if (stdout === '1\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update Door PositionState.DECREASING/, () => {
+            done();
+        });
+        mqtt.publish('Door/status/PositionState', '2');
+    });
+    it('client should get the status of the Door', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.PositionState, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update Door PositionState.STOPPED/, () => {
+            done();
+        });
+        mqtt.publish('Door/status/PositionState', '0');
+    });
+    it('client should get the status of the Door', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.PositionState, (err, stdout, stderr) => {
+            if (stdout === '2\n') {
+                done();
+            }
+        });
+    });
+
+});
+
+describe('Door Obstruction', () => {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update Door ObstructionDetected false/, () => {
+            done();
+        });
+        mqtt.publish('Door/status/Obstruction', '0');
+    });
+    it('client should get the status of the Door', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.ObstructionDetected, (err, stdout, stderr) => {
+            console.log(stdout);
+            if (stdout === 'false\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update Door ObstructionDetected true/, () => {
+            done();
+        });
+        mqtt.publish('Door/status/Obstruction', '1');
+    });
+    it('client should get the status of the Door', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.ObstructionDetected, (err, stdout, stderr) => {
+            if (stdout === 'true\n') {
+                done();
+            }
+        });
+    });
+
+
+});
 
 
 function testLowBattery(name) {

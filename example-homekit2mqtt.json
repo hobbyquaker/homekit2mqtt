@@ -63,12 +63,14 @@
       "statusTargetPosition": "Door/status/TargetPosition",
       "setCurrentPosition": "Door/set/CurrentPosition",
       "statusCurrentPosition": "Door/status/CurrentPosition",
-      "statusPositionStatus": "Door/status/PositionStatus"
+      "statusPositionState": "Door/status/PositionState",
+      "statusObstruction": "Door/status/Obstruction"
     },
     "payload": {
       "positionStatusDecreasing": 2,
       "positionStatusIncreasing": 1,
-      "positionStatusStopped": 0
+      "positionStatusStopped": 0,
+      "onObstructionDetected": 1
     }
   },
 
