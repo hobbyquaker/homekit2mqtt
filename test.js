@@ -174,12 +174,12 @@ let iid = {};
 /*
 if (process.platform !== 'darwin' && process.env.TRAVIS) {
     describe('start dbus', function () {
-        this.timeout(60000);
+
         it('should start dbus', done => {
             cp.exec('dbus-launch', (err, stdout, stderr) => {
 		if (!err) {
                 	setTimeout(done, 3000);
-		} 
+		}
             });
         });
     });
@@ -227,8 +227,8 @@ describe('hap-client - homekit2mqtt pairing', function () {
 
 
     });
-    
-    
+
+
 });
 
 describe('hap-client - homekit2mqtt', function () {
@@ -1363,7 +1363,7 @@ describe('WindowCovering TargetPosition', () => {
     });
 });
 
-describe('WindowCovering PositionState', () => {
+describe('WindowCovering PositionState', function () {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(24000);
@@ -1414,7 +1414,7 @@ describe('WindowCovering PositionState', () => {
 });
 
 
-describe('Window CurrentPosition', () => {
+describe('Window CurrentPosition', function () {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(24000);
@@ -1449,7 +1449,7 @@ describe('Window CurrentPosition', () => {
 
 });
 
-describe('Window TargetPosition', () => {
+describe('Window TargetPosition', function () {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(24000);
@@ -1495,11 +1495,11 @@ describe('Window TargetPosition', () => {
     });
 });
 
-describe('Window PositionState', () => {
+describe('Window PositionState', function () {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(24000);
-        subscribe('homekit', /hap update Window PositionState.INCREASING/, () => {
+        subscribe('homekit', /hap update Window PositionState.INCREASING/, function () {
             done();
         });
         mqtt.publish('Window/status/PositionState', '1');
@@ -1545,11 +1545,11 @@ describe('Window PositionState', () => {
 
 });
 
-describe('Window Obstruction', () => {
+describe('Window Obstruction', function () {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(24000);
-        subscribe('homekit', /hap update Window ObstructionDetected false/, () => {
+        subscribe('homekit', /hap update Window ObstructionDetected false/, function () {
             done();
         });
         mqtt.publish('Window/status/Obstruction', '0');
@@ -1584,7 +1584,7 @@ describe('Window Obstruction', () => {
 
 
 
-describe('Door CurrentPosition', () => {
+describe('Door CurrentPosition', function () {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(24000);
@@ -1619,7 +1619,7 @@ describe('Door CurrentPosition', () => {
 
 });
 
-describe('Door TargetPosition', () => {
+describe('Door TargetPosition', function () {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(24000);
@@ -1665,7 +1665,7 @@ describe('Door TargetPosition', () => {
     });
 });
 
-describe('Door PositionState', () => {
+describe('Door PositionState', function () {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(24000);
@@ -1715,7 +1715,7 @@ describe('Door PositionState', () => {
 
 });
 
-describe('Door Obstruction', () => {
+describe('Door Obstruction', function () {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(24000);
@@ -1752,7 +1752,7 @@ describe('Door Obstruction', () => {
 
 });
 
-describe('GarageDoorOpener CurrentDoorState', () => {
+describe('GarageDoorOpener CurrentDoorState', function () {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(24000);
@@ -1863,7 +1863,7 @@ describe('GarageDoorOpener TargetDoorState', () => {
 
 });
 
-describe('GarageDoorOpener Obstruction', () => {
+describe('GarageDoorOpener Obstruction', function () {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(24000);
@@ -1900,7 +1900,7 @@ describe('GarageDoorOpener Obstruction', () => {
 
 });
 
-describe('GarageDoorOpener LockCurrentState', () => {
+describe('GarageDoorOpener LockCurrentState', function () {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(24000);
@@ -1936,7 +1936,7 @@ describe('GarageDoorOpener LockCurrentState', () => {
 
 });
 
-describe('GarageDoorOpener LockTargetState', () => {
+describe('GarageDoorOpener LockTargetState', function () {
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
         this.timeout(24000);
@@ -1964,8 +1964,74 @@ describe('GarageDoorOpener LockTargetState', () => {
 });
 
 
+describe('LockMechanism LockCurrentState', function () {
+
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update LockMechanism LockCurrentState.UNSECURED/, () => {
+            done();
+        });
+        mqtt.publish('LockMechanism/status', '1');
+    });
+    it('client should get the status of the LockMechanism', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.LockMechanism + ' --iid ' + iid.LockMechanism.LockCurrentState, (err, stdout, stderr) => {
+            console.log(stdout)
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update LockMechanism LockCurrentState.SECURED/, () => {
+            done();
+        });
+        mqtt.publish('LockMechanism/status', '0');
+    });
+    it('client should get the status of the LockMechanism', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.LockMechanism + ' --iid ' + iid.LockMechanism.LockCurrentState, (err, stdout, stderr) => {
+            if (stdout === '1\n') {
+                done();
+            }
+        });
+    });
+
+});
+
+describe('LockMechanism LockTargetState', function () {
+
+
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(24000);
+        mqttSubscribe('LockMechanism/set', payload => {
+            if (payload === '1') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.LockMechanism + ' --iid ' + iid.LockMechanism.LockTargetState + ' 0';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(24000);
+        mqttSubscribe('LockMechanism/set', payload => {
+            if (payload === '0') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.LockMechanism + ' --iid ' + iid.LockMechanism.LockTargetState + ' 1';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+
+});
+
 function testLowBattery(name) {
     describe(name + ' StatusLowBattery', function () {
+
         it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
             this.timeout(24000);
             subscribe('homekit', new RegExp('hap update ' + name + ' StatusLowBattery 1'), () => {
@@ -2002,4 +2068,4 @@ function testLowBattery(name) {
 setTimeout(() => {
     homekit.kill();
     process.exit(1);
-}, 600000);
+}, 1200000);

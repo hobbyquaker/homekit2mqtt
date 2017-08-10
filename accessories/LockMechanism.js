@@ -27,17 +27,11 @@ module.exports = function (iface) {
         if (settings.topic.statusLock) {
             mqttSub(settings.topic.statusLock, val => {
                 if (val === settings.payload.lockSecured) {
-                    log.debug('> hap set', settings.name, 'LockCurrentState.SECURED');
-                    acc.getService(Service.LockMechanism)
-                        .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED);
-                    log.debug('> hap update', settings.name, 'LockTargetState.SECURED');
+                    log.debug('> hap update', settings.name, 'LockCurrentState.SECURED');
                     acc.getService(Service.LockMechanism)
                         .updateCharacteristic(Characteristic.LockTargetState, Characteristic.LockCurrentState.SECURED);
                 } else {
-                    log.debug('> hap set', settings.name, 'LockCurrentState.UNSECURED');
-                    acc.getService(Service.LockMechanism)
-                        .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.UNSECURED);
-                    log.debug('> hap update', settings.name, 'LockTargetState.UNSECURED');
+                    log.debug('> hap update', settings.name, 'LockCurrentState.UNSECURED');
                     acc.getService(Service.LockMechanism)
                         .updateCharacteristic(Characteristic.LockTargetState, Characteristic.LockCurrentState.UNSECURED);
                 }
