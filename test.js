@@ -155,7 +155,7 @@ describe('start homekit2mqtt', () => {
 
 describe('homekit2mqtt - mqtt connection', () => {
     it('homekit2mqtt should connect to the mqtt broker', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /mqtt connected/, () => {
             done();
         });
@@ -277,14 +277,14 @@ describe('hap-client - homekit2mqtt', function () {
 
 describe('Fan', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Fan On true/, () => {
             done();
         });
         mqtt.publish('Fan/status', 'true');
     });
     it('client should get the status of the Fan', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Fan + ' --iid ' + iid.Fan.On, (err, stdout, stderr) => {
             if (stdout === 'true\n') {
                 done();
@@ -294,7 +294,7 @@ describe('Fan', () => {
 
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         let id = mqttSubscribe('Fan/set', payload => {
             if (payload === 'true') {
                 mqttUnsubscribe('Fan/set', id);
@@ -307,7 +307,7 @@ describe('Fan', () => {
     });
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('Fan/set', payload => {
             if (payload === 'false') {
                 done();
@@ -322,14 +322,14 @@ describe('Fan', () => {
 
 describe('Fan RotationSpeed', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Fan RotationSpeed 80/, () => {
             done();
         });
         mqtt.publish('Fan/status/RotationSpeed', '80');
     });
     it('client should get the status of the Fan', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Fan + ' --iid ' + iid.Fan.RotationSpeed, (err, stdout, stderr) => {
             if (stdout === '80\n') {
                 done();
@@ -338,7 +338,7 @@ describe('Fan RotationSpeed', () => {
     });
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('Fan/set/RotationSpeed', payload => {
             if (payload === '20') {
                 done();
@@ -352,14 +352,14 @@ describe('Fan RotationSpeed', () => {
 
 describe('Fan RotationDirection', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Fan RotationDirection 1/, () => {
             done();
         });
         mqtt.publish('Fan/status/RotationDirection', 'left');
     });
     it('client should get the status of the Fan', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Fan + ' --iid ' + iid.Fan.RotationDirection, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -368,7 +368,7 @@ describe('Fan RotationDirection', () => {
     });
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('Fan/set/RotationDirection', payload => {
             if (payload === 'right') {
                 done();
@@ -385,14 +385,14 @@ describe('Lightbulb', () => {
 
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Lightbulb On true/, () => {
             done();
         });
         mqtt.publish('Lightbulb/status', '1');
     });
     it('client should get the status of the switch', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.On, (err, stdout, stderr) => {
             if (stdout === 'true\n') {
                 done();
@@ -400,14 +400,14 @@ describe('Lightbulb', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Lightbulb On false/, () => {
             done();
         });
         mqtt.publish('Lightbulb/status', '0');
     });
     it('client should get the status of the switch', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.On, (err, stdout, stderr) => {
             if (stdout === 'false\n') {
                 done();
@@ -417,7 +417,7 @@ describe('Lightbulb', () => {
 
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         let id = mqttSubscribe('Lightbulb/set', payload => {
             if (payload === '254') {
                 mqttUnsubscribe('Lightbulb/set', id);
@@ -429,14 +429,14 @@ describe('Lightbulb', () => {
         cp.exec(cmd);
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Lightbulb On true/, () => {
             done();
         });
         mqtt.publish('Lightbulb/status', '254');
     });
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('Lightbulb/set', payload => {
             if (payload === '0') {
                 done();
@@ -454,14 +454,14 @@ describe('Lightbulb Brightness', () => {
 
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Lightbulb Brightness 100/, () => {
             done();
         });
         mqtt.publish('Lightbulb/status/Brightness', '254');
     });
     it('client should get the status of the Lightbulb', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.Brightness, (err, stdout, stderr) => {
             if (stdout === '100\n') {
                 done();
@@ -469,14 +469,14 @@ describe('Lightbulb Brightness', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Lightbulb Brightness 0/, () => {
             done();
         });
         mqtt.publish('Lightbulb/status/Brightness', '0');
     });
     it('client should get the status of the Lightbulb', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.Brightness, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -486,7 +486,7 @@ describe('Lightbulb Brightness', () => {
 
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         let id = mqttSubscribe('Lightbulb/set/Brightness', payload => {
             if (payload === '254') {
                 mqttUnsubscribe('Lightbulb/set/Brightness', id);
@@ -498,14 +498,14 @@ describe('Lightbulb Brightness', () => {
         cp.exec(cmd);
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Lightbulb Brightness 100/, () => {
             done();
         });
         mqtt.publish('Lightbulb/status/Brightness', '254');
     });
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('Lightbulb/set/Brightness', payload => {
             if (payload === '0') {
                 done();
@@ -522,14 +522,14 @@ describe('Lightbulb Saturation', () => {
 
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Lightbulb Saturation 100/, () => {
             done();
         });
         mqtt.publish('Lightbulb/status/Saturation', '254');
     });
     it('client should get the status of the Lightbulb', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.Saturation, (err, stdout, stderr) => {
             if (stdout === '100\n') {
                 done();
@@ -537,14 +537,14 @@ describe('Lightbulb Saturation', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Lightbulb Saturation 0/, () => {
             done();
         });
         mqtt.publish('Lightbulb/status/Saturation', '0');
     });
     it('client should get the status of the Lightbulb', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.Saturation, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -554,7 +554,7 @@ describe('Lightbulb Saturation', () => {
 
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         let id = mqttSubscribe('Lightbulb/set/Saturation', payload => {
             if (payload === '254') {
                 mqttUnsubscribe('Lightbulb/set/Saturation', id);
@@ -566,14 +566,14 @@ describe('Lightbulb Saturation', () => {
         cp.exec(cmd);
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Lightbulb Saturation 100/, () => {
             done();
         });
         mqtt.publish('Lightbulb/status/Saturation', '254');
     });
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('Lightbulb/set/Saturation', payload => {
             if (payload === '0') {
                 done();
@@ -590,14 +590,14 @@ describe('Lightbulb Hue', () => {
 
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Lightbulb Hue 360/, () => {
             done();
         });
         mqtt.publish('Lightbulb/status/Hue', '65535');
     });
     it('client should get the status of the Lightbulb', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.Hue, (err, stdout, stderr) => {
             if (stdout === '360\n') {
                 done();
@@ -605,14 +605,14 @@ describe('Lightbulb Hue', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Lightbulb Hue 0/, () => {
             done();
         });
         mqtt.publish('Lightbulb/status/Hue', '0');
     });
     it('client should get the status of the Lightbulb', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.Hue, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -622,7 +622,7 @@ describe('Lightbulb Hue', () => {
 
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         let id = mqttSubscribe('Lightbulb/set/Hue', payload => {
             if (payload === '65535') {
                 mqttUnsubscribe('Lightbulb/set/Hue', id);
@@ -634,14 +634,14 @@ describe('Lightbulb Hue', () => {
         cp.exec(cmd);
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Lightbulb Hue 360/, () => {
             done();
         });
         mqtt.publish('Lightbulb/status/Hue', '65535');
     });
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('Lightbulb/set/Hue', payload => {
             if (payload === '0') {
                 done();
@@ -658,7 +658,7 @@ describe('Lightbulb Hue', () => {
 
 describe('Switch', () => {
     it('should get the status of the switch', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Switch1 + ' --iid ' + iid.Switch1.On, (err, stdout, stderr) => {
             if (stdout === 'false\n') {
                 done();
@@ -667,14 +667,14 @@ describe('Switch', () => {
     });
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Switch1 On true/, () => {
             done();
         });
         mqtt.publish('Switch/status', '1');
     });
     it('client should get the status of the switch', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Switch1 + ' --iid ' + iid.Switch1.On, (err, stdout, stderr) => {
             if (stdout === 'true\n') {
                 done();
@@ -682,14 +682,14 @@ describe('Switch', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Switch1 On false/, () => {
             done();
         });
         mqtt.publish('Switch/status', '0');
     });
     it('client should get the status of the switch', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Switch1 + ' --iid ' + iid.Switch1.On, (err, stdout, stderr) => {
             if (stdout === 'false\n') {
                 done();
@@ -699,7 +699,7 @@ describe('Switch', () => {
 
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         let id = mqttSubscribe('Switch/set', payload => {
             if (payload === '1') {
                 mqttUnsubscribe('Switch/set', id);
@@ -712,7 +712,7 @@ describe('Switch', () => {
     });
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('Switch/set', payload => {
             if (payload === '0') {
                 done();
@@ -727,14 +727,14 @@ describe('Switch', () => {
 
 describe('HumiditySensor', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update HumiditySensor CurrentRelativeHumidity 21/, () => {
             done();
         });
         mqtt.publish('HumiditySensor/status', '21');
     });
     it('client should get the temperature', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.HumiditySensor + ' --iid ' + iid.HumiditySensor.CurrentRelativeHumidity, (err, stdout, stderr) => {
             if (stdout === '21\n') {
                 done();
@@ -747,14 +747,14 @@ testLowBattery('HumiditySensor');
 
 describe('LightSensor', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update LightSensor CurrentAmbientLightLevel 21/, () => {
             done();
         });
         mqtt.publish('LightSensor/Brightness', '21');
     });
     it('client should get the Brightness', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.LightSensor + ' --iid ' + iid.LightSensor.CurrentAmbientLightLevel, (err, stdout, stderr) => {
             if (stdout === '21\n') {
                 done();
@@ -767,14 +767,14 @@ testLowBattery('LightSensor');
 
 describe('TemperatureSensor', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update TemperatureSensor CurrentTemperature 21/, () => {
             done();
         });
         mqtt.publish('TemperatureSensor/Temperature', '21');
     });
     it('client should get the temperature', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.TemperatureSensor + ' --iid ' + iid.TemperatureSensor.CurrentTemperature, (err, stdout, stderr) => {
             if (stdout === '21\n') {
                 done();
@@ -787,14 +787,14 @@ testLowBattery('TemperatureSensor');
 
 describe('TemperatureSensor Fahrenheit', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update TemperatureSensorF CurrentTemperature 20/, () => {
             done();
         });
         mqtt.publish('TemperatureSensorF/Temperature', '68');
     });
     it('client should get the temperature', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.TemperatureSensorF + ' --iid ' + iid.TemperatureSensorF.CurrentTemperature, (err, stdout, stderr) => {
             if (stdout === '20\n') {
                 done();
@@ -805,14 +805,14 @@ describe('TemperatureSensor Fahrenheit', () => {
 
 describe('ContactSensor ContactSensorState', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update ContactSensor ContactSensorState 1/, () => {
             done();
         });
         mqtt.publish('ContactSensor/status', '1');
     });
     it('client should get the status of the ContactSensor', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.ContactSensor + ' --iid ' + iid.ContactSensor.ContactSensorState, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -820,14 +820,14 @@ describe('ContactSensor ContactSensorState', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update ContactSensor ContactSensorState 0/, () => {
             done();
         });
         mqtt.publish('ContactSensor/status', '0');
     });
     it('client should get the status of the ContactSensor', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.ContactSensor + ' --iid ' + iid.ContactSensor.ContactSensorState, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -840,14 +840,14 @@ testLowBattery('ContactSensor');
 
 describe('MotionSensor MotionSensorState', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update MotionSensor MotionDetected true/, () => {
             done();
         });
         mqtt.publish('MotionSensor/status', '1');
     });
     it('client should get the status of the MotionSensor', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.MotionSensor + ' --iid ' + iid.MotionSensor.MotionDetected, (err, stdout, stderr) => {
             if (stdout === 'true\n') {
                 done();
@@ -855,14 +855,14 @@ describe('MotionSensor MotionSensorState', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update MotionSensor MotionDetected false/, () => {
             done();
         });
         mqtt.publish('MotionSensor/status', '0');
     });
     it('client should get the status of the MotionSensor', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.MotionSensor + ' --iid ' + iid.MotionSensor.MotionDetected, (err, stdout, stderr) => {
             if (stdout === 'false\n') {
                 done();
@@ -875,14 +875,14 @@ testLowBattery('MotionSensor');
 
 describe('OccupancySensor OccupancySensorState', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update OccupancySensor OccupancyDetected true/, () => {
             done();
         });
         mqtt.publish('OccupancySensor/status', '1');
     });
     it('client should get the status of the OccupancySensor', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.OccupancySensor + ' --iid ' + iid.OccupancySensor.OccupancyDetected, (err, stdout, stderr) => {
             if (stdout === 'true\n') {
                 done();
@@ -890,14 +890,14 @@ describe('OccupancySensor OccupancySensorState', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update OccupancySensor OccupancyDetected false/, () => {
             done();
         });
         mqtt.publish('OccupancySensor/status', '0');
     });
     it('client should get the status of the OccupancySensor', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.OccupancySensor + ' --iid ' + iid.OccupancySensor.OccupancyDetected, (err, stdout, stderr) => {
             if (stdout === 'false\n') {
                 done();
@@ -910,14 +910,14 @@ testLowBattery('OccupancySensor');
 
 describe('SmokeSensor SmokeSensorState', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update SmokeSensor SmokeDetected 1/, () => {
             done();
         });
         mqtt.publish('SmokeSensor/status', '1');
     });
     it('client should get the status of the SmokeSensor', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.SmokeSensor + ' --iid ' + iid.SmokeSensor.SmokeDetected, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -925,14 +925,14 @@ describe('SmokeSensor SmokeSensorState', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update SmokeSensor SmokeDetected 0/, () => {
             done();
         });
         mqtt.publish('SmokeSensor/status', '0');
     });
     it('client should get the status of the SmokeSensor', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.SmokeSensor + ' --iid ' + iid.SmokeSensor.SmokeDetected, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -945,14 +945,14 @@ testLowBattery('SmokeSensor');
 
 describe('CarbonMonoxideSensor CarbonMonoxideSensorState', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update CarbonMonoxideSensor CarbonMonoxideDetected 1/, () => {
             done();
         });
         mqtt.publish('CarbonMonoxideSensor/status', '1');
     });
     it('client should get the status of the CarbonMonoxideSensor', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.CarbonMonoxideSensor + ' --iid ' + iid.CarbonMonoxideSensor.CarbonMonoxideDetected, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -960,14 +960,14 @@ describe('CarbonMonoxideSensor CarbonMonoxideSensorState', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update CarbonMonoxideSensor CarbonMonoxideDetected 0/, () => {
             done();
         });
         mqtt.publish('CarbonMonoxideSensor/status', '0');
     });
     it('client should get the status of the CarbonMonoxideSensor', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.CarbonMonoxideSensor + ' --iid ' + iid.CarbonMonoxideSensor.CarbonMonoxideDetected, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -980,14 +980,14 @@ testLowBattery('CarbonMonoxideSensor');
 
 describe('CarbonDioxideSensor CarbonDioxideSensorState', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update CarbonDioxideSensor CarbonDioxideDetected 1/, () => {
             done();
         });
         mqtt.publish('CarbonDioxideSensor/status', '1');
     });
     it('client should get the status of the CarbonDioxideSensor', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.CarbonDioxideSensor + ' --iid ' + iid.CarbonDioxideSensor.CarbonDioxideDetected, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -995,14 +995,14 @@ describe('CarbonDioxideSensor CarbonDioxideSensorState', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update CarbonDioxideSensor CarbonDioxideDetected 0/, () => {
             done();
         });
         mqtt.publish('CarbonDioxideSensor/status', '0');
     });
     it('client should get the status of the CarbonDioxideSensor', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.CarbonDioxideSensor + ' --iid ' + iid.CarbonDioxideSensor.CarbonDioxideDetected, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -1015,14 +1015,14 @@ testLowBattery('CarbonDioxideSensor');
 
 describe('LeakSensor LeakSensorState', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update LeakSensor LeakDetected 1/, () => {
             done();
         });
         mqtt.publish('LeakSensor/status', '1');
     });
     it('client should get the status of the LeakSensor', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.LeakSensor + ' --iid ' + iid.LeakSensor.LeakDetected, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -1030,14 +1030,14 @@ describe('LeakSensor LeakSensorState', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update LeakSensor LeakDetected 0/, () => {
             done();
         });
         mqtt.publish('LeakSensor/status', '0');
     });
     it('client should get the status of the LeakSensor', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.LeakSensor + ' --iid ' + iid.LeakSensor.LeakDetected, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -1051,7 +1051,7 @@ testLowBattery('LeakSensor');
 
 describe('Doorbell', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap set Doorbell ProgrammableSwitchEvent 1/, () => {
             done();
         });
@@ -1065,14 +1065,14 @@ describe('Doorbell', () => {
 
 describe('Outlet', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Outlet On true/, () => {
             done();
         });
         mqtt.publish('Outlet/status', '1');
     });
     it('client should get the status of the Outlet', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Outlet + ' --iid ' + iid.Outlet.On, (err, stdout, stderr) => {
             if (stdout === 'true\n') {
                 done();
@@ -1082,7 +1082,7 @@ describe('Outlet', () => {
 
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         let id = mqttSubscribe('Outlet/set', payload => {
             if (payload === '1') {
                 mqttUnsubscribe('Outlet/set', id);
@@ -1095,7 +1095,7 @@ describe('Outlet', () => {
     });
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('Outlet/set', payload => {
             if (payload === '0') {
                 done();
@@ -1110,14 +1110,14 @@ describe('Outlet', () => {
 
 describe('Outlet OutletInUse', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Outlet OutletInUse true/, () => {
             done();
         });
         mqtt.publish('Outlet/status/OutletInUse', '1');
     });
     it('client should get the status of the Outlet', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Outlet + ' --iid ' + iid.Outlet.OutletInUse, (err, stdout, stderr) => {
             if (stdout === 'true\n') {
                 done();
@@ -1129,14 +1129,14 @@ describe('Outlet OutletInUse', () => {
 
 describe('SecuritySystem CurrentState', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update SecuritySystem SecuritySystemCurrentState 1/, () => {
             done();
         });
         mqtt.publish('SecuritySystem/status/CurrentState', '1');
     });
     it('client should get the status of the SecuritySystem', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.SecuritySystem + ' --iid ' + iid.SecuritySystem.SecuritySystemCurrentState, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -1145,14 +1145,14 @@ describe('SecuritySystem CurrentState', () => {
     });
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update SecuritySystem SecuritySystemCurrentState 0/, () => {
             done();
         });
         mqtt.publish('SecuritySystem/status/CurrentState', '0');
     });
     it('client should get the status of the SecuritySystem', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.SecuritySystem + ' --iid ' + iid.SecuritySystem.SecuritySystemCurrentState, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -1161,14 +1161,14 @@ describe('SecuritySystem CurrentState', () => {
     });
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update SecuritySystem SecuritySystemCurrentState 4/, () => {
             done();
         });
         mqtt.publish('SecuritySystem/status/CurrentState', '4');
     });
     it('client should get the status of the SecuritySystem', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.SecuritySystem + ' --iid ' + iid.SecuritySystem.SecuritySystemCurrentState, (err, stdout, stderr) => {
             if (stdout === '4\n') {
                 done();
@@ -1177,7 +1177,7 @@ describe('SecuritySystem CurrentState', () => {
     });
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('SecuritySystem/set/TargetState', payload => {
             if (payload === '2') {
                 done();
@@ -1193,14 +1193,14 @@ describe('SecuritySystem CurrentState', () => {
 
 describe('Speaker Mute', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Speaker Mute true/, () => {
             done();
         });
         mqtt.publish('Speaker/status/Mute', '1');
     });
     it('client should get the status of the Speaker', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Speaker + ' --iid ' + iid.Speaker.Mute, (err, stdout, stderr) => {
             if (stdout === 'true\n') {
                 done();
@@ -1208,14 +1208,14 @@ describe('Speaker Mute', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Speaker Mute false/, () => {
             done();
         });
         mqtt.publish('Speaker/status/Mute', '0');
     });
     it('client should get the status of the Speaker', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Speaker + ' --iid ' + iid.Speaker.Mute, (err, stdout, stderr) => {
             if (stdout === 'false\n') {
                 done();
@@ -1223,7 +1223,7 @@ describe('Speaker Mute', () => {
         });
     });
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('Speaker/set/Mute', payload => {
             if (payload === '0') {
                 done();
@@ -1234,7 +1234,7 @@ describe('Speaker Mute', () => {
         cp.exec(cmd);
     });
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('Speaker/set/Mute', payload => {
             if (payload === '1') {
                 done();
@@ -1250,14 +1250,14 @@ describe('Speaker Mute', () => {
 
 describe('Speaker Volume', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Speaker Volume 80/, () => {
             done();
         });
         mqtt.publish('Speaker/status/Volume', '80');
     });
     it('client should get the status of the Speaker', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Speaker + ' --iid ' + iid.Speaker.Volume, (err, stdout, stderr) => {
             if (stdout === '80\n') {
                 done();
@@ -1266,7 +1266,7 @@ describe('Speaker Volume', () => {
     });
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('Speaker/set/Volume', payload => {
             if (payload === '20') {
                 done();
@@ -1285,14 +1285,14 @@ describe('Speaker Volume', () => {
 describe('WindowCovering CurrentPosition', () => {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update WindowCovering CurrentPosition 100/, () => {
             done();
         });
         mqtt.publish('WindowCovering/status/CurrentPosition', '1');
     });
     it('client should get the status of the switch', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.CurrentPosition, (err, stdout, stderr) => {
             if (stdout === '100\n') {
                 done();
@@ -1300,14 +1300,14 @@ describe('WindowCovering CurrentPosition', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update WindowCovering CurrentPosition 0/, () => {
             done();
         });
         mqtt.publish('WindowCovering/status/CurrentPosition', '0');
     });
     it('client should get the status of the WindowCovering', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.CurrentPosition, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -1320,14 +1320,14 @@ describe('WindowCovering CurrentPosition', () => {
 describe('WindowCovering TargetPosition', () => {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update WindowCovering TargetPosition 100/, () => {
             done();
         });
         mqtt.publish('WindowCovering/status/TargetPosition', '1');
     });
     it('client should get the status of the switch', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.TargetPosition, (err, stdout, stderr) => {
             if (stdout === '100\n') {
                 done();
@@ -1335,14 +1335,14 @@ describe('WindowCovering TargetPosition', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update WindowCovering TargetPosition 0/, () => {
             done();
         });
         mqtt.publish('WindowCovering/status/TargetPosition', '0');
     });
     it('client should get the status of the WindowCovering', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.TargetPosition, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -1351,7 +1351,7 @@ describe('WindowCovering TargetPosition', () => {
     });
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('WindowCovering/set/TargetPosition', payload => {
             if (payload === '0.5') {
                 done();
@@ -1366,14 +1366,14 @@ describe('WindowCovering TargetPosition', () => {
 describe('WindowCovering PositionState', () => {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update WindowCovering PositionState.INCREASING/, () => {
             done();
         });
         mqtt.publish('WindowCovering/status/PositionState', '1');
     });
     it('client should get the status of the WindowCovering', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.PositionState, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -1381,14 +1381,14 @@ describe('WindowCovering PositionState', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update WindowCovering PositionState.DECREASING/, () => {
             done();
         });
         mqtt.publish('WindowCovering/status/PositionState', '2');
     });
     it('client should get the status of the WindowCovering', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.PositionState, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -1396,14 +1396,14 @@ describe('WindowCovering PositionState', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update WindowCovering PositionState.STOPPED/, () => {
             done();
         });
         mqtt.publish('WindowCovering/status/PositionState', '0');
     });
     it('client should get the status of the WindowCovering', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.PositionState, (err, stdout, stderr) => {
             if (stdout === '2\n') {
                 done();
@@ -1417,14 +1417,14 @@ describe('WindowCovering PositionState', () => {
 describe('Window CurrentPosition', () => {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Window CurrentPosition 100/, () => {
             done();
         });
         mqtt.publish('Window/status/CurrentPosition', '100');
     });
     it('client should get the status of the switch', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Window + ' --iid ' + iid.Window.CurrentPosition, (err, stdout, stderr) => {
             if (stdout === '100\n') {
                 done();
@@ -1432,14 +1432,14 @@ describe('Window CurrentPosition', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Window CurrentPosition 0/, () => {
             done();
         });
         mqtt.publish('Window/status/CurrentPosition', '0');
     });
     it('client should get the status of the Window', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Window + ' --iid ' + iid.Window.CurrentPosition, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -1452,14 +1452,14 @@ describe('Window CurrentPosition', () => {
 describe('Window TargetPosition', () => {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Window TargetPosition 100/, () => {
             done();
         });
         mqtt.publish('Window/status/TargetPosition', '100');
     });
     it('client should get the status of the switch', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Window + ' --iid ' + iid.Window.TargetPosition, (err, stdout, stderr) => {
             if (stdout === '100\n') {
                 done();
@@ -1467,14 +1467,14 @@ describe('Window TargetPosition', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Window TargetPosition 0/, () => {
             done();
         });
         mqtt.publish('Window/status/TargetPosition', '0');
     });
     it('client should get the status of the Window', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Window + ' --iid ' + iid.Window.TargetPosition, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -1483,7 +1483,7 @@ describe('Window TargetPosition', () => {
     });
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('Window/set/TargetPosition', payload => {
             if (payload === '50') {
                 done();
@@ -1498,14 +1498,14 @@ describe('Window TargetPosition', () => {
 describe('Window PositionState', () => {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Window PositionState.INCREASING/, () => {
             done();
         });
         mqtt.publish('Window/status/PositionState', '1');
     });
     it('client should get the status of the Window', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Window + ' --iid ' + iid.Window.PositionState, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -1513,14 +1513,14 @@ describe('Window PositionState', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Window PositionState.DECREASING/, () => {
             done();
         });
         mqtt.publish('Window/status/PositionState', '2');
     });
     it('client should get the status of the Window', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Window + ' --iid ' + iid.Window.PositionState, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -1528,14 +1528,14 @@ describe('Window PositionState', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Window PositionState.STOPPED/, () => {
             done();
         });
         mqtt.publish('Window/status/PositionState', '0');
     });
     it('client should get the status of the Window', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Window + ' --iid ' + iid.Window.PositionState, (err, stdout, stderr) => {
             if (stdout === '2\n') {
                 done();
@@ -1548,14 +1548,14 @@ describe('Window PositionState', () => {
 describe('Window Obstruction', () => {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Window ObstructionDetected false/, () => {
             done();
         });
         mqtt.publish('Window/status/Obstruction', '0');
     });
     it('client should get the status of the Window', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Window + ' --iid ' + iid.Window.ObstructionDetected, (err, stdout, stderr) => {
             console.log(stdout);
             if (stdout === 'false\n') {
@@ -1564,14 +1564,14 @@ describe('Window Obstruction', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Window ObstructionDetected true/, () => {
             done();
         });
         mqtt.publish('Window/status/Obstruction', '1');
     });
     it('client should get the status of the Window', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Window + ' --iid ' + iid.Window.ObstructionDetected, (err, stdout, stderr) => {
             if (stdout === 'true\n') {
                 done();
@@ -1587,14 +1587,14 @@ describe('Window Obstruction', () => {
 describe('Door CurrentPosition', () => {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Door CurrentPosition 100/, () => {
             done();
         });
         mqtt.publish('Door/status/CurrentPosition', '100');
     });
     it('client should get the status of the switch', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.CurrentPosition, (err, stdout, stderr) => {
             if (stdout === '100\n') {
                 done();
@@ -1602,14 +1602,14 @@ describe('Door CurrentPosition', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Door CurrentPosition 0/, () => {
             done();
         });
         mqtt.publish('Door/status/CurrentPosition', '0');
     });
     it('client should get the status of the Door', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.CurrentPosition, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -1622,14 +1622,14 @@ describe('Door CurrentPosition', () => {
 describe('Door TargetPosition', () => {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Door TargetPosition 100/, () => {
             done();
         });
         mqtt.publish('Door/status/TargetPosition', '100');
     });
     it('client should get the status of the switch', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.TargetPosition, (err, stdout, stderr) => {
             if (stdout === '100\n') {
                 done();
@@ -1637,14 +1637,14 @@ describe('Door TargetPosition', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Door TargetPosition 0/, () => {
             done();
         });
         mqtt.publish('Door/status/TargetPosition', '0');
     });
     it('client should get the status of the Door', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.TargetPosition, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -1653,7 +1653,7 @@ describe('Door TargetPosition', () => {
     });
 
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         mqttSubscribe('Door/set/TargetPosition', payload => {
             if (payload === '50') {
                 done();
@@ -1668,14 +1668,14 @@ describe('Door TargetPosition', () => {
 describe('Door PositionState', () => {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Door PositionState.INCREASING/, () => {
             done();
         });
         mqtt.publish('Door/status/PositionState', '1');
     });
     it('client should get the status of the Door', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.PositionState, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -1683,14 +1683,14 @@ describe('Door PositionState', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Door PositionState.DECREASING/, () => {
             done();
         });
         mqtt.publish('Door/status/PositionState', '2');
     });
     it('client should get the status of the Door', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.PositionState, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -1698,14 +1698,14 @@ describe('Door PositionState', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Door PositionState.STOPPED/, () => {
             done();
         });
         mqtt.publish('Door/status/PositionState', '0');
     });
     it('client should get the status of the Door', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.PositionState, (err, stdout, stderr) => {
             if (stdout === '2\n') {
                 done();
@@ -1718,14 +1718,14 @@ describe('Door PositionState', () => {
 describe('Door Obstruction', () => {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Door ObstructionDetected false/, () => {
             done();
         });
         mqtt.publish('Door/status/Obstruction', '0');
     });
     it('client should get the status of the Door', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.ObstructionDetected, (err, stdout, stderr) => {
             console.log(stdout);
             if (stdout === 'false\n') {
@@ -1734,14 +1734,14 @@ describe('Door Obstruction', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update Door ObstructionDetected true/, () => {
             done();
         });
         mqtt.publish('Door/status/Obstruction', '1');
     });
     it('client should get the status of the Door', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.ObstructionDetected, (err, stdout, stderr) => {
             if (stdout === 'true\n') {
                 done();
@@ -1755,14 +1755,14 @@ describe('Door Obstruction', () => {
 describe('GarageDoorOpener CurrentDoorState', () => {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update GarageDoorOpener CurrentDoorState.OPEN/, () => {
             done();
         });
         mqtt.publish('GarageDoorOpener/status', '4');
     });
     it('client should get the status of the GarageDoorOpener', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.CurrentDoorState, (err, stdout, stderr) => {
             if (stdout === '0\n') {
                 done();
@@ -1770,14 +1770,14 @@ describe('GarageDoorOpener CurrentDoorState', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update GarageDoorOpener CurrentDoorState.CLOSED/, () => {
             done();
         });
         mqtt.publish('GarageDoorOpener/status', '0');
     });
     it('client should get the status of the GarageDoorOpener', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.CurrentDoorState, (err, stdout, stderr) => {
             if (stdout === '1\n') {
                 done();
@@ -1786,14 +1786,14 @@ describe('GarageDoorOpener CurrentDoorState', () => {
     });
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update GarageDoorOpener CurrentDoorState.OPENING/, () => {
             done();
         });
         mqtt.publish('GarageDoorOpener/status', '1');
     });
     it('client should get the status of the GarageDoorOpener', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.CurrentDoorState, (err, stdout, stderr) => {
             if (stdout === '2\n') {
                 done();
@@ -1802,14 +1802,14 @@ describe('GarageDoorOpener CurrentDoorState', () => {
     });
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update GarageDoorOpener CurrentDoorState.CLOSING/, () => {
             done();
         });
         mqtt.publish('GarageDoorOpener/status', '2');
     });
     it('client should get the status of the GarageDoorOpener', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.CurrentDoorState, (err, stdout, stderr) => {
             if (stdout === '3\n') {
                 done();
@@ -1818,14 +1818,14 @@ describe('GarageDoorOpener CurrentDoorState', () => {
     });
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update GarageDoorOpener CurrentDoorState.STOPPED/, () => {
             done();
         });
         mqtt.publish('GarageDoorOpener/status', '3');
     });
     it('client should get the status of the GarageDoorOpener', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.CurrentDoorState, (err, stdout, stderr) => {
             if (stdout === '4\n') {
                 done();
@@ -1839,14 +1839,14 @@ describe('GarageDoorOpener CurrentDoorState', () => {
 describe('GarageDoorOpener Obstruction', () => {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update GarageDoorOpener ObstructionDetected false/, () => {
             done();
         });
         mqtt.publish('GarageDoorOpener/status/Obstruction', '0');
     });
     it('client should get the status of the GarageDoorOpener', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.ObstructionDetected, (err, stdout, stderr) => {
             console.log(stdout);
             if (stdout === 'false\n') {
@@ -1855,14 +1855,14 @@ describe('GarageDoorOpener Obstruction', () => {
         });
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         subscribe('homekit', /hap update GarageDoorOpener ObstructionDetected true/, () => {
             done();
         });
         mqtt.publish('GarageDoorOpener/status/Obstruction', '1');
     });
     it('client should get the status of the GarageDoorOpener', function (done) {
-        this.timeout(12000);
+        this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.ObstructionDetected, (err, stdout, stderr) => {
             if (stdout === 'true\n') {
                 done();
@@ -1878,14 +1878,14 @@ describe('GarageDoorOpener Obstruction', () => {
 function testLowBattery(name) {
     describe(name + ' StatusLowBattery', function () {
         it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-            this.timeout(12000);
+            this.timeout(24000);
             subscribe('homekit', new RegExp('hap update ' + name + ' StatusLowBattery 1'), () => {
                 done();
             });
             mqtt.publish(name + '/status/LowBattery', '{"val":1}');
         });
         it('client should get the status of the ' + name, function (done) {
-            this.timeout(12000);
+            this.timeout(24000);
             cp.exec(clientCmd + ' get --aid ' + aid[name] + ' --iid ' + iid[name].StatusLowBattery, (err, stdout, stderr) => {
                 if (stdout === '1\n') {
                     done();
@@ -1893,14 +1893,14 @@ function testLowBattery(name) {
             });
         });
         it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
-            this.timeout(12000);
+            this.timeout(24000);
             subscribe('homekit', new RegExp('hap update ' + name + ' StatusLowBattery 0'), () => {
                 done();
             });
             mqtt.publish(name + '/status/LowBattery', '{"val":0}');
         });
         it('client should get the status of the MotionSensor', function (done) {
-            this.timeout(12000);
+            this.timeout(24000);
             cp.exec(clientCmd + ' get --aid ' + aid[name] + ' --iid ' + iid[name].StatusLowBattery, (err, stdout, stderr) => {
                 if (stdout === '0\n') {
                     done();
