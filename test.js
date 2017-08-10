@@ -749,6 +749,26 @@ describe('HumiditySensor', () => {
 
 testLowBattery('HumiditySensor');
 
+describe('LightSensor', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(12000);
+        subscribe('homekit', /hap update LightSensor CurrentAmbientLightLevel 21/, () => {
+            done();
+        });
+        mqtt.publish('LightSensor/Brightness', '21');
+    });
+    it('client should get the Brightness', function (done) {
+        this.timeout(12000);
+        cp.exec(clientCmd + ' get --aid ' + aid.LightSensor + ' --iid ' + iid.LightSensor.CurrentAmbientLightLevel, (err, stdout, stderr) => {
+            if (stdout === '21\n') {
+                done();
+            }
+        });
+    });
+});
+
+testLowBattery('LightSensor');
+
 describe('TemperatureSensor', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(12000);

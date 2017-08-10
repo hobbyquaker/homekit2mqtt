@@ -237,7 +237,11 @@
     "service": "LightSensor",
     "name": "LightSensor",
     "topic": {
-      "statusAmbientLightLevel": "LightSensor/Brightness"
+      "statusAmbientLightLevel": "LightSensor/Brightness",
+      "statusLowBattery": "LightSensor/status/LowBattery"
+    },
+    "payload": {
+      "onLowBattery": 1
     },
     "manufacturer": "Generic",
     "model": "LightSensor"
