@@ -26,6 +26,7 @@ module.exports = function (iface) {
                 callback(null, mqttStatus[settings.topic.statusHumidity]);
             });
 
+        /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
             sensor.getService(Service.HumiditySensor, settings.name)
                 .getCharacteristic(Characteristic.StatusLowBattery)

@@ -134,7 +134,11 @@
     "service": "HumiditySensor",
     "name": "HumiditySensor",
     "topic": {
-      "statusHumidity": "HumiditySensor/status"
+      "statusHumidity": "HumiditySensor/status",
+      "statusLowBattery": "HumiditySensor/status/LowBattery"
+    },
+    "payload": {
+      "onLowBattery": 1
     },
     "manufacturer": "Generic",
     "model": "HumiditySensor"
