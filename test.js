@@ -275,9 +275,6 @@ describe('hap-client - homekit2mqtt', function () {
     });
 });
 
-
-/*
-
 describe('Fan', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(12000);
@@ -1280,9 +1277,6 @@ describe('Speaker Volume', () => {
         cp.exec(cmd);
     });
 });
-
-
-*/
 
 
 describe('WindowCovering CurrentPosition', () => {
