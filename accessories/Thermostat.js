@@ -47,7 +47,7 @@ module.exports = function (iface) {
                 callback(null, settings.config.TemperatureDisplayUnits);
             });
 
-        mqttSub(settings.topic.statusCurrentTemperature, function (val) {
+        mqttSub(settings.topic.statusCurrentTemperature, val => {
             log.debug('> hap set', settings.name, 'CurrentTemperature', mqttStatus[settings.topic.statusCurrentTemperature]);
             thermo.getService(Service.Thermostat)
                 .updateCharacteristic(Characteristic.CurrentTemperature, val);

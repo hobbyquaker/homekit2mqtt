@@ -63,7 +63,7 @@ module.exports = function (iface) {
                 val = Characteristic.SecuritySystemCurrentState.ALARM_TRIGGERED;
             }
             */
-            log.debug('> hap set', settings.name, 'SecuritySystemCurrentState', val);
+            log.debug('> hap update', settings.name, 'SecuritySystemCurrentState', val);
             acc.getService(Service.SecuritySystem)
                 .setCharacteristic(Characteristic.SecuritySystemCurrentState, val);
             if (val !== 4) {

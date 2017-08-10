@@ -16,6 +16,7 @@ module.exports = function (iface) {
                 callback();
             });
 
+        /* istanbul ignore else */
         if (settings.topic.statusMute) {
             // Update status in homekit if exernal status gets updated
             mqttSub(settings.topic.statusMute, val => {
@@ -35,19 +36,23 @@ module.exports = function (iface) {
                 callback(null, mute);
             });
 
+        /* istanbul ignore else */
         if (settings.topic.setVolume) {
             speaker.getService(Service.Speaker)
                 .addCharacteristic(Characteristic.Volume)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'Volume', value);
+                    /* istanbul ignore next */
                     const volume = (value * (settings.payload.volumeFactor || 1)) || 0;
                     log.debug('> mqtt', settings.topic.setVolume, volume);
                     mqttPub(settings.topic.setVolume, volume);
                     callback();
                 });
 
+            /* istanbul ignore else */
             if (settings.topic.statusVolume) {
                 mqttSub(settings.topic.statusVolume, value => {
+                    /* istanbul ignore next */
                     const volume = (value / (settings.payload.volumeFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Volume', volume);
                     speaker.getService(Service.Speaker)
@@ -58,8 +63,8 @@ module.exports = function (iface) {
                     .getCharacteristic(Characteristic.Volume)
                     .on('get', callback => {
                         log.debug('< hap get', settings.name, 'Volume');
+                        /* istanbul ignore next */
                         const volume = (mqttStatus[settings.topic.statusVolume] / (settings.payload.volumeFactor || 1)) || 0;
-
                         log.debug('> hap re_get', settings.name, 'Volume', volume);
                         callback(null, volume);
                     });

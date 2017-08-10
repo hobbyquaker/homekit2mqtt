@@ -6,18 +6,22 @@ module.exports = function (iface) {
     return function createAccessory_Fan(settings) {
         const acc = newAccessory(settings);
 
+        /* istanbul ignore else */
         if (typeof settings.payload.onTrue === 'undefined') {
             settings.payload.onTrue = true;
         }
 
+        /* istanbul ignore else */
         if (typeof settings.payload.onFalse === 'undefined') {
             settings.payload.onFalse = false;
         }
 
+        /* istanbul ignore if */
         if (typeof settings.payload.rotationDirectionCounterClockwise === 'undefined') {
             settings.payload.rotationDirectionCounterClockwise = Characteristic.RotationDirection.COUNTER_CLOCKWISE;
         }
 
+        /* istanbul ignore if */
         if (typeof settings.payload.rotationDirectionClockwise === 'undefined') {
             settings.payload.rotationDirectionClockwise = Characteristic.RotationDirection.CLOCKWISE;
         }
@@ -32,6 +36,7 @@ module.exports = function (iface) {
                 callback();
             });
 
+        /* istanbul ignore else */
         if (settings.topic.statusOn) {
             mqttSub(settings.topic.statusOn, val => {
                 const on = val === settings.payload.onTrue;
@@ -49,11 +54,13 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.setRotationDirection) {
             acc.getService(Service.Fan, settings.name)
                 .getCharacteristic(Characteristic.RotationDirection)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'RotationDirection', value);
+                    /* istanbul ignore next */
                     const dir = value === Characteristic.RotationDirection.COUNTER_CLOCKWISE ?
                         settings.payload.rotationDirectionCounterClockwise :
                         settings.payload.rotationDirectionClockwise;
@@ -64,8 +71,10 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusRotationDirection) {
             mqttSub(settings.topic.statusRotationDirection, val => {
+                /* istanbul ignore next */
                 const dir = mqttStatus[settings.topic.statusRotationDirection] === settings.payload.rotationDirectionCounterClockwise ?
                     Characteristic.RotationDirection.COUNTER_CLOCKWISE :
                     Characteristic.RotationDirection.CLOCKWISE;
@@ -77,6 +86,7 @@ module.exports = function (iface) {
                 .getCharacteristic(Characteristic.RotationDirection)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'RotationDirection');
+                    /* istanbul ignore next */
                     const dir = mqttStatus[settings.topic.statusRotationDirection] === settings.payload.rotationDirectionCounterClockwise ?
                         Characteristic.RotationDirection.COUNTER_CLOCKWISE :
                         Characteristic.RotationDirection.CLOCKWISE;
@@ -85,11 +95,13 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.setRotationSpeed) {
             acc.getService(Service.Fan, settings.name)
                 .getCharacteristic(Characteristic.RotationSpeed)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'RotationSpeed', value);
+                    /* istanbul ignore next */
                     const speed = (value * (settings.payload.rotationSpeedFactor || 1)) || 0;
                     log.debug('> mqtt', settings.topic.setRotationSpeed, speed);
                     mqttPub(settings.topic.setRotationSpeed, speed);
@@ -97,8 +109,10 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusRotationSpeed) {
             mqttSub(settings.topic.statusRotationSpeed, val => {
+                /* istanbul ignore next */
                 const speed = (val / (settings.payload.rotationSpeedFactor || 1)) || 0;
                 log.debug('> hap update', settings.name, 'RotationSpeed', speed);
                 acc.getService(Service.Fan)
@@ -108,6 +122,7 @@ module.exports = function (iface) {
                 .getCharacteristic(Characteristic.RotationSpeed)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'RotationSpeed');
+                    /* istanbul ignore next */
                     const speed = (mqttStatus[settings.topic.statusRotationSpeed] / (settings.payload.rotationSpeedFactor || 1)) || 0;
                     log.debug('> hap re_get', settings.name, 'RotationSpeed', speed);
                     callback(null, speed);

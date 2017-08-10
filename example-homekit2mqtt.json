@@ -1,4 +1,42 @@
 {
+
+
+  "CarbonDioxideSensor": {
+    "service": "CarbonDioxideSensor",
+    "name": "CarbonDioxideSensor",
+    "topic": {
+      "statusCarbonDioxideDetected": "CarbonDioxideSensor/status",
+      "statusLowBattery": "CarbonDioxideSensor/status/LowBattery"
+    },
+    "payload": {
+      "onCarbonDioxideDetected": 1,
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "CarbonDioxideSensor"
+  },
+
+
+
+  
+  "CarbonMonoxideSensor": {
+    "service": "CarbonMonoxideSensor",
+    "name": "CarbonMonoxideSensor",
+    "topic": {
+      "statusCarbonMonoxideDetected": "CarbonMonoxideSensor/status",
+      "statusLowBattery": "CarbonMonoxideSensor/status/LowBattery"
+    },
+    "payload": {
+      "onCarbonMonoxideDetected": 1,
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "CarbonMonoxideSensor"
+  },
+
+
+
+
   "ContactSensor": {
     "service": "ContactSensor",
     "name": "ContactSensor",
@@ -13,6 +51,113 @@
     "manufacturer": "Generic",
     "model": "ContactSensor"
   },
+
+
+
+
+  "Door": {
+    "service": "Door",
+    "name": "Door",
+    "topic": {
+      "setTargetPosition": "Door/set/TargetPosition",
+      "statusTargetPosition": "Door/status/TargetPosition",
+      "setCurrentPosition": "Door/set/CurrentPosition",
+      "statusCurrentPosition": "Door/status/CurrentPosition",
+      "statusPositionStatus": "Door/status/PositionStatus"
+    },
+    "payload": {
+      "positionStatusDecreasing": 2,
+      "positionStatusIncreasing": 1,
+      "positionStatusStopped": 0
+    }
+  },
+
+
+
+
+  "Doorbell": {
+    "service": "Doorbell",
+    "name": "Doorbell",
+    "topic": {
+      "statusEvent": "Doorbell/status"
+    },
+    "manufacturer": "Generic",
+    "model": "Doorbell"
+  },
+
+
+
+
+  "Fan": {
+    "service": "Fan",
+    "name": "Fan",
+    "topic": {
+      "statusOn": "Fan/status",
+      "setOn": "Fan/set",
+      "statusRotationDirection": "Fan/status/RotationDirection",
+      "setRotationDirection": "Fan/set/RotationDirection",
+      "statusRotationSpeed": "Fan/status/RotationSpeed",
+      "setRotationSpeed": "Fan/set/RotationSpeed"
+    },
+    "payload": {
+      "rotationDirectionCounterClockwise": "left",
+      "rotationDirectionClockwise": "right"
+    },  
+    "manufacturer": "Generic",
+    "model": "Fan"
+  },
+
+
+
+  "GarageDoorOpener": {
+    "service": "GarageDoorOpener",
+    "name": "GarageDoorOpener",
+    "topic": {
+      "setDoor": "GarageDoorOpener/set",
+      "statusDoor": "GarageDoorOpener/status",
+      "statusObstruction": "GarageDoorOpener/status/Obstruction",
+      "setLock": "GarageDoorOpener/set/Lock",
+      "statusLock": "GarageDoorOpener/status/Lock"
+    },
+    "payload": {
+      "doorClosed": 0,
+      "doorOpening": 1,
+      "doorClosing": 2,
+      "doorStopped": 3,
+      "doorOpen": 4
+    },
+    "manufacturer": "Generic",
+    "model": "GarageDoorOpener"
+  },  
+
+  "HumiditySensor": {
+    "service": "HumiditySensor",
+    "name": "HumiditySensor",
+    "topic": {
+      "statusHumidity": "HumiditySensor/status"
+    },
+    "manufacturer": "Generic",
+    "model": "HumiditySensor"
+  },
+
+
+  "LeakSensor": {
+    "service": "LeakSensor",
+    "name": "LeakSensor",
+    "topic": {
+      "statusLeakDetected": "LeakSensor/status",
+      "statusLowBattery": "LeakSensor/status/LowBattery"
+    },
+    "payload": {
+      "onLeakDetected": 1,
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "LeakSensor"
+  },
+
+
+
 
   "Lightbulb1": {
     "service":  "Lightbulb",
@@ -29,42 +174,8 @@
     "model": "Lightbulb"
   },
 
-  "Thermostat1": {
-    "service": "Thermostat",
-    "name": "Thermostat1",
-    "topic": {
-      "setTargetTemperature": "Thermostat1/set/TargetTemperature",
-      "statusTargetTemperature": "Thermostat1/status/TargetTemperature",
-      "statusCurrentTemperature": "Thermostat1/status/CurrentTemperature",
-      "statusCurrentRelativeHumidity": "Thermostat1/status/CurrentHumidity"
-    },
-    "payload": {
 
-    },
-    "config": {
-      "TemperatureDisplayUnits": 0
-    },
-    "manufacturer": "Generic",
-    "model": "Thermostat"
-  },
-  "WindowCovering1": {
-    "service":  "WindowCovering",
-    "name": "Blind",
-    "topic": {
-      "setTargetPosition":  "WindowCovering1/set/TargetPosition",
-      "statusTargetPosition":  "WindowCovering1/status/TargetPosition",
-      "statusCurrentPosition":  "WindowCovering1/status/CurrentPosition",
-      "statusPositionStatus":  "WindowCovering1/status/PositionStatus"
-    },
-    "payload": {
-      "targetPositionFactor": 0.01,
-      "currentPositionFactor": 0.01,
-      "positionStatusIncreasing": 1,
-      "positionStatusDecreasing": 2
-    },
-    "manufacturer": "Generic",
-    "model": "WindowCovering"
-  },
+
 
   "Lightbulb2": {
     "service":  "Lightbulb",
@@ -85,45 +196,71 @@
     "manufacturer": "Generic",
     "model": "Lightbulb Dimmable"
   },
-  "Lightbulb3": {
+
+
+
+
+  "Lightbulb": {
     "service":  "Lightbulb",
-    "name":     "Lightbulb3",
+    "name":     "Lightbulb",
     "topic": {
-      "setOn":            "Lightbulb3/set",
-      "setBrightness":    "Lightbulb3/set/Brightness",
-      "setHue":           "Lightbulb3/set/Hue",
-      "setSaturation":    "Lightbulb3/set/Saturation",
-      "statusOn":         "Lightbulb3/status",
-      "statusBrightness": "Lightbulb3/status/Brightness",
-      "statusHue":        "Lightbulb3/status/Hue",
-      "statusSaturation": "Lightbulb3/status/Saturation",
-      "identify":         "Lightbulb3/set/identify"
+      "setOn":            "Lightbulb/set",
+      "setBrightness":    "Lightbulb/set/Brightness",
+      "setHue":           "Lightbulb/set/Hue",
+      "setSaturation":    "Lightbulb/set/Saturation",
+      "statusOn":         "Lightbulb/status",
+      "statusBrightness": "Lightbulb/status/Brightness",
+      "statusHue":        "Lightbulb/status/Hue",
+      "statusSaturation": "Lightbulb/status/Saturation",
+      "identify":         "Lightbulb/set/identify"
     },
     "payload": {
       "onTrue": 254,
       "onFalse": 0,
       "brightnessFactor": 2.54,
-      "hueFactor": 182.042,
+      "hueFactor": 182.04166666666666,
       "saturationFactor": 2.54,
       "identify": "select"
     },
     "manufacturer": "Generic",
     "model": "Lightbulb Color"
   },
-  "Switch": {
-    "service": "Switch",
-    "name": "Switch1",
+
+
+
+
+  "LightSensor": {
+    "service": "LightSensor",
+    "name": "LightSensor",
     "topic": {
-      "statusOn": "Switch/status",
-      "setOn": "Switch/set"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0
+      "statusAmbientLightLevel": "LightSensor/Brightness"
     },
     "manufacturer": "Generic",
-    "model": "Switch"
+    "model": "LightSensor"
   },
+
+
+
+  
+  "LockMechanism": {
+    "service": "LockMechanism",
+    "name": "LockMechanism",
+    "topic": {
+      "setLock": "LockMechanism/set",
+      "statusLock": "LockMechanism/status"
+    },
+    "payload": {
+      "lockUnsecured": 1,
+      "lockSecured": 0
+    },
+    "manufacturer": "Generic",
+    "model": "LockMechanism"
+  },
+
+
+
+
+
   "MotionSensor": {
     "service": "MotionSensor",
     "name": "MotionSensor",
@@ -138,6 +275,60 @@
     "manufacturer": "Generic",
     "model": "MotionSensor"
   },
+
+
+
+
+  "OccupancySensor": {
+    "service": "OccupancySensor",
+    "name": "OccupancySensor",
+    "topic": {
+      "statusOccupancyDetected": "OccupancySensor/status",
+      "statusLowBattery": "OccupancySensor/status/LowBattery"
+    },
+    "payload": {
+      "onOccupancyDetected": 1,
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "OccupancySensor"
+  },
+
+
+
+
+  "Outlet": {
+    "service": "Outlet",
+    "name": "Outlet",
+    "topic": {
+      "statusOn": "Outlet/status",
+      "setOn": "Outlet/set",
+      "statusOutletInUse": "Outlet/status/OutletInUse",
+      "setOutletInUse": "Outlet/set/OutletInUse"
+    },
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0,
+      "onOutletInUse": 1
+    },
+    "manufacturer": "Generic",
+    "model": "Outlet"
+  },
+
+
+
+
+  "SecuritySystem": {
+    "service": "SecuritySystem",
+    "name": "SecuritySystem",
+    "topic": {
+        "setSecuritySystemTargetState": "SecuritySystem/set/TargetState",
+        "statusSecuritySystemCurrentState": "SecuritySystem/status/CurrentState"
+    }
+  },
+
+
+
 
   "SmokeSensor": {
     "service": "SmokeSensor",
@@ -154,66 +345,45 @@
     "model": "SmokeSensor"
   },
 
-  "CarbonMonoxideSensor": {
-    "service": "CarbonMonoxideSensor",
-    "name": "CarbonMonoxideSensor",
-    "topic": {
-      "statusCarbonMonoxideDetected": "CarbonMonoxideSensor/status",
-      "statusLowBattery": "CarbonMonoxideSensor/status/LowBattery"
-    },
-    "payload": {
-      "onCarbonMonoxideDetected": 1,
-      "onLowBattery": 1
-    },
-    "manufacturer": "Generic",
-    "model": "CarbonMonoxideSensor"
-  },
 
 
-  "CarbonDioxideSensor": {
-    "service": "CarbonDioxideSensor",
-    "name": "CarbonDioxideSensor",
-    "topic": {
-      "statusCarbonDioxideDetected": "CarbonDioxideSensor/status",
-      "statusLowBattery": "CarbonDioxideSensor/status/LowBattery"
-    },
-    "payload": {
-      "onCarbonDioxideDetected": 1,
-      "onLowBattery": 1
-    },
-    "manufacturer": "Generic",
-    "model": "CarbonDioxideSensor"
-  },
-
-  "LeakSensor": {
-    "service": "LeakSensor",
-    "name": "LeakSensor",
-    "topic": {
-      "statusLeakDetected": "LeakSensor/status",
-      "statusLowBattery": "LeakSensor/status/LowBattery"
-    },
-    "payload": {
-      "onLeakDetected": 1,
-      "onLowBattery": 1
-    },
-    "manufacturer": "Generic",
-    "model": "LeakSensor"
-  },
   
-  "LockMechanism": {
-    "service": "LockMechanism",
-    "name": "LockMechanism",
+  "Speaker": {
+    "service": "Speaker",
+    "name": "Speaker",
     "topic": {
-      "setLock": "LockMechanism/set",
-      "statusLock": "LockMechanism/status"
+      "setMute": "Speaker/set/Mute",
+      "statusMute": "Speaker/status/Mute",
+      "setVolume": "Speaker/set/Volume",
+      "statusVolume": "Speaker/status/Volume"
     },
     "payload": {
-      "lockUnsecured": 1,
-      "lockSecured": 0
+      "muteTrue": 1,
+      "muteFalse": 0
+    }
+  },
+
+
+
+
+  "Switch": {
+    "service": "Switch",
+    "name": "Switch1",
+    "topic": {
+      "statusOn": "Switch/status",
+      "setOn": "Switch/set"
+    },
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0
     },
     "manufacturer": "Generic",
-    "model": "LockMechanism"
+    "model": "Switch"
   },
+
+
+
+
   "TemperatureSensor": {
     "service": "TemperatureSensor",
     "name": "TemperatureSensor",
@@ -228,6 +398,7 @@
     "model": "TemperatureSensor"
   },
 
+
   "TemperatureSensorF": {
     "service": "TemperatureSensor",
     "name": "TemperatureSensorF",
@@ -241,27 +412,63 @@
     "model": "TemperatureSensor"
   },
 
-  "LightSensor": {
-    "service": "LightSensor",
-    "name": "LightSensor",
+
+  "Thermostat1": {
+    "service": "Thermostat",
+    "name": "Thermostat1",
     "topic": {
-      "statusAmbientLightLevel": "LightSensor/Brightness"
-    },
-    "manufacturer": "Generic",
-    "model": "LightSensor"
-  },
-  "Speaker": {
-    "service": "Speaker",
-    "name": "Speaker",
-    "topic": {
-      "setMute": "speaker/set/mute",
-      "statusMute": "speaker/status/mute",
-      "setVolume": "speaker/set/volume",
-      "statusVolume": "speaker/status/volume"
+      "setTargetTemperature": "Thermostat1/set/TargetTemperature",
+      "statusTargetTemperature": "Thermostat1/status/TargetTemperature",
+      "statusCurrentTemperature": "Thermostat1/status/CurrentTemperature",
+      "statusCurrentRelativeHumidity": "Thermostat1/status/CurrentHumidity"
     },
     "payload": {
-      "muteTrue": "mute",
-      "muteFalse": "unmute"
+
+    },
+    "config": {
+      "TemperatureDisplayUnits": 0
+    },
+    "manufacturer": "Generic",
+    "model": "Thermostat"
+  },
+
+  
+  
+  "Window": {
+    "service": "Window",
+    "name": "Window",
+    "topic": {
+      "setTargetPosition": "Window/set/TargetPosition",
+      "statusTargetPosition": "Window/status/TargetPosition",
+      "statusCurrentPosition": "Window/status/CurrentPosition",
+      "statusPositionStatus": "Window/status/PositionStatus",
+      "statusObstruction": "Window/status/Obstruction"
+    },
+    "payload": {
+      "onObstructionDetected": 1,
+      "positionStatusDecreasing": 1,
+      "positionStatusIncreasing": 2
     }
+  },
+  
+
+  "WindowCovering": {
+    "service":  "WindowCovering",
+    "name": "Blind",
+    "topic": {
+      "setTargetPosition":  "WindowCovering/set/TargetPosition",
+      "statusTargetPosition":  "WindowCovering/status/TargetPosition",
+      "statusCurrentPosition":  "WindowCovering/status/CurrentPosition",
+      "statusPositionStatus":  "WindowCovering/status/PositionStatus"
+    },
+    "payload": {
+      "targetPositionFactor": 0.01,
+      "currentPositionFactor": 0.01,
+      "positionStatusIncreasing": 1,
+      "positionStatusDecreasing": 2
+    },
+    "manufacturer": "Generic",
+    "model": "WindowCovering"
   }
+
 }

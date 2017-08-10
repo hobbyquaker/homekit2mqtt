@@ -86,6 +86,7 @@ mqtt.on('message', (topic, payload) => {
 // Not meant to be used with wildcards!
 function mqttSub(topic, callback) {
     topic = String(topic);
+    /* istanbul ignore else */
     if (typeof callback === 'function') {
         if (mqttCallbacks[topic]) {
             mqttCallbacks[topic].push(callback);

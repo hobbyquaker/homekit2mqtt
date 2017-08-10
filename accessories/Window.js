@@ -31,6 +31,7 @@ module.exports = function (iface) {
                 callback();
             });
 
+        /* istanbul ignore else */
         if (settings.topic.statusTargetPosition) {
             mqttSub(settings.topic.statusTargetPosition, val => {
                 const position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
@@ -48,6 +49,7 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusCurrentPosition) {
             mqttSub(settings.topic.statusCurrentPosition, val => {
                 const pos = Math.round(val / (settings.payload.currentPositionFactor || 1));
@@ -65,6 +67,7 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusPositionStatus) {
             mqttSub(settings.topic.statusPositionStatus, val => {
                 let state;
@@ -99,8 +102,9 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusObstruction) {
-            acc.getService(Service.GarageDoorOpener, settings.name)
+            acc.getService(Service.Window, settings.name)
                 .getCharacteristic(Characteristic.ObstructionDetected)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'ObstructionDetected');
@@ -112,7 +116,7 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusObstruction, val => {
                 const obstruction = val === settings.payload.onObstructionDetected;
                 log.debug('> hap set', settings.name, 'ObstructionDetected', obstruction);
-                acc.getService(Service.GarageDoorOpener)
+                acc.getService(Service.Window)
                     .setCharacteristic(Characteristic.ObstructionDetected, obstruction);
             });
         }

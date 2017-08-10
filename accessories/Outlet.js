@@ -16,8 +16,15 @@ module.exports = function (iface) {
                 callback();
             });
 
+        /* istanbul ignore else */
         if (settings.topic.statusOn) {
-            mqttSub(settings.topic.statusOn);
+            mqttSub(settings.topic.statusOn, val => {
+                log.debug('< mqtt', settings.topic.statusOn, val);
+                const on = mqttStatus[settings.topic.statusOn] === settings.payload.onTrue;
+                log.debug('> hap update', settings.name, 'On', on);
+                acc.getService(Service.Outlet)
+                    .updateCharacteristic(Characteristic.On, on);
+            });
             acc.getService(Service.Outlet)
                 .getCharacteristic(Characteristic.On)
                 .on('get', callback => {
@@ -39,9 +46,9 @@ module.exports = function (iface) {
 
         mqttSub(settings.topic.statusOutletInUse, val => {
             const inUse = val === settings.payload.onOutletInUse;
-            log.debug('> hap set', settings.name, 'OutletInUse', inUse);
+            log.debug('> hap update', settings.name, 'OutletInUse', inUse);
             acc.getService(Service.Outlet)
-                .setCharacteristic(Characteristic.OutletInUse, inUse);
+                .updateCharacteristic(Characteristic.OutletInUse, inUse);
         });
 
         return acc;
