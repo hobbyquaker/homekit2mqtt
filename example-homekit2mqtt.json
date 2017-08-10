@@ -449,13 +449,13 @@
       "setTargetPosition": "Window/set/TargetPosition",
       "statusTargetPosition": "Window/status/TargetPosition",
       "statusCurrentPosition": "Window/status/CurrentPosition",
-      "statusPositionStatus": "Window/status/PositionStatus",
+      "statusPositionState": "Window/status/PositionState",
       "statusObstruction": "Window/status/Obstruction"
     },
     "payload": {
       "onObstructionDetected": 1,
-      "positionStatusDecreasing": 1,
-      "positionStatusIncreasing": 2
+      "positionStatusIncreasing": 1,
+      "positionStatusDecreasing": 2
     }
   },
   

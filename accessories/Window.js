@@ -53,9 +53,9 @@ module.exports = function (iface) {
         if (settings.topic.statusCurrentPosition) {
             mqttSub(settings.topic.statusCurrentPosition, val => {
                 const pos = Math.round(val / (settings.payload.currentPositionFactor || 1));
-                log.debug('> hap set', settings.name, 'CurrentPosition', pos);
+                log.debug('> hap update', settings.name, 'CurrentPosition', pos);
                 acc.getService(Service.Window)
-                    .setCharacteristic(Characteristic.CurrentPosition, pos);
+                    .updateCharacteristic(Characteristic.CurrentPosition, pos);
             });
             acc.getService(Service.Window)
                 .getCharacteristic(Characteristic.CurrentPosition)
@@ -68,21 +68,21 @@ module.exports = function (iface) {
         }
 
         /* istanbul ignore else */
-        if (settings.topic.statusPositionStatus) {
-            mqttSub(settings.topic.statusPositionStatus, val => {
+        if (settings.topic.statusPositionState) {
+            mqttSub(settings.topic.statusPositionState, val => {
                 let state;
                 if (val === settings.payload.positionStatusDecreasing) {
                     state = Characteristic.PositionState.DECREASING;
-                    log.debug('> hap set', settings.name, 'PositionState.DECREASING');
+                    log.debug('> hap update', settings.name, 'PositionState.DECREASING');
                 } else if (val === settings.payload.positionStatusIncreasing) {
                     state = Characteristic.PositionState.INCREASING;
-                    log.debug('> hap set', settings.name, 'PositionState.INCREASING');
+                    log.debug('> hap update', settings.name, 'PositionState.INCREASING');
                 } else {
                     state = Characteristic.PositionState.STOPPED;
-                    log.debug('> hap set', settings.name, 'PositionState.STOPPED');
+                    log.debug('> hap update', settings.name, 'PositionState.STOPPED');
                 }
                 acc.getService(Service.Window)
-                    .setCharacteristic(Characteristic.PositionState, state);
+                    .updateCharacteristic(Characteristic.PositionState, state);
             });
             acc.getService(Service.Window)
                 .getCharacteristic(Characteristic.PositionState)
@@ -115,9 +115,9 @@ module.exports = function (iface) {
 
             mqttSub(settings.topic.statusObstruction, val => {
                 const obstruction = val === settings.payload.onObstructionDetected;
-                log.debug('> hap set', settings.name, 'ObstructionDetected', obstruction);
+                log.debug('> hap update', settings.name, 'ObstructionDetected', obstruction);
                 acc.getService(Service.Window)
-                    .setCharacteristic(Characteristic.ObstructionDetected, obstruction);
+                    .updateCharacteristic(Characteristic.ObstructionDetected, obstruction);
             });
         }
 
