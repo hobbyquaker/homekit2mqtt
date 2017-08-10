@@ -5,11 +5,7 @@ node_js:
 before_install:
   - sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa -y
   - sudo apt-get update -y
-  - sudo apt-get install mosquitto -y
-  - sudo apt-get install libsecret-1-dev -y
-  - sudo apt-get install libavahi-compat-libdnssd-dev -y
-  - sudo apt-get install gnome-keyring -y
-  - sudo apt-get install xvfb -y
+  - sudo apt-get install -yq xvfb gnome-keyring libsecret-1-dev python-gnomekeyring libavahi-compat-libdnssd-dev mosquitto
 before_script:
   - |
     if [ $TRAVIS_OS_NAME != osx ]; then
