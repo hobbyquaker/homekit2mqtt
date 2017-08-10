@@ -1836,6 +1836,33 @@ describe('GarageDoorOpener CurrentDoorState', () => {
 });
 
 
+describe('GarageDoorOpener TargetDoorState', () => {
+
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(24000);
+        mqttSubscribe('GarageDoorOpener/set', payload => {
+            if (payload === '4') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.TargetDoorState + ' 0';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(24000);
+        mqttSubscribe('GarageDoorOpener/set', payload => {
+            if (payload === '0') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.TargetDoorState + ' 1';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+
+});
+
 describe('GarageDoorOpener Obstruction', () => {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
@@ -1873,6 +1900,68 @@ describe('GarageDoorOpener Obstruction', () => {
 
 });
 
+describe('GarageDoorOpener LockCurrentState', () => {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update GarageDoorOpener LockCurrentState.UNSECURED/, () => {
+            done();
+        });
+        mqtt.publish('GarageDoorOpener/status/Lock', '0');
+    });
+    it('client should get the status of the GarageDoorOpener', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.LockCurrentState, (err, stdout, stderr) => {
+            console.log(stdout)
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update GarageDoorOpener LockCurrentState.SECURED/, () => {
+            done();
+        });
+        mqtt.publish('GarageDoorOpener/status/Lock', '1');
+    });
+    it('client should get the status of the GarageDoorOpener', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.LockCurrentState, (err, stdout, stderr) => {
+            if (stdout === '1\n') {
+                done();
+            }
+        });
+    });
+
+});
+
+describe('GarageDoorOpener LockTargetState', () => {
+
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(24000);
+        mqttSubscribe('GarageDoorOpener/set/Lock', payload => {
+            if (payload === '0') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.LockTargetState + ' 0';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(24000);
+        mqttSubscribe('GarageDoorOpener/set/Lock', payload => {
+            if (payload === '1') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.LockTargetState + ' 1';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+
+});
 
 
 function testLowBattery(name) {
@@ -1899,7 +1988,7 @@ function testLowBattery(name) {
             });
             mqtt.publish(name + '/status/LowBattery', '{"val":0}');
         });
-        it('client should get the status of the MotionSensor', function (done) {
+        it('client should get the status of ' + name, function (done) {
             this.timeout(24000);
             cp.exec(clientCmd + ' get --aid ' + aid[name] + ' --iid ' + iid[name].StatusLowBattery, (err, stdout, stderr) => {
                 if (stdout === '0\n') {
