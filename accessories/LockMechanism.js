@@ -31,11 +31,11 @@ module.exports = function (iface) {
                 if (val === settings.payload.lockSecured) {
                     log.debug('> hap update', settings.name, 'LockCurrentState.SECURED');
                     acc.getService(Service.LockMechanism)
-                        .updateCharacteristic(Characteristic.LockTargetState, Characteristic.LockCurrentState.SECURED);
+                        .updateCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED);
                 } else {
                     log.debug('> hap update', settings.name, 'LockCurrentState.UNSECURED');
                     acc.getService(Service.LockMechanism)
-                        .updateCharacteristic(Characteristic.LockTargetState, Characteristic.LockCurrentState.UNSECURED);
+                        .updateCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.UNSECURED);
                 }
             });
 
