@@ -1,0 +1,521 @@
+{
+
+
+  "CarbonDioxideSensor": {
+    "service": "CarbonDioxideSensor",
+    "name": "CarbonDioxideSensor",
+    "topic": {
+      "statusCarbonDioxideDetected": "CarbonDioxideSensor/status",
+      "statusLowBattery": "CarbonDioxideSensor/status/LowBattery"
+    },
+    "payload": {
+      "onCarbonDioxideDetected": 1,
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "CarbonDioxideSensor"
+  },
+
+
+
+
+  "CarbonMonoxideSensor": {
+    "service": "CarbonMonoxideSensor",
+    "name": "CarbonMonoxideSensor",
+    "topic": {
+      "statusCarbonMonoxideDetected": "CarbonMonoxideSensor/status",
+      "statusLowBattery": "CarbonMonoxideSensor/status/LowBattery"
+    },
+    "payload": {
+      "onCarbonMonoxideDetected": 1,
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "CarbonMonoxideSensor"
+  },
+
+
+
+
+  "ContactSensor": {
+    "service": "ContactSensor",
+    "name": "ContactSensor",
+    "topic": {
+      "statusContactSensorState": "ContactSensor/status",
+      "statusLowBattery": "ContactSensor/status/LowBattery"
+    },
+    "payload": {
+      "onContactDetected": 0,
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "ContactSensor"
+  },
+
+
+
+
+  "Door": {
+    "service": "Door",
+    "name": "Door",
+    "topic": {
+      "setTargetPosition": "Door/set/TargetPosition",
+      "statusTargetPosition": "Door/status/TargetPosition",
+      "setCurrentPosition": "Door/set/CurrentPosition",
+      "statusCurrentPosition": "Door/status/CurrentPosition",
+      "statusPositionState": "Door/status/PositionState",
+      "statusObstruction": "Door/status/Obstruction"
+    },
+    "payload": {
+      "positionStatusDecreasing": 2,
+      "positionStatusIncreasing": 1,
+      "positionStatusStopped": 0,
+      "onObstructionDetected": 1
+    }
+  },
+
+
+
+
+  "Doorbell": {
+    "service": "Doorbell",
+    "name": "Doorbell",
+    "topic": {
+      "statusEvent": "Doorbell/status"
+    },
+    "manufacturer": "Generic",
+    "model": "Doorbell"
+  },
+
+
+
+
+  "Fan": {
+    "service": "Fan",
+    "name": "Fan",
+    "topic": {
+      "statusOn": "Fan/status",
+      "setOn": "Fan/set",
+      "statusRotationDirection": "Fan/status/RotationDirection",
+      "setRotationDirection": "Fan/set/RotationDirection",
+      "statusRotationSpeed": "Fan/status/RotationSpeed",
+      "setRotationSpeed": "Fan/set/RotationSpeed"
+    },
+    "payload": {
+      "rotationDirectionCounterClockwise": "left",
+      "rotationDirectionClockwise": "right"
+    },
+    "manufacturer": "Generic",
+    "model": "Fan"
+  },
+
+
+
+  "GarageDoorOpener": {
+    "service": "GarageDoorOpener",
+    "name": "GarageDoorOpener",
+    "topic": {
+      "setDoor": "GarageDoorOpener/set",
+      "statusDoor": "GarageDoorOpener/status",
+      "statusObstruction": "GarageDoorOpener/status/Obstruction",
+      "setLock": "GarageDoorOpener/set/Lock",
+      "statusLock": "GarageDoorOpener/status/Lock"
+    },
+    "payload": {
+      "doorClosed": 0,
+      "doorOpening": 1,
+      "doorClosing": 2,
+      "doorStopped": 3,
+      "doorOpen": 4,
+      "onObstructionDetected": 1,
+      "lockUnsecured": 0,
+      "lockSecured": 1
+    },
+    "manufacturer": "Generic",
+    "model": "GarageDoorOpener"
+  },
+
+  "HumiditySensor": {
+    "service": "HumiditySensor",
+    "name": "HumiditySensor",
+    "topic": {
+      "statusHumidity": "HumiditySensor/status",
+      "statusLowBattery": "HumiditySensor/status/LowBattery"
+    },
+    "payload": {
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "HumiditySensor"
+  },
+
+
+  "LeakSensor": {
+    "service": "LeakSensor",
+    "name": "LeakSensor",
+    "topic": {
+      "statusLeakDetected": "LeakSensor/status",
+      "statusLowBattery": "LeakSensor/status/LowBattery"
+    },
+    "payload": {
+      "onLeakDetected": 1,
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "LeakSensor"
+  },
+
+
+
+
+  "Lightbulb1": {
+    "service":  "Lightbulb",
+    "name":     "Licht Garten",
+    "topic": {
+      "setOn":          "Lightbulb1/set",
+      "statusOn":       "Lightbulb1/status"
+    },
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0
+    },
+    "manufacturer": "Generic",
+    "model": "Lightbulb"
+  },
+
+
+
+
+  "Lightbulb2": {
+    "service":  "Lightbulb",
+    "name":     "Lightbulb2",
+    "topic": {
+      "setOn":            "Lightbulb2/set",
+      "setBrightness":    "Lightbulb2/set/Brightness",
+      "statusOn":         "Lightbulb2/status",
+      "statusBrightness": "Lightbulb2/status/Brightness",
+      "identify":         "Lightbulb2/set/identify"
+    },
+    "payload": {
+      "onTrue": 254,
+      "onFalse": 0,
+      "brightnessFactor": 2.54,
+      "identify": "select"
+    },
+    "manufacturer": "Generic",
+    "model": "Lightbulb Dimmable"
+  },
+
+
+
+
+  "Lightbulb": {
+    "service":  "Lightbulb",
+    "name":     "Lightbulb",
+    "topic": {
+      "setOn":            "Lightbulb/set",
+      "setBrightness":    "Lightbulb/set/Brightness",
+      "setHue":           "Lightbulb/set/Hue",
+      "setSaturation":    "Lightbulb/set/Saturation",
+      "statusOn":         "Lightbulb/status",
+      "statusBrightness": "Lightbulb/status/Brightness",
+      "statusHue":        "Lightbulb/status/Hue",
+      "statusSaturation": "Lightbulb/status/Saturation",
+      "identify":         "Lightbulb/set/identify"
+    },
+    "payload": {
+      "onTrue": 254,
+      "onFalse": 0,
+      "brightnessFactor": 2.54,
+      "hueFactor": 182.04166666666666,
+      "saturationFactor": 2.54,
+      "identify": "select"
+    },
+    "manufacturer": "Generic",
+    "model": "Lightbulb Color"
+  },
+
+
+
+
+  "LightSensor": {
+    "service": "LightSensor",
+    "name": "LightSensor",
+    "topic": {
+      "statusAmbientLightLevel": "LightSensor/Brightness",
+      "statusLowBattery": "LightSensor/status/LowBattery"
+    },
+    "payload": {
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "LightSensor"
+  },
+
+
+
+
+  "LockMechanism": {
+    "service": "LockMechanism",
+    "name": "LockMechanism",
+    "topic": {
+      "setLock": "LockMechanism/set",
+      "statusLock": "LockMechanism/status"
+    },
+    "payload": {
+      "lockUnsecured": 1,
+      "lockSecured": 0
+    },
+    "manufacturer": "Generic",
+    "model": "LockMechanism"
+  },
+
+
+
+
+
+  "MotionSensor": {
+    "service": "MotionSensor",
+    "name": "MotionSensor",
+    "topic": {
+      "statusMotionDetected": "MotionSensor/status",
+      "statusLowBattery": "MotionSensor/status/LowBattery"
+    },
+    "payload": {
+      "onMotionDetected": 1,
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "MotionSensor"
+  },
+
+
+
+
+  "OccupancySensor": {
+    "service": "OccupancySensor",
+    "name": "OccupancySensor",
+    "topic": {
+      "statusOccupancyDetected": "OccupancySensor/status",
+      "statusLowBattery": "OccupancySensor/status/LowBattery"
+    },
+    "payload": {
+      "onOccupancyDetected": 1,
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "OccupancySensor"
+  },
+
+
+
+
+  "Outlet": {
+    "service": "Outlet",
+    "name": "Outlet",
+    "topic": {
+      "statusOn": "Outlet/status",
+      "setOn": "Outlet/set",
+      "statusOutletInUse": "Outlet/status/OutletInUse",
+      "setOutletInUse": "Outlet/set/OutletInUse"
+    },
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0,
+      "onOutletInUse": 1
+    },
+    "manufacturer": "Generic",
+    "model": "Outlet"
+  },
+
+
+
+
+  "SecuritySystem": {
+    "service": "SecuritySystem",
+    "name": "SecuritySystem",
+    "topic": {
+      "setSecuritySystemTargetState": "SecuritySystem/set/TargetState",
+      "statusSecuritySystemCurrentState": "SecuritySystem/status/CurrentState"
+    }
+  },
+
+
+
+
+  "SmokeSensor": {
+    "service": "SmokeSensor",
+    "name": "SmokeSensor",
+    "topic": {
+      "statusSmokeDetected": "SmokeSensor/status",
+      "statusLowBattery": "SmokeSensor/status/LowBattery"
+    },
+    "payload": {
+      "onSmokeDetected": 1,
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic",
+    "model": "SmokeSensor"
+  },
+
+
+
+  "StatelessProgrammableSwitch": {
+    "service": "StatelessProgrammableSwitch",
+    "name": "StatelessProgrammableSwitch",
+    "topic": {
+      "statusEvent": "StatelessProgrammableSwitch/status"
+    },
+    "manufacturer": "Generic",
+    "model": "StatelessProgrammableSwitch",
+    "serial": "7890"
+  },
+
+
+
+  "Speaker": {
+    "service": "Speaker",
+    "name": "Speaker",
+    "topic": {
+      "setMute": "Speaker/set/Mute",
+      "statusMute": "Speaker/status/Mute",
+      "setVolume": "Speaker/set/Volume",
+      "statusVolume": "Speaker/status/Volume"
+    },
+    "payload": {
+      "muteTrue": true,
+      "muteFalse": false
+    },
+    "serial": "12345"
+  },
+
+
+
+
+  "Switch": {
+    "service": "Switch",
+    "name": "Switch1",
+    "topic": {
+      "statusOn": "Switch/status",
+      "setOn": "Switch/set"
+    },
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0
+    },
+    "manufacturer": "Generic",
+    "model": "Switch"
+  },
+
+
+
+
+  "TemperatureSensor": {
+    "service": "TemperatureSensor",
+    "name": "TemperatureSensor",
+    "topic": {
+      "statusTemperature": "TemperatureSensor/Temperature",
+      "statusLowBattery": "TemperatureSensor/status/LowBattery"
+    },
+    "payload": {
+      "onLowBattery": 1
+    },
+    "manufacturer": "Generic"
+  },
+
+
+  "TemperatureSensorF": {
+    "service": "TemperatureSensor",
+    "name": "TemperatureSensorF",
+    "topic": {
+      "statusTemperature": "TemperatureSensorF/Temperature"
+    },
+    "config": {
+      "fahrenheit": true
+    },
+    "model": "TemperatureSensor"
+  },
+
+
+  "Thermostat": {
+    "service": "Thermostat",
+    "name": "Thermostat",
+    "topic": {
+      "setTargetTemperature": "Thermostat/set/TargetTemperature",
+      "statusTargetTemperature": "Thermostat/status/TargetTemperature",
+      "setTargetHeatingCoolingState": "Thermostat/set/TargetHeatingCoolingState",
+      "statusTargetHeatingCoolingState": "Thermostat/status/TargetHeatingCoolingState",
+      "setCurrentHeatingCoolingState": "Thermostat/set/CurrentHeatingCoolingState",
+      "statusCurrentHeatingCoolingState": "Thermostat/status/CurrentHeatingCoolingState",
+      "statusCurrentTemperature": "Thermostat/status/CurrentTemperature",
+      "setCurrentRelativeHumidity": "Thermostat/set/CurrentRelativeHumidity",
+      "statusCurrentRelativeHumidity": "Thermostat/status/CurrentRelativeHumidity",
+      "statusTargetRelativeHumidity": "Thermostat/status/TargetRelativeHumidity",
+      "setTargetRelativeHumidity": "Thermostat/set/TargetRelativeHumidity",
+      "statusHeatingThresholdTemperature": "Thermostat/status/HeatingThresholdTemperature",
+      "setHeatingThresholdTemperature": "Thermostat/set/HeatingThresholdTemperature",
+      "statusCoolingThresholdTemperature": "Thermostat/status/CoolingThresholdTemperature",
+      "setCoolingThresholdTemperature": "Thermostat/set/CoolingThresholdTemperature"
+    },
+    "payload": {
+
+    },
+    "config": {
+      "TemperatureDisplayUnits": 0
+    },
+    "manufacturer": "Generic",
+    "serial": "912341"
+  },
+
+  "ThermostatSimple": {
+    "service": "Thermostat",
+    "name": "ThermostatSimple",
+    "topic": {
+      "setTargetTemperature": "ThermostatSimple/set/TargetTemperature",
+      "statusTargetTemperature": "ThermostatSimple/status/TargetTemperature",
+      "setCurrentTemperature": "ThermostatSimple/set/CurrentTemperature",
+      "statusCurrentTemperature": "ThermostatSimple/status/CurrentTemperature"
+    },
+    "manufacturer": "Generic",
+    "serial": "912343"
+  },
+
+
+  "Window": {
+    "service": "Window",
+    "name": "Window",
+    "topic": {
+      "setTargetPosition": "Window/set/TargetPosition",
+      "statusTargetPosition": "Window/status/TargetPosition",
+      "statusCurrentPosition": "Window/status/CurrentPosition",
+      "statusPositionState": "Window/status/PositionState",
+      "statusObstruction": "Window/status/Obstruction"
+    },
+    "payload": {
+      "onObstructionDetected": 1,
+      "positionStatusIncreasing": 1,
+      "positionStatusDecreasing": 2
+    }
+  },
+
+
+  "WindowCovering": {
+    "service":  "WindowCovering",
+    "name": "WindowCovering",
+    "topic": {
+      "setTargetPosition":  "WindowCovering/set/TargetPosition",
+      "statusTargetPosition":  "WindowCovering/status/TargetPosition",
+      "statusCurrentPosition":  "WindowCovering/status/CurrentPosition",
+      "statusPositionState":  "WindowCovering/status/PositionState"
+    },
+    "payload": {
+      "targetPositionFactor": 0.01,
+      "currentPositionFactor": 0.01,
+      "positionStatusIncreasing": 1,
+      "positionStatusDecreasing": 2
+    },
+    "serial": "1239431",
+    "model": "WindowCovering"
+  }
+
+}

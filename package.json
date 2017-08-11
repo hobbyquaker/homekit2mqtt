@@ -12,11 +12,11 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "test": "camo-purge ; xo --space 4 --ignore test.js && nyc mocha test.js && nyc report --reporter=text-lcov | coveralls --force",
-    "testonly": "mocha test.js",
-    "testcov": "nyc mocha test.js",
-    "lint": " xo --space 4 --ignore test.js",
-    "lintfix": " xo --space 4 --ignore test.js --fix"
+    "test": "camo-purge ; xo --space 4 --ignore test/test.js && nyc mocha test/test.js && nyc report --reporter=text-lcov | coveralls --force",
+    "testonly": "mocha test/test.js",
+    "testcov": "nyc mocha test/test.js",
+    "lint": " xo --space 4 --ignore test/test.js",
+    "lintfix": " xo --space 4 --ignore test/test.js --fix"
   },
   "author": "Sebastian 'hobbyquaker' Raff <hq@ccu.io> (https://github.com/hobbyquaker)",
   "contributors": [
