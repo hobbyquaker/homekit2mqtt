@@ -93,6 +93,7 @@ function mqttSub(topic, callback) {
     topic = String(topic);
     /* istanbul ignore else */
     if (typeof callback === 'function') {
+        /* istanbul ignore if */
         if (mqttCallbacks[topic]) {
             mqttCallbacks[topic].push(callback);
         } else {
@@ -108,9 +109,11 @@ function mqttSub(topic, callback) {
 
 // MQTT publish function, checks for valid topic and converts payload to string in a meaningful manner.
 function mqttPub(topic, payload, options) {
+    /* istanbul ignore if */
     if (!topic || (typeof topic !== 'string')) {
         log.error('mqttPub invalid topic', topic);
     } else {
+        /* istanbul ignore if */
         if (typeof payload === 'object') {
             payload = JSON.stringify(payload);
         } else if (typeof payload !== 'string') {
@@ -172,6 +175,9 @@ function newAccessory(settings) {
     }
     if (!settings.payload) {
         settings.payload = {};
+    }
+    if (!settings.config) {
+        settings.config = {};
     }
     /* istanbul ignore next */
     acc.on('identify', (paired, callback) => {
