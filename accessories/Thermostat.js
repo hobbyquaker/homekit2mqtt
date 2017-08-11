@@ -70,7 +70,7 @@ module.exports = function (iface) {
             });
             log.debug('> hap set', settings.name, 'CurrentHeatingCoolingState', state);
             thermo.getService(Service.Thermostat)
-                .setCharacteristic(Characteristic.CurrentHeatingCoolingState, state)
+                .setCharacteristic(Characteristic.CurrentHeatingCoolingState, state);
         }
 
         if (settings.topic.statusTargetHeatingCoolingState) {
@@ -97,8 +97,7 @@ module.exports = function (iface) {
                 });
             log.debug('> hap set', settings.name, 'TargetHeatingCoolingState', state);
             thermo.getService(Service.Thermostat)
-                .setCharacteristic(Characteristic.TargetHeatingCoolingState, state)
-
+                .setCharacteristic(Characteristic.TargetHeatingCoolingState, state);
         }
 
         /* istanbul ignore else */
