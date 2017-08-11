@@ -30,7 +30,11 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "bootstrap": "^3.3.7",
+    "express": "^4.15.4",
+    "free-jqgrid": "^4.14.1",
     "hap-nodejs": "0.4.27",
+    "jquery": "^3.2.1",
     "mqtt": "^2.9.3",
     "yalm": "^4.0.2",
     "yargs": "^8.0.2"

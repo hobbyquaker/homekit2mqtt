@@ -7,6 +7,8 @@ const HAP = require('hap-nodejs');
 const pkgHap = require('./node_modules/hap-nodejs/package.json');
 const pkg = require('./package.json');
 const config = require('./config.js');
+const express = require('express');
+const app = express();
 
 log.setLevel(config.verbosity);
 
@@ -136,6 +138,10 @@ const Accessory = HAP.Accessory;
 const Service = HAP.Service;
 const Characteristic = HAP.Characteristic;
 
+console.log(Object.keys(Service));
+console.log(JSON.stringify(new Service.ContactSensor(), null, '  '))
+console.log(JSON.stringify(new Characteristic.TemperatureDisplayUnits(), null, '  '))
+
 /* istanbul ignore next */
 if (config.storagedir) {
     log.info('using directory ' + config.storagedir + ' for persistent storage');
@@ -237,3 +243,18 @@ bridge._server.on('unpair', username => {
 bridge._server.on('verify', () => {
     log('hap verify');
 });
+
+if (!config.disableWebserver) {
+    app.listen(config.webPort, function () {
+        log.info('webserver listening on port', config.webPort);
+    });
+    app.use('/web', express.static(__dirname + '/web'));
+    app.use('/node_modules', express.static(__dirname + '/node_modules'));
+
+    app.get('/config', function (req, res) {
+        res.send(JSON.stringify(mapping));
+    });
+    app.post('/config', function (req, res) {
+
+    });
+}

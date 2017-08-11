@@ -1,0 +1,23 @@
+{
+  "ContactSensor": {
+    "topics": [
+      {
+        "name": "statusContactSensorState",
+        "payloads": [
+          {
+            "name": "onContactDetected"
+          }
+        ]
+      },
+      {
+        "name": "statusLowBattery",
+        "optional": true,
+        "payloads": [
+          {
+            "name": "onLowBattery"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -6,7 +6,9 @@ const config = require('yargs')
     .describe('n', 'instance name. used as mqtt client id and as prefix for connected topic')
     .describe('u', 'mqtt broker url. See https://github.com/mqttjs/MQTT.js/wiki/mqtt')
     .describe('s', 'directory to store homekit data')
-    .describe('p', 'port hm2mqtt is listening on')
+    .describe('p', 'port homekit2mqtt is listening on')
+    .describe('w', 'port webserver is listening on')
+    .describe('x', 'disable webserver')
     .describe('h', 'show help')
     .alias({
         h: 'help',
@@ -18,7 +20,9 @@ const config = require('yargs')
         a: 'username',
         b: 'bridgename',
         p: 'port',
-        s: 'storagedir'
+        s: 'storagedir',
+        w: 'web-port',
+        x: 'disable-web'
     })
     .default({
         c: '031-45-154',
@@ -28,7 +32,8 @@ const config = require('yargs')
         v: 'info',
         a: 'CC:22:3D:E3:CE:F6',
         b: 'MQTT Bridge',
-        p: 51826
+        p: 51826,
+        w: 51888
     })
     // .config('config')
     .version()
