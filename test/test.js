@@ -9,15 +9,15 @@ const Mqtt = require('mqtt');
 
 mqtt = Mqtt.connect('mqtt://127.0.0.1');
 
-const config = require('./example-homekit2mqtt.json');
+const config = require(__dirname + '/test-homekit2mqtt.json');
 
-const homekitCmd = path.join(__dirname, '/index.js');
+const homekitCmd = path.join(__dirname, '/../index.js');
 
 function randomHex() {
     return ('0' + Math.floor(Math.random() * 0xff)).slice(-2);
 }
 
-const homekitArgs = ['-v', 'debug', '-a', 'CC:22:3D:' + randomHex() + ':' + randomHex() + ':' + randomHex()];
+const homekitArgs = ['-m', __dirname + '/test-homekit2mqtt.json', '-v', 'debug', '-a', 'CC:22:3D:' + randomHex() + ':' + randomHex() + ':' + randomHex()];
 let homekit;
 let homekitPipeOut;
 let homekitPipeErr;
@@ -26,7 +26,7 @@ const homekitBuffer = [];
 
 let subIndex = 0;
 
-const clientCmd = path.join(__dirname, '/node_modules/.bin/hap-client-tool -d 127.0.0.1 -p 51826');
+const clientCmd = path.join(__dirname, '/../node_modules/.bin/hap-client-tool -d 127.0.0.1 -p 51826');
 let clientAccs;
 
 
@@ -199,7 +199,7 @@ describe('hap-client - homekit2mqtt pairing', function () {
 
         console.log('--- trying to pair...');
         try {
-            var pair = cp.spawn(path.join(__dirname, '/node_modules/.bin/hap-client-tool'), ['-d', '127.0.0.1', '-p', '51826', 'pair']);
+            var pair = cp.spawn(path.join(__dirname, '/../node_modules/.bin/hap-client-tool'), ['-d', '127.0.0.1', '-p', '51826', 'pair']);
 
             pair.on('close', (code) => {
                 console.log(`--- pair close - child process exited with code ${code}`);
@@ -233,10 +233,10 @@ describe('hap-client - homekit2mqtt pairing', function () {
 });
 
 describe('hap-client - homekit2mqtt', function () {
-    this.retries(3);
+    this.retries(5);
     it('should be able to dump accessories', function (done) {
         this.timeout(24000);
-        this.retries(3);
+        this.retries(5);
 
         cp.exec(clientCmd + ' dump', {maxBuffer: 1024 * 2048}, (err, stdout, stderr) => {
             console.log(err, stderr);
@@ -1198,7 +1198,7 @@ describe('Speaker Mute', () => {
         subscribe('homekit', /hap update Speaker Mute true/, () => {
             done();
         });
-        mqtt.publish('Speaker/status/Mute', '1');
+        mqtt.publish('Speaker/status/Mute', 'true');
     });
     it('client should get the status of the Speaker', function (done) {
         this.timeout(24000);
@@ -1213,7 +1213,7 @@ describe('Speaker Mute', () => {
         subscribe('homekit', /hap update Speaker Mute false/, () => {
             done();
         });
-        mqtt.publish('Speaker/status/Mute', '0');
+        mqtt.publish('Speaker/status/Mute', 'false');
     });
     it('client should get the status of the Speaker', function (done) {
         this.timeout(24000);
@@ -1226,7 +1226,8 @@ describe('Speaker Mute', () => {
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
         this.timeout(24000);
         mqttSubscribe('Speaker/set/Mute', payload => {
-            if (payload === '0') {
+            console.log(payload);
+            if (payload === 'false') {
                 done();
             }
         });
@@ -1237,7 +1238,8 @@ describe('Speaker Mute', () => {
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
         this.timeout(24000);
         mqttSubscribe('Speaker/set/Mute', payload => {
-            if (payload === '1') {
+            console.log(payload);
+            if (payload === 'true') {
                 done();
             }
         });
@@ -2029,6 +2031,325 @@ describe('LockMechanism LockTargetState', function () {
     });
 
 });
+
+
+describe('ThermostatSimple CurrentTemperature', function () {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update ThermostatSimple CurrentTemperature 21/, () => {
+            done();
+        });
+        mqtt.publish('ThermostatSimple/status/CurrentTemperature', '21');
+    });
+
+    it('client should get the CurrentTemperature', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.ThermostatSimple + ' --iid ' + iid.ThermostatSimple.CurrentTemperature, (err, stdout, stderr) => {
+            if (stdout === '21\n') {
+                done();
+            }
+        });
+    });
+});
+
+describe('ThermostatSimple TargetTemperature', function () {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update ThermostatSimple TargetTemperature 21/, () => {
+            done();
+        });
+        mqtt.publish('ThermostatSimple/status/TargetTemperature', '21');
+    });
+
+    it('client should get the TargetTemperature', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.ThermostatSimple + ' --iid ' + iid.ThermostatSimple.TargetTemperature, (err, stdout, stderr) => {
+            if (stdout === '21\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(24000);
+        mqttSubscribe('ThermostatSimple/set/TargetTemperature', payload => {
+            if (payload === '24') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.ThermostatSimple + ' --iid ' + iid.ThermostatSimple.TargetTemperature + ' 24';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+
+});
+
+
+describe('ThermostatSimple CurrentHeatingCoolingState', function () {
+
+    it('client should get the CurrentHeatingCoolingState', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.ThermostatSimple + ' --iid ' + iid.ThermostatSimple.CurrentHeatingCoolingState, (err, stdout, stderr) => {
+            if (stdout === '1\n') {
+                done();
+            }
+        });
+    });
+});
+
+describe('ThermostatSimple TargetHeatingCoolingState', function () {
+
+    it('client should get the TargetHeatingCoolingState', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.ThermostatSimple + ' --iid ' + iid.ThermostatSimple.TargetHeatingCoolingState, (err, stdout, stderr) => {
+            if (stdout === '1\n') {
+                done();
+            }
+        });
+    });
+});
+
+describe('ThermostatSimple TemperatureDisplayUnits', function () {
+
+    it('client should get the TemperatureDisplayUnits', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.ThermostatSimple + ' --iid ' + iid.ThermostatSimple.TemperatureDisplayUnits, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+});
+
+describe('Thermostat CurrentTemperature', function () {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update Thermostat CurrentTemperature 21/, () => {
+            done();
+        });
+        mqtt.publish('Thermostat/status/CurrentTemperature', '21');
+    });
+
+    it('client should get the CurrentTemperature', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.CurrentTemperature, (err, stdout, stderr) => {
+            if (stdout === '21\n') {
+                done();
+            }
+        });
+    });
+});
+
+describe('Thermostat TargetTemperature', function () {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update Thermostat TargetTemperature 21/, () => {
+            done();
+        });
+        mqtt.publish('Thermostat/status/TargetTemperature', '21');
+    });
+
+    it('client should get the TargetTemperature', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.TargetTemperature, (err, stdout, stderr) => {
+            if (stdout === '21\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(24000);
+        mqttSubscribe('Thermostat/set/TargetTemperature', payload => {
+            if (payload === '24') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.TargetTemperature + ' 24';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+
+});
+
+describe('Thermostat CurrentHeatingCoolingState', function () {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update Thermostat CurrentHeatingCoolingState 2/, () => {
+            done();
+        });
+        mqtt.publish('Thermostat/status/CurrentHeatingCoolingState', '2');
+    });
+
+    it('client should get the CurrentHeatingCoolingState', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.CurrentHeatingCoolingState, (err, stdout, stderr) => {
+            if (stdout === '2\n') {
+                done();
+            }
+        });
+    });
+});
+
+describe('Thermostat TargetHeatingCoolingState', function () {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update Thermostat TargetHeatingCoolingState 0/, () => {
+            done();
+        });
+        mqtt.publish('Thermostat/status/TargetHeatingCoolingState', '0');
+    });
+
+    it('client should get the TargetHeatingCoolingState', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.TargetHeatingCoolingState, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(24000);
+        mqttSubscribe('Thermostat/set/TargetHeatingCoolingState', payload => {
+            if (payload === '1') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.TargetHeatingCoolingState + ' 1';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+
+});
+
+describe('Thermostat CurrentRelativeHumidity', function () {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update Thermostat CurrentRelativeHumidity 65/, () => {
+            done();
+        });
+        mqtt.publish('Thermostat/status/CurrentRelativeHumidity', '65');
+    });
+    it('client should get the CurrentRelativeHumidity', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.CurrentRelativeHumidity, (err, stdout, stderr) => {
+            if (stdout === '65\n') {
+                done();
+            }
+        });
+    });
+
+});
+
+describe('Thermostat TargetRelativeHumidity', function () {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update Thermostat TargetRelativeHumidity 21/, () => {
+            done();
+        });
+        mqtt.publish('Thermostat/status/TargetRelativeHumidity', '21');
+    });
+
+    it('client should get the TargetRelativeHumidity', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.TargetRelativeHumidity, (err, stdout, stderr) => {
+            if (stdout === '21\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(24000);
+        mqttSubscribe('Thermostat/set/TargetRelativeHumidity', payload => {
+            if (payload === '24') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.TargetRelativeHumidity + ' 24';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+
+});
+
+describe('Thermostat HeatingThresholdTemperature', function () {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update Thermostat HeatingThresholdTemperature 22/, () => {
+            done();
+        });
+        mqtt.publish('Thermostat/status/HeatingThresholdTemperature', '22');
+    });
+    it('client should get the HeatingThresholdTemperature', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.HeatingThresholdTemperature, (err, stdout, stderr) => {
+            if (stdout === '22\n') {
+                done();
+            }
+        });
+    });
+
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(24000);
+        mqttSubscribe('Thermostat/set/HeatingThresholdTemperature', payload => {
+            if (payload === '24') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.HeatingThresholdTemperature + ' 24';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+
+});
+
+describe('Thermostat CoolingThresholdTemperature', function () {
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update Thermostat CoolingThresholdTemperature 22/, () => {
+            done();
+        });
+        mqtt.publish('Thermostat/status/CoolingThresholdTemperature', '22');
+    });
+    it('client should get the CoolingThresholdTemperature', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.CoolingThresholdTemperature, (err, stdout, stderr) => {
+            if (stdout === '22\n') {
+                done();
+            }
+        });
+    });
+
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(24000);
+        mqttSubscribe('Thermostat/set/CoolingThresholdTemperature', payload => {
+            if (payload === '24') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.CoolingThresholdTemperature + ' 24';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+
+});
+
+
+describe('StatelessProgrammableSwitch', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap set StatelessProgrammableSwitch ProgrammableSwitchEvent 1/, () => {
+            done();
+        });
+        mqtt.publish('StatelessProgrammableSwitch/status', '1');
+    });
+});
+
+
 
 function testLowBattery(name) {
     describe(name + ' StatusLowBattery', function () {
