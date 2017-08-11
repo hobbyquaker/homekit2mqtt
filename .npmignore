@@ -3,6 +3,4 @@ persist
 .nyc_output
 coverage
 .travis.yml
-test.js
-.codecov.yml
-coverage.lcov
+test
