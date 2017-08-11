@@ -147,12 +147,6 @@
       "statusCurrentTemperature": "hm/status/Temperatur Hobbyraum Ist/TEMPERATURE",
       "statusCurrentRelativeHumidity": "hm/status/Temperatur Hobbyraum Ist/HUMIDITY"
     },
-    "payload": {
-
-    },
-    "config": {
-      "TemperatureDisplayUnits": 0
-    },
     "manufacturer": "hm2mqtt - Homematic",
     "model": "CLIMATECONTROL_REGULATOR"
   }
