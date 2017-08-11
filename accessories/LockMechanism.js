@@ -25,6 +25,7 @@ module.exports = function (iface) {
                 }
             });
 
+        let initial = true;
         /* istanbul ignore else */
         if (settings.topic.statusLock) {
             mqttSub(settings.topic.statusLock, val => {
@@ -32,10 +33,20 @@ module.exports = function (iface) {
                     log.debug('> hap update', settings.name, 'LockCurrentState.SECURED');
                     acc.getService(Service.LockMechanism)
                         .updateCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED);
+                    if (initial) {
+                        acc.getService(Service.LockMechanism)
+                            .updateCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.SECURED);
+                        initial = false;
+                    }
                 } else {
                     log.debug('> hap update', settings.name, 'LockCurrentState.UNSECURED');
                     acc.getService(Service.LockMechanism)
                         .updateCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.UNSECURED);
+                    if (initial) {
+                        acc.getService(Service.LockMechanism)
+                            .updateCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.UNSECURED);
+                        initial = false;
+                    }
                 }
             });
 
@@ -52,6 +63,7 @@ module.exports = function (iface) {
                         callback(null, Characteristic.LockCurrentState.UNSECURED);
                     }
                 });
+
         }
 
         return acc;
