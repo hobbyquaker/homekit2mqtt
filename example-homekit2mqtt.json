@@ -1,439 +1,151 @@
 {
-
-
-  "CarbonDioxideSensor": {
-    "service": "CarbonDioxideSensor",
-    "name": "CarbonDioxideSensor",
+  "Temperatur Wohnzimmer": {
+    "service": "TemperatureSensor",
+    "name": "Temperatur Wohnzimmer",
     "topic": {
-      "statusCarbonDioxideDetected": "CarbonDioxideSensor/status",
-      "statusLowBattery": "CarbonDioxideSensor/status/LowBattery"
+      "statusTemperature": "cul/status/Temperatur Wohnzimmer"
     },
-    "payload": {
-      "onCarbonDioxideDetected": 1,
-      "onLowBattery": 1
-    },
-    "manufacturer": "Generic",
-    "model": "CarbonDioxideSensor"
+    "manufacturer": "cul2mqtt - ELV HMS FS20",
+    "model": "HMS100T"
   },
 
 
-
-  
-  "CarbonMonoxideSensor": {
-    "service": "CarbonMonoxideSensor",
-    "name": "CarbonMonoxideSensor",
-    "topic": {
-      "statusCarbonMonoxideDetected": "CarbonMonoxideSensor/status",
-      "statusLowBattery": "CarbonMonoxideSensor/status/LowBattery"
-    },
-    "payload": {
-      "onCarbonMonoxideDetected": 1,
-      "onLowBattery": 1
-    },
-    "manufacturer": "Generic",
-    "model": "CarbonMonoxideSensor"
-  },
-
-
-
-
-  "ContactSensor": {
+  "hm//Fenster Hobbyraum": {
     "service": "ContactSensor",
-    "name": "ContactSensor",
+    "name": "Fenster Hobbyraum",
     "topic": {
-      "statusContactSensorState": "ContactSensor/status",
-      "statusLowBattery": "ContactSensor/status/LowBattery"
+      "statusContactSensorState": "hm/status/Fenster Hobbyraum/STATE",
+      "statusLowBattery": "hm//Fenster Hobbyraum/LOWBAT"
     },
     "payload": {
       "onContactDetected": 0,
       "onLowBattery": 1
     },
-    "manufacturer": "Generic",
-    "model": "ContactSensor"
+    "manufacturer": "hm2mqtt - Homematic",
+    "model": "SHUTTER_CONTACT"
   },
 
 
-
-
-  "Door": {
-    "service": "Door",
-    "name": "Door",
+  "var//Bewegung/Keller": {
+    "service": "MotionSensor",
+    "name": "Bewegungsmelder Keller",
     "topic": {
-      "setTargetPosition": "Door/set/TargetPosition",
-      "statusTargetPosition": "Door/status/TargetPosition",
-      "setCurrentPosition": "Door/set/CurrentPosition",
-      "statusCurrentPosition": "Door/status/CurrentPosition",
-      "statusPositionState": "Door/status/PositionState",
-      "statusObstruction": "Door/status/Obstruction"
+      "statusMotionDetected": "var/status/Bewegung/Keller"
     },
     "payload": {
-      "positionStatusDecreasing": 2,
-      "positionStatusIncreasing": 1,
-      "positionStatusStopped": 0,
-      "onObstructionDetected": 1
-    }
+      "onMotionDetected": 1
+    },
+    "manufacturer": "Generic",
+    "model": "Motion Sensor"
   },
 
 
-
-
-  "Doorbell": {
-    "service": "Doorbell",
-    "name": "Doorbell",
+  "hm//Licht Arbeitsfläche": {
+    "service": "Lightbulb",
+    "name": "Licht Arbeitsfläche",
     "topic": {
-      "statusEvent": "Doorbell/status"
-    },
-    "manufacturer": "Generic",
-    "model": "Doorbell"
-  },
-
-
-
-
-  "Fan": {
-    "service": "Fan",
-    "name": "Fan",
-    "topic": {
-      "statusOn": "Fan/status",
-      "setOn": "Fan/set",
-      "statusRotationDirection": "Fan/status/RotationDirection",
-      "setRotationDirection": "Fan/set/RotationDirection",
-      "statusRotationSpeed": "Fan/status/RotationSpeed",
-      "setRotationSpeed": "Fan/set/RotationSpeed"
-    },
-    "payload": {
-      "rotationDirectionCounterClockwise": "left",
-      "rotationDirectionClockwise": "right"
-    },  
-    "manufacturer": "Generic",
-    "model": "Fan"
-  },
-
-
-
-  "GarageDoorOpener": {
-    "service": "GarageDoorOpener",
-    "name": "GarageDoorOpener",
-    "topic": {
-      "setDoor": "GarageDoorOpener/set",
-      "statusDoor": "GarageDoorOpener/status",
-      "statusObstruction": "GarageDoorOpener/status/Obstruction",
-      "setLock": "GarageDoorOpener/set/Lock",
-      "statusLock": "GarageDoorOpener/status/Lock"
-    },
-    "payload": {
-      "doorClosed": 0,
-      "doorOpening": 1,
-      "doorClosing": 2,
-      "doorStopped": 3,
-      "doorOpen": 4,
-      "onObstructionDetected": 1,
-      "lockUnsecured": 0,
-      "lockSecured": 1
-    },
-    "manufacturer": "Generic",
-    "model": "GarageDoorOpener"
-  },  
-
-  "HumiditySensor": {
-    "service": "HumiditySensor",
-    "name": "HumiditySensor",
-    "topic": {
-      "statusHumidity": "HumiditySensor/status",
-      "statusLowBattery": "HumiditySensor/status/LowBattery"
-    },
-    "payload": {
-      "onLowBattery": 1
-    },
-    "manufacturer": "Generic",
-    "model": "HumiditySensor"
-  },
-
-
-  "LeakSensor": {
-    "service": "LeakSensor",
-    "name": "LeakSensor",
-    "topic": {
-      "statusLeakDetected": "LeakSensor/status",
-      "statusLowBattery": "LeakSensor/status/LowBattery"
-    },
-    "payload": {
-      "onLeakDetected": 1,
-      "onLowBattery": 1
-    },
-    "manufacturer": "Generic",
-    "model": "LeakSensor"
-  },
-
-
-
-
-  "Lightbulb1": {
-    "service":  "Lightbulb",
-    "name":     "Licht Garten",
-    "topic": {
-      "setOn":          "Lightbulb1/set",
-      "statusOn":       "Lightbulb1/status"
+      "setOn": "hm/set/Licht Arbeitsfläche/STATE",
+      "statusOn": "hm/status/Licht Arbeitsfläche/STATE"
     },
     "payload": {
       "onTrue": 1,
       "onFalse": 0
     },
-    "manufacturer": "Generic",
-    "model": "Lightbulb"
+    "manufacturer": "hm2mqtt - Homematic",
+    "model": "SWITCH"
   },
 
 
-
-
-  "Lightbulb2": {
-    "service":  "Lightbulb",
-    "name":     "Lightbulb2",
+  "hm//Licht Esstisch": {
+    "service": "Lightbulb",
+    "name": "Licht Esstisch",
     "topic": {
-      "setOn":            "Lightbulb2/set",
-      "setBrightness":    "Lightbulb2/set/Brightness",
-      "statusOn":         "Lightbulb2/status",
-      "statusBrightness": "Lightbulb2/status/Brightness",
-      "identify":         "Lightbulb2/set/identify"
+      "setOn": "hm/set/Licht Esstisch/LEVEL",
+      "setBrightness": "hm/set/Licht Esstisch/LEVEL",
+      "statusOn": "hm/status/Licht Esstisch/LEVEL",
+      "statusBrightness": "hm/status/Licht Esstisch/LEVEL"
     },
     "payload": {
-      "onTrue": 254,
-      "onFalse": 0,
+      "brightnessFactor": 0.01,
+      "onTrue": 1.0,
+      "onFalse": 0.0
+    },
+    "manufacturer": "hm2mqtt - Homematic",
+    "model": "DIMMER"
+  },
+
+
+  "hue//lights/Hobbyraum": {
+    "service": "Lightbulb",
+    "name": "Licht Hobbyraum",
+    "topic": {
+      "setOn": "hue/set/lights/Hobbyraum/on",
+      "setBrightness": "hue/set/lights/Hobbyraum/bri",
+      "statusOn": "hue/status/lights/Hobbyraum/on",
+      "statusBrightness": "hue/status/lights/Hobbyraum/bri",
+      "identify": "hue/set/lights/Hobbyraum/alert"
+    },
+    "payload": {
+      "onTrue": true,
+      "onFalse": false,
       "brightnessFactor": 2.54,
       "identify": "select"
     },
-    "manufacturer": "Generic",
-    "model": "Lightbulb Dimmable"
+    "manufacturer": "hue2mqtt - Hue",
+    "model": "dimmable light"
   },
 
 
-
-
-  "Lightbulb": {
-    "service":  "Lightbulb",
-    "name":     "Lightbulb",
+  "hue//lights/Bad": {
+    "service": "Lightbulb",
+    "name": "Licht Bad LED",
     "topic": {
-      "setOn":            "Lightbulb/set",
-      "setBrightness":    "Lightbulb/set/Brightness",
-      "setHue":           "Lightbulb/set/Hue",
-      "setSaturation":    "Lightbulb/set/Saturation",
-      "statusOn":         "Lightbulb/status",
-      "statusBrightness": "Lightbulb/status/Brightness",
-      "statusHue":        "Lightbulb/status/Hue",
-      "statusSaturation": "Lightbulb/status/Saturation",
-      "identify":         "Lightbulb/set/identify"
+      "setOn": "hue/set/lights/Bad",
+      "setBrightness": "hue/set/lights/Bad",
+      "setHue": "hue/set/lights/Bad/hue",
+      "setSaturation": "hue/set/lights/Bad/sat",
+      "statusOn": "hue/status/lights/Bad",
+      "statusBrightness": "hue/status/lights/Bad",
+      "statusHue": "hue/status/lights/Bad/hue",
+      "statusSaturation": "hue/status/lights/Bad/sat",
+      "identify": "hue/set/lights/Bad/alert"
     },
     "payload": {
       "onTrue": 254,
       "onFalse": 0,
       "brightnessFactor": 2.54,
-      "hueFactor": 182.04166666666666,
+      "hueFactor": 181.327,
       "saturationFactor": 2.54,
       "identify": "select"
     },
-    "manufacturer": "Generic",
-    "model": "Lightbulb Color"
+    "manufacturer": "hue2mqtt - Hue",
+    "model": "color light"
   },
 
 
-
-
-  "LightSensor": {
-    "service": "LightSensor",
-    "name": "LightSensor",
-    "topic": {
-      "statusAmbientLightLevel": "LightSensor/Brightness",
-      "statusLowBattery": "LightSensor/status/LowBattery"
-    },
-    "payload": {
-      "onLowBattery": 1
-    },
-    "manufacturer": "Generic",
-    "model": "LightSensor"
-  },
-
-
-
-  
-  "LockMechanism": {
+  "hm//Keymatic": {
     "service": "LockMechanism",
-    "name": "LockMechanism",
+    "name": "Keymatic",
     "topic": {
-      "setLock": "LockMechanism/set",
-      "statusLock": "LockMechanism/status"
+      "setLock": "hm/set/Keymatic:1/STATE",
+      "statusLock": "hm/status/Keymatic:1/STATE_NOTWORKING"
     },
     "payload": {
       "lockUnsecured": 1,
       "lockSecured": 0
     },
-    "manufacturer": "Generic",
-    "model": "LockMechanism"
+    "manufacturer": "hm2mqtt - Homematic",
+    "model": "KEYMATIC"
   },
 
-
-
-
-
-  "MotionSensor": {
-    "service": "MotionSensor",
-    "name": "MotionSensor",
-    "topic": {
-      "statusMotionDetected": "MotionSensor/status",
-      "statusLowBattery": "MotionSensor/status/LowBattery"
-    },
-    "payload": {
-      "onMotionDetected": 1,
-      "onLowBattery": 1
-    },
-    "manufacturer": "Generic",
-    "model": "MotionSensor"
-  },
-
-
-
-
-  "OccupancySensor": {
-    "service": "OccupancySensor",
-    "name": "OccupancySensor",
-    "topic": {
-      "statusOccupancyDetected": "OccupancySensor/status",
-      "statusLowBattery": "OccupancySensor/status/LowBattery"
-    },
-    "payload": {
-      "onOccupancyDetected": 1,
-      "onLowBattery": 1
-    },
-    "manufacturer": "Generic",
-    "model": "OccupancySensor"
-  },
-
-
-
-
-  "Outlet": {
-    "service": "Outlet",
-    "name": "Outlet",
-    "topic": {
-      "statusOn": "Outlet/status",
-      "setOn": "Outlet/set",
-      "statusOutletInUse": "Outlet/status/OutletInUse",
-      "setOutletInUse": "Outlet/set/OutletInUse"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0,
-      "onOutletInUse": 1
-    },
-    "manufacturer": "Generic",
-    "model": "Outlet"
-  },
-
-
-
-
-  "SecuritySystem": {
-    "service": "SecuritySystem",
-    "name": "SecuritySystem",
-    "topic": {
-        "setSecuritySystemTargetState": "SecuritySystem/set/TargetState",
-        "statusSecuritySystemCurrentState": "SecuritySystem/status/CurrentState"
-    }
-  },
-
-
-
-
-  "SmokeSensor": {
-    "service": "SmokeSensor",
-    "name": "SmokeSensor",
-    "topic": {
-      "statusSmokeDetected": "SmokeSensor/status",
-      "statusLowBattery": "SmokeSensor/status/LowBattery"
-    },
-    "payload": {
-      "onSmokeDetected": 1,
-      "onLowBattery": 1
-    },
-    "manufacturer": "Generic",
-    "model": "SmokeSensor"
-  },
-
-
-
-  
-  "Speaker": {
-    "service": "Speaker",
-    "name": "Speaker",
-    "topic": {
-      "setMute": "Speaker/set/Mute",
-      "statusMute": "Speaker/status/Mute",
-      "setVolume": "Speaker/set/Volume",
-      "statusVolume": "Speaker/status/Volume"
-    },
-    "payload": {
-      "muteTrue": 1,
-      "muteFalse": 0
-    }
-  },
-
-
-
-
-  "Switch": {
-    "service": "Switch",
-    "name": "Switch1",
-    "topic": {
-      "statusOn": "Switch/status",
-      "setOn": "Switch/set"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0
-    },
-    "manufacturer": "Generic",
-    "model": "Switch"
-  },
-
-
-
-
-  "TemperatureSensor": {
-    "service": "TemperatureSensor",
-    "name": "TemperatureSensor",
-    "topic": {
-      "statusTemperature": "TemperatureSensor/Temperature",
-      "statusLowBattery": "TemperatureSensor/status/LowBattery"
-    },
-    "payload": {
-      "onLowBattery": 1
-    },
-    "manufacturer": "Generic",
-    "model": "TemperatureSensor"
-  },
-
-
-  "TemperatureSensorF": {
-    "service": "TemperatureSensor",
-    "name": "TemperatureSensorF",
-    "topic": {
-      "statusTemperature": "TemperatureSensorF/Temperature"
-    },
-    "config": {
-      "fahrenheit": true
-    },
-    "manufacturer": "Generic",
-    "model": "TemperatureSensor"
-  },
-
-
-  "Thermostat1": {
+  "hm//Heizung Hobbyraum": {
     "service": "Thermostat",
-    "name": "Thermostat1",
+    "name": "Heizung Hobbyraum",
     "topic": {
-      "setTargetTemperature": "Thermostat1/set/TargetTemperature",
-      "statusTargetTemperature": "Thermostat1/status/TargetTemperature",
-      "statusCurrentTemperature": "Thermostat1/status/CurrentTemperature",
-      "statusCurrentRelativeHumidity": "Thermostat1/status/CurrentHumidity"
+      "setTargetTemperature": "hm/set/Temperatur Hobbyraum Soll/SETPOINT",
+      "statusTargetTemperature": "hm/status/Temperatur Hobbyraum Soll/SETPOINT",
+      "statusCurrentTemperature": "hm/status/Temperatur Hobbyraum Ist/TEMPERATURE",
+      "statusCurrentRelativeHumidity": "hm/status/Temperatur Hobbyraum Ist/HUMIDITY"
     },
     "payload": {
 
@@ -441,47 +153,7 @@
     "config": {
       "TemperatureDisplayUnits": 0
     },
-    "manufacturer": "Generic",
-    "model": "Thermostat"
-  },
-
-  
-  
-  "Window": {
-    "service": "Window",
-    "name": "Window",
-    "topic": {
-      "setTargetPosition": "Window/set/TargetPosition",
-      "statusTargetPosition": "Window/status/TargetPosition",
-      "statusCurrentPosition": "Window/status/CurrentPosition",
-      "statusPositionState": "Window/status/PositionState",
-      "statusObstruction": "Window/status/Obstruction"
-    },
-    "payload": {
-      "onObstructionDetected": 1,
-      "positionStatusIncreasing": 1,
-      "positionStatusDecreasing": 2
-    }
-  },
-  
-
-  "WindowCovering": {
-    "service":  "WindowCovering",
-    "name": "WindowCovering",
-    "topic": {
-      "setTargetPosition":  "WindowCovering/set/TargetPosition",
-      "statusTargetPosition":  "WindowCovering/status/TargetPosition",
-      "statusCurrentPosition":  "WindowCovering/status/CurrentPosition",
-      "statusPositionState":  "WindowCovering/status/PositionState"
-    },
-    "payload": {
-      "targetPositionFactor": 0.01,
-      "currentPositionFactor": 0.01,
-      "positionStatusIncreasing": 1,
-      "positionStatusDecreasing": 2
-    },
-    "manufacturer": "Generic",
-    "model": "WindowCovering"
+    "manufacturer": "hm2mqtt - Homematic",
+    "model": "CLIMATECONTROL_REGULATOR"
   }
-
 }
