@@ -15,7 +15,7 @@
     "name": "Fenster Hobbyraum",
     "topic": {
       "statusContactSensorState": "hm/status/Fenster Hobbyraum/STATE",
-      "statusLowBattery": "hm//Fenster Hobbyraum/LOWBAT"
+      "statusLowBattery": "hm/status/Fenster Hobbyraum/LOWBAT"
     },
     "payload": {
       "onContactDetected": 0,
