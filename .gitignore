@@ -5,3 +5,4 @@ persist
 .nyc_output
 coverage
 coverage.lcov
+config

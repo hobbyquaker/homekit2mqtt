@@ -4,3 +4,4 @@ persist
 coverage
 .travis.yml
 test
+config
