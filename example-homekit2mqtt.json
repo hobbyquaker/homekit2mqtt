@@ -122,6 +122,24 @@
     "model": "color light"
   },
 
+  "hm//Rollladen Garten": {
+    "service":  "WindowCovering",
+    "name": "Rollladen Garten",
+    "topic": {
+      "setTargetPosition":  "hm/set/Rollladen Garten:1/LEVEL",
+      "statusTargetPosition":  "hm/status/Rollladen Garten:1/LEVEL_NOTWORKING",
+      "statusCurrentPosition":  "hm/status/Rollladen Garten:1/LEVEL_NOTWORKING",
+      "statusPositionState":  "hm/status/Rollladen Garten:1/DIRECTION"
+    },
+    "payload": {
+      "targetPositionFactor": 0.01,
+      "currentPositionFactor": 0.01,
+      "positionStatusIncreasing": 1,
+      "positionStatusDecreasing": 2
+    },
+    "manufacturer": "hm2mqtt - Homematic",
+    "model": "BLIND"
+  },
 
   "hm//Keymatic": {
     "service": "LockMechanism",
