@@ -13,6 +13,7 @@ module.exports = function (iface) {
         const sensor = newAccessory(settings);
 
         mqttSub(settings.topic.statusAmbientLightLevel, val => {
+            val = val / (settings.payload.ambientLightLevelFactor || 1);
             log.debug('> hap update', settings.name, 'CurrentAmbientLightLevel', mqttStatus[settings.topic.statusAmbientLightLevel]);
             sensor.getService(Service.LightSensor)
                 .updateCharacteristic(Characteristic.CurrentAmbientLightLevel, val);
@@ -21,9 +22,10 @@ module.exports = function (iface) {
         sensor.addService(Service.LightSensor)
             .getCharacteristic(Characteristic.CurrentAmbientLightLevel)
             .on('get', callback => {
+                const val = mqttStatus[settings.topic.statusAmbientLightLevel] / (settings.payload.ambientLightLevelFactor || 1);
                 log.debug('< hap get', settings.name, 'LightSensor', 'CurrentAmbientLightLevel');
-                log.debug('> hap re_get', settings.name, mqttStatus[settings.topic.statusAmbientLightLevel]);
-                callback(null, mqttStatus[settings.topic.statusAmbientLightLevel]);
+                log.debug('> hap re_get', settings.name, val);
+                callback(null, val);
             });
 
         /* istanbul ignore else */
