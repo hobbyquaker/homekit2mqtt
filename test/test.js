@@ -885,7 +885,7 @@ describe('OccupancySensor OccupancySensorState', () => {
     it('client should get the status of the OccupancySensor', function (done) {
         this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.OccupancySensor + ' --iid ' + iid.OccupancySensor.OccupancyDetected, (err, stdout, stderr) => {
-            if (stdout === 'true\n') {
+            if (stdout === '1\n') {
                 done();
             }
         });
@@ -900,7 +900,7 @@ describe('OccupancySensor OccupancySensorState', () => {
     it('client should get the status of the OccupancySensor', function (done) {
         this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.OccupancySensor + ' --iid ' + iid.OccupancySensor.OccupancyDetected, (err, stdout, stderr) => {
-            if (stdout === 'false\n') {
+            if (stdout === '0\n') {
                 done();
             }
         });
