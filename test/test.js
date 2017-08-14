@@ -518,7 +518,75 @@ describe('Lightbulb Brightness', () => {
     });
 
 });
+/* TODO iid.Lightbulb.ColorTemperature undefined...
+describe('Lightbulb ColorTemperature', () => {
 
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update Lightbulb ColorTemperature 254/, () => {
+            done();
+        });
+        mqtt.publish('Lightbulb/status/ColorTemperature', '254');
+    });
+    it('client should get the status of the Lightbulb', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.ColorTemperature, (err, stdout, stderr) => {
+            if (stdout === '254\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update Lightbulb ColorTemperature 330/, () => {
+            done();
+        });
+        mqtt.publish('Lightbulb/status/ColorTemperature', '330');
+    });
+    it('client should get the status of the Lightbulb', function (done) {
+        this.timeout(24000);
+        cp.exec(clientCmd + ' get --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.ColorTemperature, (err, stdout, stderr) => {
+            if (stdout === '330\n') {
+                done();
+            }
+        });
+    });
+
+
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(24000);
+        let id = mqttSubscribe('Lightbulb/set/ColorTemperature', payload => {
+            if (payload === '254') {
+                mqttUnsubscribe('Lightbulb/set/ColorTemperature', id);
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.ColorTemperature + ' 254';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(24000);
+        subscribe('homekit', /hap update Lightbulb ColorTemperature 200/, () => {
+            done();
+        });
+        mqtt.publish('Lightbulb/status/ColorTemperature', '200');
+    });
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(24000);
+        mqttSubscribe('Lightbulb/set/ColorTemperature', payload => {
+            if (payload === '200') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.ColorTemperature + ' 200';
+        console.log(cmd);
+        cp.exec(cmd);
+    });
+
+});
+*/
 describe('Lightbulb Saturation', () => {
 
 
@@ -654,8 +722,6 @@ describe('Lightbulb Hue', () => {
     });
 
 });
-
-
 
 describe('Switch', () => {
     it('should get the status of the switch', function (done) {
@@ -885,7 +951,7 @@ describe('OccupancySensor OccupancySensorState', () => {
     it('client should get the status of the OccupancySensor', function (done) {
         this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.OccupancySensor + ' --iid ' + iid.OccupancySensor.OccupancyDetected, (err, stdout, stderr) => {
-            if (stdout === 'true\n') {
+            if (stdout === '1\n') {
                 done();
             }
         });
@@ -900,7 +966,7 @@ describe('OccupancySensor OccupancySensorState', () => {
     it('client should get the status of the OccupancySensor', function (done) {
         this.timeout(24000);
         cp.exec(clientCmd + ' get --aid ' + aid.OccupancySensor + ' --iid ' + iid.OccupancySensor.OccupancyDetected, (err, stdout, stderr) => {
-            if (stdout === 'false\n') {
+            if (stdout === '0\n') {
                 done();
             }
         });
