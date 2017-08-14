@@ -210,18 +210,20 @@
 
 
   "Lightbulb": {
-    "service":  "Lightbulb",
-    "name":     "Lightbulb",
+    "service": "Lightbulb",
+    "name": "Lightbulb",
     "topic": {
-      "setOn":            "Lightbulb/set",
-      "setBrightness":    "Lightbulb/set/Brightness",
-      "setHue":           "Lightbulb/set/Hue",
-      "setSaturation":    "Lightbulb/set/Saturation",
-      "statusOn":         "Lightbulb/status",
+      "setOn": "Lightbulb/set",
+      "setBrightness": "Lightbulb/set/Brightness",
+      "setHue": "Lightbulb/set/Hue",
+      "setSaturation": "Lightbulb/set/Saturation",
+      "setColorTemperature": "Lightbulb/set/ColorTemperature",
+      "statusOn": "Lightbulb/status",
       "statusBrightness": "Lightbulb/status/Brightness",
-      "statusHue":        "Lightbulb/status/Hue",
+      "statusHue": "Lightbulb/status/Hue",
       "statusSaturation": "Lightbulb/status/Saturation",
-      "identify":         "Lightbulb/set/identify"
+      "statusColorTemperature": "Lightbulb/status/ColorTemperature",
+      "identify": "Lightbulb/set/identify"
     },
     "payload": {
       "onTrue": 254,

@@ -146,6 +146,37 @@ module.exports = function (iface) {
             }
         }
 
+        /* istanbul ignore else */
+        if (settings.topic.setColorTemperature) {
+            light.getService(Service.Lightbulb)
+                .addCharacteristic(Characteristic.ColorTemperature)
+                .on('set', (value, callback) => {
+                    log.debug('< hap set', settings.name, 'ColorTemperature', value);
+                    const sat = value;
+                    log.debug('> mqtt', settings.topic.setColorTemperature, sat);
+                    mqttPub(settings.topic.setColorTemperature, sat);
+                    callback();
+                });
+            /* istanbul ignore else */
+            if (settings.topic.statusColorTemperature) {
+                mqttSub(settings.topic.statusColorTemperature, val => {
+                    const sat = val;
+                    log.debug('> hap update', settings.name, 'ColorTemperature', sat);
+                    light.getService(Service.Lightbulb)
+                        .updateCharacteristic(Characteristic.ColorTemperature, sat);
+                });
+                light.getService(Service.Lightbulb)
+                    .getCharacteristic(Characteristic.ColorTemperature)
+                    .on('get', callback => {
+                        log.debug('< hap get', settings.name, 'ColorTemperature');
+                        /* istanbul ignore next */
+                        const saturation = mqttStatus[settings.topic.statusColorTemperature];
+                        log.debug('> hap re_get', settings.name, 'ColorTemperature', saturation);
+                        callback(null, saturation);
+                    });
+            }
+        }
+
         return light;
     };
 };
