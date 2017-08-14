@@ -15,7 +15,7 @@ module.exports = function (iface) {
     return function createAccessory_Microphone(settings) {
         const acc = newAccessory(settings);
 
-        acc.addService(Service.Speaker, settings.name)
+        acc.addService(Service.Microphone, settings.name)
             .getCharacteristic(Characteristic.Mute)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'Mute', value);
@@ -29,11 +29,11 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusMute, val => {
             const mute = val !== settings.topic.muteFalse;
             log.debug('> hap update', settings.name, 'Mute', mute);
-            acc.getService(Service.Speaker)
+            acc.getService(Service.Microphone)
                 .updateCharacteristic(Characteristic.Mute, mute);
         });
 
-        acc.getService(Service.Speaker)
+        acc.getService(Service.Microphone)
             .getCharacteristic(Characteristic.Mute)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'Mute');
@@ -43,7 +43,7 @@ module.exports = function (iface) {
             });
 
         if (settings.topic.setVolume) {
-            acc.getService(Service.Speaker)
+            acc.getService(Service.Microphone)
                 .addCharacteristic(Characteristic.Volume)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'Volume', value);
@@ -57,12 +57,12 @@ module.exports = function (iface) {
                 // Update status in homekit if exernal status gets updated
                 mqttSub(settings.topic.statusVolume, val => {
                     log.debug('> hap set', settings.name, 'Volume', mqttStatus[settings.topic.statusVolume]);
-                    acc.getService(Service.Speaker)
+                    acc.getService(Service.Microphone)
                         .getCharacteristic(Characteristic.Volume)
                         .getValue();
                 });
 
-                acc.getService(Service.Speaker)
+                acc.getService(Service.Microphone)
                     .getCharacteristic(Characteristic.Volume)
                     .on('get', callback => {
                         log.debug('< hap get', settings.name, 'Volume');
