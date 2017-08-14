@@ -30,8 +30,10 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "bootstrap": "^3.3.7",
     "express": "^4.15.4",
+    "font-awesome": "^4.7.0",
     "free-jqgrid": "^4.14.1",
     "hap-nodejs": "0.4.27",
     "jquery": "^3.2.1",

@@ -3,15 +3,132 @@
 <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="../node_modules/free-jqgrid/dist/css/ui.jqgrid.min.css">
+<link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="style.css">
 
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="../node_modules/free-jqgrid/dist/jquery.jqgrid.min.js"></script>
 
-<table id="accessories"></table>
+<table id="gridServices"></table>
 
+<div id="dialogService" class="modal" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Select Service</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <select class="form-control" id="selectService"></select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="next">Next</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div id="dialogConfig" class="modal" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Configuration</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               <div class="container-fluid">
+                    <div class="form-group row">
+                        <label for="service" class="col-sm-3 col-form-label">Service</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="service" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="id" class="col-sm-3 col-form-label">id</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="id">
+                        </div>
+                    </div>
+                   <div class="form-group row">
+                       <label for="name" class="col-sm-3 col-form-label">Name</label>
+                       <div class="col-sm-9">
+                           <input type="text" class="form-control" id="name">
+                       </div>
+                   </div>
+                   <div id="configuration"></div>
+                   <h4>AccessoryInformation</h4>
+                   <div class="form-group row">
+                       <label for="manufacturer" class="col-sm-3 col-form-label">Manufacturer</label>
+                       <div class="col-sm-9">
+                           <input type="text" class="form-control" id="manufacturer">
+                       </div>
+                   </div>
+                   <div class="form-group row">
+                       <label for="model" class="col-sm-3 col-form-label">Model</label>
+                       <div class="col-sm-9">
+                           <input type="text" class="form-control" id="model">
+                       </div>
+                   </div>
+                   <div class="form-group row">
+                       <label for="serial" class="col-sm-3 col-form-label">Serial</label>
+                       <div class="col-sm-9">
+                           <input type="text" class="form-control" id="serial">
+                       </div>
+                   </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="save">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialogConfirmDel" class="modal" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Really Delete Service?</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="form-group row">
+                        <label for="serviceConfirm" class="col-sm-2 col-form-label">Service</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="serviceConfirm" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="idConfirm" class="col-sm-2 col-form-label">id</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="idConfirm" placeholder="id" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="nameConfirm" class="col-sm-2 col-form-label">Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="nameConfirm" placeholder="Name" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="delete">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="script.js"></script>
 

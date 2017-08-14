@@ -260,12 +260,17 @@ payload
 topic
 
 * statusAmbientLightLevel
+* statusLowBattery (optional)
 * identify (optional)
 
 payload
 
 * identify (optional)
+* onLowBattery (optional)
 
+config
+
+* ambientLightLevelFactor (optional)
 
 #### LockMechanism
 

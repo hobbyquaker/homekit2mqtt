@@ -8,6 +8,7 @@ const pkgHap = require('./node_modules/hap-nodejs/package.json');
 const pkg = require('./package.json');
 const config = require('./config.js');
 const express = require('express');
+const bodyParser = require('body-parser')
 const app = express();
 
 log.setLevel(config.verbosity);
@@ -138,10 +139,6 @@ const Accessory = HAP.Accessory;
 const Service = HAP.Service;
 const Characteristic = HAP.Characteristic;
 
-console.log(Object.keys(Service));
-console.log(JSON.stringify(new Service.ContactSensor(), null, '  '))
-console.log(JSON.stringify(new Characteristic.TemperatureDisplayUnits(), null, '  '))
-
 /* istanbul ignore next */
 if (config.storagedir) {
     log.info('using directory ' + config.storagedir + ' for persistent storage');
@@ -254,7 +251,9 @@ if (!config.disableWebserver) {
     app.get('/config', function (req, res) {
         res.send(JSON.stringify(mapping));
     });
-    app.post('/config', function (req, res) {
 
+    app.post('/config', bodyParser.json(), function (req, res) {
+        console.log(req.body);
+        res.send('ok');
     });
 }
