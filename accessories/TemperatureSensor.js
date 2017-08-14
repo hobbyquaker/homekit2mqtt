@@ -11,7 +11,7 @@ module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
     function convertTemperature(settings, value) {
-        if (settings.config && settings.config.fahrenheit) {
+        if (settings.payload.fahrenheit) {
             log.debug('converting', value, '°F to °C');
             return (value - 32) / 1.8;
         }

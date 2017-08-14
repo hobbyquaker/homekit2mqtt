@@ -267,10 +267,8 @@ payload
 
 * identify (optional)
 * onLowBattery (optional)
-
-config
-
 * ambientLightLevelFactor (optional)
+
 
 #### LockMechanism
 
@@ -441,10 +439,8 @@ payload
 
 * identify (optional)
 * onLowBattery (optional)
-
-config 
-
 * fahrenheit (optional) - set to true if your sensor publishes degree fahrenheit on mqtt.
+
 
 props (optional)
 
