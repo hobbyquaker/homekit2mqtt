@@ -5,6 +5,7 @@ const path = require('path');
 const Mqtt = require('mqtt');
 const express = require('express');
 const bodyParser = require('body-parser');
+const basicAuth = require('express-basic-auth')
 
 const app = express();
 
@@ -269,6 +270,12 @@ if (!config.disableWeb) {
     app.listen(config.webPort, () => {
         log.info('http server listening on port', config.webPort);
     });
+
+    app.use(basicAuth({
+        users: {'homekit': config.pincode},
+        challenge: true,
+        realm: 'homekit2mqtt ui'
+    }));
 
     app.get('/', (req, res) => {
         res.redirect(301, '/ui');

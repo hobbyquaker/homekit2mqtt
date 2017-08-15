@@ -303,10 +303,12 @@ $(document).ready(() => {
                             val = $('#payload-boolean-' + payload.name).val() === 'true';
                             break;
                         case 'String':
-                            val = $('#payload-string-' + payload.name).val() === 'true';
+                            val = $('#payload-string-' + payload.name).val();
                             break;
                         default:
                     }
+                    console.log(payload.name, type, val);
+
                     if (typeof val !== 'undefined') {
                         result.payload[payload.name] = val;
                     }
@@ -315,7 +317,10 @@ $(document).ready(() => {
             if (!config[id]) {
                 config[id] = {};
             }
+            console.log(result);
+
             $.extend(config[id], result);
+
 
             Object.keys(config[id].topic).forEach(t => {
                 if (config[id].topic[t] === '') {
