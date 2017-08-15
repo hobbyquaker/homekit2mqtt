@@ -61,8 +61,8 @@ HomeKit-characteristics. You can either create this manually or use the Web UI t
 listens on Port 51888 by default, authentication username is `homekit` and the password is the pincode (`031-45-154` by
 default).
 
-![Web UI](screen1.png)
-![Web UI](screen2.png)
+![Web UI](docs/screen1.png)
+![Web UI](docs/screen2.png)
 
 See [example-homekit2mqtt.json](example-homekit2mqtt.json) for an example configuration. Every Accessory is represented 
 like this in the JSON file:
