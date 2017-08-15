@@ -1,9 +1,44 @@
-/* global $, document, window */
+/* global $, document, window, location */
 
 let services = {};
 let config = {};
+let template = {
+    "Lightbulb": {
+        "hue2mqtt color light": {
+            "id": "hue//lights/%name%",
+            "name": "Hue %name%",
+            "topic": {
+                "setOn": "hue/set/lights/%name%",
+                "statusOn": "hue/status/lights/%name%",
+                "setBrightness": "hue/set/lights/%name%",
+                "statusBrightness": "hue/status/lights/%name%",
+                "setHue": "hue/set/lights/%name%/hue",
+                "statusHue": "hue/status/lights/%name%/hue",
+                "setSaturation": "hue/set/lights/%name%/sat",
+                "statusSaturation": "hue/status/lights/%name%/sat",
+                "identify": "hue/status/lights/%name%/alert"
+            },
+            "payload": {
+                "onTrue": 254,
+                "onFalse": 0,
+                "brightnessFactor": 2.54,
+                "hueFactor": 181.327,
+                "saturationFactor": 2.54,
+                "identify": "select"
+            },
+            "manufacturer": "hue2mqtt - Hue",
+            "model": "color light"
+        }
+    }
+};
+
 
 $(document).ready(() => {
+    let topics = [];
+    $.get('/topics', body => {
+        topics = JSON.parse(body);
+    });
+
     const $gridServices = $('#gridServices');
 
     $gridServices.jqGrid({
@@ -113,7 +148,6 @@ $(document).ready(() => {
     });
 
     function loadConfig() {
-
         Object.keys(config).forEach(id => {
             $gridServices.jqGrid('addRowData', id, {
                 id,
@@ -121,7 +155,7 @@ $(document).ready(() => {
                 service: config[id].service
             });
         });
-        $gridServices.jqGrid('sortGrid', 'name', true, 'asc')
+        $gridServices.jqGrid('sortGrid', 'name', true, 'asc');
     }
 
     $.get('/services.json', body => {
@@ -129,9 +163,34 @@ $(document).ready(() => {
         Object.keys(services).forEach(service => {
             $selectService.append('<option>' + service + '</option>');
         });
+
+        $selectService.change(function () {
+            createTemplate($(this).val());
+        });
     });
 
+    function createTemplate(s) {
+        console.log(s);
+        $('#selectTemplate').html('<option>none</option>');
+        $('#selectTemplate').val('none');
+        $('.name-template, .select-template').hide();
+        if (template[s]) {
+            $('.select-template').show();
+            Object.keys(template[s]).forEach(t => {
+                $('#selectTemplate').append('<option>' + t + '</option>');
+            });
+            $('#selectTemplate').change(function () {
+                if ($(this).val() !== 'none') {
+                    $('.name-template').show();
+                } else {
+                    $('.name-template').hide();
+                }
+            });
+        }
+    }
+
     $add.click(() => {
+        createTemplate($selectService.val());
         $dialogService.modal();
     });
 
@@ -139,9 +198,42 @@ $(document).ready(() => {
         $dialogService.modal('hide');
         $id.removeAttr('disabled');
         createServiceForm($selectService.val());
-
+        if ($('#selectTemplate').val() !== 'none') {
+            const tpl = template[$selectService.val()][$('#selectTemplate').val()];
+            const name = $('#nameTemplate').val();
+            $id.val(tplReplace(tpl.id, name));
+            $name.val(tplReplace(tpl.name, name));
+            $('#model').val(tplReplace(tpl.model, name));
+            $('#manufacturer').val(tplReplace(tpl.manufacturer, name));
+            Object.keys(tpl.topic).forEach(t => {
+                $('#topic-' + t).val(tplReplace(tpl.topic[t], name));
+            });
+            Object.keys(tpl.payload).forEach(p => {
+                const val = tpl.payload[p];
+                console.log(p, val, typeof val);
+                switch (typeof val) {
+                    case 'number':
+                        $('#payload-type-' + p).val('Number').trigger('change');
+                        $('#payload-number-' + p).val(val);
+                        break;
+                    case 'string':
+                        $('#payload-type-' + p).val('String').trigger('change');
+                        $('#payload-string-' + p).val(val);
+                        break;
+                    case 'boolean':
+                        $('#payload-type-' + p).val('Boolean').trigger('change');
+                        $('#payload-boolean-' + p).val(String(val));
+                        break;
+                    default:
+                }
+            });
+        }
         $dialogConfig.modal();
     });
+
+    function tplReplace(val, name) {
+        return val.replace(/%name%/g, name);
+    }
 
     $edit.click(() => {
         edit($gridServices.getGridParam('selrow'));
@@ -170,7 +262,7 @@ $(document).ready(() => {
         $.get('/quit');
         setTimeout(() => {
             location.reload();
-        }, 2000);
+        }, 3000);
     });
 
     $('#save').click(() => {
@@ -250,9 +342,9 @@ $(document).ready(() => {
                 $gridServices.jqGrid('addRowData', id, {
                     id,
                     name: config[id].name,
-                    service: config[id].service,
+                    service: config[id].service
                 });
-                $gridServices.trigger("reloadGrid").jqGrid('sortGrid', 'name', true, 'asc');
+                $gridServices.trigger('reloadGrid').jqGrid('sortGrid', 'name', true, 'asc');
                 $gridServices.jqGrid('setSelection', id, true);
                 $('#gridServices #' + id).focus();
             }
@@ -359,9 +451,13 @@ $(document).ready(() => {
                <div class="form-group row">
                    <label for="topic-${t.name}" class="col-sm-3 col-form-label">${t.name}</label>
                    <div class="col-sm-9">
-                       <input type="text" class="form-control" id="topic-${t.name}" class="topic" data-topic="${t.name}">
+                       <input type="text" class="form-control topic" id="topic-${t.name}" data-topic="${t.name}" autocomplete="off">
                    </div>
                </div>`);
+        });
+
+        $('input.topic').each(function () {
+            $(this).typeahead({source: topics});
         });
 
         if (s.payload && s.payload.length > 0) {

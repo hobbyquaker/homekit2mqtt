@@ -245,6 +245,27 @@ bridge._server.on('verify', () => {
 });
 
 if (!config.disableWeb) {
+
+    // get all retained messages
+    log.debug('mqtt subscribe #');
+    mqtt.subscribe('#');
+    let topics = [];
+    let retainTimeout = setTimeout(() => {
+        mqtt.unsubscribe('#');
+    }, 500);
+    mqtt.on('message', (topic, payload, msg) => {
+        if (msg.retain) {
+            clearTimeout(retainTimeout);
+            retainTimeout = setTimeout(() => {
+                log.debug('mqtt unsubscribe #');
+                mqtt.unsubscribe('#');
+            }, 500);
+        }
+        if (topics.indexOf(topic) === -1 && topic !== config.name + '/connected') {
+            topics.push(topic);
+        }
+    });
+
     app.listen(config.webPort, () => {
         log.info('http server listening on port', config.webPort);
     });
@@ -256,6 +277,11 @@ if (!config.disableWeb) {
     app.use('/node_modules', express.static(path.join(__dirname, '/node_modules')));
     app.use('/services.json', express.static(path.join(__dirname, '/services.json')));
 
+    app.get('/topics', (req, res) => {
+        log.info('http > topics');
+        res.send(JSON.stringify(topics));
+    });
+
     app.get('/config', (req, res) => {
         log.info('http > config');
         res.send(JSON.stringify(mapping));
@@ -265,12 +291,13 @@ if (!config.disableWeb) {
         log.info('http < config');
         mapping = req.body;
         fs.writeFileSync(config.mapfile, JSON.stringify(req.body, null, '  '));
-        log.info('saved config to ', config.mapfile);
+        log.info('saved config to', config.mapfile);
         res.send('ok');
     });
 
-    app.get('/quit', () => {
+    app.get('/quit', (req, res) => {
         log.info('http < quit');
+        res.send('ok');
         process.exit(0);
     });
 }

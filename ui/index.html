@@ -10,6 +10,7 @@
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="../node_modules/free-jqgrid/dist/jquery.jqgrid.min.js"></script>
+<script src="bootstrap3-typeahead.min.js"></script>
 
 <div id="container">
     <table id="gridServices"></table>
@@ -25,7 +26,26 @@
                 </button>
             </div>
             <div class="modal-body">
-                <select class="form-control" id="selectService"></select>
+                <div class="container-fluid">
+                    <div class="form-group row">
+                        <label for="selectService" class="col-sm-3 col-form-label">Service</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="selectService"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row select-template">
+                        <label for="selectTemplate" class="col-sm-3 col-form-label">Template</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="selectTemplate"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row name-template">
+                        <label for="nameTemplate" class="col-sm-3 col-form-label">Name</label>
+                        <div class="col-sm-9">
+                            <input id="nameTemplate" class="form-control">
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="next">Next</button>
@@ -35,7 +55,7 @@
     </div>
 </div>
 
-<div id="dialogConfig" class="modal" data-backdrop="static">
+<div id="dialogConfig" class="modal" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">

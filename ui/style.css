@@ -51,3 +51,7 @@ span.fa {
 .is-invalid {
     border-color: red;
 }
+
+.typeahead {
+    z-index: 100000;
+}
