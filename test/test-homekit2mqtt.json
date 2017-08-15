@@ -432,7 +432,7 @@
     "topic": {
       "statusTemperature": "TemperatureSensorF/Temperature"
     },
-    "config": {
+    "payload": {
       "fahrenheit": true
     },
     "model": "TemperatureSensor"

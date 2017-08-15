@@ -1,15 +1,18 @@
 #!/usr/bin/env node
 
+const fs = require('fs');
 const path = require('path');
 const Mqtt = require('mqtt');
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+
 const log = require('yalm');
 const HAP = require('hap-nodejs');
 const pkgHap = require('./node_modules/hap-nodejs/package.json');
 const pkg = require('./package.json');
 const config = require('./config.js');
-const express = require('express');
-const bodyParser = require('body-parser')
-const app = express();
 
 log.setLevel(config.verbosity);
 
@@ -199,7 +202,7 @@ function loadAccessory(acc) {
 
 // Load and create all accessories
 log.info('loading HomeKit to MQTT mapping file ' + config.mapfile);
-const mapping = require(config.mapfile);
+let mapping = require(config.mapfile);
 let accCount = 0;
 Object.keys(mapping).forEach(id => {
     const a = mapping[id];
@@ -241,19 +244,33 @@ bridge._server.on('verify', () => {
     log('hap verify');
 });
 
-if (!config.disableWebserver) {
-    app.listen(config.webPort, function () {
-        log.info('webserver listening on port', config.webPort);
+if (!config.disableWeb) {
+    app.listen(config.webPort, () => {
+        log.info('http server listening on port', config.webPort);
     });
-    app.use('/web', express.static(__dirname + '/web'));
-    app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
-    app.get('/config', function (req, res) {
+    app.get('/', (req, res) => {
+        res.redirect(301, '/ui');
+    });
+    app.use('/ui', express.static(path.join(__dirname, '/ui')));
+    app.use('/node_modules', express.static(path.join(__dirname, '/node_modules')));
+    app.use('/services.json', express.static(path.join(__dirname, '/services.json')));
+
+    app.get('/config', (req, res) => {
+        log.info('http > config');
         res.send(JSON.stringify(mapping));
     });
 
-    app.post('/config', bodyParser.json(), function (req, res) {
-        console.log(req.body);
+    app.post('/config', bodyParser.json(), (req, res) => {
+        log.info('http < config');
+        mapping = req.body;
+        fs.writeFileSync(config.mapfile, JSON.stringify(req.body, null, '  '));
+        log.info('saved config to ', config.mapfile);
         res.send('ok');
+    });
+
+    app.get('/quit', () => {
+        log.info('http < quit');
+        process.exit(0);
     });
 }

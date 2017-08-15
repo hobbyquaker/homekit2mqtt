@@ -1,23 +1,356 @@
 {
+  "CarbonDioxideSensor": {
+    "topic": [
+      {"name": "statusCarbonDioxideDetected"},
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "onCarbonDioxideDetected"},
+      {"name": "onLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "CarbonMonoxideSensor": {
+    "topic": [
+      {"name": "statusCarbonMonoxideDetected"},
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "onCarbonMonoxideDetected"},
+      {"name": "onLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ]
+  },
   "ContactSensor": {
-    "topics": [
+    "topic": [
+      {"name": "statusContactSensorState"},
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "onContactDetected"},
+      {"name": "onLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "Door": {
+    "topic": [
+      {"name": "setTargetPosition"},
+      {"name": "statusTargetPosition"},
+      {"name": "statusCurrentPosition"},
+      {"name": "statusPositionState"},
+      {"name": "statusObstruction"},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "targetPositionFactor", "type": "Number"},
+      {"name": "currentPositionFactor", "type": "Number"},
+      {"name": "positionStatusDecreasing"},
+      {"name": "positionStatusIncreasing"},
+      {"name": "onObstructionDetected"},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "Doorbell": {
+    "topic": [
+      {"name": "statusEvent"},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "Fan": {
+    "topic": [
+      {"name": "setOn"},
+      {"name": "statusOn"},
+      {"name": "setRotationDirection"},
+      {"name": "statusRotationDirection"},
+      {"name": "setRotationSpeed"},
+      {"name": "statusRotationSpeed"},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "onTrue"},
+      {"name": "onFalse"},
+      {"name": "rotationDirectionCounterClockwise"},
+      {"name": "rotationDirectionClockwise"},
+      {"name": "rotationSpeedFactor", "type": "Number"},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "GarageDoorOpener": {
+    "topic": [
+      {"name": "setDoor"},
+      {"name": "statusDoor"},
+      {"name": "statusObstruction"},
+      {"name": "setLock"},
+      {"name": "statusLock"},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "doorOpen"},
+      {"name": "doorClosed"},
+      {"name": "doorOpening"},
+      {"name": "doorClosing"},
+      {"name": "doorStopped"},
+      {"name": "onObstructionDetected"},
+      {"name": "lockUnsecured"},
+      {"name": "lockSecured"},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "HumiditySensor": {
+    "topic": [
+      {"name": "statusHumidity"},
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "onLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "LeakSensor": {
+    "topic": [
+      {"name": "statusLeakDetected"},
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "onLeakDetected"},
+      {"name": "onLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "Lightbulb": {
+    "topic": [
+      {"name": "setOn"},
+      {"name": "statusOn"},
+      {"name": "setBrightness"},
+      {"name": "statusBrightness"},
+      {"name": "setHue"},
+      {"name": "statusHue"},
+      {"name": "setSaturation"},
+      {"name": "statusSaturation"},
+      {"name": "setColorTemperature"},
+      {"name": "statusColorTemperature"},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "onTrue"},
+      {"name": "onFalse"},
+      {"name": "brightnessFactor", "type": "Number"},
+      {"name": "hueFactor", "type": "Number"},
+      {"name": "saturationFactor", "type": "Number"},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "LightSensor": {
+    "topic": [
+      {"name": "statusAmbientLightLevel"},
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "ambientLightLevelFactor"},
+      {"name": "onLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "LockMechanism": {
+    "topic": [
+      {"name": "setLock"},
+      {"name": "statusLock"},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "lockSecured"},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "Microphone": {
+    "topic": [
+      {"name": "setMute"},
+      {"name": "statusMute"},
+      {"name": "setVolume"},
+      {"name": "statusVolume"},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "muteTrue"},
+      {"name": "muteFalse"},
+      {"name": "volumeFactor", "type": "Number"},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "MotionSensor": {
+    "topic": [
+      {"name": "statusMotionDetected"},
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "onMotionDetected"},
+      {"name": "onLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "OccupancySensor": {
+    "topic": [
+      {"name": "statusOccupancyDetected"},
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "onOccupancyDetected"},
+      {"name": "onLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "Outlet": {
+    "topic": [
+      {"name": "setOn"},
+      {"name": "statusOn"},
+      {"name": "statusOutletInUse"},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "onFalse"},
+      {"name": "onTrue"},
+      {"name": "onOutletInUse"},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "SecuritySystem": {
+    "topic": [
+      {"name": "setSecuritySystemTargetState"},
+      {"name": "statusSecuritySystemCurrentState"},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "SmokeSensor": {
+    "topic": [
+      {"name": "statusSmokeDetected"},
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "onSmokeDetected"},
+      {"name": "onLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "Speaker": {
+    "topic": [
+      {"name": "setMute"},
+      {"name": "statusMute"},
+      {"name": "setVolume"},
+      {"name": "statusVolume"},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "muteTrue"},
+      {"name": "muteFalse"},
+      {"name": "volumeFactor", "type": "Number"},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "StatelessProgrammableSwitch": {
+    "topic": [
+      {"name": "statusEvent"},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "Switch": {
+    "topic": [
+      {"name": "setOn"},
+      {"name": "statusOn"},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "onFalse"},
+      {"name": "onTrue"},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "TemperatureSensor": {
+    "topic": [
+      {"name": "statusTemperature"},
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
       {
-        "name": "statusContactSensorState",
-        "payloads": [
-          {
-            "name": "onContactDetected"
-          }
-        ]
+        "name": "fahrenheit",
+        "type": "Boolean",
+        "desc": "Set to true if your sensor published it's value in degree fahrenheit"
       },
-      {
-        "name": "statusLowBattery",
-        "optional": true,
-        "payloads": [
-          {
-            "name": "onLowBattery"
-          }
-        ]
-      }
+      {"name": "onLowBattery", "optional": true},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "Thermostat": {
+    "topic": [
+      {"name": "setTargetTemperature"},
+      {"name": "statusTargetTemperature"},
+      {"name": "statusCurrentTemperature"},
+      {"name": "setTargetHeatingCoolingState"},
+      {"name": "statusTargetHeatingCoolingState"},
+      {"name": "statusCurrentHeatingCoolingState"},
+      {"name": "setTargetRelativeHumidity"},
+      {"name": "statusTargetRelativeHumidity"},
+      {"name": "statusCurrentRelativeHumidity"},
+      {"name": "setCoolingThresholdTemperature"},
+      {"name": "statusCoolingThresholdTemperature"},
+      {"name": "setHeatingThresholdTemperature"},
+      {"name": "statusHeatingThresholdTemperature"},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "Window": {
+    "topic": [
+      {"name": "setTargetPosition"},
+      {"name": "statusTargetPosition"},
+      {"name": "statusCurrentPosition"},
+      {"name": "statusPositionState"},
+      {"name": "statusObstruction"},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "targetPositionFactor", "type": "Number"},
+      {"name": "currentPositionFactor", "type": "Number"},
+      {"name": "positionStatusDecreasing"},
+      {"name": "positionStatusIncreasing"},
+      {"name": "onObstructionDetected"},
+      {"name": "identify", "optional": true}
+    ]
+  },
+  "WindowCovering": {
+    "topic": [
+      {"name": "setTargetPosition"},
+      {"name": "statusTargetPosition"},
+      {"name": "statusCurrentPosition"},
+      {"name": "statusPositionState"},
+      {"name": "identify", "optional": true}
+    ],
+    "payload": [
+      {"name": "targetPositionFactor", "type": "Number"},
+      {"name": "currentPositionFactor", "type": "Number"},
+      {"name": "positionStatusDecreasing"},
+      {"name": "positionStatusIncreasing"},
+      {"name": "identify", "optional": true}
     ]
   }
 }

@@ -63,7 +63,6 @@ module.exports = function (iface) {
                         callback(null, Characteristic.LockCurrentState.UNSECURED);
                     }
                 });
-
         }
 
         return acc;

@@ -13,7 +13,7 @@ module.exports = function (iface) {
         const sensor = newAccessory(settings);
 
         mqttSub(settings.topic.statusAmbientLightLevel, val => {
-            val = val / (settings.payload.ambientLightLevelFactor || 1);
+            val /= (settings.payload.ambientLightLevelFactor || 1);
             log.debug('> hap update', settings.name, 'CurrentAmbientLightLevel', mqttStatus[settings.topic.statusAmbientLightLevel]);
             sensor.getService(Service.LightSensor)
                 .updateCharacteristic(Characteristic.CurrentAmbientLightLevel, val);

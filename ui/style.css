@@ -2,6 +2,14 @@ html, body {
     height: 100%;
 }
 
+#container {
+    padding: 6px;
+}
+
+.ui-jqgrid .ui-jqgrid-htable th, .ui-jqgrid .ui-jqgrid-btable {
+    font-size: 14px;
+}
+
 .modal-title {
     display: inline-block;
 }
@@ -12,6 +20,10 @@ html, body {
     border: 0;
 
 
+}
+
+span.fa {
+    padding-top: 2px;
 }
 
 .input-group {
