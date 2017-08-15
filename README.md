@@ -25,7 +25,6 @@ I'm using this to control a multitude of MQTT-connected "Things" in my home auto
 
 
 `sudo npm install -g homekit2mqtt --unsafe-perm`   
-`homekit2mqtt -v debug`  
 
 ## Command Line Options
 
@@ -33,35 +32,40 @@ I'm using this to control a multitude of MQTT-connected "Things" in my home auto
 Usage: homekit2mqtt [options]
 
 Options:
-  -v, --verbosity   possible values: "error", "warn", "info", "debug"
+  -v, --verbosity    possible values: "error", "warn", "info", "debug"
                                                                [default: "info"]
-  -m, --mapfile     JSON file containing HomeKit Services to MQTT mapping
-                    definitions. See Readme.                           [default:
-           "/usr/local/lib/node_modules/homekit2mqtt/example-homekit2mqtt.json"]
-  -n, --name        instance name. used as mqtt client id and as prefix for
-                    connected topic                         [default: "homekit"]
-  -u, --url         mqtt broker url. See 
-                    https://github.com/mqttjs/MQTT.js/wiki/mqtt
+  -m, --mapfile      JSON file containing HomeKit Services to MQTT mapping
+                     definitions. See Readme.                          [default:
+         "/Users/basti/WebstormProjects/homekit2mqtt/example-homekit2mqtt.json"]
+  -n, --name         instance name. used as mqtt client id and as prefix for
+                     connected topic                        [default: "homekit"]
+  -u, --url          mqtt broker url. See
+                     https://github.com/mqttjs/MQTT.js/wiki/mqtt
                                                    [default: "mqtt://127.0.0.1"]
-  -s, --storagedir  directory to store homekit data
-  -h, --help        Show help                                          [boolean]
-  --version         Show version number                                [boolean]
+  -s, --storagedir   directory to store homekit data
+  -p, --port         port homekit2mqtt is listening on          [default: 51826]
+  -w, --web-port     port webserver is listening on             [default: 51888]
+  -x, --disable-web  disable webserver
+  -h, --help         Show help                                         [boolean]
+  --version          Show version number                               [boolean]
   -c, --pincode                                          [default: "031-45-154"]
   -a, --username                                  [default: "CC:22:3D:E3:CE:F6"]
   -b, --bridgename                                      [default: "MQTT Bridge"]
-  -p, --port        port hm2mqtt is listening on                [default: 51826]
-                                            
                                                                  
 </pre>
 
 ## Configuration
 
-You have to create a JSON file that defines devices and mappings from MQTT-topics and payloads to HomeKit-characteristics.
+homekit2mqtt needs a JSON file that defines devices and mappings from MQTT-topics and payloads to 
+HomeKit-characteristics. You can either create this manually or use the Web UI to configure homekit2mqtt. The Webserver
+listens on Port 51888 by default, authentication username is `homekit` and the password is the pincode (`031-45-154` by
+default).
 
-See [example-homekit2mqtt.json](example-homekit2mqtt.json).
+![Web UI](screen1.png)
+![Web UI](screen2.png)
 
-
-Every Accessory is represented like this in the JSON file:
+See [example-homekit2mqtt.json](example-homekit2mqtt.json) for an example configuration. Every Accessory is represented 
+like this in the JSON file:
 
 ```javascript
   "TemperatureSensor": {                                    // Unique Name - used to generate the accessory UUID
@@ -77,9 +81,7 @@ Every Accessory is represented like this in the JSON file:
     "model": "TemperatureSensor"                            // Additional Accessory Infos (optional)
   }
 ```
-
-
-### Supported Service Types
+## Available Service Types
 
 #### CarbonDioxideSensor
 
@@ -95,7 +97,6 @@ payload
 * onLowBattery (optional)
 * identify (optional)
 
-
 #### CarbonMonoxideSensor
 
 topic
@@ -109,7 +110,6 @@ payload
 * onCarbonMonoxideDetected
 * onLowBattery (optional)
 * identify (optional)
-
 
 #### ContactSensor
 
@@ -125,7 +125,6 @@ payload
 * onLowBattery (optional)
 * identify (optional)
 
-
 #### Door
 
 topic
@@ -139,11 +138,12 @@ topic
 
 payload
 
-* positionStatusIncreasing (optional)
+* targetPositionFactor (optional)
+* currentPositionFactor (optional)
 * positionStatusDecreasing (optional)
+* positionStatusIncreasing (optional)
 * onObstructionDetected (optional)
 * identify (optional)
-
 
 #### Doorbell
 
@@ -156,26 +156,25 @@ payload
 
 * identify (optional)
 
-
 #### Fan
 
 topic
 
 * setOn
 * statusOn (optional)
-* setRotationSpeed (optional)
-* statusRotationSpeed (optional)
 * setRotationDirection (optional)
 * statusRotationDirection (optional)
+* setRotationSpeed (optional)
+* statusRotationSpeed (optional)
 * identify (optional)
 
 payload
 
-* onTrue (optional, default true)
-* onFalse (optional, default false)
-* rotationSpeedFactor (optional, default 1)
-* rotationDirectionClockwise (optional, default 0)
-* rotationDirectionCounterClockwise (optional, default 1)
+* onTrue (optional, default: `true`)
+* onFalse (optional)
+* rotationDirectionCounterClockwise (optional, default: `1`)
+* rotationDirectionClockwise (optional)
+* rotationSpeedFactor (optional, default: `1`)
 * identify (optional)
 
 #### GarageDoorOpener
@@ -183,38 +182,36 @@ payload
 topic
 
 * setDoor
-* setLock (optional)
 * statusDoor (optional)
-* statusLock (optional)
 * statusObstruction (optional)
+* setLock (optional)
+* statusLock (optional)
 * identify (optional)
 
 payload
 
 * doorOpen
 * doorClosed
-* doorOpening
-* doorClosing
-* doorStopped
+* doorOpening (optional)
+* doorClosing (optional)
+* doorStopped (optional)
+* onObstructionDetected (optional)
 * lockUnsecured (optional)
 * lockSecured (optional)
-* onObstructionDetected (optional)
 * identify (optional)
-
 
 #### HumiditySensor
 
 topic
 
 * statusHumidity
-* identify (optional)
 * statusLowBattery (optional)
+* identify (optional)
 
 payload
 
-* identify (optional)
 * onLowBattery (optional)
-
+* identify (optional)
 
 #### LeakSensor
 
@@ -230,7 +227,6 @@ payload
 * onLowBattery (optional)
 * identify (optional)
 
-
 #### Lightbulb
 
 topic
@@ -243,17 +239,18 @@ topic
 * statusHue (optional)
 * setSaturation (optional)
 * statusSaturation (optional)
+* setColorTemperature (optional)
+* statusColorTemperature (optional)
 * identify (optional)
 
 payload
 
 * onTrue
 * onFalse
-* brightnessFactor (default: 1)
-* hueFactor (default: 1)
-* saturationFactor (default: 1)
+* brightnessFactor (optional, default: `1`)
+* hueFactor (optional, default: `1`)
+* saturationFactor (optional, default: `1`)
 * identify (optional)
-
 
 #### LightSensor
 
@@ -265,10 +262,9 @@ topic
 
 payload
 
-* identify (optional)
+* ambientLightLevelFactor (optional, default: `1`)
 * onLowBattery (optional)
-* ambientLightLevelFactor (optional)
-
+* identify (optional)
 
 #### LockMechanism
 
@@ -280,28 +276,25 @@ topic
 
 payload
 
-* lockUnsecured
 * lockSecured
 * identify (optional)
 
-
 #### Microphone
 
-topic 
+topic
 
 * setMute
-* setVolume (optional)
 * statusMute (optional)
+* setVolume (optional)
 * statusVolume (optional)
 * identify (optional)
 
 payload
 
-* muteTrue 
+* muteTrue
 * muteFalse
-* volumeFactor (optional)
+* volumeFactor (optional, default: `1`)
 * identify (optional)
-
 
 #### MotionSensor
 
@@ -317,7 +310,6 @@ payload
 * onLowBattery (optional)
 * identify (optional)
 
-
 #### OccupancySensor
 
 topic
@@ -332,41 +324,64 @@ payload
 * onLowBattery (optional)
 * identify (optional)
 
-
 #### Outlet
 
 topic
 
 * setOn
-* statusOutletInUse 
 * statusOn (optional)
+* statusOutletInUse
 * identify (optional)
 
 payload
 
-* onTrue
 * onFalse
+* onTrue
 * onOutletInUse
 * identify (optional)
 
-
 #### SecuritySystem
 
-topic 
+topic
 
 * setSecuritySystemTargetState
-* statusSecuritySystemCurrentState
+* statusSecuritySystemCurrentState (optional)
+* identify (optional)
 
 payload
 
-*can't be configured, uses following numbers*
+* identify (optional)
 
-* 0 STAY_ARM
-* 1 AWAY_ARM
-* 2 NIGHT_ARM
-* 3 DISARM(ED)
-* 4 ALARM_TRIGGERED
+#### SmokeSensor
 
+topic
+
+* statusSmokeDetected
+* statusLowBattery (optional)
+* identify (optional)
+
+payload
+
+* onSmokeDetected
+* onLowBattery (optional)
+* identify (optional)
+
+#### Speaker
+
+topic
+
+* setMute
+* statusMute (optional)
+* setVolume (optional)
+* statusVolume (optional)
+* identify (optional)
+
+payload
+
+* muteTrue
+* muteFalse
+* volumeFactor, default: `1`)
+* identify (optional)
 
 #### StatelessProgrammableSwitch
 
@@ -379,39 +394,6 @@ payload
 
 * identify (optional)
 
-
-#### SmokeSensor
-
-topic
-
-* statusSmokeSensorState
-* statusLowBattery (optional)
-* identify (optional)
-
-payload
-
-* onSmokeDetected
-* onLowBattery (optional)
-* identify (optional)
-
-#### Speaker
-
-topic 
-
-* setMute
-* setVolume (optional)
-* statusMute (optional)
-* statusVolume (optional)
-* identify (optional)
-
-payload
-
-* muteTrue 
-* muteFalse
-* volumeFactor (optional)
-* identify (optional)
-
-
 #### Switch
 
 topic
@@ -422,69 +404,50 @@ topic
 
 payload
 
-* onTrue
 * onFalse
+* onTrue
 * identify (optional)
-
 
 #### TemperatureSensor
 
 topic
 
 * statusTemperature
-* identify (optional)
 * statusLowBattery (optional)
+* identify (optional)
 
 payload
 
-* identify (optional)
+* fahrenheit    
+  Set to true if your sensor published it's value in degree fahrenheit
 * onLowBattery (optional)
-* fahrenheit (optional) - set to true if your sensor publishes degree fahrenheit on mqtt.
-
-
-props (optional)
-
-* CurrentTemperature - an object containing properties for the currentTemperature characteristic:
-  * minValue
-  * maxValue
-  * minStep
-
+* identify (optional)
 
 #### Thermostat
 
 topic
 
 * setTargetTemperature
-* setTargetHeatingCoolingState (optional) -  - (0 = off, 1 = heat, 2 = cool)
+* statusTargetTemperature (optional)
 * statusCurrentTemperature
-* statusTargetTemperature
+* setTargetHeatingCoolingState (optional)    
+  0 = off, 1 = heat, 2 = cool
+* statusTargetHeatingCoolingState (optional)    
+  0 = off, 1 = heat, 2 = cool
+* statusCurrentHeatingCoolingState (optional)    
+  0 = off, 1 = heat, 2 = cool
+* setTargetRelativeHumidity (optional)
+* statusTargetRelativeHumidity (optional)
 * statusCurrentRelativeHumidity (optional)
 * setCoolingThresholdTemperature (optional)
 * statusCoolingThresholdTemperature (optional)
 * setHeatingThresholdTemperature (optional)
 * statusHeatingThresholdTemperature (optional)
-* statusCurrentHeatingCoolingState (optional) - (0 = off, 1 = heat, 2 = cool)
 * identify (optional)
 
 payload
 
 * identify (optional)
-
-config
-
-* TemperatureDisplayUnits (`0` = Celsius, `1` = Fahrenheit)
-
-props (optional)
-
-* CurrentTemperature - an object containing properties for the currentTemperature characteristic:
-  * minValue
-  * maxValue
-  * minStep
-
-* TargetTemperature - an object containing properties for the currentTemperature characteristic:
-  * minValue
-  * maxValue
-  * minStep
 
 #### Window
 
@@ -499,11 +462,12 @@ topic
 
 payload
 
-* positionStatusIncreasing (optional)
+* targetPositionFactor (optional, default: `1`)
+* currentPositionFactor (optional, default: `1`)
 * positionStatusDecreasing (optional)
+* positionStatusIncreasing (optional)
 * onObstructionDetected (optional)
 * identify (optional)
-
 
 #### WindowCovering
 
@@ -517,13 +481,11 @@ topic
 
 payload
 
-* targetPositionFactor (default: `1`)
-* currentPositionFactor (default: `1`) 
-* roundTarget (boolean, optional)
-* positionStatusIncreasing (optional)
+* targetPositionFactor (optional, default: `1`)
+* currentPositionFactor (optional, default: `1`)
 * positionStatusDecreasing (optional)
+* positionStatusIncreasing (optional)
 * identify (optional)
-
 
 
 ## License

@@ -38,18 +38,18 @@
   "Door": {
     "topic": [
       {"name": "setTargetPosition"},
-      {"name": "statusTargetPosition"},
-      {"name": "statusCurrentPosition"},
-      {"name": "statusPositionState"},
-      {"name": "statusObstruction"},
+      {"name": "statusTargetPosition", "optional": true},
+      {"name": "statusCurrentPosition", "optional": true},
+      {"name": "statusPositionState", "optional": true},
+      {"name": "statusObstruction", "optional": true},
       {"name": "identify", "optional": true}
     ],
     "payload": [
-      {"name": "targetPositionFactor", "type": "Number"},
-      {"name": "currentPositionFactor", "type": "Number"},
-      {"name": "positionStatusDecreasing"},
-      {"name": "positionStatusIncreasing"},
-      {"name": "onObstructionDetected"},
+      {"name": "targetPositionFactor", "type": "Number", "optional": true},
+      {"name": "currentPositionFactor", "type": "Number", "optional": true},
+      {"name": "positionStatusDecreasing", "optional": true},
+      {"name": "positionStatusIncreasing", "optional": true},
+      {"name": "onObstructionDetected", "optional": true},
       {"name": "identify", "optional": true}
     ]
   },
@@ -65,40 +65,40 @@
   "Fan": {
     "topic": [
       {"name": "setOn"},
-      {"name": "statusOn"},
-      {"name": "setRotationDirection"},
-      {"name": "statusRotationDirection"},
-      {"name": "setRotationSpeed"},
-      {"name": "statusRotationSpeed"},
-      {"name": "identify", "optional": true}
+      {"name": "statusOn", "optional": true},
+      {"name": "setRotationDirection", "optional": true},
+      {"name": "statusRotationDirection", "optional": true},
+      {"name": "setRotationSpeed", "optional": true},
+      {"name": "statusRotationSpeed", "optional": true},
+      {"name": "identify", "optional": true, "optional": true}
     ],
     "payload": [
-      {"name": "onTrue"},
-      {"name": "onFalse"},
-      {"name": "rotationDirectionCounterClockwise"},
-      {"name": "rotationDirectionClockwise"},
-      {"name": "rotationSpeedFactor", "type": "Number"},
-      {"name": "identify", "optional": true}
+      {"name": "onTrue", "optional": true, "default": true},
+      {"name": "onFalse", "optional": true, "default": false},
+      {"name": "rotationDirectionCounterClockwise", "optional": true, "default": 1},
+      {"name": "rotationDirectionClockwise", "optional": true, "default": 0},
+      {"name": "rotationSpeedFactor", "type": "Number", "optional": true, "default": 1},
+      {"name": "identify", "optional": true, "optional": true}
     ]
   },
   "GarageDoorOpener": {
     "topic": [
       {"name": "setDoor"},
-      {"name": "statusDoor"},
-      {"name": "statusObstruction"},
-      {"name": "setLock"},
-      {"name": "statusLock"},
+      {"name": "statusDoor", "optional": true},
+      {"name": "statusObstruction", "optional": true},
+      {"name": "setLock", "optional": true},
+      {"name": "statusLock", "optional": true},
       {"name": "identify", "optional": true}
     ],
     "payload": [
       {"name": "doorOpen"},
       {"name": "doorClosed"},
-      {"name": "doorOpening"},
-      {"name": "doorClosing"},
-      {"name": "doorStopped"},
-      {"name": "onObstructionDetected"},
-      {"name": "lockUnsecured"},
-      {"name": "lockSecured"},
+      {"name": "doorOpening", "optional": true},
+      {"name": "doorClosing", "optional": true},
+      {"name": "doorStopped", "optional": true},
+      {"name": "onObstructionDetected", "optional": true},
+      {"name": "lockUnsecured", "optional": true},
+      {"name": "lockSecured", "optional": true},
       {"name": "identify", "optional": true}
     ]
   },
@@ -128,23 +128,23 @@
   "Lightbulb": {
     "topic": [
       {"name": "setOn"},
-      {"name": "statusOn"},
-      {"name": "setBrightness"},
-      {"name": "statusBrightness"},
-      {"name": "setHue"},
-      {"name": "statusHue"},
-      {"name": "setSaturation"},
-      {"name": "statusSaturation"},
-      {"name": "setColorTemperature"},
-      {"name": "statusColorTemperature"},
+      {"name": "statusOn", "optional": true},
+      {"name": "setBrightness", "optional": true},
+      {"name": "statusBrightness", "optional": true},
+      {"name": "setHue", "optional": true},
+      {"name": "statusHue", "optional": true},
+      {"name": "setSaturation", "optional": true},
+      {"name": "statusSaturation", "optional": true},
+      {"name": "setColorTemperature", "optional": true},
+      {"name": "statusColorTemperature", "optional": true},
       {"name": "identify", "optional": true}
     ],
     "payload": [
       {"name": "onTrue"},
       {"name": "onFalse"},
-      {"name": "brightnessFactor", "type": "Number"},
-      {"name": "hueFactor", "type": "Number"},
-      {"name": "saturationFactor", "type": "Number"},
+      {"name": "brightnessFactor", "type": "Number", "optional": true, "default": 1},
+      {"name": "hueFactor", "type": "Number", "optional": true, "default": 1},
+      {"name": "saturationFactor", "type": "Number", "optional": true, "default": 1},
       {"name": "identify", "optional": true}
     ]
   },
@@ -155,7 +155,7 @@
       {"name": "identify", "optional": true}
     ],
     "payload": [
-      {"name": "ambientLightLevelFactor"},
+      {"name": "ambientLightLevelFactor", "optional": true, "default": 1},
       {"name": "onLowBattery", "optional": true},
       {"name": "identify", "optional": true}
     ]
@@ -163,7 +163,7 @@
   "LockMechanism": {
     "topic": [
       {"name": "setLock"},
-      {"name": "statusLock"},
+      {"name": "statusLock", "optional": true},
       {"name": "identify", "optional": true}
     ],
     "payload": [
@@ -174,16 +174,16 @@
   "Microphone": {
     "topic": [
       {"name": "setMute"},
-      {"name": "statusMute"},
-      {"name": "setVolume"},
-      {"name": "statusVolume"},
+      {"name": "statusMute", "optional": true},
+      {"name": "setVolume", "optional": true},
+      {"name": "statusVolume", "optional": true},
       {"name": "identify", "optional": true}
     ],
     "payload": [
       {"name": "muteTrue"},
       {"name": "muteFalse"},
-      {"name": "volumeFactor", "type": "Number"},
-      {"name": "identify", "optional": true}
+      {"name": "volumeFactor", "type": "Number", "optional": true, "default": 1},
+      {"name": "identify", "optional": true, "optional": true}
     ]
   },
   "MotionSensor": {
@@ -213,7 +213,7 @@
   "Outlet": {
     "topic": [
       {"name": "setOn"},
-      {"name": "statusOn"},
+      {"name": "statusOn", "optional": true},
       {"name": "statusOutletInUse"},
       {"name": "identify", "optional": true}
     ],
@@ -227,7 +227,7 @@
   "SecuritySystem": {
     "topic": [
       {"name": "setSecuritySystemTargetState"},
-      {"name": "statusSecuritySystemCurrentState"},
+      {"name": "statusSecuritySystemCurrentState", "optional": true},
       {"name": "identify", "optional": true}
     ],
     "payload": [
@@ -249,15 +249,15 @@
   "Speaker": {
     "topic": [
       {"name": "setMute"},
-      {"name": "statusMute"},
-      {"name": "setVolume"},
-      {"name": "statusVolume"},
+      {"name": "statusMute", "optional": true},
+      {"name": "setVolume", "optional": true},
+      {"name": "statusVolume", "optional": true},
       {"name": "identify", "optional": true}
     ],
     "payload": [
       {"name": "muteTrue"},
       {"name": "muteFalse"},
-      {"name": "volumeFactor", "type": "Number"},
+      {"name": "volumeFactor", "type": "Number", "default": 1},
       {"name": "identify", "optional": true}
     ]
   },
@@ -273,7 +273,7 @@
   "Switch": {
     "topic": [
       {"name": "setOn"},
-      {"name": "statusOn"},
+      {"name": "statusOn", "optional": true},
       {"name": "identify", "optional": true}
     ],
     "payload": [
@@ -292,7 +292,8 @@
       {
         "name": "fahrenheit",
         "type": "Boolean",
-        "desc": "Set to true if your sensor published it's value in degree fahrenheit"
+        "desc": "Set to true if your sensor published it's value in degree fahrenheit",
+        "default": false
       },
       {"name": "onLowBattery", "optional": true},
       {"name": "identify", "optional": true}
@@ -301,18 +302,18 @@
   "Thermostat": {
     "topic": [
       {"name": "setTargetTemperature"},
-      {"name": "statusTargetTemperature"},
+      {"name": "statusTargetTemperature", "optional": true},
       {"name": "statusCurrentTemperature"},
-      {"name": "setTargetHeatingCoolingState"},
-      {"name": "statusTargetHeatingCoolingState"},
-      {"name": "statusCurrentHeatingCoolingState"},
-      {"name": "setTargetRelativeHumidity"},
-      {"name": "statusTargetRelativeHumidity"},
-      {"name": "statusCurrentRelativeHumidity"},
-      {"name": "setCoolingThresholdTemperature"},
-      {"name": "statusCoolingThresholdTemperature"},
-      {"name": "setHeatingThresholdTemperature"},
-      {"name": "statusHeatingThresholdTemperature"},
+      {"name": "setTargetHeatingCoolingState", "optional": true, "desc": "0 = off, 1 = heat, 2 = cool"},
+      {"name": "statusTargetHeatingCoolingState", "optional": true, "desc": "0 = off, 1 = heat, 2 = cool"},
+      {"name": "statusCurrentHeatingCoolingState", "optional": true, "desc": "0 = off, 1 = heat, 2 = cool"},
+      {"name": "setTargetRelativeHumidity", "optional": true},
+      {"name": "statusTargetRelativeHumidity", "optional": true},
+      {"name": "statusCurrentRelativeHumidity", "optional": true},
+      {"name": "setCoolingThresholdTemperature", "optional": true},
+      {"name": "statusCoolingThresholdTemperature", "optional": true},
+      {"name": "setHeatingThresholdTemperature", "optional": true},
+      {"name": "statusHeatingThresholdTemperature", "optional": true},
       {"name": "identify", "optional": true}
     ],
     "payload": [
@@ -322,34 +323,34 @@
   "Window": {
     "topic": [
       {"name": "setTargetPosition"},
-      {"name": "statusTargetPosition"},
-      {"name": "statusCurrentPosition"},
-      {"name": "statusPositionState"},
-      {"name": "statusObstruction"},
+      {"name": "statusTargetPosition", "optional": true},
+      {"name": "statusCurrentPosition", "optional": true},
+      {"name": "statusPositionState", "optional": true},
+      {"name": "statusObstruction", "optional": true},
       {"name": "identify", "optional": true}
     ],
     "payload": [
-      {"name": "targetPositionFactor", "type": "Number"},
-      {"name": "currentPositionFactor", "type": "Number"},
-      {"name": "positionStatusDecreasing"},
-      {"name": "positionStatusIncreasing"},
-      {"name": "onObstructionDetected"},
+      {"name": "targetPositionFactor", "type": "Number", "optional": true, "default": 1},
+      {"name": "currentPositionFactor", "type": "Number", "optional": true, "default": 1},
+      {"name": "positionStatusDecreasing", "optional": true},
+      {"name": "positionStatusIncreasing", "optional": true},
+      {"name": "onObstructionDetected", "optional": true},
       {"name": "identify", "optional": true}
     ]
   },
   "WindowCovering": {
     "topic": [
       {"name": "setTargetPosition"},
-      {"name": "statusTargetPosition"},
-      {"name": "statusCurrentPosition"},
-      {"name": "statusPositionState"},
+      {"name": "statusTargetPosition", "optional": true},
+      {"name": "statusCurrentPosition", "optional": true},
+      {"name": "statusPositionState", "optional": true},
       {"name": "identify", "optional": true}
     ],
     "payload": [
-      {"name": "targetPositionFactor", "type": "Number"},
-      {"name": "currentPositionFactor", "type": "Number"},
-      {"name": "positionStatusDecreasing"},
-      {"name": "positionStatusIncreasing"},
+      {"name": "targetPositionFactor", "type": "Number", "optional": true, "default": 1},
+      {"name": "currentPositionFactor", "type": "Number", "optional": true, "default": 1},
+      {"name": "positionStatusDecreasing", "optional": true},
+      {"name": "positionStatusIncreasing", "optional": true},
       {"name": "identify", "optional": true}
     ]
   }
