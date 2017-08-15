@@ -2,36 +2,35 @@
 
 let services = {};
 let config = {};
-let template = {
-    "Lightbulb": {
-        "hue2mqtt color light": {
-            "id": "hue//lights/%name%",
-            "name": "Hue %name%",
-            "topic": {
-                "setOn": "hue/set/lights/%name%",
-                "statusOn": "hue/status/lights/%name%",
-                "setBrightness": "hue/set/lights/%name%",
-                "statusBrightness": "hue/status/lights/%name%",
-                "setHue": "hue/set/lights/%name%/hue",
-                "statusHue": "hue/status/lights/%name%/hue",
-                "setSaturation": "hue/set/lights/%name%/sat",
-                "statusSaturation": "hue/status/lights/%name%/sat",
-                "identify": "hue/status/lights/%name%/alert"
+const template = {
+    Lightbulb: {
+        'hue2mqtt color light': {
+            id: 'hue//lights/%name%',
+            name: 'Hue %name%',
+            topic: {
+                setOn: 'hue/set/lights/%name%',
+                statusOn: 'hue/status/lights/%name%',
+                setBrightness: 'hue/set/lights/%name%',
+                statusBrightness: 'hue/status/lights/%name%',
+                setHue: 'hue/set/lights/%name%/hue',
+                statusHue: 'hue/status/lights/%name%/hue',
+                setSaturation: 'hue/set/lights/%name%/sat',
+                statusSaturation: 'hue/status/lights/%name%/sat',
+                identify: 'hue/status/lights/%name%/alert'
             },
-            "payload": {
-                "onTrue": 254,
-                "onFalse": 0,
-                "brightnessFactor": 2.54,
-                "hueFactor": 181.327,
-                "saturationFactor": 2.54,
-                "identify": "select"
+            payload: {
+                onTrue: 254,
+                onFalse: 0,
+                brightnessFactor: 2.54,
+                hueFactor: 181.327,
+                saturationFactor: 2.54,
+                identify: 'select'
             },
-            "manufacturer": "hue2mqtt - Hue",
-            "model": "color light"
+            manufacturer: 'hue2mqtt - Hue',
+            model: 'color light'
         }
     }
 };
-
 
 $(document).ready(() => {
     let topics = [];
@@ -180,10 +179,10 @@ $(document).ready(() => {
                 $('#selectTemplate').append('<option>' + t + '</option>');
             });
             $('#selectTemplate').change(function () {
-                if ($(this).val() !== 'none') {
-                    $('.name-template').show();
-                } else {
+                if ($(this).val() === 'none') {
                     $('.name-template').hide();
+                } else {
+                    $('.name-template').show();
                 }
             });
         }
@@ -320,7 +319,6 @@ $(document).ready(() => {
             console.log(result);
 
             $.extend(config[id], result);
-
 
             Object.keys(config[id].topic).forEach(t => {
                 if (config[id].topic[t] === '') {

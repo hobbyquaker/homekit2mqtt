@@ -5,7 +5,7 @@ const path = require('path');
 const Mqtt = require('mqtt');
 const express = require('express');
 const bodyParser = require('body-parser');
-const basicAuth = require('express-basic-auth')
+const basicAuth = require('express-basic-auth');
 
 const app = express();
 
@@ -246,11 +246,10 @@ bridge._server.on('verify', () => {
 });
 
 if (!config.disableWeb) {
-
-    // get all retained messages
+    // Get all retained messages
     log.debug('mqtt subscribe #');
     mqtt.subscribe('#');
-    let topics = [];
+    const topics = [];
     let retainTimeout = setTimeout(() => {
         mqtt.unsubscribe('#');
     }, 500);
@@ -272,7 +271,7 @@ if (!config.disableWeb) {
     });
 
     app.use(basicAuth({
-        users: {'homekit': config.pincode},
+        users: {homekit: config.pincode},
         challenge: true,
         realm: 'homekit2mqtt ui'
     }));

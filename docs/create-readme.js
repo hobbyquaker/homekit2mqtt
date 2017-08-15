@@ -1,9 +1,10 @@
 const fs = require('fs');
+const path = require('path');
 
-const header = fs.readFileSync(__dirname + '/README.header.md');
-const footer = fs.readFileSync(__dirname + '/README.footer.md');
+const header = fs.readFileSync(path.join(__dirname, '/README.header.md'));
+const footer = fs.readFileSync(path.join(__dirname, '/README.footer.md'));
 
-const services = require(__dirname + '/../services.json');
+const services = require(path.join(__dirname, '/../services.json'));
 
 let output = '';
 
@@ -40,4 +41,4 @@ Object.keys(services).forEach(s => {
     output += '\n';
 });
 
-fs.writeFileSync(__dirname + '/../README.md', [header, output, footer].join('\n'));
+fs.writeFileSync(path.join(__dirname, '/../README.md'), [header, output, footer].join('\n'));
