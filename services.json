@@ -292,7 +292,7 @@
       {
         "name": "fahrenheit",
         "type": "Boolean",
-        "desc": "Set to true if your sensor published it's value in degree fahrenheit",
+        "desc": "Set to true if your sensor publishes values in degree fahrenheit",
         "default": false
       },
       {"name": "onLowBattery", "optional": true},

@@ -419,7 +419,7 @@ topic
 payload
 
 * fahrenheit    
-  Set to true if your sensor published it's value in degree fahrenheit
+  Set to true if your sensor publishes values in degree fahrenheit
 * onLowBattery (optional)
 * identify (optional)
 
