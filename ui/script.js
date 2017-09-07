@@ -29,6 +29,26 @@ const template = {
             manufacturer: 'hue2mqtt - Hue',
             model: 'color light'
         }
+    },
+    WindowCovering: {
+        'hm2mqtt.js blind': {
+            id: 'hm//%name%',
+            name: '%name%',
+            topic: {
+                setTargetPosition: 'hm/set/%name%/LEVEL',
+                statusTargetPosition: 'hm/status/%name%/LEVEL_NOTWORKING',
+                statusCurrentPosition: 'hm/status/%name%/LEVEL_NOTWORKING',
+                statusPositionState: 'hm/status/%name%/DIRECTION'
+            },
+            payload: {
+                targetPositionFactor: 0.01,
+                currentPositionFactor: 0.01,
+                positionStatusDecreasing: 2,
+                positionStatusIncreasing: 1
+            },
+            manufacturer: 'hm2mqtt.js - Homematic',
+            model: 'BLIND'
+        }
     }
 };
 
@@ -341,6 +361,8 @@ $(document).ready(() => {
                 contentType: 'application/json',
                 data: JSON.stringify(config)
             });
+
+            $dialogConfig.modal('hide');
             if (!$id.attr('disabled')) {
                 $gridServices.jqGrid('addRowData', id, {
                     id,
@@ -349,10 +371,8 @@ $(document).ready(() => {
                 });
                 $gridServices.trigger('reloadGrid').jqGrid('sortGrid', 'name', true, 'asc');
                 $gridServices.jqGrid('setSelection', id, true);
-                $('#gridServices #' + id).focus();
+                $('#gridServices [id="' + id + '"]').focus();
             }
-
-            $dialogConfig.modal('hide');
         }
     });
 
