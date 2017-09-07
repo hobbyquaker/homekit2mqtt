@@ -1,6 +1,6 @@
 {
   "name": "homekit2mqtt",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "HomeKit to MQTT bridge",
   "main": "index.js",
   "bin": {
@@ -36,7 +36,7 @@
     "express-basic-auth": "^1.1.2",
     "font-awesome": "^4.7.0",
     "free-jqgrid": "^4.14.1",
-    "hap-nodejs": "0.4.30",
+    "hap-nodejs": "^0.4.32",
     "jquery": "^3.2.1",
     "mqtt": "^2.9.3",
     "yalm": "^4.0.2",
@@ -45,6 +45,7 @@
   "devDependencies": {
     "camo-purge": "latest",
     "coveralls": "latest",
+    "debug": "^3.0.1",
     "hap-client-cli": "latest",
     "mocha": "latest",
     "nyc": "latest",
