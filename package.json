@@ -12,11 +12,11 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "test": "camo-purge ; xo --space 4 --ignore test/test.js && nyc mocha --exit test/test.js && nyc report --reporter=text-lcov | coveralls --force",
+    "test": "camo-purge ; xo --ignore test/test.js && nyc mocha --exit test/test.js && nyc report --reporter=text-lcov | coveralls --force",
     "testonly": "mocha --exit test/test.js",
     "testcov": "nyc mocha --exit test/test.js",
-    "lint": " xo --space 4 --ignore test/test.js",
-    "lintfix": " xo --space 4 --ignore test/test.js --fix"
+    "lint": " xo --ignore test/test.js",
+    "lintfix": " xo --ignore test/test.js --fix"
   },
   "author": "Sebastian 'hobbyquaker' Raff <hq@ccu.io> (https://github.com/hobbyquaker)",
   "contributors": [
@@ -72,5 +72,8 @@
   "bugs": {
     "url": "https://github.com/hobbyquaker/homekit2mqtt/issues"
   },
-  "homepage": "https://github.com/hobbyquaker/homekit2mqtt"
+  "homepage": "https://github.com/hobbyquaker/homekit2mqtt",
+  "xo": {
+    "space": 4
+  }
 }
