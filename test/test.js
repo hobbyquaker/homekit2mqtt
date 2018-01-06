@@ -7,6 +7,8 @@ const path = require('path');
 const streamSplitter = require('stream-splitter');
 const Mqtt = require('mqtt');
 
+const homekitOutput = false;
+
 mqtt = Mqtt.connect('mqtt://127.0.0.1');
 
 const config = require(__dirname + '/test-homekit2mqtt.json');
@@ -102,11 +104,15 @@ function startHomekit() {
     homekitPipeOut = homekit.stdout.pipe(streamSplitter('\n'));
     homekitPipeErr = homekit.stderr.pipe(streamSplitter('\n'));
     homekitPipeOut.on('token', data => {
-        console.log('homekit', data.toString());
+        if (homekitOutput) {
+            console.log('homekit', data.toString());
+        }
         matchSubscriptions('homekit', data.toString());
     });
     homekitPipeErr.on('token', data => {
-        console.log('homekit', data.toString());
+        if (homekitOutput) {
+            console.log('homekit', data.toString());
+        }
         matchSubscriptions('homekit', data.toString());
     });
 }
