@@ -58,13 +58,13 @@ module.exports = function (iface) {
                 .getCharacteristic(Characteristic.StatusActive)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusActive');
-                    const act = mqttStatus[settings.topic.statusActive] !== settings.payload.onActive ? 0 : 1;
+                    const act = mqttStatus[settings.topic.statusActive] === settings.payload.onActive;
                     log.debug('> hap re_get', settings.name, 'StatusActive', act);
                     callback(null, act);
                 });
 
             mqttSub(settings.topic.statusActive, val => {
-                const act = val !== settings.payload.onActive ? 0 : 1;
+                const act = val === settings.payload.onActive;
                 log.debug('> hap update', settings.name, 'StatusActive', act);
                 sensor.getService(Service.ContactSensor)
                     .updateCharacteristic(Characteristic.StatusActive, act);
