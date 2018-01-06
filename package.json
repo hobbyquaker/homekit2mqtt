@@ -12,7 +12,7 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "test": "camo-purge ; xo --space 4 --ignore test/test.js && nyc mocha test/test.js && nyc report --reporter=text-lcov | coveralls --force",
+    "test": "camo-purge ; xo --space 4 --ignore test/test.js && nyc mocha --exit test/test.js && nyc report --reporter=text-lcov | coveralls --force",
     "testonly": "mocha test/test.js",
     "testcov": "nyc mocha test/test.js",
     "lint": " xo --space 4 --ignore test/test.js",
