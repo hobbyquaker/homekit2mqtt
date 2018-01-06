@@ -13,8 +13,8 @@
   },
   "scripts": {
     "test": "camo-purge ; xo --space 4 --ignore test/test.js && nyc mocha --exit test/test.js && nyc report --reporter=text-lcov | coveralls --force",
-    "testonly": "mocha test/test.js",
-    "testcov": "nyc mocha test/test.js",
+    "testonly": "mocha --exit test/test.js",
+    "testcov": "nyc mocha --exit test/test.js",
     "lint": " xo --space 4 --ignore test/test.js",
     "lintfix": " xo --space 4 --ignore test/test.js --fix"
   },
