@@ -50,7 +50,7 @@ module.exports = function (iface) {
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
-        
+
         /* istanbul ignore else */
         /* Optional: Status Active */
         if (settings.topic.statusActive) {
@@ -70,7 +70,7 @@ module.exports = function (iface) {
                     .updateCharacteristic(Characteristic.StatusActive, act);
             });
         }
-                
+    
         /* istanbul ignore else */
         /* Optional: Status Fault */
         if (settings.topic.statusFault) {
@@ -80,7 +80,7 @@ module.exports = function (iface) {
                     log.debug('< hap get', settings.name, 'StatusFault');
                     const fault = mqttStatus[settings.topic.statusFault] !== settings.payload.onStatusFault ?
                         Characteristic.StatusFault.NO_FAULT :
-                        Characteristic.StatusFault.GENERAL_FAULT
+                        Characteristic.StatusFault.GENERAL_FAULT;
                     log.debug('> hap re_get', settings.name, 'StatusFault', fault);
                     callback(null, fault);
                 });
@@ -94,7 +94,7 @@ module.exports = function (iface) {
                     .updateCharacteristic(Characteristic.StatusFault, fault);
             });
         }
-        
+
         /* istanbul ignore else */
         /* Optional: Status Tampered */
         if (settings.topic.statusTampered) {
@@ -118,7 +118,6 @@ module.exports = function (iface) {
                     .updateCharacteristic(Characteristic.StatusTampered, tampered);
             });
         }
-
 
         return sensor;
     };
