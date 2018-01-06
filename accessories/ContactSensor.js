@@ -1,11 +1,5 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off", no-negated-condition: "off" */
 
-/* TODO
- this.addOptionalCharacteristic(Characteristic.StatusActive);
- this.addOptionalCharacteristic(Characteristic.StatusFault);
- this.addOptionalCharacteristic(Characteristic.StatusTampered);
- */
-
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
@@ -58,30 +52,6 @@ module.exports = function (iface) {
         }
         
         /* istanbul ignore else */
-        /* Optional: Status Tampered */
-        if (settings.topic.statusTampered) {
-            sensor.getService(Service.ContactSensor, settings.name)
-                .getCharacteristic(Characteristic.StatusTampered)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'StatusTampered');
-                    const tampered = mqttStatus[settings.topic.statusTampered] !== settings.payload.onTampered ?
-                        Characteristic.StatusTampered.NOT_TAMPERED :
-                        Characteristic.StatusTampered.TAMPERED;
-                    log.debug('> hap re_get', settings.name, 'StatusTampered', tampered);
-                    callback(null, tampered);
-                });
-
-            mqttSub(settings.topic.statusTampered, val => {
-                const tampered = val !== settings.payload.onStatusTampered ?
-                    Characteristic.StatusTampered.NOT_TAMPERED :
-                    Characteristic.StatusTampered.TAMPERED;
-                log.debug('> hap update', settings.name, 'StatusTampered', tampered);
-                sensor.getService(Service.ContactSensor)
-                    .updateCharacteristic(Characteristic.StatusTampered, tampered);
-            });
-        }
-        
-        /* istanbul ignore else */
         /* Optional: Status Active */
         if (settings.topic.statusActive) {
             sensor.getService(Service.ContactSensor, settings.name)
@@ -89,23 +59,18 @@ module.exports = function (iface) {
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusActive');
                     const act = mqttStatus[settings.topic.statusActive] !== settings.payload.onStatusActive ? 0 : 1;
-                        
-                        //Characteristic.Active.INACTIVE :
-                        //Characteristic.Active.ACTIVE
                     log.debug('> hap re_get', settings.name, 'StatusActive', act);
                     callback(null, act);
                 });
 
             mqttSub(settings.topic.statusActive, val => {
                 const act = val !== settings.payload.onStatusActive ? 0 : 1;
-                    //Characteristic.Active.INACTIVE :
-                    //Characteristic.Active.ACTIVE;
                 log.debug('> hap update', settings.name, 'StatusActive', act);
                 sensor.getService(Service.ContactSensor)
                     .updateCharacteristic(Characteristic.StatusActive, act);
             });
         }
-        
+                
         /* istanbul ignore else */
         /* Optional: Status Fault */
         if (settings.topic.statusFault) {
@@ -129,6 +94,31 @@ module.exports = function (iface) {
                     .updateCharacteristic(Characteristic.StatusFault, fault);
             });
         }
+        
+        /* istanbul ignore else */
+        /* Optional: Status Tampered */
+        if (settings.topic.statusTampered) {
+            sensor.getService(Service.ContactSensor, settings.name)
+                .getCharacteristic(Characteristic.StatusTampered)
+                .on('get', callback => {
+                    log.debug('< hap get', settings.name, 'StatusTampered');
+                    const tampered = mqttStatus[settings.topic.statusTampered] !== settings.payload.onTampered ?
+                        Characteristic.StatusTampered.NOT_TAMPERED :
+                        Characteristic.StatusTampered.TAMPERED;
+                    log.debug('> hap re_get', settings.name, 'StatusTampered', tampered);
+                    callback(null, tampered);
+                });
+
+            mqttSub(settings.topic.statusTampered, val => {
+                const tampered = val !== settings.payload.onStatusTampered ?
+                    Characteristic.StatusTampered.NOT_TAMPERED :
+                    Characteristic.StatusTampered.TAMPERED;
+                log.debug('> hap update', settings.name, 'StatusTampered', tampered);
+                sensor.getService(Service.ContactSensor)
+                    .updateCharacteristic(Characteristic.StatusTampered, tampered);
+            });
+        }
+
 
         return sensor;
     };
