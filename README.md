@@ -119,12 +119,18 @@ topic
 * statusContactSensorState
 * statusLowBattery (optional)
 * identify (optional)
+* statusTampered (optional)
+* statusActive (optional)
+* statusFault (optional)
 
 payload
 
 * onContactDetected
 * onLowBattery (optional)
 * identify (optional)
+* onTampered (optional)
+* onActive (optional)
+* onFault (optional)
 
 #### Door
 
