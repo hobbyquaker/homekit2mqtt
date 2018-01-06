@@ -36,9 +36,9 @@
       {"name": "onContactDetected"},
       {"name": "onLowBattery", "optional": true},
       {"name": "identify", "optional": true},
-      {"name": "onStatusTampered", "optional": true},
-      {"name": "onStatusActive", "optional": true},
-      {"name": "onStatusFault", "optional": true}
+      {"name": "onTampered", "optional": true},
+      {"name": "onActive", "optional": true},
+      {"name": "onFault", "optional": true}
     ]
   },
   "Door": {

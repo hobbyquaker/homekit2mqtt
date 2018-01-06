@@ -58,13 +58,13 @@ module.exports = function (iface) {
                 .getCharacteristic(Characteristic.StatusActive)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusActive');
-                    const act = mqttStatus[settings.topic.statusActive] !== settings.payload.onStatusActive ? 0 : 1;
+                    const act = mqttStatus[settings.topic.statusActive] !== settings.payload.onActive ? 0 : 1;
                     log.debug('> hap re_get', settings.name, 'StatusActive', act);
                     callback(null, act);
                 });
 
             mqttSub(settings.topic.statusActive, val => {
-                const act = val !== settings.payload.onStatusActive ? 0 : 1;
+                const act = val !== settings.payload.onActive ? 0 : 1;
                 log.debug('> hap update', settings.name, 'StatusActive', act);
                 sensor.getService(Service.ContactSensor)
                     .updateCharacteristic(Characteristic.StatusActive, act);
@@ -78,7 +78,7 @@ module.exports = function (iface) {
                 .getCharacteristic(Characteristic.StatusFault)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusFault');
-                    const fault = mqttStatus[settings.topic.statusFault] !== settings.payload.onStatusFault ?
+                    const fault = mqttStatus[settings.topic.statusFault] !== settings.payload.onFault ?
                         Characteristic.StatusFault.NO_FAULT :
                         Characteristic.StatusFault.GENERAL_FAULT;
                     log.debug('> hap re_get', settings.name, 'StatusFault', fault);
@@ -86,7 +86,7 @@ module.exports = function (iface) {
                 });
 
             mqttSub(settings.topic.statusFault, val => {
-                const fault = val !== settings.payload.onStatusFault ?
+                const fault = val !== settings.payload.onFault ?
                     Characteristic.StatusFault.NO_FAULT :
                     Characteristic.StatusFault.GENERAL_FAULT;
                 log.debug('> hap update', settings.name, 'StatusFault', fault);
@@ -110,7 +110,7 @@ module.exports = function (iface) {
                 });
 
             mqttSub(settings.topic.statusTampered, val => {
-                const tampered = val !== settings.payload.onStatusTampered ?
+                const tampered = val !== settings.payload.onTampered ?
                     Characteristic.StatusTampered.NOT_TAMPERED :
                     Characteristic.StatusTampered.TAMPERED;
                 log.debug('> hap update', settings.name, 'StatusTampered', tampered);
