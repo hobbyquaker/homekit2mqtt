@@ -70,7 +70,7 @@ module.exports = function (iface) {
                     .updateCharacteristic(Characteristic.StatusActive, act);
             });
         }
-    
+
         /* istanbul ignore else */
         /* Optional: Status Fault */
         if (settings.topic.statusFault) {
