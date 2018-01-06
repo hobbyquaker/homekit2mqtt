@@ -42,11 +42,17 @@
     "name": "ContactSensor",
     "topic": {
       "statusContactSensorState": "ContactSensor/status",
-      "statusLowBattery": "ContactSensor/status/LowBattery"
+      "statusLowBattery": "ContactSensor/status/LowBattery",
+      "statusActive": "ContactSensor/status/Active",
+      "statusFault": "ContactSensor/status/Fault",
+      "statusTampered": "ContactSensor/status/Tampered"
     },
     "payload": {
       "onContactDetected": 0,
-      "onLowBattery": 1
+      "onLowBattery": 1,
+      "onActive": 1,
+      "onFault": 1,
+      "onTampered": 1
     },
     "manufacturer": "Generic",
     "model": "ContactSensor"

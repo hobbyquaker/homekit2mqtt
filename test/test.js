@@ -524,6 +524,9 @@ describe('Lightbulb Brightness', () => {
     });
 
 });
+
+
+
 /* TODO iid.Lightbulb.ColorTemperature undefined...
 describe('Lightbulb ColorTemperature', () => {
 
@@ -593,6 +596,8 @@ describe('Lightbulb ColorTemperature', () => {
 
 });
 */
+
+
 describe('Lightbulb Saturation', () => {
 
 
@@ -876,6 +881,8 @@ describe('TemperatureSensor Fahrenheit', () => {
     });
 });
 
+
+
 describe('ContactSensor ContactSensorState', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(36000);
@@ -910,6 +917,11 @@ describe('ContactSensor ContactSensorState', () => {
 });
 
 testLowBattery('ContactSensor');
+testActive('ContactSensor');
+testFault('ContactSensor');
+testTampered('ContactSensor');
+
+
 
 describe('MotionSensor MotionSensorState', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
@@ -2423,6 +2435,7 @@ describe('StatelessProgrammableSwitch', () => {
 
 
 
+
 function testLowBattery(name) {
     describe(name + ' StatusLowBattery', function () {
 
@@ -2451,6 +2464,115 @@ function testLowBattery(name) {
         it('client should get the status of ' + name, function (done) {
             this.timeout(36000);
             cp.exec(clientCmd + ' get --aid ' + aid[name] + ' --iid ' + iid[name].StatusLowBattery, (err, stdout, stderr) => {
+                if (stdout === '0\n') {
+                    done();
+                }
+            });
+        });
+    });
+}
+
+
+function testActive(name) {
+    describe(name + ' StatusActive', function () {
+
+        it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+            this.timeout(36000);
+            subscribe('homekit', new RegExp('hap update ' + name + ' StatusActive true'), () => {
+                done();
+            });
+            mqtt.publish(name + '/status/Active', '{"val":1}');
+        });
+        it('client should get the status of the ' + name, function (done) {
+            this.timeout(36000);
+            cp.exec(clientCmd + ' get --aid ' + aid[name] + ' --iid ' + iid[name].StatusActive, (err, stdout, stderr) => {
+                if (stdout === 'true\n') {
+                    done();
+                }
+            });
+        });
+        it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+            this.timeout(36000);
+            subscribe('homekit', new RegExp('hap update ' + name + ' StatusActive false'), () => {
+                done();
+            });
+            mqtt.publish(name + '/status/Active', '{"val":0}');
+        });
+        it('client should get the status of ' + name, function (done) {
+            this.timeout(36000);
+            cp.exec(clientCmd + ' get --aid ' + aid[name] + ' --iid ' + iid[name].StatusActive, (err, stdout, stderr) => {
+                if (stdout === 'false\n') {
+                    done();
+                }
+            });
+        });
+    });
+}
+
+function testFault(name) {
+    describe(name + ' StatusFault', function () {
+
+        it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+            this.timeout(36000);
+            subscribe('homekit', new RegExp('hap update ' + name + ' StatusFault 1'), () => {
+                done();
+            });
+            mqtt.publish(name + '/status/Fault', '{"val":1}');
+        });
+        it('client should get the status of the ' + name, function (done) {
+            this.timeout(36000);
+            cp.exec(clientCmd + ' get --aid ' + aid[name] + ' --iid ' + iid[name].StatusFault, (err, stdout, stderr) => {
+                if (stdout === '1\n') {
+                    done();
+                }
+            });
+        });
+        it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+            this.timeout(36000);
+            subscribe('homekit', new RegExp('hap update ' + name + ' StatusFault 0'), () => {
+                done();
+            });
+            mqtt.publish(name + '/status/Fault', '{"val":0}');
+        });
+        it('client should get the status of ' + name, function (done) {
+            this.timeout(36000);
+            cp.exec(clientCmd + ' get --aid ' + aid[name] + ' --iid ' + iid[name].StatusFault, (err, stdout, stderr) => {
+                if (stdout === '0\n') {
+                    done();
+                }
+            });
+        });
+    });
+}
+
+function testTampered(name) {
+    describe(name + ' StatusTampered', function () {
+
+        it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+            this.timeout(36000);
+            subscribe('homekit', new RegExp('hap update ' + name + ' StatusTampered 1'), () => {
+                done();
+            });
+            mqtt.publish(name + '/status/Tampered', '{"val":1}');
+        });
+        it('client should get the status of the ' + name, function (done) {
+            this.timeout(36000);
+            cp.exec(clientCmd + ' get --aid ' + aid[name] + ' --iid ' + iid[name].StatusTampered, (err, stdout, stderr) => {
+                if (stdout === '1\n') {
+                    done();
+                }
+            });
+        });
+        it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+            this.timeout(36000);
+            subscribe('homekit', new RegExp('hap update ' + name + ' StatusTampered 0'), () => {
+                done();
+            });
+            mqtt.publish(name + '/status/Tampered', '{"val":0}');
+        });
+        it('client should get the status of ' + name, function (done) {
+            this.timeout(36000);
+            cp.exec(clientCmd + ' get --aid ' + aid[name] + ' --iid ' + iid[name].StatusTampered, (err, stdout, stderr) => {
                 if (stdout === '0\n') {
                     done();
                 }
