@@ -3,12 +3,18 @@
     "topic": [
       {"name": "statusCarbonDioxideDetected"},
       {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "identify", "optional": true},
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {"name": "onCarbonDioxideDetected"},
       {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "identify", "optional": true},
+      {"name": "onTampered", "optional": true},
+      {"name": "onActive", "optional": true},
+      {"name": "onFault", "optional": true}
     ]
   },
   "CarbonMonoxideSensor": {

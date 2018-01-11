@@ -6,11 +6,17 @@
     "name": "CarbonDioxideSensor",
     "topic": {
       "statusCarbonDioxideDetected": "CarbonDioxideSensor/status",
-      "statusLowBattery": "CarbonDioxideSensor/status/LowBattery"
+      "statusLowBattery": "CarbonDioxideSensor/status/LowBattery",
+      "statusActive": "CarbonDioxideSensor/status/Active",
+      "statusFault": "CarbonDioxideSensor/status/Fault",
+      "statusTampered": "CarbonDioxideSensor/status/Tampered"
     },
     "payload": {
       "onCarbonDioxideDetected": 1,
-      "onLowBattery": 1
+      "onLowBattery": 1,
+      "onActive": 1,
+      "onFault": 1,
+      "onTampered": 1
     },
     "manufacturer": "Generic",
     "model": "CarbonDioxideSensor"

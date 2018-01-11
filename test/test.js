@@ -1096,6 +1096,9 @@ describe('CarbonDioxideSensor CarbonDioxideSensorState', () => {
 });
 
 testLowBattery('CarbonDioxideSensor');
+testActive('CarbonDioxideSensor');
+testFault('CarbonDioxideSensor');
+testTampered('CarbonDioxideSensor');
 
 describe('LeakSensor LeakSensorState', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
