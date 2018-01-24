@@ -49,7 +49,7 @@ module.exports = function (iface) {
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
-        
+
         /* istanbul ignore else */
         /* Optional: Status Active */
         if (settings.topic.statusActive) {
@@ -117,7 +117,6 @@ module.exports = function (iface) {
                     .updateCharacteristic(Characteristic.StatusTampered, tampered);
             });
         }
-
 
         return sensor;
     };
