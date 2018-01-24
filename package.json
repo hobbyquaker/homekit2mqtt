@@ -1,6 +1,6 @@
 {
   "name": "homekit2mqtt",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "description": "HomeKit to MQTT bridge",
   "main": "index.js",
   "bin": {
@@ -40,6 +40,7 @@
     "hap-nodejs": "0.4.40",
     "jquery": "^3.2.1",
     "mqtt": "^2.9.3",
+    "popper.js": "^1.12.9",
     "yalm": "^4.0.2",
     "yargs": "^11.0.0"
   },
