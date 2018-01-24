@@ -91,12 +91,18 @@ topic
 * statusCarbonDioxideDetected
 * statusLowBattery (optional)
 * identify (optional)
+* statusTampered (optional)
+* statusActive (optional)
+* statusFault (optional)
 
 payload
 
 * onCarbonDioxideDetected
 * onLowBattery (optional)
 * identify (optional)
+* onTampered (optional)
+* onActive (optional)
+* onFault (optional)
 
 #### CarbonMonoxideSensor
 
