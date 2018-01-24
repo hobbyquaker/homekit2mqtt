@@ -529,7 +529,7 @@ $(document).ready(() => {
     $(window).resize(resizeGrid);
 
     function resizeGrid() {
-        const height = $(window).height() - 118;
+        const height = $(window).height() - 128;
         const width = $(window).width() - 14;
         $gridServices
             .jqGrid('setGridWidth', width)
