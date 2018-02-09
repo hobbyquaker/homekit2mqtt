@@ -18,7 +18,7 @@
     "lint": " xo --ignore test/test.js",
     "lintfix": " xo --ignore test/test.js --fix"
   },
-  "author": "Sebastian 'hobbyquaker' Raff <hq@ccu.io> (https://github.com/hobbyquaker)",
+  "author": "Sebastian 'hobbyquaker' Raff <hobbyquaker@gmail.com> (https://github.com/hobbyquaker)",
   "contributors": [
     "Anders Eriksson https://github.com/tvillingett",
     "zino4u https://github.com/zino4u",
@@ -37,7 +37,7 @@
     "express-basic-auth": "^1.1.2",
     "font-awesome": "^4.7.0",
     "free-jqgrid": "^4.14.1",
-    "hap-nodejs": "0.4.40",
+    "hap-nodejs": "0.4.41",
     "jquery": "^3.2.1",
     "mqtt": "^2.9.3",
     "popper.js": "^1.12.9",
