@@ -46,6 +46,8 @@ select.payload {
     margin-left: 16px !important;
     border-top-left-radius: 0px !important;
     border-bottom-left-radius: 0px !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 
 }
 

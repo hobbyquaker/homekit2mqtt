@@ -472,8 +472,8 @@ $(document).ready(() => {
         s.topic.forEach(t => {
             $configuration.append(`
                <div class="form-group row">
-                   <label for="topic-${t.name}" class="col-sm-3 col-form-label">${t.name}</label>
-                   <div class="col-sm-9">
+                   <label for="topic-${t.name}" class="col-sm-4 col-form-label">${t.name}</label>
+                   <div class="col-sm-8">
                        <input type="text" class="form-control topic" id="topic-${t.name}" data-topic="${t.name}" autocomplete="off">
                    </div>
                </div>`);
@@ -488,8 +488,8 @@ $(document).ready(() => {
             s.payload.forEach(p => {
                 $configuration.append(`
                    <div class="form-group row">
-                       <label for="payload-${p.name}" class="col-sm-3 col-form-label">${p.name}</label>
-                       <div id="payload-input-${p.name}" class="col-sm-9"></div>
+                       <label for="payload-${p.name}" class="col-sm-4 col-form-label">${p.name}</label>
+                       <div id="payload-input-${p.name}" class="col-sm-8"></div>
                    </div>`);
                 createPayloadInput(p, $('#payload-input-' + p.name));
             });
