@@ -9,6 +9,8 @@ const config = require('yargs')
     .describe('p', 'port homekit2mqtt is listening on')
     .describe('w', 'port webserver is listening on')
     .describe('x', 'disable webserver')
+    .describe('disable-json-parse', 'disable json parsing of received mqtt payloads')
+    .boolean('disable-json-parse')
     .describe('h', 'show help')
     .alias({
         h: 'help',

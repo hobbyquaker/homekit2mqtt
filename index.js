@@ -60,30 +60,42 @@ mqtt.on('error', err => {
     log.error('mqtt error ' + err);
 });
 
+function typeGuess(payload) {
+    let state;
+    // Nasty type guessing.
+    // TODO clarify Do we really want/need to cast the strings "true" and "false" to bool? https://github.com/hobbyquaker/homekit2mqtt/issues/66
+    if (payload === 'true') {
+        state = true;
+    } else if (payload === 'false') {
+        state = false;
+    } else if (isNaN(payload)) {
+        state = payload;
+    } else {
+        state = parseFloat(payload);
+    }
+    return state;
+}
+
 mqtt.on('message', (topic, payload) => {
     payload = payload.toString();
     let state;
-    try {
-        // Todo - check for json objects in a less nasty way ;)
-        if (payload.indexOf('{') === -1) {
-            throw new Error('not an object');
-        } // We have no use for arrays here.
-        // We got an Object - let's hope it follows mqtt-smarthome architecture and has an attribute "val"
-        // see https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/Architecture.md
-        state = JSON.parse(payload).val;
-    } catch (err) {
-        // Nasty type guessing.
-        // Do we really need to cast the strings "true" and "false" to bool?
-        if (payload === 'true') {
-            state = true;
-        } else if (payload === 'false') {
-            state = false;
-        } else if (isNaN(payload)) {
-            state = payload;
-        } else {
-            state = parseFloat(payload);
+    if (payload.indexOf('{') === -1 || config.disableJsonParse) {
+        state = typeGuess(payload);
+    } else {
+        try {
+            // We got an Object - let's hope it follows mqtt-smarthome architecture and has an attribute "val"
+            // see https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/Architecture.md
+            state = JSON.parse(payload).val;
+            // TODO make attribute configurable to support non-mqtt-smarthome json payloads https://github.com/hobbyquaker/homekit2mqtt/issues/67
+            if (typeof state === 'undefined') {
+                // :-( there is no "val" attribute
+                throw new TypeError('attribute val undefined');
+            }
+        } catch (err) {
+            state = typeGuess(payload);
         }
     }
+
     log.debug('< mqtt', topic, state);
     mqttStatus[topic] = state;
     /* istanbul ignore else */
