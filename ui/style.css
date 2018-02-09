@@ -31,14 +31,21 @@ span.fa {
 }
 
 .input-group .payload-type {
+    width: 120px;
     z-index: 10000;
 }
 
-.input-group .payload {
-    margin-left: -4px;
-    width: calc(100% + 4px);
+input.payload {
+    margin-left: 16px !important;
     border-top-right-radius: 4px !important;
     border-bottom-right-radius: 4px !important;
+
+}
+
+select.payload {
+    margin-left: 16px !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
 
 }
 
@@ -54,4 +61,12 @@ span.fa {
 
 .typeahead {
     z-index: 100000;
+}
+
+tr.jqgrow[aria-selected='true'] td {
+    background-color: var(--blue);
+}
+
+.col-form-label {
+    font-size: 0.90em !important;
 }
