@@ -38,6 +38,35 @@ Object.keys(services).forEach(s => {
         }
         output += '\n';
     });
+
+    output += '\n';
+
+    if (services[s].config) {
+        output += 'config\n\n';
+        services[s].config.forEach(c => {
+            output += '* ' + c.name + ' ';
+            if (c.optional) {
+                output += '(optional';
+            }
+            if (c.default) {
+                output += ', default: `' + c.default + '`)';
+            } else if (c.optional) {
+                output += ')';
+            }
+            if (c.enum) {
+                output += '\n  ';
+                c.enum.forEach((o, i) => {
+                    output += (i > 0 ? ', ' : '') + i + ' = ' + o;
+                });
+            }
+            if (c.desc) {
+                output += '    \n  ' + c.desc;
+            }
+            output += '\n';
+        });
+        output += '\n';
+    }
+
     output += '\n';
 });
 

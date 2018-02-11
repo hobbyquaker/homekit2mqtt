@@ -376,7 +376,7 @@
       {"name": "inUseTrue", "optional": true, "default": true}
     ],
     "config": [
-      {"name": "valveType", "enum": ["GENERIC_VALVE", "IRRIGATION", "SHOWER_HEAD", "WATER_FAUCET"]}
+      {"name": "valveType", "optional": true, "default": "0", "enum": ["GENERIC_VALVE", "IRRIGATION", "SHOWER_HEAD", "WATER_FAUCET"]}
     ]
   },
   "Window": {

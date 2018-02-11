@@ -104,6 +104,7 @@ payload
 * onActive (optional)
 * onFault (optional)
 
+
 #### CarbonMonoxideSensor
 
 topic
@@ -117,6 +118,7 @@ payload
 * onCarbonMonoxideDetected
 * onLowBattery (optional)
 * identify (optional)
+
 
 #### ContactSensor
 
@@ -138,6 +140,7 @@ payload
 * onActive (optional)
 * onFault (optional)
 
+
 #### Door
 
 topic
@@ -158,6 +161,7 @@ payload
 * onObstructionDetected (optional)
 * identify (optional)
 
+
 #### Doorbell
 
 topic
@@ -168,6 +172,7 @@ topic
 payload
 
 * identify (optional)
+
 
 #### Fan
 
@@ -189,6 +194,22 @@ payload
 * rotationDirectionClockwise (optional)
 * rotationSpeedFactor (optional, default: `1`)
 * identify (optional)
+
+
+#### Faucet
+
+topic
+
+* setActive
+* statusActive (optional)
+* statusFault (optional)
+
+payload
+
+* activeTrue (optional, default: `true`)
+* activeFalse (optional)
+* faultTrue (optional, default: `true`)
+
 
 #### GarageDoorOpener
 
@@ -213,6 +234,7 @@ payload
 * lockSecured (optional)
 * identify (optional)
 
+
 #### HumiditySensor
 
 topic
@@ -225,6 +247,26 @@ payload
 
 * onLowBattery (optional)
 * identify (optional)
+
+
+#### IrrigationSystem
+
+topic
+
+* setActive
+* statusActive
+* statusFault (optional)
+* statusInUse
+* statusRemainingDuration
+* statusProgramMode
+
+payload
+
+* activeTrue (optional, default: `true`)
+* activeFalse (optional)
+* faultTrue (optional, default: `true`)
+* inUseTrue (optional, default: `true`)
+
 
 #### LeakSensor
 
@@ -239,6 +281,7 @@ payload
 * onLeakDetected
 * onLowBattery (optional)
 * identify (optional)
+
 
 #### Lightbulb
 
@@ -265,6 +308,7 @@ payload
 * saturationFactor (optional, default: `1`)
 * identify (optional)
 
+
 #### LightSensor
 
 topic
@@ -279,6 +323,7 @@ payload
 * onLowBattery (optional)
 * identify (optional)
 
+
 #### LockMechanism
 
 topic
@@ -291,6 +336,7 @@ payload
 
 * lockSecured
 * identify (optional)
+
 
 #### Microphone
 
@@ -309,6 +355,7 @@ payload
 * volumeFactor (optional, default: `1`)
 * identify (optional)
 
+
 #### MotionSensor
 
 topic
@@ -323,6 +370,7 @@ payload
 * onLowBattery (optional)
 * identify (optional)
 
+
 #### OccupancySensor
 
 topic
@@ -336,6 +384,7 @@ payload
 * onOccupancyDetected
 * onLowBattery (optional)
 * identify (optional)
+
 
 #### Outlet
 
@@ -353,6 +402,7 @@ payload
 * onOutletInUse
 * identify (optional)
 
+
 #### SecuritySystem
 
 topic
@@ -364,6 +414,7 @@ topic
 payload
 
 * identify (optional)
+
 
 #### SmokeSensor
 
@@ -378,6 +429,7 @@ payload
 * onSmokeDetected
 * onLowBattery (optional)
 * identify (optional)
+
 
 #### Speaker
 
@@ -396,6 +448,7 @@ payload
 * volumeFactor, default: `1`)
 * identify (optional)
 
+
 #### StatelessProgrammableSwitch
 
 topic
@@ -406,6 +459,7 @@ topic
 payload
 
 * identify (optional)
+
 
 #### Switch
 
@@ -421,6 +475,7 @@ payload
 * onTrue
 * identify (optional)
 
+
 #### TemperatureSensor
 
 topic
@@ -435,6 +490,7 @@ payload
   Set to true if your sensor publishes values in degree fahrenheit
 * onLowBattery (optional)
 * identify (optional)
+
 
 #### Thermostat
 
@@ -462,6 +518,31 @@ payload
 
 * identify (optional)
 
+
+#### Valve
+
+topic
+
+* setActive
+* statusActive
+* statusFault (optional)
+* statusInUse
+* statusRemainingDuration (optional)
+* setDuration (optional)
+
+payload
+
+* activeTrue (optional, default: `true`)
+* activeFalse (optional)
+* faultTrue (optional, default: `true`)
+* inUseTrue (optional, default: `true`)
+
+config
+
+* valveType (optional, default: `0`)
+  0 = GENERIC_VALVE, 1 = IRRIGATION, 2 = SHOWER_HEAD, 3 = WATER_FAUCET
+
+
 #### Window
 
 topic
@@ -482,6 +563,7 @@ payload
 * onObstructionDetected (optional)
 * identify (optional)
 
+
 #### WindowCovering
 
 topic
@@ -499,6 +581,7 @@ payload
 * positionStatusDecreasing (optional)
 * positionStatusIncreasing (optional)
 * identify (optional)
+
 
 
 ## License
