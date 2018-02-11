@@ -3,8 +3,6 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
 
-    // TODO implement
-
     /*
     // Required Characteristics
     this.addCharacteristic(Characteristic.Active);
@@ -14,8 +12,69 @@ module.exports = function (iface) {
     this.addOptionalCharacteristic(Characteristic.StatusFault);
     */
 
-    return function createAccessory_AirQualitySensor(settings) {
-        throw new Error('Service Faucet not yet implemented');
+    return function createAccessory_Faucet(settings) {
+        const faucet = newAccessory(settings);
+
+        if (typeof settings.payload.activeTrue === 'undefined') {
+            settings.payload.activeTrue = true;
+        }
+
+        if (typeof settings.payload.activeFalse === 'undefined') {
+            settings.payload.activeFalse = false;
+        }
+
+        if (typeof settings.payload.faultTrue === 'undefined') {
+            settings.payload.faultTrue = true;
+        }
+
+        faucet.addService(Service.Faucet, settings.name)
+            .getCharacteristic(Characteristic.Active)
+            .on('set', (value, callback) => {
+                log.debug('< hap set', settings.name, 'Active', value);
+                const active = value ? settings.payload.activeTrue : settings.payload.activeFalse;
+                log.debug('> mqtt', settings.topic.setActive, active);
+                mqttPub(settings.topic.setActive, active);
+                callback();
+            });
+
+        /* istanbul ignore else  */
+        if (settings.topic.statusActive) {
+            mqttSub(settings.topic.statusActive, val => {
+                log.debug('< mqtt', settings.topic.statusActive, val);
+                const active = mqttStatus[settings.topic.statusActive] === settings.payload.activeTrue ? 1 : 0;
+                log.debug('> hap update', settings.name, 'Active', active);
+                faucet.getService(Service.Faucet)
+                    .updateCharacteristic(Characteristic.Active, active);
+            });
+            faucet.getService(Service.Faucet)
+                .getCharacteristic(Characteristic.Active)
+                .on('get', callback => {
+                    log.debug('< hap get', settings.name, 'Active');
+                    const active = mqttStatus[settings.topic.statusActive] === settings.payload.activeTrue ? 1 : 0;
+                    log.debug('> hap re_get', settings.name, 'Active', active);
+                    callback(null, active);
+                });
+        }
+
+        /* istanbul ignore else  */
+        if (settings.topic.statusFault) {
+            mqttSub(settings.topic.statusFault, val => {
+                log.debug('< mqtt', settings.topic.statusFault, val);
+                const fault = mqttStatus[settings.topic.statusFault] === settings.payload.faultTrue ? 1 : 0;
+                log.debug('> hap update', settings.name, 'StatusFault', fault);
+                faucet.getService(Service.Faucet)
+                    .updateCharacteristic(Characteristic.StatusFault, fault);
+            });
+            faucet.getService(Service.Faucet)
+                .getCharacteristic(Characteristic.StatusFault)
+                .on('get', callback => {
+                    log.debug('< hap get', settings.name, 'StatusFault');
+                    const fault = mqttStatus[settings.topic.statusFault] === settings.payload.faultTrue ? 1 : 0;
+                    log.debug('> hap re_get', settings.name, 'StatusFault', fault);
+                    callback(null, fault);
+                });
+        }
+
+        return faucet;
     };
 };
-

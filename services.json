@@ -93,6 +93,18 @@
       {"name": "identify", "optional": true, "optional": true}
     ]
   },
+  "Faucet": {
+    "topic": [
+      {"name": "setActive"},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
+    ],
+    "payload": [
+      {"name": "activeTrue", "optional": true, "default": true},
+      {"name": "activeFalse", "optional": true, "default": false},
+      {"name": "faultTrue", "optional": true, "default": true}
+    ]
+  },
   "GarageDoorOpener": {
     "topic": [
       {"name": "setDoor"},
