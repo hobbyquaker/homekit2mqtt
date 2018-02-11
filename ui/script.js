@@ -333,6 +333,15 @@ $(document).ready(() => {
                     }
                 });
             }
+
+            if (s.config) {
+                result.config = {};
+                s.config.forEach(c => {
+                    const val = $.trim($('#config-' + c.name).val());
+                    result.config[c.name] = val;
+                });
+            }
+
             if (!config[id]) {
                 config[id] = {};
             }
@@ -419,6 +428,13 @@ $(document).ready(() => {
             }
         });
 
+        Object.keys(s.config).forEach(c => {
+            console.log(c, s.config[c]);
+            if (typeof s.config[c] !== 'undefined') {
+                $('#config-' + c).val(s.config[c]);
+            }
+        });
+
         $('#manufacturer').val(s.manufacturer);
         $('#model').val(s.model);
         $('#serial').val(s.serial);
@@ -494,6 +510,34 @@ $(document).ready(() => {
                 createPayloadInput(p, $('#payload-input-' + p.name));
             });
         }
+
+        if (s.config && s.config.length > 0) {
+            $configuration.append('<h4>Configuration</h4>');
+            s.config.forEach(c => {
+                $configuration.append(`
+                   <div class="form-group row">
+                       <label for="config-${c.name}" class="col-sm-4 col-form-label">${c.name}</label>
+                       <div id="config-input-${c.name}" class="col-sm-8"></div>
+                   </div>`);
+                createConfigInput(c, $('#config-input-' + c.name));
+            });
+        }
+    }
+
+    function createConfigInput(c, $elem) {
+        let html = '<div>';
+        if (c.enum) {
+            html += `<select id="config-${c.name}" class="config-enum form-control">`;
+            c.enum.forEach((o, i) => {
+                html += `<option value="${i}">${o}</option>`;
+            });
+            html += '</select>';
+        } else {
+
+
+        }
+        html += '</div>';
+        $elem.append(html);
     }
 
     function createPayloadInput(p, $elem) {
