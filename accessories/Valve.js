@@ -14,6 +14,12 @@ module.exports = function (iface) {
     this.addCharacteristic(Characteristic.InUse);
     this.addCharacteristic(Characteristic.ValveType);
 
+    // The value property of ValveType must be one of the following:
+    Characteristic.ValveType.GENERIC_VALVE = 0;
+    Characteristic.ValveType.IRRIGATION = 1;
+    Characteristic.ValveType.SHOWER_HEAD = 2;
+    Characteristic.ValveType.WATER_FAUCET = 3;
+
     // Optional Characteristics
     this.addOptionalCharacteristic(Characteristic.SetDuration);
     this.addOptionalCharacteristic(Characteristic.RemainingDuration);
