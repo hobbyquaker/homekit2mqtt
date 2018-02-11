@@ -46,7 +46,6 @@ module.exports = function (iface) {
             settings.payload.activeFalse = false;
         }
 
-
         valve.addService(Service.Valve, settings.name)
             .getCharacteristic(Characteristic.Active)
             .on('set', (value, callback) => {
@@ -81,7 +80,6 @@ module.exports = function (iface) {
                 });
         }
 
-
         mqttSub(settings.topic.statusInUse, val => {
             log.debug('< mqtt', settings.topic.statusInUse, val);
             const inUse = mqttStatus[settings.topic.statusInUse] === settings.payload.inUseTrue ? 1 : 0;
@@ -98,8 +96,6 @@ module.exports = function (iface) {
                 callback(null, inUse);
             });
 
-
-
         if (settings.topic.setDuration) {
             valve.getService(Service.Valve, settings.name)
                 .getCharacteristic(Characteristic.SetDuration)
@@ -110,7 +106,6 @@ module.exports = function (iface) {
                     callback();
                 });
         }
-
 
         /* istanbul ignore else  */
         if (settings.topic.statusRemainingDuration) {
@@ -151,5 +146,5 @@ module.exports = function (iface) {
         }
 
         return valve;
-    }
+    };
 };

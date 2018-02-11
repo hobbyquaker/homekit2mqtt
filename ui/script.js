@@ -532,9 +532,6 @@ $(document).ready(() => {
                 html += `<option value="${i}">${o}</option>`;
             });
             html += '</select>';
-        } else {
-
-
         }
         html += '</div>';
         $elem.append(html);

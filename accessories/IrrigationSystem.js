@@ -15,7 +15,6 @@ module.exports = function (iface) {
   this.addOptionalCharacteristic(Characteristic.StatusFault);
      */
 
-
     return function createAccessory_IrrigationSystem(settings) {
         const irrigation = newAccessory(settings);
 
@@ -34,7 +33,6 @@ module.exports = function (iface) {
         if (typeof settings.payload.activeFalse === 'undefined') {
             settings.payload.activeFalse = false;
         }
-
 
         irrigation.addService(Service.IrrigationSystem, settings.name)
             .getCharacteristic(Characteristic.Active)
