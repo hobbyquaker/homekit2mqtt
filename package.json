@@ -1,6 +1,6 @@
 {
   "name": "homekit2mqtt",
-  "version": "0.7.8",
+  "version": "0.7.9",
   "description": "HomeKit to MQTT bridge",
   "main": "index.js",
   "bin": {
