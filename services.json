@@ -137,6 +137,22 @@
       {"name": "identify", "optional": true}
     ]
   },
+  "IrrigationSystem": {
+    "topic": [
+      {"name": "setActive"},
+      {"name": "statusActive"},
+      {"name": "statusFault", "optional": true},
+      {"name": "statusInUse"},
+      {"name": "statusRemainingDuration"},
+      {"name": "statusProgramMode"}
+    ],
+    "payload": [
+      {"name": "activeTrue", "optional": true, "default": true},
+      {"name": "activeFalse", "optional": true, "default": false},
+      {"name": "faultTrue", "optional": true, "default": true},
+      {"name": "inUseTrue", "optional": true, "default": true}
+    ]
+  },
   "LeakSensor": {
     "topic": [
       {"name": "statusLeakDetected"},
@@ -342,6 +358,25 @@
     ],
     "payload": [
       {"name": "identify", "optional": true}
+    ]
+  },
+  "Valve": {
+    "topic": [
+      {"name": "setActive"},
+      {"name": "statusActive"},
+      {"name": "statusFault", "optional": true},
+      {"name": "statusInUse"},
+      {"name": "statusRemainingDuration", "optional": true},
+      {"name": "setDuration", "optional": true}
+    ],
+    "payload": [
+      {"name": "activeTrue", "optional": true, "default": true},
+      {"name": "activeFalse", "optional": true, "default": false},
+      {"name": "faultTrue", "optional": true, "default": true},
+      {"name": "inUseTrue", "optional": true, "default": true}
+    ],
+    "config": [
+      {"name": "valveType", "enum": ["GENERIC_VALVE", "IRRIGATION", "SHOWER_HEAD", "WATER_FAUCET"]}
     ]
   },
   "Window": {
