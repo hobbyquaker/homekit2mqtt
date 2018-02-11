@@ -8,10 +8,10 @@ module.exports = function (iface) {
 
         sw.addService(Service.StatelessProgrammableSwitch, settings.name);
 
-        mqttSub(settings.topic.statusEvent, () => {
-            log.debug('> hap set', settings.name, 'ProgrammableSwitchEvent', 1);
+        mqttSub(settings.topic.statusEvent, val => {
+            log.debug('> hap set', settings.name, 'ProgrammableSwitchEvent', val);
             sw.getService(Service.StatelessProgrammableSwitch)
-                .setCharacteristic(Characteristic.ProgrammableSwitchEvent, 1);
+                .setCharacteristic(Characteristic.ProgrammableSwitchEvent, val);
         });
 
         return sw;
