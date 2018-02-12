@@ -23,6 +23,36 @@ module.exports = function (iface) {
      */
 
     return function createAccessory_BatteryService(settings) {
-        throw new Error('Service BatteryService not yet implemented');
+        const bat = newAccessory(settings);
+
+        bat.addService(Service.BatteryService);
+            /*
+            .getCharacteristic(Characteristic.BatteryLevel)
+            .on('get', callback => {
+                log.debug('< hap get', settings.name, 'BatteryLevel');
+                const level = mqttStatus[settings.topic.statusBatteryLevel];
+                log.debug('> hap re_get', settings.name, 'BatteryLevel', level);
+                callback(null, level);
+            });
+            */
+
+        mqttSub(settings.topic.statusBatteryLevel, val => {
+            log.debug('> hap update', settings.name, 'BatteryLevel', val);
+            bat.getService(Service.BatteryService)
+                .updateCharacteristic(Characteristic.BatteryLevel, val);
+        });
+
+        mqttSub(settings.topic.statusChargingState, val => {
+            log.debug('> hap update', settings.name, 'ChargingState', val);
+            bat.getService(Service.BatteryService)
+                .updateCharacteristic(Characteristic.ChargingState, val);
+        });
+
+        mqttSub(settings.topic.statusLowBattery, val => {
+            val = (val === settings.payload.onLowBattery) ? 1 : 0;
+            log.debug('> hap update', settings.name, 'StatusLowBattery', val);
+            bat.getService(Service.BatteryService)
+                .updateCharacteristic(Characteristic.StatusLowBattery, val);
+        });
     };
 };

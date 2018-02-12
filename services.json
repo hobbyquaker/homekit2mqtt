@@ -1,4 +1,14 @@
 {
+  "BatteryService": {
+    "topic": [
+      {"name": "statusBatteryLevel", "desc": "Percentage 0-100"},
+      {"name": "statusChargingState", "desc": "0 = NOT_CHARGING, 1 = CHARGING, 2 = NOT_CHARGEABLE"},
+      {"name": "statusLowBattery"}
+    ],
+    "payload": [
+      {"name": "onLowBattery"}
+    ]
+  },
   "CarbonDioxideSensor": {
     "topic": [
       {"name": "statusCarbonDioxideDetected"},
