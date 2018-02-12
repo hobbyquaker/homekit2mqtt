@@ -6,7 +6,7 @@ module.exports = function (iface) {
     return function createAccessory_OccupancySensor(settings) {
         const sensor = newAccessory(settings);
 
-        sensor.addService(Service.OccupancySensor, settings.name)
+        sensor.addService(Service.OccupancySensor)
             .getCharacteristic(Characteristic.OccupancyDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'OccupancyDetected');
@@ -29,7 +29,7 @@ module.exports = function (iface) {
 
 	/* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            sensor.getService(Service.OccupancySensor, settings.name)
+            sensor.getService(Service.OccupancySensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');

@@ -46,7 +46,7 @@ module.exports = function (iface) {
             settings.payload.activeFalse = false;
         }
 
-        valve.addService(Service.Valve, settings.name)
+        valve.addService(Service.Valve)
             .getCharacteristic(Characteristic.Active)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'Active', value);
@@ -94,7 +94,7 @@ module.exports = function (iface) {
             });
 
         if (settings.topic.setDuration) {
-            valve.getService(Service.Valve, settings.name)
+            valve.getService(Service.Valve)
                 .getCharacteristic(Characteristic.SetDuration)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'SetDuration', value);

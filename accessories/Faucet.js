@@ -27,7 +27,7 @@ module.exports = function (iface) {
             settings.payload.faultTrue = true;
         }
 
-        faucet.addService(Service.Faucet, settings.name)
+        faucet.addService(Service.Faucet)
             .getCharacteristic(Characteristic.Active)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'Active', value);

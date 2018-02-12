@@ -6,7 +6,7 @@ module.exports = function (iface) {
     return function createAccessory_WindowCovering(settings) {
         const shutter = newAccessory(settings);
 
-        shutter.addService(Service.WindowCovering, settings.name)
+        shutter.addService(Service.WindowCovering)
             .getCharacteristic(Characteristic.TargetPosition)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'TargetPosition', value);

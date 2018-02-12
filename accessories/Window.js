@@ -18,7 +18,7 @@ module.exports = function (iface) {
     return function createAccessory_Window(settings) {
         const acc = newAccessory(settings);
 
-        acc.addService(Service.Window, settings.name)
+        acc.addService(Service.Window)
             .getCharacteristic(Characteristic.TargetPosition)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'TargetPosition', value);
@@ -103,7 +103,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusObstruction) {
-            acc.getService(Service.Window, settings.name)
+            acc.getService(Service.Window)
                 .getCharacteristic(Characteristic.ObstructionDetected)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'ObstructionDetected');

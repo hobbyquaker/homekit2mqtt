@@ -15,7 +15,7 @@ module.exports = function (iface) {
     return function createAccessory_Microphone(settings) {
         const acc = newAccessory(settings);
 
-        acc.addService(Service.Microphone, settings.name)
+        acc.addService(Service.Microphone)
             .getCharacteristic(Characteristic.Mute)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'Mute', value);

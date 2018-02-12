@@ -12,7 +12,7 @@ module.exports = function (iface) {
     return function createAccessory_SmokeSensor(settings) {
         const sensor = newAccessory(settings);
 
-        sensor.addService(Service.SmokeSensor, settings.name)
+        sensor.addService(Service.SmokeSensor)
             .getCharacteristic(Characteristic.SmokeDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'SmokeDetected');
@@ -35,7 +35,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            sensor.getService(Service.SmokeSensor, settings.name)
+            sensor.getService(Service.SmokeSensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');

@@ -6,7 +6,7 @@ module.exports = function (iface) {
     return function createAccessory_Doorbell(settings) {
         const sw = newAccessory(settings);
 
-        sw.addService(Service.Doorbell, settings.name);
+        sw.addService(Service.Doorbell);
 
         mqttSub(settings.topic.statusEvent, () => {
             log.debug('> hap set', settings.name, 'ProgrammableSwitchEvent', 1);

@@ -6,7 +6,7 @@ module.exports = function (iface) {
     return function createAccessory_Outlet(settings) {
         const acc = newAccessory(settings);
 
-        acc.addService(Service.Outlet, settings.name)
+        acc.addService(Service.Outlet)
             .getCharacteristic(Characteristic.On)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'On', value);

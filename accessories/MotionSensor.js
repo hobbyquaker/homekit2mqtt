@@ -6,7 +6,7 @@ module.exports = function (iface) {
     return function createAccessory_MotionSensor(settings) {
         const sensor = newAccessory(settings);
 
-        sensor.addService(Service.MotionSensor, settings.name)
+        sensor.addService(Service.MotionSensor)
             .getCharacteristic(Characteristic.MotionDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'MotionDetected');
@@ -25,7 +25,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            sensor.getService(Service.MotionSensor, settings.name)
+            sensor.getService(Service.MotionSensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');

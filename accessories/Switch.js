@@ -6,7 +6,7 @@ module.exports = function (iface) {
     return function createAccessory_Switch(settings) {
         const sw = newAccessory(settings);
 
-        sw.addService(Service.Switch, settings.name)
+        sw.addService(Service.Switch)
             .getCharacteristic(Characteristic.On)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'On', value);

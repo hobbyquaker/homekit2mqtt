@@ -28,7 +28,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            sensor.getService(Service.HumiditySensor, settings.name)
+            sensor.getService(Service.HumiditySensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');

@@ -15,7 +15,7 @@ module.exports = function (iface) {
          this.addOptionalCharacteristic(Characteristic.Name); */
 
         const garage = newAccessory(settings);
-        garage.addService(Service.GarageDoorOpener, settings.name)
+        garage.addService(Service.GarageDoorOpener)
             .getCharacteristic(Characteristic.TargetDoorState)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'TargetDoorState', value);
@@ -96,7 +96,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusObstruction) {
-            garage.getService(Service.GarageDoorOpener, settings.name)
+            garage.getService(Service.GarageDoorOpener)
                 .getCharacteristic(Characteristic.ObstructionDetected)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'ObstructionDetected');
@@ -115,7 +115,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.setLock) {
-            garage.getService(Service.GarageDoorOpener, settings.name)
+            garage.getService(Service.GarageDoorOpener)
                 .getCharacteristic(Characteristic.LockTargetState)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'LockTargetState', value);

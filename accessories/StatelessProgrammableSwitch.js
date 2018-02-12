@@ -6,7 +6,7 @@ module.exports = function (iface) {
     return function createAccessory_StatelessProgrammableSwitch(settings) {
         const sw = newAccessory(settings);
 
-        sw.addService(Service.StatelessProgrammableSwitch, settings.name);
+        sw.addService(Service.StatelessProgrammableSwitch);
 
         mqttSub(settings.topic.statusEvent, val => {
             log.debug('> hap set', settings.name, 'ProgrammableSwitchEvent', val);

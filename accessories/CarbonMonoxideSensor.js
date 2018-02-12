@@ -12,7 +12,7 @@ module.exports = function (iface) {
     return function createAccessory_CarbonMonoxideSensor(settings) {
         const sensor = newAccessory(settings);
 
-        sensor.addService(Service.CarbonMonoxideSensor, settings.name)
+        sensor.addService(Service.CarbonMonoxideSensor)
             .getCharacteristic(Characteristic.CarbonMonoxideDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'CarbonMonoxideDetected');
@@ -35,7 +35,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            sensor.getService(Service.CarbonMonoxideSensor, settings.name)
+            sensor.getService(Service.CarbonMonoxideSensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');

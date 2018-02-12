@@ -21,13 +21,6 @@ module.exports = function (iface) {
     return function createAccessory_TemperatureSensor(settings) {
         const sensor = newAccessory(settings);
 
-        mqttSub(settings.topic.statusTemperature, val => {
-            const temperature = convertTemperature(settings, val);
-            log.debug('> hap update', settings.name, 'CurrentTemperature', temperature);
-            sensor.getService(Service.TemperatureSensor)
-                .updateCharacteristic(Characteristic.CurrentTemperature, temperature);
-        });
-
         sensor.addService(Service.TemperatureSensor)
             .getCharacteristic(Characteristic.CurrentTemperature)
             .setProps((settings.props || {}).CurrentTemperature || {minValue: -100})
@@ -37,6 +30,13 @@ module.exports = function (iface) {
                 log.debug('> hap re_get', settings.name, temperature);
                 callback(null, temperature);
             });
+
+        mqttSub(settings.topic.statusTemperature, val => {
+            const temperature = convertTemperature(settings, val);
+            log.debug('> hap update', settings.name, 'CurrentTemperature', temperature);
+            sensor.getService(Service.TemperatureSensor)
+                .updateCharacteristic(Characteristic.CurrentTemperature, temperature);
+        });
 
         if (settings.topic.statusLowBattery) {
             sensor.getService(Service.TemperatureSensor, settings.name)

@@ -19,7 +19,7 @@ module.exports = function (iface) {
 
          */
 
-        acc.addService(Service.SecuritySystem, settings.name)
+        acc.addService(Service.SecuritySystem)
             .getCharacteristic(Characteristic.SecuritySystemTargetState)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'SecuritySystemTargetState', value);

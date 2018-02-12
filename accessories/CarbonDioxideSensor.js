@@ -6,7 +6,7 @@ module.exports = function (iface) {
     return function createAccessory_CarbonDioxideSensor(settings) {
         const sensor = newAccessory(settings);
 
-        sensor.addService(Service.CarbonDioxideSensor, settings.name)
+        sensor.addService(Service.CarbonDioxideSensor)
             .getCharacteristic(Characteristic.CarbonDioxideDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'CarbonDioxideDetected');
@@ -29,7 +29,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            sensor.getService(Service.CarbonDioxideSensor, settings.name)
+            sensor.getService(Service.CarbonDioxideSensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -53,7 +53,7 @@ module.exports = function (iface) {
         /* istanbul ignore else */
         /* Optional: Status Active */
         if (settings.topic.statusActive) {
-            sensor.getService(Service.CarbonDioxideSensor, settings.name)
+            sensor.getService(Service.CarbonDioxideSensor)
                 .getCharacteristic(Characteristic.StatusActive)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusActive');
@@ -73,7 +73,7 @@ module.exports = function (iface) {
         /* istanbul ignore else */
         /* Optional: Status Fault */
         if (settings.topic.statusFault) {
-            sensor.getService(Service.CarbonDioxideSensor, settings.name)
+            sensor.getService(Service.CarbonDioxideSensor)
                 .getCharacteristic(Characteristic.StatusFault)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusFault');
@@ -97,7 +97,7 @@ module.exports = function (iface) {
         /* istanbul ignore else */
         /* Optional: Status Tampered */
         if (settings.topic.statusTampered) {
-            sensor.getService(Service.CarbonDioxideSensor, settings.name)
+            sensor.getService(Service.CarbonDioxideSensor)
                 .getCharacteristic(Characteristic.StatusTampered)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusTampered');

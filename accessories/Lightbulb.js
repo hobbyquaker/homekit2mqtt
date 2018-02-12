@@ -6,7 +6,7 @@ module.exports = function (iface) {
     return function createAccessory_Lightbulb(settings) {
         const light = newAccessory(settings);
 
-        light.addService(Service.Lightbulb, settings.name)
+        light.addService(Service.Lightbulb)
             .getCharacteristic(Characteristic.On)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'On', value);

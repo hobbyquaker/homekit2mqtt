@@ -26,7 +26,7 @@ module.exports = function (iface) {
             settings.payload.rotationDirectionClockwise = Characteristic.RotationDirection.CLOCKWISE;
         }
 
-        acc.addService(Service.Fan, settings.name)
+        acc.addService(Service.Fan)
             .getCharacteristic(Characteristic.On)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'On', value);
@@ -55,7 +55,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.setRotationDirection) {
-            acc.getService(Service.Fan, settings.name)
+            acc.getService(Service.Fan)
                 .getCharacteristic(Characteristic.RotationDirection)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'RotationDirection', value);
@@ -95,7 +95,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.setRotationSpeed) {
-            acc.getService(Service.Fan, settings.name)
+            acc.getService(Service.Fan)
                 .getCharacteristic(Characteristic.RotationSpeed)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'RotationSpeed', value);

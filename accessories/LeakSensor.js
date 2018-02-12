@@ -12,7 +12,7 @@ module.exports = function (iface) {
     return function createAccessory_LeakSensor(settings) {
         const sensor = newAccessory(settings);
 
-        sensor.addService(Service.LeakSensor, settings.name)
+        sensor.addService(Service.LeakSensor)
             .getCharacteristic(Characteristic.LeakDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'LeakDetected');
@@ -35,7 +35,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            sensor.getService(Service.LeakSensor, settings.name)
+            sensor.getService(Service.LeakSensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');

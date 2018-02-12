@@ -6,7 +6,7 @@ module.exports = function (iface) {
     return function createAccessory_LockMechanism(settings) {
         const acc = newAccessory(settings);
 
-        acc.addService(Service.LockMechanism, settings.name)
+        acc.addService(Service.LockMechanism)
             .getCharacteristic(Characteristic.LockTargetState)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'LockTargetState', value);
