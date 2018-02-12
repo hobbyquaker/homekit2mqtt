@@ -137,7 +137,7 @@ process.on('exit', () => {
 describe('start homekit2mqtt', () => {
     it('should start without error', function (done) {
         this.timeout(20000);
-        subscribe('homekit', /homekit2mqtt [0-9.]+ starting/, () => {
+        subscribe('homekit', /homekit2mqtt [0-9a-z.-]+ starting/, () => {
             done();
         });
         startHomekit();
