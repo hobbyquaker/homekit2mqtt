@@ -76,6 +76,7 @@
   },
   "homepage": "https://github.com/hobbyquaker/homekit2mqtt",
   "xo": {
-    "space": 4
+    "space": 4,
+    "ignore": ["test/test.js"]
   }
 }
