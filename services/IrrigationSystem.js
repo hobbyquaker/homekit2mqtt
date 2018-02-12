@@ -32,10 +32,10 @@ module.exports = function (iface) {
             settings.payload.activeFalse = false;
         }
 
-        acc.addService(Service.IrrigationSystem, settings.name)
+        acc.addService(Service.IrrigationSystem, settings.name || acc.name)
             .getCharacteristic(Characteristic.Active)
             .on('set', (value, callback) => {
-                log.debug('< hap set', settings.name, 'Active', value);
+                log.debug('< hap set', settings.name || acc.name, 'Active', value);
                 const active = value ? settings.payload.activeTrue : settings.payload.activeFalse;
                 log.debug('> mqtt', settings.topic.setActive, active);
                 mqttPub(settings.topic.setActive, active);
@@ -47,62 +47,62 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusActive, val => {
                 log.debug('< mqtt', settings.topic.statusActive, val);
                 const active = mqttStatus[settings.topic.statusActive] === settings.payload.activeTrue ? 1 : 0;
-                log.debug('> hap update', settings.name, 'Active', active);
+                log.debug('> hap update', settings.name || acc.name, 'Active', active);
                 acc.getService(Service.IrrigationSystem)
                     .updateCharacteristic(Characteristic.Active, active);
             });
             acc.getService(Service.IrrigationSystem)
                 .getCharacteristic(Characteristic.Active)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'Active');
+                    log.debug('< hap get', settings.name || acc.name, 'Active');
                     const active = mqttStatus[settings.topic.statusActive] === settings.payload.activeTrue ? 1 : 0;
-                    log.debug('> hap re_get', settings.name, 'Active', active);
+                    log.debug('> hap re_get', settings.name || acc.name, 'Active', active);
                     callback(null, active);
                 });
         }
 
         mqttSub(settings.topic.statusProgramMode, val => {
-            log.debug('> hap update', settings.name, 'ProgramMode', val);
+            log.debug('> hap update', settings.name || acc.name, 'ProgramMode', val);
             acc.getService(Service.IrrigationSystem)
                 .updateCharacteristic(Characteristic.ProgramMode, val);
         });
         acc.getService(Service.IrrigationSystem)
             .getCharacteristic(Characteristic.ProgramMode)
             .on('get', callback => {
-                log.debug('< hap get', settings.name, 'ProgramMode');
+                log.debug('< hap get', settings.name || acc.name, 'ProgramMode');
                 const mode = mqttStatus[settings.topic.statusProgramMode];
-                log.debug('> hap re_get', settings.name, 'ProgramMode', mode);
+                log.debug('> hap re_get', settings.name || acc.name, 'ProgramMode', mode);
                 callback(null, mode);
             });
 
         mqttSub(settings.topic.statusInUse, val => {
             const inUse = val === settings.payload.inUseTrue ? 1 : 0;
-            log.debug('> hap update', settings.name, 'InUse', inUse);
+            log.debug('> hap update', settings.name || acc.name, 'InUse', inUse);
             acc.getService(Service.IrrigationSystem)
                 .updateCharacteristic(Characteristic.InUse, inUse);
         });
         acc.getService(Service.IrrigationSystem)
             .getCharacteristic(Characteristic.InUse)
             .on('get', callback => {
-                log.debug('< hap get', settings.name, 'InUse');
+                log.debug('< hap get', settings.name || acc.name, 'InUse');
                 const inUse = mqttStatus[settings.topic.statusInUse] === settings.payload.inUseTrue ? 1 : 0;
-                log.debug('> hap re_get', settings.name, 'InUse', inUse);
+                log.debug('> hap re_get', settings.name || acc.name, 'InUse', inUse);
                 callback(null, inUse);
             });
 
         /* istanbul ignore else  */
         if (settings.topic.statusRemainingDuration) {
             mqttSub(settings.topic.statusRemainingDuration, val => {
-                log.debug('> hap update', settings.name, 'RemainingDuration', val);
+                log.debug('> hap update', settings.name || acc.name, 'RemainingDuration', val);
                 acc.getService(Service.IrrigationSystem)
                     .updateCharacteristic(Characteristic.RemainingDuration, val);
             });
             acc.getService(Service.IrrigationSystem)
                 .getCharacteristic(Characteristic.RemainingDuration)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'RemainingDuration');
+                    log.debug('< hap get', settings.name || acc.name, 'RemainingDuration');
                     const duration = mqttStatus[settings.topic.statusRemainingDuration];
-                    log.debug('> hap re_get', settings.name, 'RemainingDuration', duration);
+                    log.debug('> hap re_get', settings.name || acc.name, 'RemainingDuration', duration);
                     callback(null, duration);
                 });
         }
@@ -111,16 +111,16 @@ module.exports = function (iface) {
         if (settings.topic.statusFault) {
             mqttSub(settings.topic.statusFault, val => {
                 const fault = val === settings.payload.faultTrue ? 1 : 0;
-                log.debug('> hap update', settings.name, 'StatusFault', fault);
+                log.debug('> hap update', settings.name || acc.name, 'StatusFault', fault);
                 acc.getService(Service.IrrigationSystem)
                     .updateCharacteristic(Characteristic.StatusFault, fault);
             });
             acc.getService(Service.IrrigationSystem)
                 .getCharacteristic(Characteristic.StatusFault)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'StatusFault');
+                    log.debug('< hap get', settings.name || acc.name, 'StatusFault');
                     const fault = mqttStatus[settings.topic.statusFault] === settings.payload.faultTrue ? 1 : 0;
-                    log.debug('> hap re_get', settings.name, 'StatusFault', fault);
+                    log.debug('> hap re_get', settings.name || acc.name, 'StatusFault', fault);
                     callback(null, fault);
                 });
         }

@@ -29,19 +29,19 @@ module.exports = function (iface) {
 
         mqttSub(settings.topic.statusCurrentSlatState, val => {
             const angle = mqttStatus[settings.topic.statusCurrentSlatState];
-            log.debug('> hap update', settings.name, 'CurrentSlatState', angle);
+            log.debug('> hap update', settings.name || acc.name, 'CurrentSlatState', angle);
             acc.getService(Service.Slat)
                 .updateCharacteristic(Characteristic.CurrentSlatState, angle);
         });
 
         const type = settings.config.SlatType || 0;
-        log.debug('> hap set', settings.name, 'SlatType', type);
+        log.debug('> hap set', settings.name || acc.name, 'SlatType', type);
         acc.getService(Service.Slat)
             .setCharacteristic(Characteristic.SlatType, type);
 
         if (settings.topic.statusCurrentTiltAngle) {
             mqttSub(settings.topic.statusCurrentTiltAngle, val => {
-                log.debug('> hap update', settings.name, 'CurrentTiltAngle', val);
+                log.debug('> hap update', settings.name || acc.name, 'CurrentTiltAngle', val);
                 acc.getService(Service.Slat)
                     .updateCharacteristic(Characteristic.CurrentTiltAngle, val);
             });
@@ -49,7 +49,7 @@ module.exports = function (iface) {
 
         if (settings.topic.statusTargetTiltAngle) {
             mqttSub(settings.topic.statusTargetTiltAngle, val => {
-                log.debug('> hap update', settings.name, 'TargetTiltAngle', val);
+                log.debug('> hap update', settings.name || acc.name, 'TargetTiltAngle', val);
                 acc.getService(Service.Slat)
                     .updateCharacteristic(Characteristic.TargetTiltAngle, val);
             });
@@ -59,7 +59,7 @@ module.exports = function (iface) {
             acc.getService(Service.Slat)
                 .getCharacteristic(Characteristic.TargetTiltAngle)
                 .on('set', (value, callback) => {
-                    log.debug('< hap set', settings.name, 'TargetTiltAngle', value);
+                    log.debug('< hap set', settings.name || acc.name, 'TargetTiltAngle', value);
                     mqttPub(settings.topic.setTargetTiltAngle, value);
                     callback();
                 });
@@ -67,7 +67,7 @@ module.exports = function (iface) {
 
         if (settings.topic.statusSwingMode) {
             mqttSub(settings.topic.statusSwingMode, val => {
-                log.debug('> hap update', settings.name, 'SwingMode', val);
+                log.debug('> hap update', settings.name || acc.name, 'SwingMode', val);
                 acc.getService(Service.Slat)
                     .updateCharacteristic(Characteristic.SwingMode, val);
             });
@@ -77,7 +77,7 @@ module.exports = function (iface) {
             acc.getService(Service.Slat)
                 .getCharacteristic(Characteristic.SwingMode)
                 .on('set', (value, callback) => {
-                    log.debug('< hap set', settings.name, 'SwingMode', value);
+                    log.debug('< hap set', settings.name || acc.name, 'SwingMode', value);
                     mqttPub(settings.topic.setSwingMode, value);
                     callback();
                 });

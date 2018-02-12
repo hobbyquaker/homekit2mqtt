@@ -13,12 +13,12 @@ module.exports = function (iface) {
         acc.addService(Service.CarbonMonoxideSensor)
             .getCharacteristic(Characteristic.CarbonMonoxideDetected)
             .on('get', callback => {
-                log.debug('< hap get', settings.name, 'CarbonMonoxideDetected');
+                log.debug('< hap get', settings.name || acc.name, 'CarbonMonoxideDetected');
                 const contact = mqttStatus[settings.topic.statusCarbonMonoxideDetected] === settings.payload.onCarbonMonoxideDetected ?
                     Characteristic.CarbonMonoxideDetected.CO_LEVELS_ABNORMAL :
                     Characteristic.CarbonMonoxideDetected.CO_LEVELS_NORMAL;
 
-                log.debug('> hap re_get', settings.name, 'CarbonMonoxideDetected', contact);
+                log.debug('> hap re_get', settings.name || acc.name, 'CarbonMonoxideDetected', contact);
                 callback(null, contact);
             });
 
@@ -26,7 +26,7 @@ module.exports = function (iface) {
             const contact = val === settings.payload.onCarbonMonoxideDetected ?
                 Characteristic.CarbonMonoxideDetected.CO_LEVELS_ABNORMAL :
                 Characteristic.CarbonMonoxideDetected.CO_LEVELS_NORMAL;
-            log.debug('> hap update', settings.name, 'CarbonMonoxideDetected', contact);
+            log.debug('> hap update', settings.name || acc.name, 'CarbonMonoxideDetected', contact);
             acc.getService(Service.CarbonMonoxideSensor)
                 .updateCharacteristic(Characteristic.CarbonMonoxideDetected, contact);
         });
@@ -36,11 +36,11 @@ module.exports = function (iface) {
             acc.getService(Service.CarbonMonoxideSensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'StatusLowBattery');
+                    log.debug('< hap get', settings.name || acc.name, 'StatusLowBattery');
                     const bat = mqttStatus[settings.topic.statusLowBattery] !== settings.payload.onLowBattery ?
                         Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                         Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
-                    log.debug('> hap re_get', settings.name, 'StatusLowBattery', bat);
+                    log.debug('> hap re_get', settings.name || acc.name, 'StatusLowBattery', bat);
                     callback(null, bat);
                 });
 
@@ -48,7 +48,7 @@ module.exports = function (iface) {
                 const bat = val !== settings.payload.onLowBattery ?
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
-                log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
+                log.debug('> hap update', settings.name || acc.name, 'StatusLowBattery', bat);
                 acc.getService(Service.CarbonMonoxideSensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });

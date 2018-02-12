@@ -7,7 +7,7 @@ module.exports = function (iface) {
         acc.addService(Service.Switch)
             .getCharacteristic(Characteristic.On)
             .on('set', (value, callback) => {
-                log.debug('< hap set', settings.name, 'On', value);
+                log.debug('< hap set', settings.name || acc.name, 'On', value);
                 const on = value ? settings.payload.onTrue : settings.payload.onFalse;
                 mqttPub(settings.topic.setOn, on);
                 callback();
@@ -17,16 +17,16 @@ module.exports = function (iface) {
         if (settings.topic.statusOn) {
             mqttSub(settings.topic.statusOn, val => {
                 const on = val === settings.payload.onTrue;
-                log.debug('> hap update', settings.name, 'On', on);
+                log.debug('> hap update', settings.name || acc.name, 'On', on);
                 acc.getService(Service.Switch)
                     .updateCharacteristic(Characteristic.On, on);
             });
             acc.getService(Service.Switch)
                 .getCharacteristic(Characteristic.On)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'On');
+                    log.debug('< hap get', settings.name || acc.name, 'On');
                     const on = mqttStatus[settings.topic.statusOn] === settings.payload.onTrue;
-                    log.debug('> hap re_get', settings.name, 'On', on);
+                    log.debug('> hap re_get', settings.name || acc.name, 'On', on);
                     callback(null, on);
                 });
         }

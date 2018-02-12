@@ -7,7 +7,7 @@ module.exports = function (iface) {
         acc.addService(Service.Doorbell);
 
         mqttSub(settings.topic.statusEvent, () => {
-            log.debug('> hap set', settings.name, 'ProgrammableSwitchEvent', 1);
+            log.debug('> hap set', settings.name || acc.name, 'ProgrammableSwitchEvent', 1);
             acc.getService(Service.Doorbell)
                 .setCharacteristic(Characteristic.ProgrammableSwitchEvent, 1);
         });

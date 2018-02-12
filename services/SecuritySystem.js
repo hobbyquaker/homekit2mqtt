@@ -21,7 +21,7 @@ module.exports = function (iface) {
         acc.addService(Service.SecuritySystem)
             .getCharacteristic(Characteristic.SecuritySystemTargetState)
             .on('set', (value, callback) => {
-                log.debug('< hap set', settings.name, 'SecuritySystemTargetState', value);
+                log.debug('< hap set', settings.name || acc.name, 'SecuritySystemTargetState', value);
                 /*
                 If (value === Characteristic.SecuritySystemTargetState.STAY_ARM) {
                     value = settings.payload.STAY_ARM;
@@ -62,7 +62,7 @@ module.exports = function (iface) {
                 val = Characteristic.SecuritySystemCurrentState.ALARM_TRIGGERED;
             }
             */
-            log.debug('> hap update', settings.name, 'SecuritySystemCurrentState', val);
+            log.debug('> hap update', settings.name || acc.name, 'SecuritySystemCurrentState', val);
             acc.getService(Service.SecuritySystem)
                 .setCharacteristic(Characteristic.SecuritySystemCurrentState, val);
             if (val !== 4) {
@@ -74,7 +74,7 @@ module.exports = function (iface) {
         acc.getService(Service.SecuritySystem)
             .getCharacteristic(Characteristic.SecuritySystemCurrentState)
             .on('get', callback => {
-                log.debug('< hap get', settings.name, 'SecuritySystemCurrentState');
+                log.debug('< hap get', settings.name || acc.name, 'SecuritySystemCurrentState');
                 const val = mqttStatus[settings.topic.statusSecuritySystemCurrentState];
                 /*
                 If (val === settings.payload.STAY_ARM) {
@@ -89,7 +89,7 @@ module.exports = function (iface) {
                     val = Characteristic.SecuritySystemCurrentState.ALARM_TRIGGERED;
                 }
                 */
-                log.debug('> hap re_get', settings.name, 'SecuritySystemCurrentState', val);
+                log.debug('> hap re_get', settings.name || acc.name, 'SecuritySystemCurrentState', val);
                 callback(null, val);
             });
 

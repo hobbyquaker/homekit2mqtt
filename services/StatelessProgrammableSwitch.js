@@ -7,7 +7,7 @@ module.exports = function (iface) {
         acc.addService(Service.StatelessProgrammableSwitch);
 
         mqttSub(settings.topic.statusEvent, val => {
-            log.debug('> hap set', settings.name, 'ProgrammableSwitchEvent', val);
+            log.debug('> hap set', settings.name || acc.name, 'ProgrammableSwitchEvent', val);
             acc.getService(Service.StatelessProgrammableSwitch)
                 .setCharacteristic(Characteristic.ProgrammableSwitchEvent, val);
         });

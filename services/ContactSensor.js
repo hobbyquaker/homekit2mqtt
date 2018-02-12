@@ -7,12 +7,12 @@ module.exports = function (iface) {
         acc.addService(Service.ContactSensor)
             .getCharacteristic(Characteristic.ContactSensorState)
             .on('get', callback => {
-                log.debug('< hap get', settings.name, 'ContactSensorState');
+                log.debug('< hap get', settings.name || acc.name, 'ContactSensorState');
                 const contact = mqttStatus[settings.topic.statusContactSensorState] === settings.payload.onContactDetected ?
                     Characteristic.ContactSensorState.CONTACT_DETECTED :
                     Characteristic.ContactSensorState.CONTACT_NOT_DETECTED;
 
-                log.debug('> hap re_get', settings.name, 'ContactSensorState', contact);
+                log.debug('> hap re_get', settings.name || acc.name, 'ContactSensorState', contact);
                 callback(null, contact);
             });
 
@@ -20,7 +20,7 @@ module.exports = function (iface) {
             const contact = val === settings.payload.onContactDetected ?
                 Characteristic.ContactSensorState.CONTACT_DETECTED :
                 Characteristic.ContactSensorState.CONTACT_NOT_DETECTED;
-            log.debug('> hap update', settings.name, 'ContactSensorState', contact);
+            log.debug('> hap update', settings.name || acc.name, 'ContactSensorState', contact);
             acc.getService(Service.ContactSensor)
                 .updateCharacteristic(Characteristic.ContactSensorState, contact);
         });
@@ -31,11 +31,11 @@ module.exports = function (iface) {
             acc.getService(Service.ContactSensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'StatusLowBattery');
+                    log.debug('< hap get', settings.name || acc.name, 'StatusLowBattery');
                     const bat = mqttStatus[settings.topic.statusLowBattery] !== settings.payload.onLowBattery ?
                         Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                         Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
-                    log.debug('> hap re_get', settings.name, 'StatusLowBattery', bat);
+                    log.debug('> hap re_get', settings.name || acc.name, 'StatusLowBattery', bat);
                     callback(null, bat);
                 });
 
@@ -43,7 +43,7 @@ module.exports = function (iface) {
                 const bat = val !== settings.payload.onLowBattery ?
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
-                log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
+                log.debug('> hap update', settings.name || acc.name, 'StatusLowBattery', bat);
                 acc.getService(Service.ContactSensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
@@ -55,15 +55,15 @@ module.exports = function (iface) {
             acc.getService(Service.ContactSensor)
                 .getCharacteristic(Characteristic.StatusActive)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'StatusActive');
+                    log.debug('< hap get', settings.name || acc.name, 'StatusActive');
                     const act = mqttStatus[settings.topic.statusActive] === settings.payload.onActive;
-                    log.debug('> hap re_get', settings.name, 'StatusActive', act);
+                    log.debug('> hap re_get', settings.name || acc.name, 'StatusActive', act);
                     callback(null, act);
                 });
 
             mqttSub(settings.topic.statusActive, val => {
                 const act = val === settings.payload.onActive;
-                log.debug('> hap update', settings.name, 'StatusActive', act);
+                log.debug('> hap update', settings.name || acc.name, 'StatusActive', act);
                 acc.getService(Service.ContactSensor)
                     .updateCharacteristic(Characteristic.StatusActive, act);
             });
@@ -75,11 +75,11 @@ module.exports = function (iface) {
             acc.getService(Service.ContactSensor)
                 .getCharacteristic(Characteristic.StatusFault)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'StatusFault');
+                    log.debug('< hap get', settings.name || acc.name, 'StatusFault');
                     const fault = mqttStatus[settings.topic.statusFault] !== settings.payload.onFault ?
                         Characteristic.StatusFault.NO_FAULT :
                         Characteristic.StatusFault.GENERAL_FAULT;
-                    log.debug('> hap re_get', settings.name, 'StatusFault', fault);
+                    log.debug('> hap re_get', settings.name || acc.name, 'StatusFault', fault);
                     callback(null, fault);
                 });
 
@@ -87,7 +87,7 @@ module.exports = function (iface) {
                 const fault = val !== settings.payload.onFault ?
                     Characteristic.StatusFault.NO_FAULT :
                     Characteristic.StatusFault.GENERAL_FAULT;
-                log.debug('> hap update', settings.name, 'StatusFault', fault);
+                log.debug('> hap update', settings.name || acc.name, 'StatusFault', fault);
                 acc.getService(Service.ContactSensor)
                     .updateCharacteristic(Characteristic.StatusFault, fault);
             });
@@ -99,11 +99,11 @@ module.exports = function (iface) {
             acc.getService(Service.ContactSensor)
                 .getCharacteristic(Characteristic.StatusTampered)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'StatusTampered');
+                    log.debug('< hap get', settings.name || acc.name, 'StatusTampered');
                     const tampered = mqttStatus[settings.topic.statusTampered] !== settings.payload.onTampered ?
                         Characteristic.StatusTampered.NOT_TAMPERED :
                         Characteristic.StatusTampered.TAMPERED;
-                    log.debug('> hap re_get', settings.name, 'StatusTampered', tampered);
+                    log.debug('> hap re_get', settings.name || acc.name, 'StatusTampered', tampered);
                     callback(null, tampered);
                 });
 
@@ -111,7 +111,7 @@ module.exports = function (iface) {
                 const tampered = val !== settings.payload.onTampered ?
                     Characteristic.StatusTampered.NOT_TAMPERED :
                     Characteristic.StatusTampered.TAMPERED;
-                log.debug('> hap update', settings.name, 'StatusTampered', tampered);
+                log.debug('> hap update', settings.name || acc.name, 'StatusTampered', tampered);
                 acc.getService(Service.ContactSensor)
                     .updateCharacteristic(Characteristic.StatusTampered, tampered);
             });

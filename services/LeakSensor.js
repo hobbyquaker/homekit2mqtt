@@ -13,12 +13,12 @@ module.exports = function (iface) {
         acc.addService(Service.LeakSensor)
             .getCharacteristic(Characteristic.LeakDetected)
             .on('get', callback => {
-                log.debug('< hap get', settings.name, 'LeakDetected');
+                log.debug('< hap get', settings.name || acc.name, 'LeakDetected');
                 const contact = mqttStatus[settings.topic.statusLeakDetected] === settings.payload.onLeakDetected ?
                     Characteristic.LeakDetected.LEAK_DETECTED :
                     Characteristic.LeakDetected.LEAK_NOT_DETECTED;
 
-                log.debug('> hap re_get', settings.name, 'LeakDetected', contact);
+                log.debug('> hap re_get', settings.name || acc.name, 'LeakDetected', contact);
                 callback(null, contact);
             });
 
@@ -26,7 +26,7 @@ module.exports = function (iface) {
             const contact = val === settings.payload.onLeakDetected ?
                 Characteristic.LeakDetected.LEAK_DETECTED :
                 Characteristic.LeakDetected.LEAK_NOT_DETECTED;
-            log.debug('> hap update', settings.name, 'LeakDetected', contact);
+            log.debug('> hap update', settings.name || acc.name, 'LeakDetected', contact);
             acc.getService(Service.LeakSensor)
                 .updateCharacteristic(Characteristic.LeakDetected, contact);
         });
@@ -36,11 +36,11 @@ module.exports = function (iface) {
             acc.getService(Service.LeakSensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'StatusLowBattery');
+                    log.debug('< hap get', settings.name || acc.name, 'StatusLowBattery');
                     const bat = mqttStatus[settings.topic.statusLowBattery] !== settings.payload.onLowBattery ?
                         Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                         Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
-                    log.debug('> hap re_get', settings.name, 'StatusLowBattery', bat);
+                    log.debug('> hap re_get', settings.name || acc.name, 'StatusLowBattery', bat);
                     callback(null, bat);
                 });
 
@@ -48,7 +48,7 @@ module.exports = function (iface) {
                 const bat = val !== settings.payload.onLowBattery ?
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
-                log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
+                log.debug('> hap update', settings.name || acc.name, 'StatusLowBattery', bat);
                 acc.getService(Service.LeakSensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
