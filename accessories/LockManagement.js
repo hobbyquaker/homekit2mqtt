@@ -1,7 +1,7 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     /*
      // Required Characteristics
@@ -30,7 +30,7 @@ module.exports = function (iface) {
      Characteristic.LockLastKnownAction.SECURED_BY_AUTO_SECURE_TIMEOUT = 8;
      */
 
-    return function createAccessory_LockManagement(settings) {
+    return function createService_LockManagement(acc, settings) {
         throw new Error('Service LockManagement not yet implemented');
     };
 };

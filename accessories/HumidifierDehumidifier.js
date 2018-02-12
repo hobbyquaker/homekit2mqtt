@@ -1,7 +1,7 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     // TODO Implement
 
@@ -22,7 +22,7 @@ module.exports = function (iface) {
   this.addOptionalCharacteristic(Characteristic.RotationSpeed);
      */
 
-    return function createAccessory_HumidifierDehumidifier(settings) {
+    return function createService_HumidifierDehumidifier(acc, settings) {
         throw new Error('Service HumidifierDehumidifier not yet implemented');
     };
 };

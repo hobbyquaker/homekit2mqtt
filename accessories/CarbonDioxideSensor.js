@@ -1,12 +1,10 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off", no-negated-condition: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createAccessory_CarbonDioxideSensor(settings) {
-        const sensor = newAccessory(settings);
-
-        sensor.addService(Service.CarbonDioxideSensor)
+    return function createService_CarbonDioxideSensor(acc, settings) {
+        acc.addService(Service.CarbonDioxideSensor)
             .getCharacteristic(Characteristic.CarbonDioxideDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'CarbonDioxideDetected');
@@ -23,13 +21,13 @@ module.exports = function (iface) {
                 Characteristic.CarbonDioxideDetected.CO2_LEVELS_ABNORMAL :
                 Characteristic.CarbonDioxideDetected.CO2_LEVELS_NORMAL;
             log.debug('> hap update', settings.name, 'CarbonDioxideDetected', contact);
-            sensor.getService(Service.CarbonDioxideSensor)
+            acc.getService(Service.CarbonDioxideSensor)
                 .updateCharacteristic(Characteristic.CarbonDioxideDetected, contact);
         });
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            sensor.getService(Service.CarbonDioxideSensor)
+            acc.getService(Service.CarbonDioxideSensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -45,7 +43,7 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                sensor.getService(Service.CarbonDioxideSensor)
+                acc.getService(Service.CarbonDioxideSensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
@@ -53,7 +51,7 @@ module.exports = function (iface) {
         /* istanbul ignore else */
         /* Optional: Status Active */
         if (settings.topic.statusActive) {
-            sensor.getService(Service.CarbonDioxideSensor)
+            acc.getService(Service.CarbonDioxideSensor)
                 .getCharacteristic(Characteristic.StatusActive)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusActive');
@@ -65,7 +63,7 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusActive, val => {
                 const act = val === settings.payload.onActive;
                 log.debug('> hap update', settings.name, 'StatusActive', act);
-                sensor.getService(Service.CarbonDioxideSensor)
+                acc.getService(Service.CarbonDioxideSensor)
                     .updateCharacteristic(Characteristic.StatusActive, act);
             });
         }
@@ -73,7 +71,7 @@ module.exports = function (iface) {
         /* istanbul ignore else */
         /* Optional: Status Fault */
         if (settings.topic.statusFault) {
-            sensor.getService(Service.CarbonDioxideSensor)
+            acc.getService(Service.CarbonDioxideSensor)
                 .getCharacteristic(Characteristic.StatusFault)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusFault');
@@ -89,7 +87,7 @@ module.exports = function (iface) {
                     Characteristic.StatusFault.NO_FAULT :
                     Characteristic.StatusFault.GENERAL_FAULT;
                 log.debug('> hap update', settings.name, 'StatusFault', fault);
-                sensor.getService(Service.CarbonDioxideSensor)
+                acc.getService(Service.CarbonDioxideSensor)
                     .updateCharacteristic(Characteristic.StatusFault, fault);
             });
         }
@@ -97,7 +95,7 @@ module.exports = function (iface) {
         /* istanbul ignore else */
         /* Optional: Status Tampered */
         if (settings.topic.statusTampered) {
-            sensor.getService(Service.CarbonDioxideSensor)
+            acc.getService(Service.CarbonDioxideSensor)
                 .getCharacteristic(Characteristic.StatusTampered)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusTampered');
@@ -113,12 +111,10 @@ module.exports = function (iface) {
                     Characteristic.StatusTampered.NOT_TAMPERED :
                     Characteristic.StatusTampered.TAMPERED;
                 log.debug('> hap update', settings.name, 'StatusTampered', tampered);
-                sensor.getService(Service.CarbonDioxideSensor)
+                acc.getService(Service.CarbonDioxideSensor)
                     .updateCharacteristic(Characteristic.StatusTampered, tampered);
             });
         }
-
-        return sensor;
     };
 };
 

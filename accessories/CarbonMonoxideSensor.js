@@ -7,12 +7,10 @@
  */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createAccessory_CarbonMonoxideSensor(settings) {
-        const sensor = newAccessory(settings);
-
-        sensor.addService(Service.CarbonMonoxideSensor)
+    return function createService_CarbonMonoxideSensor(acc, settings) {
+        acc.addService(Service.CarbonMonoxideSensor)
             .getCharacteristic(Characteristic.CarbonMonoxideDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'CarbonMonoxideDetected');
@@ -29,13 +27,13 @@ module.exports = function (iface) {
                 Characteristic.CarbonMonoxideDetected.CO_LEVELS_ABNORMAL :
                 Characteristic.CarbonMonoxideDetected.CO_LEVELS_NORMAL;
             log.debug('> hap update', settings.name, 'CarbonMonoxideDetected', contact);
-            sensor.getService(Service.CarbonMonoxideSensor)
+            acc.getService(Service.CarbonMonoxideSensor)
                 .updateCharacteristic(Characteristic.CarbonMonoxideDetected, contact);
         });
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            sensor.getService(Service.CarbonMonoxideSensor)
+            acc.getService(Service.CarbonMonoxideSensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -51,11 +49,9 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                sensor.getService(Service.CarbonMonoxideSensor)
+                acc.getService(Service.CarbonMonoxideSensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
-
-        return sensor;
     };
 };

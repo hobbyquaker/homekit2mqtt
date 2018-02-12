@@ -3,10 +3,9 @@
 module.exports = function (iface) {
     // TODO
 
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createAccessory_SecuritySystem(settings) {
-        const acc = newAccessory(settings);
+    return function createService_SecuritySystem(acc, settings) {
         // Required Characteristics
 
         /*
@@ -114,7 +113,5 @@ module.exports = function (iface) {
          minValue: 0,
 
          */
-
-        return acc;
     };
 };

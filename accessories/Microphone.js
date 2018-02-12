@@ -1,7 +1,7 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     /*
      // Required Characteristics
@@ -12,9 +12,7 @@ module.exports = function (iface) {
      this.addOptionalCharacteristic(Characteristic.Name);
      */
 
-    return function createAccessory_Microphone(settings) {
-        const acc = newAccessory(settings);
-
+    return function createService_Microphone(acc, settings) {
         acc.addService(Service.Microphone)
             .getCharacteristic(Characteristic.Mute)
             .on('set', (value, callback) => {
@@ -71,7 +69,5 @@ module.exports = function (iface) {
                     });
             }
         }
-
-        return acc;
     };
 };

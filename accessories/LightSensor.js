@@ -7,19 +7,17 @@
  */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createAccessory_LightSensor(settings) {
-        const sensor = newAccessory(settings);
-
+    return function createService_LightSensor(acc, settings) {
         mqttSub(settings.topic.statusAmbientLightLevel, val => {
             val /= (settings.payload.ambientLightLevelFactor || 1);
             log.debug('> hap update', settings.name, 'CurrentAmbientLightLevel', mqttStatus[settings.topic.statusAmbientLightLevel]);
-            sensor.getService(Service.LightSensor)
+            acc.getService(Service.LightSensor)
                 .updateCharacteristic(Characteristic.CurrentAmbientLightLevel, val);
         });
 
-        sensor.addService(Service.LightSensor)
+        acc.addService(Service.LightSensor)
             .getCharacteristic(Characteristic.CurrentAmbientLightLevel)
             .on('get', callback => {
                 const val = mqttStatus[settings.topic.statusAmbientLightLevel] / (settings.payload.ambientLightLevelFactor || 1);
@@ -30,7 +28,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            sensor.getService(Service.LightSensor)
+            acc.getService(Service.LightSensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -47,11 +45,9 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                sensor.getService(Service.LightSensor)
+                acc.getService(Service.LightSensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
-
-        return sensor;
     };
 };

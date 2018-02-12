@@ -1,11 +1,9 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createAccessory_Fan(settings) {
-        const acc = newAccessory(settings);
-
+    return function createService_Fan(acc, settings) {
         /* istanbul ignore else */
         if (typeof settings.payload.onTrue === 'undefined') {
             settings.payload.onTrue = true;
@@ -125,7 +123,5 @@ module.exports = function (iface) {
                     callback(null, speed);
                 });
         }
-
-        return acc;
     };
 };

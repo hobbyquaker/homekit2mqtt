@@ -1,12 +1,10 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createAccessory_Switch(settings) {
-        const sw = newAccessory(settings);
-
-        sw.addService(Service.Switch)
+    return function createService_Switch(acc, settings) {
+        acc.addService(Service.Switch)
             .getCharacteristic(Characteristic.On)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'On', value);
@@ -20,10 +18,10 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusOn, val => {
                 const on = val === settings.payload.onTrue;
                 log.debug('> hap update', settings.name, 'On', on);
-                sw.getService(Service.Switch)
+                acc.getService(Service.Switch)
                     .updateCharacteristic(Characteristic.On, on);
             });
-            sw.getService(Service.Switch)
+            acc.getService(Service.Switch)
                 .getCharacteristic(Characteristic.On)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'On');
@@ -32,7 +30,5 @@ module.exports = function (iface) {
                     callback(null, on);
                 });
         }
-
-        return sw;
     };
 };

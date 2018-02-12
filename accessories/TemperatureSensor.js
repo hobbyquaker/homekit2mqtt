@@ -8,7 +8,7 @@
  */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     function convertTemperature(settings, value) {
         if (settings.payload.fahrenheit) {
@@ -18,10 +18,8 @@ module.exports = function (iface) {
         return value;
     }
 
-    return function createAccessory_TemperatureSensor(settings) {
-        const sensor = newAccessory(settings);
-
-        sensor.addService(Service.TemperatureSensor)
+    return function createService_TemperatureSensor(acc, settings) {
+        acc.addService(Service.TemperatureSensor)
             .getCharacteristic(Characteristic.CurrentTemperature)
             .setProps((settings.props || {}).CurrentTemperature || {minValue: -100})
             .on('get', callback => {
@@ -34,12 +32,12 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusTemperature, val => {
             const temperature = convertTemperature(settings, val);
             log.debug('> hap update', settings.name, 'CurrentTemperature', temperature);
-            sensor.getService(Service.TemperatureSensor)
+            acc.getService(Service.TemperatureSensor)
                 .updateCharacteristic(Characteristic.CurrentTemperature, temperature);
         });
 
         if (settings.topic.statusLowBattery) {
-            sensor.getService(Service.TemperatureSensor, settings.name)
+            acc.getService(Service.TemperatureSensor, settings.name)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -56,11 +54,9 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                sensor.getService(Service.TemperatureSensor)
+                acc.getService(Service.TemperatureSensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
-
-        return sensor;
     };
 };

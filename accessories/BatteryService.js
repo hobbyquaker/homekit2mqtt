@@ -1,7 +1,7 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     /*
      // Required Characteristics
@@ -22,10 +22,8 @@ module.exports = function (iface) {
      Characteristic.ChargingState.NOT_CHARGEABLE = 2;
      */
 
-    return function createAccessory_BatteryService(settings) {
-        const bat = newAccessory(settings);
-
-        bat.addService(Service.BatteryService);
+    return function createService_BatteryService(acc, settings) {
+        acc.addService(Service.BatteryService);
             /*
             .getCharacteristic(Characteristic.BatteryLevel)
             .on('get', callback => {
@@ -38,23 +36,21 @@ module.exports = function (iface) {
 
         mqttSub(settings.topic.statusBatteryLevel, val => {
             log.debug('> hap update', settings.name, 'BatteryLevel', val);
-            bat.getService(Service.BatteryService)
+            acc.getService(Service.BatteryService)
                 .updateCharacteristic(Characteristic.BatteryLevel, val);
         });
 
         mqttSub(settings.topic.statusChargingState, val => {
             log.debug('> hap update', settings.name, 'ChargingState', val);
-            bat.getService(Service.BatteryService)
+            acc.getService(Service.BatteryService)
                 .updateCharacteristic(Characteristic.ChargingState, val);
         });
 
         mqttSub(settings.topic.statusLowBattery, val => {
             val = (val === settings.payload.onLowBattery) ? 1 : 0;
             log.debug('> hap update', settings.name, 'StatusLowBattery', val);
-            bat.getService(Service.BatteryService)
+            acc.getService(Service.BatteryService)
                 .updateCharacteristic(Characteristic.StatusLowBattery, val);
         });
-
-        return bat;
     };
 };

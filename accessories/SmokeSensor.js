@@ -7,12 +7,10 @@
  */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createAccessory_SmokeSensor(settings) {
-        const sensor = newAccessory(settings);
-
-        sensor.addService(Service.SmokeSensor)
+    return function createService_SmokeSensor(acc, settings) {
+        acc.addService(Service.SmokeSensor)
             .getCharacteristic(Characteristic.SmokeDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'SmokeDetected');
@@ -29,13 +27,13 @@ module.exports = function (iface) {
                 Characteristic.SmokeDetected.SMOKE_DETECTED :
                 Characteristic.SmokeDetected.SMOKE_NOT_DETECTED;
             log.debug('> hap update', settings.name, 'SmokeDetected', smoke);
-            sensor.getService(Service.SmokeSensor)
+            acc.getService(Service.SmokeSensor)
                 .updateCharacteristic(Characteristic.SmokeDetected, smoke);
         });
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            sensor.getService(Service.SmokeSensor)
+            acc.getService(Service.SmokeSensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -51,11 +49,9 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                sensor.getService(Service.SmokeSensor)
+                acc.getService(Service.SmokeSensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
-
-        return sensor;
     };
 };

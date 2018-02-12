@@ -33,7 +33,7 @@ mqtt.on('connect', () => {
     log.info('mqtt connected ' + config.url);
     /* istanbul ignore if */
     if (!bridgeListening) {
-        mqtt.publish(config.name + '/connected', '1', {retain: true});
+        mqttPub(config.name + '/connected', '1', {retain: true});
     }
 });
 
@@ -75,36 +75,6 @@ function typeGuess(payload) {
     }
     return state;
 }
-
-mqtt.on('message', (topic, payload) => {
-    payload = payload.toString();
-    let state;
-    if (payload.indexOf('{') === -1 || config.disableJsonParse) {
-        state = typeGuess(payload);
-    } else {
-        try {
-            // We got an Object - let's hope it follows mqtt-smarthome architecture and has an attribute "val"
-            // see https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/Architecture.md
-            state = JSON.parse(payload).val;
-            // TODO make attribute configurable to support non-mqtt-smarthome json payloads https://github.com/hobbyquaker/homekit2mqtt/issues/67
-            if (typeof state === 'undefined') {
-                // :-( there is no "val" attribute
-                throw new TypeError('attribute val undefined');
-            }
-        } catch (err) {
-            state = typeGuess(payload);
-        }
-    }
-
-    log.debug('< mqtt', topic, state);
-    mqttStatus[topic] = state;
-    /* istanbul ignore else */
-    if (mqttCallbacks[topic]) {
-        mqttCallbacks[topic].forEach(cb => {
-            cb(state);
-        });
-    }
-});
 
 // MQTT subscribe function that provides a callback on incoming messages.
 // Not meant to be used with wildcards!
@@ -186,6 +156,7 @@ function identify(settings, paired, callback) {
 }
 
 function newAccessory(settings) {
+    log.debug('creating new accessory', settings.name);
     const acc = new Accessory(settings.name, uuid.generate(settings.id));
     if (settings.manufacturer || settings.model || settings.serial) {
         acc.getService(Service.AccessoryInformation)
@@ -206,73 +177,127 @@ function newAccessory(settings) {
     return acc;
 }
 
-const createAccessory = {};
+const addService = {};
 
-function loadAccessory(acc) {
-    const file = 'accessories/' + acc + '.js';
+function loadService(service) {
+    const file = 'accessories/' + service + '.js';
     log.debug('loading', file);
-    createAccessory[acc] = require(path.join(__dirname, file))({mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic});
+    addService[service] = require(path.join(__dirname, file))({mqttPub, mqttSub, mqttStatus, log, Service, Characteristic});
 }
 
+let mapping;
+let accCount;
+
+function createBridge() {
+    mqtt.on('message', (topic, payload) => {
+        payload = payload.toString();
+        let state;
+        if (payload.indexOf('{') === -1 || config.disableJsonParse) {
+            state = typeGuess(payload);
+        } else {
+            try {
+                // We got an Object - let's hope it follows mqtt-smarthome architecture and has an attribute "val"
+                // see https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/Architecture.md
+                state = JSON.parse(payload).val;
+                // TODO make attribute configurable to support non-mqtt-smarthome json payloads https://github.com/hobbyquaker/homekit2mqtt/issues/67
+                if (typeof state === 'undefined') {
+                    // :-( there is no "val" attribute
+                    throw new TypeError('attribute val undefined');
+                }
+            } catch (err) {
+                state = typeGuess(payload);
+            }
+        }
+
+        log.debug('< mqtt', topic, state);
+        mqttStatus[topic] = state;
+        /* istanbul ignore else */
+        if (mqttCallbacks[topic]) {
+            mqttCallbacks[topic].forEach(cb => {
+                cb(state);
+            });
+        }
+    });
+
 // Load and create all accessories
-log.info('loading HomeKit to MQTT mapping file ' + config.mapfile);
-let mapping = require(config.mapfile);
-let accCount = 0;
-Object.keys(mapping).forEach(id => {
-    const a = mapping[id];
-    a.id = id;
-    if (!createAccessory[a.service]) {
-        loadAccessory(a.service);
+    log.info('loading HomeKit to MQTT mapping file ' + config.mapfile);
+    mapping = require(config.mapfile);
+    accCount = 0;
+    Object.keys(mapping).forEach(id => {
+        const settings = mapping[id];
+        const acc = newAccessory(settings);
+        settings.id = id;
+
+        if (!addService[settings.service]) {
+            loadService(settings.service);
+        }
+
+        log.debug('adding service', settings.service, 'to accessory', settings.name);
+        addService[settings.service](acc, settings);
+
+        log.debug('addBridgedAccessory ' + settings.name);
+        bridge.addBridgedAccessory(acc);
+        accCount++;
+    });
+    log.info('hap created', accCount, 'Accessories');
+
+    log('hap publishing bridge "' + config.bridgename + '" username=' + config.username, 'port=' + config.port, 'pincode=' + config.c);
+    bridge.publish({
+        username: config.username,
+        port: config.port,
+        pincode: config.c,
+        category: Accessory.Categories.OTHER
+    });
+
+    bridge._server.on('listening', () => {
+        bridgeListening = true;
+        mqttPub(config.name + '/connected', '2', {retain: true});
+        log('hap Bridge listening on port', config.port);
+    });
+
+    bridge._server.on('pair', username => {
+        log('hap paired', username);
+    });
+
+    /* istanbul ignore next */
+    bridge._server.on('unpair', username => {
+        log('hap unpaired', username);
+    });
+
+    /* istanbul ignore next */
+    bridge._server.on('verify', () => {
+        log('hap verify');
+    });
+}
+
+let isStarted = false;
+
+function start() {
+    if (isStarted) {
+        log.error('already started');
+        return;
     }
-    log.debug('addBridgedAccessory ' + a.service + ' ' + a.name);
-    bridge.addBridgedAccessory(createAccessory[a.service](a));
-    accCount++;
-});
-log.info('hap created', accCount, 'Accessories');
+    isStarted = true;
+    log.debug('mqtt unsubscribe #');
+    mqtt.unsubscribe('#');
+    createBridge();
+}
 
-log('hap publishing bridge "' + config.bridgename + '" username=' + config.username, 'port=' + config.port, 'pincode=' + config.c);
-bridge.publish({
-    username: config.username,
-    port: config.port,
-    pincode: config.c,
-    category: Accessory.Categories.OTHER
-});
-
-bridge._server.on('listening', () => {
-    bridgeListening = true;
-    mqtt.publish(config.name + '/connected', '2', {retain: true});
-    log('hap Bridge listening on port', config.port);
-});
-
-bridge._server.on('pair', username => {
-    log('hap paired', username);
-});
-
-/* istanbul ignore next */
-bridge._server.on('unpair', username => {
-    log('hap unpaired', username);
-});
-
-/* istanbul ignore next */
-bridge._server.on('verify', () => {
-    log('hap verify');
-});
-
-if (!config.disableWeb) {
-    // Get all retained messages
+if (config.disableWeb) {
+    createBridge();
+} else {
+    // Get all retained messages (used for autocomplete in web ui)
     log.debug('mqtt subscribe #');
     mqtt.subscribe('#');
     const topics = [];
-    let retainTimeout = setTimeout(() => {
-        mqtt.unsubscribe('#');
-    }, 500);
+    let retainTimeout = setTimeout(start, 1000);
     mqtt.on('message', (topic, payload, msg) => {
+        if (isStarted) {
+            return;
+        }
         if (msg.retain) {
             clearTimeout(retainTimeout);
-            retainTimeout = setTimeout(() => {
-                log.debug('mqtt unsubscribe #');
-                mqtt.unsubscribe('#');
-            }, 500);
+            retainTimeout = setTimeout(start, 1000);
         }
         if (topics.indexOf(topic) === -1 && topic !== config.name + '/connected') {
             topics.push(topic);

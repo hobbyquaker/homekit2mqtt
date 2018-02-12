@@ -1,7 +1,7 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     // TODO Implement
 
@@ -15,7 +15,7 @@ module.exports = function (iface) {
   this.addOptionalCharacteristic(Characteristic.Name);
      */
 
-    return function createAccessory_FilterMaintenance(settings) {
+    return function createService_FilterMaintenance(acc, settings) {
         throw new Error('Service FilterMaintenance not yet implemented');
     };
 };

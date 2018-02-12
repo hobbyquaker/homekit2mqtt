@@ -1,7 +1,7 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     /*
      // Required Characteristics
@@ -11,7 +11,7 @@ module.exports = function (iface) {
 
      */
 
-    return function createAccessory_Relay(settings) {
+    return function createService_Relay(acc, settings) {
         throw new Error('Service Relay not yet implemented');
     };
 };

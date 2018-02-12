@@ -1,12 +1,10 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off", no-negated-condition: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createAccessory_MotionSensor(settings) {
-        const sensor = newAccessory(settings);
-
-        sensor.addService(Service.MotionSensor)
+    return function createService_MotionSensor(acc, settings) {
+        acc.addService(Service.MotionSensor)
             .getCharacteristic(Characteristic.MotionDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'MotionDetected');
@@ -19,13 +17,13 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusMotionDetected, val => {
             const motion = val === settings.payload.onMotionDetected;
             log.debug('> hap update', settings.name, 'MotionDetected', motion);
-            sensor.getService(Service.MotionSensor)
+            acc.getService(Service.MotionSensor)
                 .updateCharacteristic(Characteristic.MotionDetected, motion);
         });
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            sensor.getService(Service.MotionSensor)
+            acc.getService(Service.MotionSensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -42,11 +40,9 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                sensor.getService(Service.MotionSensor)
+                acc.getService(Service.MotionSensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
-
-        return sensor;
     };
 };

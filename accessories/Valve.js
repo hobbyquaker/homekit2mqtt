@@ -1,7 +1,7 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     /*
     Service.Valve = function(displayName, subtype) {
@@ -27,9 +27,7 @@ module.exports = function (iface) {
     this.addOptionalCharacteristic(Characteristic.Name);
      */
 
-    return function createAccessory_Valve(settings) {
-        const valve = newAccessory(settings);
-
+    return function createService_Valve(acc, settings) {
         if (typeof settings.payload.activeTrue === 'undefined') {
             settings.payload.activeTrue = true;
         }
@@ -46,7 +44,7 @@ module.exports = function (iface) {
             settings.payload.activeFalse = false;
         }
 
-        valve.addService(Service.Valve)
+        acc.addService(Service.Valve)
             .getCharacteristic(Characteristic.Active)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'Active', value);
@@ -57,7 +55,7 @@ module.exports = function (iface) {
 
         const type = settings.config.ValveType || 0;
         log.debug('> hap set', settings.name, 'ValveType', type);
-        valve.getService(Service.Valve)
+        acc.getService(Service.Valve)
             .setCharacteristic(Characteristic.ValveType, type);
 
         /* istanbul ignore else  */
@@ -65,10 +63,10 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusActive, val => {
                 const active = val === settings.payload.activeTrue ? 1 : 0;
                 log.debug('> hap update', settings.name, 'Active', active);
-                valve.getService(Service.Valve)
+                acc.getService(Service.Valve)
                     .updateCharacteristic(Characteristic.Active, active);
             });
-            valve.getService(Service.Valve)
+            acc.getService(Service.Valve)
                 .getCharacteristic(Characteristic.Active)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'Active');
@@ -81,10 +79,10 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusInUse, val => {
             const inUse = val === settings.payload.inUseTrue ? 1 : 0;
             log.debug('> hap update', settings.name, 'InUse', inUse);
-            valve.getService(Service.Valve)
+            acc.getService(Service.Valve)
                 .updateCharacteristic(Characteristic.InUse, inUse);
         });
-        valve.getService(Service.Valve)
+        acc.getService(Service.Valve)
             .getCharacteristic(Characteristic.InUse)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'InUse');
@@ -94,7 +92,7 @@ module.exports = function (iface) {
             });
 
         if (settings.topic.setDuration) {
-            valve.getService(Service.Valve)
+            acc.getService(Service.Valve)
                 .getCharacteristic(Characteristic.SetDuration)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'SetDuration', value);
@@ -107,10 +105,10 @@ module.exports = function (iface) {
         if (settings.topic.statusRemainingDuration) {
             mqttSub(settings.topic.statusRemainingDuration, val => {
                 log.debug('> hap update', settings.name, 'RemainingDuration', val);
-                valve.getService(Service.Valve)
+                acc.getService(Service.Valve)
                     .updateCharacteristic(Characteristic.RemainingDuration, val);
             });
-            valve.getService(Service.Valve)
+            acc.getService(Service.Valve)
                 .getCharacteristic(Characteristic.RemainingDuration)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'RemainingDuration');
@@ -125,10 +123,10 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusFault, val => {
                 const fault = val === settings.payload.faultTrue ? 1 : 0;
                 log.debug('> hap update', settings.name, 'StatusFault', fault);
-                valve.getService(Service.Valve)
+                acc.getService(Service.Valve)
                     .updateCharacteristic(Characteristic.StatusFault, fault);
             });
-            valve.getService(Service.Valve)
+            acc.getService(Service.Valve)
                 .getCharacteristic(Characteristic.StatusFault)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusFault');
@@ -137,7 +135,5 @@ module.exports = function (iface) {
                     callback(null, fault);
                 });
         }
-
-        return valve;
     };
 };

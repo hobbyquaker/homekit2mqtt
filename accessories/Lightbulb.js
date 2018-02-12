@@ -1,12 +1,10 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createAccessory_Lightbulb(settings) {
-        const light = newAccessory(settings);
-
-        light.addService(Service.Lightbulb)
+    return function createService_Lightbulb(acc, settings) {
+        acc.addService(Service.Lightbulb)
             .getCharacteristic(Characteristic.On)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'On', value);
@@ -31,11 +29,11 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusOn, val => {
             const on = mqttStatus[settings.topic.statusOn] !== settings.payload.onFalse;
             log.debug('> hap update', settings.name, 'On', on);
-            light.getService(Service.Lightbulb)
+            acc.getService(Service.Lightbulb)
                 .updateCharacteristic(Characteristic.On, on);
         });
 
-        light.getService(Service.Lightbulb)
+        acc.getService(Service.Lightbulb)
             .getCharacteristic(Characteristic.On)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'On');
@@ -46,7 +44,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.setBrightness) {
-            light.getService(Service.Lightbulb)
+            acc.getService(Service.Lightbulb)
                 .addCharacteristic(Characteristic.Brightness)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'Brightness', value);
@@ -62,11 +60,11 @@ module.exports = function (iface) {
                     /* istanbul ignore next */
                     const brightness = Math.round(mqttStatus[settings.topic.statusBrightness] / (settings.payload.brightnessFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Brightness', brightness);
-                    light.getService(Service.Lightbulb)
+                    acc.getService(Service.Lightbulb)
                         .updateCharacteristic(Characteristic.Brightness, brightness);
                 });
 
-                light.getService(Service.Lightbulb)
+                acc.getService(Service.Lightbulb)
                     .getCharacteristic(Characteristic.Brightness)
                     .on('get', callback => {
                         log.debug('< hap get', settings.name, 'Brightness');
@@ -80,7 +78,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.setHue) {
-            light.getService(Service.Lightbulb)
+            acc.getService(Service.Lightbulb)
                 .addCharacteristic(Characteristic.Hue)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'Hue', value);
@@ -95,10 +93,10 @@ module.exports = function (iface) {
                     /* istanbul ignore next */
                     const hue = (val / (settings.payload.hueFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Hue', hue);
-                    light.getService(Service.Lightbulb)
+                    acc.getService(Service.Lightbulb)
                         .updateCharacteristic(Characteristic.Hue, hue);
                 });
-                light.getService(Service.Lightbulb)
+                acc.getService(Service.Lightbulb)
                     .getCharacteristic(Characteristic.Hue)
                     .on('get', callback => {
                         log.debug('< hap get', settings.name, 'Hue');
@@ -112,7 +110,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.setSaturation) {
-            light.getService(Service.Lightbulb)
+            acc.getService(Service.Lightbulb)
                 .addCharacteristic(Characteristic.Saturation)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'Saturation', value);
@@ -127,10 +125,10 @@ module.exports = function (iface) {
                     /* istanbul ignore next */
                     const sat = (val / (settings.payload.saturationFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Saturation', sat);
-                    light.getService(Service.Lightbulb)
+                    acc.getService(Service.Lightbulb)
                         .updateCharacteristic(Characteristic.Saturation, sat);
                 });
-                light.getService(Service.Lightbulb)
+                acc.getService(Service.Lightbulb)
                     .getCharacteristic(Characteristic.Saturation)
                     .on('get', callback => {
                         log.debug('< hap get', settings.name, 'Saturation');
@@ -144,7 +142,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.setColorTemperature) {
-            light.getService(Service.Lightbulb)
+            acc.getService(Service.Lightbulb)
                 .addCharacteristic(Characteristic.ColorTemperature)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'ColorTemperature', value);
@@ -157,10 +155,10 @@ module.exports = function (iface) {
                 mqttSub(settings.topic.statusColorTemperature, val => {
                     const sat = val;
                     log.debug('> hap update', settings.name, 'ColorTemperature', sat);
-                    light.getService(Service.Lightbulb)
+                    acc.getService(Service.Lightbulb)
                         .updateCharacteristic(Characteristic.ColorTemperature, sat);
                 });
-                light.getService(Service.Lightbulb)
+                acc.getService(Service.Lightbulb)
                     .getCharacteristic(Characteristic.ColorTemperature)
                     .on('get', callback => {
                         log.debug('< hap get', settings.name, 'ColorTemperature');
@@ -171,7 +169,5 @@ module.exports = function (iface) {
                     });
             }
         }
-
-        return light;
     };
 };

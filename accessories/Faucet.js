@@ -1,7 +1,7 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     /*
     // Required Characteristics
@@ -12,9 +12,7 @@ module.exports = function (iface) {
     this.addOptionalCharacteristic(Characteristic.StatusFault);
     */
 
-    return function createAccessory_Faucet(settings) {
-        const faucet = newAccessory(settings);
-
+    return function createService_Faucet(acc, settings) {
         if (typeof settings.payload.activeTrue === 'undefined') {
             settings.payload.activeTrue = true;
         }
@@ -27,7 +25,7 @@ module.exports = function (iface) {
             settings.payload.faultTrue = true;
         }
 
-        faucet.addService(Service.Faucet)
+        acc.addService(Service.Faucet)
             .getCharacteristic(Characteristic.Active)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'Active', value);
@@ -42,10 +40,10 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusActive, val => {
                 const active = val === settings.payload.activeTrue ? 1 : 0;
                 log.debug('> hap update', settings.name, 'Active', active);
-                faucet.getService(Service.Faucet)
+                acc.getService(Service.Faucet)
                     .updateCharacteristic(Characteristic.Active, active);
             });
-            faucet.getService(Service.Faucet)
+            acc.getService(Service.Faucet)
                 .getCharacteristic(Characteristic.Active)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'Active');
@@ -60,10 +58,10 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusFault, val => {
                 const fault = val === settings.payload.faultTrue ? 1 : 0;
                 log.debug('> hap update', settings.name, 'StatusFault', fault);
-                faucet.getService(Service.Faucet)
+                acc.getService(Service.Faucet)
                     .updateCharacteristic(Characteristic.StatusFault, fault);
             });
-            faucet.getService(Service.Faucet)
+            acc.getService(Service.Faucet)
                 .getCharacteristic(Characteristic.StatusFault)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusFault');
@@ -72,7 +70,5 @@ module.exports = function (iface) {
                     callback(null, fault);
                 });
         }
-
-        return faucet;
     };
 };

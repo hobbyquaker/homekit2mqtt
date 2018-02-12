@@ -1,7 +1,7 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     /*
     // Required Characteristics
@@ -15,9 +15,7 @@ module.exports = function (iface) {
     this.addOptionalCharacteristic(Characteristic.Name);
     */
 
-    return function createAccessory_Door(settings) {
-        const acc = newAccessory(settings);
-
+    return function createService_Door(acc, settings) {
         acc.addService(Service.Door)
             .getCharacteristic(Characteristic.TargetPosition)
             .on('set', (value, callback) => {
@@ -121,7 +119,5 @@ module.exports = function (iface) {
                     .updateCharacteristic(Characteristic.ObstructionDetected, obstruction);
             });
         }
-
-        return acc;
     };
 };

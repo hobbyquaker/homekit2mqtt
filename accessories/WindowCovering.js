@@ -1,12 +1,10 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createAccessory_WindowCovering(settings) {
-        const shutter = newAccessory(settings);
-
-        shutter.addService(Service.WindowCovering)
+    return function createService_WindowCovering(acc, settings) {
+        acc.addService(Service.WindowCovering)
             .getCharacteristic(Characteristic.TargetPosition)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'TargetPosition', value);
@@ -26,10 +24,10 @@ module.exports = function (iface) {
                 /* istanbul ignore next */
                 const position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
                 log.debug('> hap update', settings.name, 'TargetPosition', position);
-                shutter.getService(Service.WindowCovering)
+                acc.getService(Service.WindowCovering)
                     .updateCharacteristic(Characteristic.TargetPosition, position);
             });
-            shutter.getService(Service.WindowCovering)
+            acc.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.TargetPosition)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'TargetPosition');
@@ -46,10 +44,10 @@ module.exports = function (iface) {
                 /* istanbul ignore next */
                 const pos = Math.round(val / (settings.payload.currentPositionFactor || 1));
                 log.debug('> hap update', settings.name, 'CurrentPosition', pos);
-                shutter.getService(Service.WindowCovering)
+                acc.getService(Service.WindowCovering)
                     .updateCharacteristic(Characteristic.CurrentPosition, pos);
             });
-            shutter.getService(Service.WindowCovering)
+            acc.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.CurrentPosition)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'CurrentPosition');
@@ -74,10 +72,10 @@ module.exports = function (iface) {
                     state = Characteristic.PositionState.STOPPED;
                     log.debug('> hap update', settings.name, 'PositionState.STOPPED');
                 }
-                shutter.getService(Service.WindowCovering)
+                acc.getService(Service.WindowCovering)
                     .updateCharacteristic(Characteristic.PositionState, state);
             });
-            shutter.getService(Service.WindowCovering)
+            acc.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.PositionState)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'PositionState');
@@ -94,7 +92,5 @@ module.exports = function (iface) {
                     }
                 });
         }
-
-        return shutter;
     };
 };

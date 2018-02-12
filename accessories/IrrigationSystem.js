@@ -1,7 +1,7 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     /*
    // Required Characteristics
@@ -15,9 +15,7 @@ module.exports = function (iface) {
   this.addOptionalCharacteristic(Characteristic.StatusFault);
      */
 
-    return function createAccessory_IrrigationSystem(settings) {
-        const irrigation = newAccessory(settings);
-
+    return function createService_IrrigationSystem(acc, settings) {
         if (typeof settings.payload.activeTrue === 'undefined') {
             settings.payload.activeTrue = true;
         }
@@ -34,7 +32,7 @@ module.exports = function (iface) {
             settings.payload.activeFalse = false;
         }
 
-        irrigation.addService(Service.IrrigationSystem, settings.name)
+        acc.addService(Service.IrrigationSystem, settings.name)
             .getCharacteristic(Characteristic.Active)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'Active', value);
@@ -50,10 +48,10 @@ module.exports = function (iface) {
                 log.debug('< mqtt', settings.topic.statusActive, val);
                 const active = mqttStatus[settings.topic.statusActive] === settings.payload.activeTrue ? 1 : 0;
                 log.debug('> hap update', settings.name, 'Active', active);
-                irrigation.getService(Service.IrrigationSystem)
+                acc.getService(Service.IrrigationSystem)
                     .updateCharacteristic(Characteristic.Active, active);
             });
-            irrigation.getService(Service.IrrigationSystem)
+            acc.getService(Service.IrrigationSystem)
                 .getCharacteristic(Characteristic.Active)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'Active');
@@ -65,10 +63,10 @@ module.exports = function (iface) {
 
         mqttSub(settings.topic.statusProgramMode, val => {
             log.debug('> hap update', settings.name, 'ProgramMode', val);
-            irrigation.getService(Service.IrrigationSystem)
+            acc.getService(Service.IrrigationSystem)
                 .updateCharacteristic(Characteristic.ProgramMode, val);
         });
-        irrigation.getService(Service.IrrigationSystem)
+        acc.getService(Service.IrrigationSystem)
             .getCharacteristic(Characteristic.ProgramMode)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'ProgramMode');
@@ -80,10 +78,10 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusInUse, val => {
             const inUse = val === settings.payload.inUseTrue ? 1 : 0;
             log.debug('> hap update', settings.name, 'InUse', inUse);
-            irrigation.getService(Service.IrrigationSystem)
+            acc.getService(Service.IrrigationSystem)
                 .updateCharacteristic(Characteristic.InUse, inUse);
         });
-        irrigation.getService(Service.IrrigationSystem)
+        acc.getService(Service.IrrigationSystem)
             .getCharacteristic(Characteristic.InUse)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'InUse');
@@ -96,10 +94,10 @@ module.exports = function (iface) {
         if (settings.topic.statusRemainingDuration) {
             mqttSub(settings.topic.statusRemainingDuration, val => {
                 log.debug('> hap update', settings.name, 'RemainingDuration', val);
-                irrigation.getService(Service.IrrigationSystem)
+                acc.getService(Service.IrrigationSystem)
                     .updateCharacteristic(Characteristic.RemainingDuration, val);
             });
-            irrigation.getService(Service.IrrigationSystem)
+            acc.getService(Service.IrrigationSystem)
                 .getCharacteristic(Characteristic.RemainingDuration)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'RemainingDuration');
@@ -114,10 +112,10 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusFault, val => {
                 const fault = val === settings.payload.faultTrue ? 1 : 0;
                 log.debug('> hap update', settings.name, 'StatusFault', fault);
-                irrigation.getService(Service.IrrigationSystem)
+                acc.getService(Service.IrrigationSystem)
                     .updateCharacteristic(Characteristic.StatusFault, fault);
             });
-            irrigation.getService(Service.IrrigationSystem)
+            acc.getService(Service.IrrigationSystem)
                 .getCharacteristic(Characteristic.StatusFault)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusFault');
@@ -126,7 +124,5 @@ module.exports = function (iface) {
                     callback(null, fault);
                 });
         }
-
-        return irrigation;
     };
 };

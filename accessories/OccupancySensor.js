@@ -1,12 +1,10 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off", no-negated-condition: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createAccessory_OccupancySensor(settings) {
-        const sensor = newAccessory(settings);
-
-        sensor.addService(Service.OccupancySensor)
+    return function createService_OccupancySensor(acc, settings) {
+        acc.addService(Service.OccupancySensor)
             .getCharacteristic(Characteristic.OccupancyDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'OccupancyDetected');
@@ -21,7 +19,7 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusOccupancyDetected, val => {
             const motion = val === settings.payload.onOccupancyDetected;
             log.debug('> hap update', settings.name, 'OccupancyDetected', motion);
-            sensor.getService(Service.OccupancySensor)
+            acc.getService(Service.OccupancySensor)
                 .updateCharacteristic(Characteristic.OccupancyDetected, motion ?
                     Characteristic.OccupancyDetected.OCCUPANCY_DETECTED :
                     Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
@@ -29,7 +27,7 @@ module.exports = function (iface) {
 
 	/* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            sensor.getService(Service.OccupancySensor)
+            acc.getService(Service.OccupancySensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -45,11 +43,9 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                sensor.getService(Service.OccupancySensor)
+                acc.getService(Service.OccupancySensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
-
-        return sensor;
     };
 };

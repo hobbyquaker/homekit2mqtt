@@ -7,18 +7,16 @@
  */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createAccessory_HumiditySensor(settings) {
-        const sensor = newAccessory(settings);
-
+    return function createService_HumiditySensor(acc, settings) {
         mqttSub(settings.topic.statusHumidity, val => {
             log.debug('> hap update', settings.name, 'CurrentRelativeHumidity', mqttStatus[settings.topic.statusHumidity]);
-            sensor.getService(Service.HumiditySensor)
+            acc.getService(Service.HumiditySensor)
                 .updateCharacteristic(Characteristic.CurrentRelativeHumidity, val);
         });
 
-        sensor.addService(Service.HumiditySensor)
+        acc.addService(Service.HumiditySensor)
             .getCharacteristic(Characteristic.CurrentRelativeHumidity)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'HumiditySensor', 'CurrentRelativeHumidity');
@@ -28,7 +26,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            sensor.getService(Service.HumiditySensor)
+            acc.getService(Service.HumiditySensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -45,10 +43,9 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                sensor.getService(Service.HumiditySensor)
+                acc.getService(Service.HumiditySensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
-        return sensor;
     };
 };

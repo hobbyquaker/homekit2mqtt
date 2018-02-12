@@ -1,12 +1,10 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
 module.exports = function (iface) {
-    const {mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic} = iface;
+    const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createAccessory_Speaker(settings) {
-        const speaker = newAccessory(settings);
-
-        speaker.addService(Service.Speaker, settings.name)
+    return function createService_Speaker(acc, settings) {
+        acc.addService(Service.Speaker, settings.name)
             .getCharacteristic(Characteristic.Mute)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'Mute', value);
@@ -21,12 +19,12 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusMute, val => {
                 const mute = val === settings.payload.muteTrue;
                 log.debug('> hap update', settings.name, 'Mute', mute);
-                speaker.getService(Service.Speaker)
+                acc.getService(Service.Speaker)
                     .updateCharacteristic(Characteristic.Mute, mute);
             });
         }
 
-        speaker.getService(Service.Speaker)
+        acc.getService(Service.Speaker)
             .getCharacteristic(Characteristic.Mute)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'Mute');
@@ -37,7 +35,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.setVolume) {
-            speaker.getService(Service.Speaker)
+            acc.getService(Service.Speaker)
                 .addCharacteristic(Characteristic.Volume)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'Volume', value);
@@ -53,11 +51,11 @@ module.exports = function (iface) {
                     /* istanbul ignore next */
                     const volume = (value / (settings.payload.volumeFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Volume', volume);
-                    speaker.getService(Service.Speaker)
+                    acc.getService(Service.Speaker)
                         .updateCharacteristic(Characteristic.Volume, volume);
                 });
 
-                speaker.getService(Service.Speaker)
+                acc.getService(Service.Speaker)
                     .getCharacteristic(Characteristic.Volume)
                     .on('get', callback => {
                         log.debug('< hap get', settings.name, 'Volume');
@@ -68,7 +66,5 @@ module.exports = function (iface) {
                     });
             }
         }
-
-        return speaker;
     };
 };
