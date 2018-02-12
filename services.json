@@ -274,6 +274,20 @@
       {"name": "identify", "optional": true}
     ]
   },
+  "Slat": {
+    "topic": [
+      {"name": "statusCurrentSlatState", "desc": "0 = FIXED, 1 = JAMMED, 2 = SWINGING"},
+      {"name": "statusCurrentTiltAngle", "optional": true},
+      {"name": "statusTargetTiltAngle", "optional": true},
+      {"name": "setTargetTiltAngle", "optional": true},
+      {"name": "statusSwingMode", "optional": true, "desc": "0 = SWING_DISABLED, 1 = SWING_ENABLED"},
+      {"name": "setSwingMode", "optional": true, "desc": "0 = SWING_DISABLED, 1 = SWING_ENABLED"}
+    ],
+    "payload": [],
+    "config": [
+      {"name": "slatType", "enum": ["HORIZONTAL", "VERTICAL"]}
+    ]
+  },
   "SmokeSensor": {
     "topic": [
       {"name": "statusSmokeDetected"},

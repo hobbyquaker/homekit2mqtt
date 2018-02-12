@@ -416,6 +416,29 @@ payload
 * identify (optional)
 
 
+#### Slat
+
+topic
+
+* statusCurrentSlatState    
+  0 = FIXED, 1 = JAMMED, 2 = SWINGING
+* statusCurrentTiltAngle (optional)
+* statusTargetTiltAngle (optional)
+* setTargetTiltAngle (optional)
+* statusSwingMode (optional)    
+  0 = SWING_DISABLED, 1 = SWING_ENABLED
+* setSwingMode (optional)    
+  0 = SWING_DISABLED, 1 = SWING_ENABLED
+
+payload
+
+
+config
+
+* slatType 
+  0 = HORIZONTAL, 1 = VERTICAL
+
+
 #### SmokeSensor
 
 topic
