@@ -180,7 +180,7 @@ function newAccessory(settings) {
 const addService = {};
 
 function loadService(service) {
-    const file = 'accessories/' + service + '.js';
+    const file = 'services/' + service + '.js';
     log.debug('loading', file);
     addService[service] = require(path.join(__dirname, file))({mqttPub, mqttSub, mqttStatus, log, Service, Characteristic});
 }
@@ -224,18 +224,18 @@ function createBridge() {
     mapping = require(config.mapfile);
     accCount = 0;
     Object.keys(mapping).forEach(id => {
-        const settings = mapping[id];
-        const acc = newAccessory(settings);
-        settings.id = id;
+        const s = mapping[id];
+        const acc = newAccessory(s);
+        s.id = id;
 
-        if (!addService[settings.service]) {
-            loadService(settings.service);
+        if (!addService[s.service]) {
+            loadService(s.service);
         }
 
-        log.debug('adding service', settings.service, 'to accessory', settings.name);
-        addService[settings.service](acc, settings);
+        log.debug('adding service', s.service, 'to accessory', s.name);
+        addService[s.service](acc, s);
 
-        log.debug('addBridgedAccessory ' + settings.name);
+        log.debug('addBridgedAccessory ' + s.name);
         bridge.addBridgedAccessory(acc);
         accCount++;
     });
