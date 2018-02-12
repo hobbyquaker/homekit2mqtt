@@ -224,18 +224,33 @@ function createBridge() {
     mapping = require(config.mapfile);
     accCount = 0;
     Object.keys(mapping).forEach(id => {
-        const s = mapping[id];
-        const acc = newAccessory(s);
-        s.id = id;
+        const accConfig = mapping[id];
+        const acc = newAccessory(accConfig);
+        accConfig.id = id;
 
-        if (!addService[s.service]) {
-            loadService(s.service);
+        const services = accConfig.services || [];
+
+        if (accConfig.service) {
+            // Keep compatibility with old scheme (version <= 0.8)
+            services.unshift({
+                name: accConfig.name,
+                service: accConfig.service,
+                topic: accConfig.topic || {},
+                payload: accConfig.payload || {},
+                config: accConfig.config || {},
+                props: accConfig.props || {}
+            });
         }
 
-        log.debug('adding service', s.service, 'to accessory', s.name);
-        addService[s.service](acc, s);
+        services.forEach(s => {
+            if (!addService[s.service]) {
+                loadService(s.service);
+            }
+            log.debug('adding service', s.service, 'to accessory', accConfig.name);
+            addService[s.service](acc, s);
+        });
 
-        log.debug('addBridgedAccessory ' + s.name);
+        log.debug('addBridgedAccessory ' + accConfig.name);
         bridge.addBridgedAccessory(acc);
         accCount++;
     });
