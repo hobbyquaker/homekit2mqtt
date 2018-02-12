@@ -372,6 +372,9 @@
     ],
     "payload": [
       {"name": "identify", "optional": true}
+    ],
+    "config": [
+      {"name": "TemperatureDisplayUnits", "enum": ["CELSIUS", "FAHRENHEIT"]}
     ]
   },
   "Valve": {
