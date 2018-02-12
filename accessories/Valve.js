@@ -56,7 +56,7 @@ module.exports = function (iface) {
                 callback();
             });
 
-        const type = settings.config.valveType || 0;
+        const type = settings.config.ValveType || 0;
         log.debug('> hap set', settings.name, 'ValveType', type);
         valve.getService(Service.Valve)
             .setCharacteristic(Characteristic.ValveType, type);

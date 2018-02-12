@@ -36,7 +36,7 @@ module.exports = function (iface) {
                 callback();
             });
 
-        const type = settings.config.slatType || 0;
+        const type = settings.config.SlatType || 0;
         log.debug('> hap set', settings.name, 'SlatType', type);
         slat.getService(Service.Slat)
             .setCharacteristic(Characteristic.SlatType, type);

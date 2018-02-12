@@ -285,7 +285,7 @@
     ],
     "payload": [],
     "config": [
-      {"name": "slatType", "enum": ["HORIZONTAL", "VERTICAL"]}
+      {"name": "SlatType", "enum": ["HORIZONTAL", "VERTICAL"]}
     ]
   },
   "SmokeSensor": {
@@ -393,7 +393,7 @@
       {"name": "inUseTrue", "optional": true, "default": true}
     ],
     "config": [
-      {"name": "valveType", "optional": true, "default": "0", "enum": ["GENERIC_VALVE", "IRRIGATION", "SHOWER_HEAD", "WATER_FAUCET"]}
+      {"name": "ValveType", "optional": true, "default": "0", "enum": ["GENERIC_VALVE", "IRRIGATION", "SHOWER_HEAD", "WATER_FAUCET"]}
     ]
   },
   "Window": {
