@@ -157,6 +157,7 @@ function identify(settings, paired, callback) {
 
 function newAccessory(settings) {
     log.debug('creating new accessory', settings.name);
+    console.log(settings.id, uuid.generate(settings.id));
     const acc = new Accessory(settings.name, uuid.generate(settings.id));
     if (settings.manufacturer || settings.model || settings.serial) {
         acc.getService(Service.AccessoryInformation)
@@ -225,8 +226,8 @@ function createBridge() {
     accCount = 0;
     Object.keys(mapping).forEach(id => {
         const accConfig = mapping[id];
-        const acc = newAccessory(accConfig);
         accConfig.id = id;
+        const acc = newAccessory(accConfig);
 
         const services = accConfig.services || [];
 
