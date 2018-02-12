@@ -7,7 +7,7 @@ module.exports = function (iface) {
         acc.addService(Service.LockMechanism)
             .getCharacteristic(Characteristic.LockTargetState)
             .on('set', (value, callback) => {
-                log.debug('< hap set', settings.name || acc.name, 'LockTargetState', value);
+                log.debug('< hap set', settings.name, 'LockTargetState', value);
 
                 /* istanbul ignore else */
                 if (value === Characteristic.LockTargetState.UNSECURED) {
@@ -24,7 +24,7 @@ module.exports = function (iface) {
         if (settings.topic.statusLock) {
             mqttSub(settings.topic.statusLock, val => {
                 if (val === settings.payload.lockSecured) {
-                    log.debug('> hap update', settings.name || acc.name, 'LockCurrentState.SECURED');
+                    log.debug('> hap update', settings.name, 'LockCurrentState.SECURED');
                     acc.getService(Service.LockMechanism)
                         .updateCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED);
                     if (initial) {
@@ -33,7 +33,7 @@ module.exports = function (iface) {
                         initial = false;
                     }
                 } else {
-                    log.debug('> hap update', settings.name || acc.name, 'LockCurrentState.UNSECURED');
+                    log.debug('> hap update', settings.name, 'LockCurrentState.UNSECURED');
                     acc.getService(Service.LockMechanism)
                         .updateCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.UNSECURED);
                     if (initial) {
@@ -47,13 +47,13 @@ module.exports = function (iface) {
             acc.getService(Service.LockMechanism)
                 .getCharacteristic(Characteristic.LockCurrentState)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name || acc.name, 'LockCurrentState');
+                    log.debug('< hap get', settings.name, 'LockCurrentState');
 
                     if (mqttStatus[settings.topic.statusLock] === settings.payload.lockSecured) {
-                        log.debug('> hap re_get', settings.name || acc.name, 'LockCurrentState.SECURED');
+                        log.debug('> hap re_get', settings.name, 'LockCurrentState.SECURED');
                         callback(null, Characteristic.LockCurrentState.SECURED);
                     } else {
-                        log.debug('> hap re_get', settings.name || acc.name, 'LockCurrentState.UNSECURED');
+                        log.debug('> hap re_get', settings.name, 'LockCurrentState.UNSECURED');
                         callback(null, Characteristic.LockCurrentState.UNSECURED);
                     }
                 });

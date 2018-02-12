@@ -7,16 +7,16 @@ module.exports = function (iface) {
         acc.addService(Service.MotionSensor)
             .getCharacteristic(Characteristic.MotionDetected)
             .on('get', callback => {
-                log.debug('< hap get', settings.name || acc.name, 'MotionDetected');
+                log.debug('< hap get', settings.name, 'MotionDetected');
                 const motion = mqttStatus[settings.topic.statusMotionDetected] === settings.payload.onMotionDetected;
 
-                log.debug('> hap re_get', settings.name || acc.name, 'MotionDetected', motion);
+                log.debug('> hap re_get', settings.name, 'MotionDetected', motion);
                 callback(null, motion);
             });
 
         mqttSub(settings.topic.statusMotionDetected, val => {
             const motion = val === settings.payload.onMotionDetected;
-            log.debug('> hap update', settings.name || acc.name, 'MotionDetected', motion);
+            log.debug('> hap update', settings.name, 'MotionDetected', motion);
             acc.getService(Service.MotionSensor)
                 .updateCharacteristic(Characteristic.MotionDetected, motion);
         });
@@ -26,12 +26,12 @@ module.exports = function (iface) {
             acc.getService(Service.MotionSensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name || acc.name, 'StatusLowBattery');
+                    log.debug('< hap get', settings.name, 'StatusLowBattery');
                     const bat = mqttStatus[settings.topic.statusLowBattery] !== settings.payload.onLowBattery ?
                         Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                         Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
 
-                    log.debug('> hap re_get', settings.name || acc.name, 'StatusLowBattery', bat);
+                    log.debug('> hap re_get', settings.name, 'StatusLowBattery', bat);
                     callback(null, bat);
                 });
 
@@ -39,7 +39,7 @@ module.exports = function (iface) {
                 const bat = val !== settings.payload.onLowBattery ?
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
-                log.debug('> hap update', settings.name || acc.name, 'StatusLowBattery', bat);
+                log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
                 acc.getService(Service.MotionSensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });

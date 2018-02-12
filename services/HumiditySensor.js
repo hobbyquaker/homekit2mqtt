@@ -11,7 +11,7 @@ module.exports = function (iface) {
 
     return function createService_HumiditySensor(acc, settings) {
         mqttSub(settings.topic.statusHumidity, val => {
-            log.debug('> hap update', settings.name || acc.name, 'CurrentRelativeHumidity', mqttStatus[settings.topic.statusHumidity]);
+            log.debug('> hap update', settings.name, 'CurrentRelativeHumidity', mqttStatus[settings.topic.statusHumidity]);
             acc.getService(Service.HumiditySensor)
                 .updateCharacteristic(Characteristic.CurrentRelativeHumidity, val);
         });
@@ -19,8 +19,8 @@ module.exports = function (iface) {
         acc.addService(Service.HumiditySensor)
             .getCharacteristic(Characteristic.CurrentRelativeHumidity)
             .on('get', callback => {
-                log.debug('< hap get', settings.name || acc.name, 'HumiditySensor', 'CurrentRelativeHumidity');
-                log.debug('> hap re_get', settings.name || acc.name, mqttStatus[settings.topic.statusHumidity]);
+                log.debug('< hap get', settings.name, 'HumiditySensor', 'CurrentRelativeHumidity');
+                log.debug('> hap re_get', settings.name, mqttStatus[settings.topic.statusHumidity]);
                 callback(null, mqttStatus[settings.topic.statusHumidity]);
             });
 
@@ -29,12 +29,12 @@ module.exports = function (iface) {
             acc.getService(Service.HumiditySensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name || acc.name, 'StatusLowBattery');
+                    log.debug('< hap get', settings.name, 'StatusLowBattery');
                     const bat = mqttStatus[settings.topic.statusLowBattery] === settings.payload.onLowBattery ?
                         Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
                         Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
 
-                    log.debug('> hap re_get', settings.name || acc.name, 'StatusLowBattery', bat);
+                    log.debug('> hap re_get', settings.name, 'StatusLowBattery', bat);
                     callback(null, bat);
                 });
 
@@ -42,7 +42,7 @@ module.exports = function (iface) {
                 const bat = val === settings.payload.onLowBattery ?
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
-                log.debug('> hap update', settings.name || acc.name, 'StatusLowBattery', bat);
+                log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
                 acc.getService(Service.HumiditySensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });

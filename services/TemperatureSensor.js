@@ -24,28 +24,28 @@ module.exports = function (iface) {
             .setProps((settings.props || {}).CurrentTemperature || {minValue: -100})
             .on('get', callback => {
                 const temperature = convertTemperature(settings, mqttStatus[settings.topic.statusTemperature]);
-                log.debug('< hap get', settings.name || acc.name, 'TemperatureSensor', 'CurrentTemperature');
-                log.debug('> hap re_get', settings.name || acc.name, temperature);
+                log.debug('< hap get', settings.name, 'TemperatureSensor', 'CurrentTemperature');
+                log.debug('> hap re_get', settings.name, temperature);
                 callback(null, temperature);
             });
 
         mqttSub(settings.topic.statusTemperature, val => {
             const temperature = convertTemperature(settings, val);
-            log.debug('> hap update', settings.name || acc.name, 'CurrentTemperature', temperature);
+            log.debug('> hap update', settings.name, 'CurrentTemperature', temperature);
             acc.getService(Service.TemperatureSensor)
                 .updateCharacteristic(Characteristic.CurrentTemperature, temperature);
         });
 
         if (settings.topic.statusLowBattery) {
-            acc.getService(Service.TemperatureSensor, settings.name || acc.name)
+            acc.getService(Service.TemperatureSensor, settings.name)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name || acc.name, 'StatusLowBattery');
+                    log.debug('< hap get', settings.name, 'StatusLowBattery');
                     const bat = mqttStatus[settings.topic.statusLowBattery] === settings.payload.onLowBattery ?
                         Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
                         Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
 
-                    log.debug('> hap re_get', settings.name || acc.name, 'StatusLowBattery', bat);
+                    log.debug('> hap re_get', settings.name, 'StatusLowBattery', bat);
                     callback(null, bat);
                 });
 
@@ -53,7 +53,7 @@ module.exports = function (iface) {
                 const bat = val === settings.payload.onLowBattery ?
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
-                log.debug('> hap update', settings.name || acc.name, 'StatusLowBattery', bat);
+                log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
                 acc.getService(Service.TemperatureSensor)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });

@@ -27,7 +27,7 @@ module.exports = function (iface) {
         acc.addService(Service.Fan)
             .getCharacteristic(Characteristic.On)
             .on('set', (value, callback) => {
-                log.debug('< hap set', settings.name || acc.name, 'On', value);
+                log.debug('< hap set', settings.name, 'On', value);
                 const on = value ? settings.payload.onTrue : settings.payload.onFalse;
                 mqttPub(settings.topic.setOn, on);
                 callback();
@@ -37,16 +37,16 @@ module.exports = function (iface) {
         if (settings.topic.statusOn) {
             mqttSub(settings.topic.statusOn, val => {
                 const on = val === settings.payload.onTrue;
-                log.debug('> hap update', settings.name || acc.name, 'On', on);
+                log.debug('> hap update', settings.name, 'On', on);
                 acc.getService(Service.Fan)
                     .updateCharacteristic(Characteristic.On, on);
             });
             acc.getService(Service.Fan)
                 .getCharacteristic(Characteristic.On)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name || acc.name, 'On');
+                    log.debug('< hap get', settings.name, 'On');
                     const on = mqttStatus[settings.topic.statusOn] === settings.payload.onTrue;
-                    log.debug('> hap re_get', settings.name || acc.name, 'On', on);
+                    log.debug('> hap re_get', settings.name, 'On', on);
                     callback(null, on);
                 });
         }
@@ -56,7 +56,7 @@ module.exports = function (iface) {
             acc.getService(Service.Fan)
                 .getCharacteristic(Characteristic.RotationDirection)
                 .on('set', (value, callback) => {
-                    log.debug('< hap set', settings.name || acc.name, 'RotationDirection', value);
+                    log.debug('< hap set', settings.name, 'RotationDirection', value);
                     /* istanbul ignore next */
                     const dir = value === Characteristic.RotationDirection.COUNTER_CLOCKWISE ?
                         settings.payload.rotationDirectionCounterClockwise :
@@ -74,19 +74,19 @@ module.exports = function (iface) {
                 const dir = mqttStatus[settings.topic.statusRotationDirection] === settings.payload.rotationDirectionCounterClockwise ?
                     Characteristic.RotationDirection.COUNTER_CLOCKWISE :
                     Characteristic.RotationDirection.CLOCKWISE;
-                log.debug('> hap update', settings.name || acc.name, 'RotationDirection', dir);
+                log.debug('> hap update', settings.name, 'RotationDirection', dir);
                 acc.getService(Service.Fan)
                     .updateCharacteristic(Characteristic.RotationDirection, dir);
             });
             acc.getService(Service.Fan)
                 .getCharacteristic(Characteristic.RotationDirection)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name || acc.name, 'RotationDirection');
+                    log.debug('< hap get', settings.name, 'RotationDirection');
                     /* istanbul ignore next */
                     const dir = mqttStatus[settings.topic.statusRotationDirection] === settings.payload.rotationDirectionCounterClockwise ?
                         Characteristic.RotationDirection.COUNTER_CLOCKWISE :
                         Characteristic.RotationDirection.CLOCKWISE;
-                    log.debug('> hap re_get', settings.name || acc.name, 'RotationDirection', dir);
+                    log.debug('> hap re_get', settings.name, 'RotationDirection', dir);
                     callback(null, dir);
                 });
         }
@@ -96,7 +96,7 @@ module.exports = function (iface) {
             acc.getService(Service.Fan)
                 .getCharacteristic(Characteristic.RotationSpeed)
                 .on('set', (value, callback) => {
-                    log.debug('< hap set', settings.name || acc.name, 'RotationSpeed', value);
+                    log.debug('< hap set', settings.name, 'RotationSpeed', value);
                     /* istanbul ignore next */
                     const speed = (value * (settings.payload.rotationSpeedFactor || 1)) || 0;
                     mqttPub(settings.topic.setRotationSpeed, speed);
@@ -109,17 +109,17 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusRotationSpeed, val => {
                 /* istanbul ignore next */
                 const speed = (val / (settings.payload.rotationSpeedFactor || 1)) || 0;
-                log.debug('> hap update', settings.name || acc.name, 'RotationSpeed', speed);
+                log.debug('> hap update', settings.name, 'RotationSpeed', speed);
                 acc.getService(Service.Fan)
                     .updateCharacteristic(Characteristic.RotationSpeed, speed);
             });
             acc.getService(Service.Fan)
                 .getCharacteristic(Characteristic.RotationSpeed)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name || acc.name, 'RotationSpeed');
+                    log.debug('< hap get', settings.name, 'RotationSpeed');
                     /* istanbul ignore next */
                     const speed = (mqttStatus[settings.topic.statusRotationSpeed] / (settings.payload.rotationSpeedFactor || 1)) || 0;
-                    log.debug('> hap re_get', settings.name || acc.name, 'RotationSpeed', speed);
+                    log.debug('> hap re_get', settings.name, 'RotationSpeed', speed);
                     callback(null, speed);
                 });
         }

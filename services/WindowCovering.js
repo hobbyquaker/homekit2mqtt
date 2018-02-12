@@ -7,7 +7,7 @@ module.exports = function (iface) {
         acc.addService(Service.WindowCovering)
             .getCharacteristic(Characteristic.TargetPosition)
             .on('set', (value, callback) => {
-                log.debug('< hap set', settings.name || acc.name, 'TargetPosition', value);
+                log.debug('< hap set', settings.name, 'TargetPosition', value);
                 /* istanbul ignore next */
                 value *= (settings.payload.targetPositionFactor || 1);
                 /* istanbul ignore if */
@@ -23,17 +23,17 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusTargetPosition, val => {
                 /* istanbul ignore next */
                 const position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
-                log.debug('> hap update', settings.name || acc.name, 'TargetPosition', position);
+                log.debug('> hap update', settings.name, 'TargetPosition', position);
                 acc.getService(Service.WindowCovering)
                     .updateCharacteristic(Characteristic.TargetPosition, position);
             });
             acc.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.TargetPosition)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name || acc.name, 'TargetPosition');
+                    log.debug('< hap get', settings.name, 'TargetPosition');
                     /* istanbul ignore next */
                     const position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
-                    log.debug('> hap re_get', settings.name || acc.name, 'TargetPosition', position);
+                    log.debug('> hap re_get', settings.name, 'TargetPosition', position);
                     callback(null, position);
                 });
         }
@@ -43,17 +43,17 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusCurrentPosition, val => {
                 /* istanbul ignore next */
                 const pos = Math.round(val / (settings.payload.currentPositionFactor || 1));
-                log.debug('> hap update', settings.name || acc.name, 'CurrentPosition', pos);
+                log.debug('> hap update', settings.name, 'CurrentPosition', pos);
                 acc.getService(Service.WindowCovering)
                     .updateCharacteristic(Characteristic.CurrentPosition, pos);
             });
             acc.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.CurrentPosition)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name || acc.name, 'CurrentPosition');
+                    log.debug('< hap get', settings.name, 'CurrentPosition');
                     /* istanbul ignore next */
                     const position = Math.round(mqttStatus[settings.topic.statusCurrentPosition] / (settings.payload.currentPositionFactor || 1));
-                    log.debug('> hap re_get', settings.name || acc.name, 'CurrentPosition', position);
+                    log.debug('> hap re_get', settings.name, 'CurrentPosition', position);
                     callback(null, position);
                 });
         }
@@ -64,13 +64,13 @@ module.exports = function (iface) {
                 let state;
                 if (val === settings.payload.positionStatusDecreasing) {
                     state = Characteristic.PositionState.DECREASING;
-                    log.debug('> hap update', settings.name || acc.name, 'PositionState.DECREASING');
+                    log.debug('> hap update', settings.name, 'PositionState.DECREASING');
                 } else if (val === settings.payload.positionStatusIncreasing) {
                     state = Characteristic.PositionState.INCREASING;
-                    log.debug('> hap update', settings.name || acc.name, 'PositionState.INCREASING');
+                    log.debug('> hap update', settings.name, 'PositionState.INCREASING');
                 } else {
                     state = Characteristic.PositionState.STOPPED;
-                    log.debug('> hap update', settings.name || acc.name, 'PositionState.STOPPED');
+                    log.debug('> hap update', settings.name, 'PositionState.STOPPED');
                 }
                 acc.getService(Service.WindowCovering)
                     .updateCharacteristic(Characteristic.PositionState, state);
@@ -78,16 +78,16 @@ module.exports = function (iface) {
             acc.getService(Service.WindowCovering)
                 .getCharacteristic(Characteristic.PositionState)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name || acc.name, 'PositionState');
+                    log.debug('< hap get', settings.name, 'PositionState');
 
                     if (mqttStatus[settings.topic.statusPositionState] === settings.payload.positionStatusDecreasing) {
-                        log.debug('> hap re_get', settings.name || acc.name, 'PositionState.DECREASING');
+                        log.debug('> hap re_get', settings.name, 'PositionState.DECREASING');
                         callback(null, Characteristic.PositionState.DECREASING);
                     } else if (mqttStatus[settings.topic.statusPositionState] === settings.payload.positionStatusIncreasing) {
-                        log.debug('> hap re_get', settings.name || acc.name, 'PositionState.INCREASING');
+                        log.debug('> hap re_get', settings.name, 'PositionState.INCREASING');
                         callback(null, Characteristic.PositionState.INCREASING);
                     } else {
-                        log.debug('> hap re_get', settings.name || acc.name, 'PositionState.STOPPED');
+                        log.debug('> hap re_get', settings.name, 'PositionState.STOPPED');
                         callback(null, Characteristic.PositionState.STOPPED);
                     }
                 });
