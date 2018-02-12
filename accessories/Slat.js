@@ -31,7 +31,7 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.CurrentSlatState)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'CurrentSlatState', value);
-                log.debug('> mqtt', settings.topic.setActive, value);
+                log.debug('> mqtt', settings.topic.statusCurrentSlatState, value);
                 mqttPub(settings.topic.statusCurrentSlatState, value);
                 callback();
             });
