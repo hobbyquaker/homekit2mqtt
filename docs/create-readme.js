@@ -54,7 +54,7 @@ Object.keys(services).forEach(s => {
                 output += ')';
             }
             if (c.enum) {
-                output += '\n  ';
+                output += '    \n  ';
                 c.enum.forEach((o, i) => {
                     output += (i > 0 ? ', ' : '') + i + ' = ' + o;
                 });

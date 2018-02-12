@@ -84,6 +84,21 @@ like this in the JSON file:
 ```
 ## Available Service Types
 
+#### BatteryService
+
+topic
+
+* statusBatteryLevel    
+  Percentage 0-100
+* statusChargingState    
+  0 = NOT_CHARGING, 1 = CHARGING, 2 = NOT_CHARGEABLE
+* statusLowBattery
+
+payload
+
+* onLowBattery
+
+
 #### CarbonDioxideSensor
 
 topic
@@ -435,7 +450,7 @@ payload
 
 config
 
-* slatType 
+* SlatType     
   0 = HORIZONTAL, 1 = VERTICAL
 
 
@@ -541,6 +556,11 @@ payload
 
 * identify (optional)
 
+config
+
+* TemperatureDisplayUnits     
+  0 = CELSIUS, 1 = FAHRENHEIT
+
 
 #### Valve
 
@@ -562,7 +582,7 @@ payload
 
 config
 
-* valveType (optional, default: `0`)
+* ValveType (optional, default: `0`)    
   0 = GENERIC_VALVE, 1 = IRRIGATION, 2 = SHOWER_HEAD, 3 = WATER_FAUCET
 
 
