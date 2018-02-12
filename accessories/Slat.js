@@ -92,5 +92,7 @@ module.exports = function (iface) {
                     callback();
                 });
         }
+
+        return slat;
     };
 };

@@ -54,5 +54,7 @@ module.exports = function (iface) {
             bat.getService(Service.BatteryService)
                 .updateCharacteristic(Characteristic.StatusLowBattery, val);
         });
+
+        return bat;
     };
 };
