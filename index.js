@@ -233,6 +233,7 @@ function createBridge() {
         if (accConfig.service) {
             // Keep compatibility with old scheme (version <= 0.8)
             services.unshift({
+                name: accConfig.name,
                 service: accConfig.service,
                 topic: accConfig.topic || {},
                 payload: accConfig.payload || {},
@@ -248,7 +249,7 @@ function createBridge() {
             log.debug('adding service', s.service, 'to accessory', accConfig.name);
             addService[s.service](acc, s);
             if (s.name) {
-                acc.getService(s.service).setCharacteristic(Characteristic.Name, s.name);
+                acc.getService(Service[s.service]).setCharacteristic(Characteristic.Name, s.name);
             }
         });
 
