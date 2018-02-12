@@ -31,7 +31,6 @@ module.exports = function (iface) {
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'On', value);
                 const on = value ? settings.payload.onTrue : settings.payload.onFalse;
-                log.debug('> mqtt', settings.topic.setOn, on);
                 mqttPub(settings.topic.setOn, on);
                 callback();
             });
@@ -65,7 +64,6 @@ module.exports = function (iface) {
                         settings.payload.rotationDirectionCounterClockwise :
                         settings.payload.rotationDirectionClockwise;
 
-                    log.debug('> mqtt', settings.topic.setRotationDirection, dir);
                     mqttPub(settings.topic.setRotationDirection, dir);
                     callback();
                 });
@@ -103,7 +101,6 @@ module.exports = function (iface) {
                     log.debug('< hap set', settings.name, 'RotationSpeed', value);
                     /* istanbul ignore next */
                     const speed = (value * (settings.payload.rotationSpeedFactor || 1)) || 0;
-                    log.debug('> mqtt', settings.topic.setRotationSpeed, speed);
                     mqttPub(settings.topic.setRotationSpeed, speed);
                     callback();
                 });

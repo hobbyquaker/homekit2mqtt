@@ -16,7 +16,6 @@ module.exports = function (iface) {
                 if (settings.payload.roundTarget) {
                     value = Math.round(value);
                 }
-                log.debug('> mqtt', settings.topic.setTargetPosition, value);
                 mqttPub(settings.topic.setTargetPosition, value);
                 callback();
             });

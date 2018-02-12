@@ -14,7 +14,6 @@ module.exports = function (iface) {
                 if (mqttStatus[settings.topic.statusOn] !== payload) {
                     // TODO test!
                     if ((settings.topic.setOn !== settings.topic.setBrightness) || !value) {
-                        log.debug('> mqtt', settings.topic.setOn, payload);
                         mqttPub(settings.topic.setOn, payload);
                     } else {
                         // This should prevent flickering while dimming lights that use
@@ -53,7 +52,6 @@ module.exports = function (iface) {
                     log.debug('< hap set', settings.name, 'Brightness', value);
                     /* istanbul ignore next */
                     const bri = (value * (settings.payload.brightnessFactor || 1)) || 0;
-                    log.debug('> mqtt', settings.topic.setBrightness, bri);
                     mqttPub(settings.topic.setBrightness, bri);
                     callback();
                 });
@@ -88,7 +86,6 @@ module.exports = function (iface) {
                     log.debug('< hap set', settings.name, 'Hue', value);
                     /* istanbul ignore next */
                     const hue = (value * (settings.payload.hueFactor || 1));
-                    log.debug('> mqtt', settings.topic.setHue, hue);
                     mqttPub(settings.topic.setHue, hue);
                     callback();
                 });
@@ -121,7 +118,6 @@ module.exports = function (iface) {
                     log.debug('< hap set', settings.name, 'Saturation', value);
                     /* istanbul ignore next */
                     const sat = (value * (settings.payload.saturationFactor || 1)) || 0;
-                    log.debug('> mqtt', settings.topic.setSaturation, sat);
                     mqttPub(settings.topic.setSaturation, sat);
                     callback();
                 });
@@ -153,7 +149,6 @@ module.exports = function (iface) {
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'ColorTemperature', value);
                     const sat = value;
-                    log.debug('> mqtt', settings.topic.setColorTemperature, sat);
                     mqttPub(settings.topic.setColorTemperature, sat);
                     callback();
                 });

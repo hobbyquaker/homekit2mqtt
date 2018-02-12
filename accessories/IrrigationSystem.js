@@ -64,11 +64,9 @@ module.exports = function (iface) {
         }
 
         mqttSub(settings.topic.statusProgramMode, val => {
-            log.debug('< mqtt', settings.topic.statusProgramMode, val);
-            const mode = mqttStatus[settings.topic.statusProgramMode];
-            log.debug('> hap update', settings.name, 'ProgramMode', mode);
+            log.debug('> hap update', settings.name, 'ProgramMode', val);
             irrigation.getService(Service.IrrigationSystem)
-                .updateCharacteristic(Characteristic.ProgramMode, mode);
+                .updateCharacteristic(Characteristic.ProgramMode, val);
         });
         irrigation.getService(Service.IrrigationSystem)
             .getCharacteristic(Characteristic.ProgramMode)
@@ -80,8 +78,7 @@ module.exports = function (iface) {
             });
 
         mqttSub(settings.topic.statusInUse, val => {
-            log.debug('< mqtt', settings.topic.statusInUse, val);
-            const inUse = mqttStatus[settings.topic.statusInUse] === settings.payload.inUseTrue ? 1 : 0;
+            const inUse = val === settings.payload.inUseTrue ? 1 : 0;
             log.debug('> hap update', settings.name, 'InUse', inUse);
             irrigation.getService(Service.IrrigationSystem)
                 .updateCharacteristic(Characteristic.InUse, inUse);
@@ -98,27 +95,24 @@ module.exports = function (iface) {
         /* istanbul ignore else  */
         if (settings.topic.statusRemainingDuration) {
             mqttSub(settings.topic.statusRemainingDuration, val => {
-                log.debug('< mqtt', settings.topic.statusRemainingDuration, val);
-                const remainingDuration = mqttStatus[settings.topic.statusRemainingDuration];
-                log.debug('> hap update', settings.name, 'RemainingDuration', remainingDuration);
+                log.debug('> hap update', settings.name, 'RemainingDuration', val);
                 irrigation.getService(Service.IrrigationSystem)
-                    .updateCharacteristic(Characteristic.RemainingDuration, remainingDuration);
+                    .updateCharacteristic(Characteristic.RemainingDuration, val);
             });
             irrigation.getService(Service.IrrigationSystem)
                 .getCharacteristic(Characteristic.RemainingDuration)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'RemainingDuration');
-                    const inUse = mqttStatus[settings.topic.statusRemainingDuration];
-                    log.debug('> hap re_get', settings.name, 'RemainingDuration', inUse);
-                    callback(null, inUse);
+                    const duration = mqttStatus[settings.topic.statusRemainingDuration];
+                    log.debug('> hap re_get', settings.name, 'RemainingDuration', duration);
+                    callback(null, duration);
                 });
         }
 
         /* istanbul ignore else  */
         if (settings.topic.statusFault) {
             mqttSub(settings.topic.statusFault, val => {
-                log.debug('< mqtt', settings.topic.statusFault, val);
-                const fault = mqttStatus[settings.topic.statusFault] === settings.payload.faultTrue ? 1 : 0;
+                const fault = val === settings.payload.faultTrue ? 1 : 0;
                 log.debug('> hap update', settings.name, 'StatusFault', fault);
                 irrigation.getService(Service.IrrigationSystem)
                     .updateCharacteristic(Characteristic.StatusFault, fault);

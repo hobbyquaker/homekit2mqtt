@@ -27,7 +27,6 @@ module.exports = function (iface) {
                 if (settings.payload.roundTarget) {
                     value = Math.round(value);
                 }
-                log.debug('> mqtt', settings.topic.setTargetPosition, value);
                 mqttPub(settings.topic.setTargetPosition, value);
                 callback();
             });
@@ -35,7 +34,7 @@ module.exports = function (iface) {
         /* istanbul ignore else */
         if (settings.topic.statusTargetPosition) {
             mqttSub(settings.topic.statusTargetPosition, val => {
-                const position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
+                const position = val / (settings.payload.targetPositionFactor || 1);
                 log.debug('> hap update', settings.name, 'TargetPosition', position);
                 acc.getService(Service.Window)
                     .updateCharacteristic(Characteristic.TargetPosition, position);
@@ -43,7 +42,6 @@ module.exports = function (iface) {
             acc.getService(Service.Window)
                 .getCharacteristic(Characteristic.TargetPosition)
                 .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'TargetPosition');
                     const position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
                     log.debug('> hap re_get', settings.name, 'TargetPosition', position);
                     callback(null, position);

@@ -183,7 +183,6 @@ module.exports = function (iface) {
                 .getCharacteristic(Characteristic.CoolingThresholdTemperature)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'CoolingThresholdTemperature', value);
-                    log.debug('> mqtt', settings.topic.setCoolingThresholdTemperature, value);
                     mqttPub(settings.topic.setCoolingThresholdTemperature, value);
                     callback();
                 });
@@ -211,7 +210,6 @@ module.exports = function (iface) {
                 .getCharacteristic(Characteristic.HeatingThresholdTemperature)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'HeatingThresholdTemperature', value);
-                    log.debug('> mqtt', settings.topic.setHeatingThresholdTemperature, value);
                     mqttPub(settings.topic.setHeatingThresholdTemperature, value);
                     callback();
                 });

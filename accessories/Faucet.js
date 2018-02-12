@@ -40,8 +40,7 @@ module.exports = function (iface) {
         /* istanbul ignore else  */
         if (settings.topic.statusActive) {
             mqttSub(settings.topic.statusActive, val => {
-                log.debug('< mqtt', settings.topic.statusActive, val);
-                const active = mqttStatus[settings.topic.statusActive] === settings.payload.activeTrue ? 1 : 0;
+                const active = val === settings.payload.activeTrue ? 1 : 0;
                 log.debug('> hap update', settings.name, 'Active', active);
                 faucet.getService(Service.Faucet)
                     .updateCharacteristic(Characteristic.Active, active);
@@ -59,8 +58,7 @@ module.exports = function (iface) {
         /* istanbul ignore else  */
         if (settings.topic.statusFault) {
             mqttSub(settings.topic.statusFault, val => {
-                log.debug('< mqtt', settings.topic.statusFault, val);
-                const fault = mqttStatus[settings.topic.statusFault] === settings.payload.faultTrue ? 1 : 0;
+                const fault = val === settings.payload.faultTrue ? 1 : 0;
                 log.debug('> hap update', settings.name, 'StatusFault', fault);
                 faucet.getService(Service.Faucet)
                     .updateCharacteristic(Characteristic.StatusFault, fault);

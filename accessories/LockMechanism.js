@@ -13,14 +13,10 @@ module.exports = function (iface) {
 
                 /* istanbul ignore else */
                 if (value === Characteristic.LockTargetState.UNSECURED) {
-                    log.debug('> mqtt publish', settings.topic.setLock, settings.payload.lockUnsecured);
                     mqttPub(settings.topic.setLock, settings.payload.lockUnsecured);
-
                     callback();
                 } else if (value === Characteristic.LockTargetState.SECURED) {
-                    log.debug('> mqtt publish', settings.topic.setLock, settings.payload.lockSecured);
                     mqttPub(settings.topic.setLock, settings.payload.lockSecured);
-
                     callback();
                 }
             });

@@ -20,7 +20,6 @@ module.exports = function (iface) {
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'Mute', value);
                 const mute = value ? settings.payload.muteTrue : settings.payload.muteFalse;
-                log.debug('> mqtt', settings.topic.setOn, mute);
                 mqttPub(settings.topic.setMute, mute);
                 callback();
             });
@@ -48,7 +47,6 @@ module.exports = function (iface) {
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'Volume', value);
                     const volume = (value * (settings.payload.volumeFactor || 1)) || 0;
-                    log.debug('> mqtt', settings.topic.setVolume, volume);
                     mqttPub(settings.topic.setVolume, volume);
                     callback();
                 });

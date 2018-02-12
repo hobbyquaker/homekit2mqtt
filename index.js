@@ -138,6 +138,7 @@ function mqttPub(topic, payload, options) {
         } else if (typeof payload !== 'string') {
             payload = String(payload);
         }
+        log.debug('> mqtt', topic, payload);
         mqtt.publish(topic, payload, options, err => {
             /* istanbul ignore next */
             if (err) {

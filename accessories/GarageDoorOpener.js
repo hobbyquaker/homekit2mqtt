@@ -21,11 +21,9 @@ module.exports = function (iface) {
                 log.debug('< hap set', settings.name, 'TargetDoorState', value);
                 /* istanbul ignore else */
                 if (value === Characteristic.TargetDoorState.OPEN) {
-                    log.debug('> mqtt publish', settings.topic.setDoor, settings.payload.doorOpen);
                     mqttPub(settings.topic.setDoor, settings.payload.doorOpen);
                     callback();
                 } else if (value === Characteristic.TargetDoorState.CLOSED) {
-                    log.debug('> mqtt publish', settings.topic.setDoor, settings.payload.doorClosed);
                     mqttPub(settings.topic.setDoor, settings.payload.doorClosed);
                     callback();
                 }
@@ -123,11 +121,9 @@ module.exports = function (iface) {
                     log.debug('< hap set', settings.name, 'LockTargetState', value);
                     /* istanbul ignore else */
                     if (value === Characteristic.LockTargetState.UNSECURED) {
-                        log.debug('> mqtt publish', settings.topic.setLock, settings.payload.lockUnsecured);
                         mqttPub(settings.topic.setLock, settings.payload.lockUnsecured);
                         callback();
                     } else if (value === Characteristic.LockTargetState.SECURED) {
-                        log.debug('> mqtt publish', settings.topic.setLock, settings.payload.lockSecured);
                         mqttPub(settings.topic.setLock, settings.payload.lockSecured);
                         callback();
                     }

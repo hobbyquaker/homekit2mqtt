@@ -11,7 +11,6 @@ module.exports = function (iface) {
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'On', value);
                 const on = value ? settings.payload.onTrue : settings.payload.onFalse;
-                log.debug('> mqtt', settings.topic.setOn, on);
                 mqttPub(settings.topic.setOn, on);
                 callback();
             });
@@ -19,8 +18,7 @@ module.exports = function (iface) {
         /* istanbul ignore else */
         if (settings.topic.statusOn) {
             mqttSub(settings.topic.statusOn, val => {
-                log.debug('< mqtt', settings.topic.statusOn, val);
-                const on = mqttStatus[settings.topic.statusOn] === settings.payload.onTrue;
+                const on = val === settings.payload.onTrue;
                 log.debug('> hap update', settings.name, 'On', on);
                 acc.getService(Service.Outlet)
                     .updateCharacteristic(Characteristic.On, on);
