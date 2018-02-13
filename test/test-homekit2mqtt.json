@@ -133,6 +133,18 @@
     "model": "Fan"
   },
 
+  "Faucet": {
+    "service": "Faucet",
+    "name": "Faucet",
+    "topic": {
+      "setActive": "faucet/set",
+      "statusActive": "faucet/status",
+      "statusFault": "faucet/status/fault"
+    },
+    "payload": {
+      "faultTrue": 1
+    }
+  },
 
 
   "GarageDoorOpener": {
@@ -173,6 +185,25 @@
     "model": "HumiditySensor"
   },
 
+  "IrrigationSystem": {
+    "name": "IrrigationSystem",
+    "service": "IrrigationSystem",
+    "topic": {
+      "setActive": "IrrigationSystem/set",
+      "statusActive": "IrrigationSystem/status",
+      "statusProgramMode": "IrrigationSystem/status/ProgramMode",
+      "statusInUse": "IrrigationSystem/status/InUse",
+      "statusRemainingDuration": "IrrigationSystem/status/RemainingDuration",
+      "statusFault": "IrrigationSystem/status/Fault"
+    },
+    "payload": {
+      "inUseTrue": 1,
+      "faultTrue": 1,
+      "activeTrue": 1,
+      "activeFalse": 0
+    }
+
+  },
 
   "LeakSensor": {
     "service": "LeakSensor",
@@ -297,7 +328,16 @@
   },
 
 
-
+  "Microphone": {
+    "service": "Microphone",
+    "name": "Microphone",
+    "topic": {
+      "statusMute": "Microphone/status/Mute",
+      "setMute": "Microphone/set/Mute",
+      "setVolume": "Microphone/set/Volume",
+      "statusVolume": "Microphone/status/Volume"
+    }
+  },
 
 
   "MotionSensor": {
@@ -366,7 +406,19 @@
     }
   },
 
-
+  "Slat": {
+    "service": "Slat",
+    "name": "Slat",
+    "topic": {
+      "statusCurrentSlatState": "Slat/status",
+      "statusCurrentTiltAngle": "Slat/status/CurrentTiltAngle",
+      "statusTargetTiltAngle": "Slat/status/TargetTiltAngle",
+      "setTargetTiltAngle": "Slat/set/TargetTiltAngle",
+      "statusSwingMode": "Slat/status/SwingMode",
+      "setSwingMode": "Slat/set/SwingMode"
+    },
+    "payload": {}
+  },
 
 
   "SmokeSensor": {
@@ -506,6 +558,25 @@
     "serial": "912343"
   },
 
+  "Valve": {
+    "name": "Valve",
+    "service": "Valve",
+    "topic": {
+      "setActive": "Valve/set",
+      "statusActive": "Valve/status",
+      "setDuration": "Valve/set/Duration",
+      "statusInUse": "Valve/status/InUse",
+      "statusRemainingDuration": "Valve/status/RemainingDuration",
+      "statusFault": "Valve/status/Fault"
+    },
+    "payload": {
+      "inUseTrue": 1,
+      "faultTrue": 1,
+      "activeTrue": 1,
+      "activeFalse": 0
+    }
+
+  },
 
   "Window": {
     "service": "Window",
