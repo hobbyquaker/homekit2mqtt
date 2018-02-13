@@ -1,5 +1,17 @@
 {
 
+  "BatteryService": {
+    "name": "BatteryService",
+    "service": "BatteryService",
+    "topic": {
+      "statusBatteryLevel": "BatteryService/status",
+      "statusChargingState": "BatteryService/status/ChargingState",
+      "statusLowBattery": "BatteryService/status/LowBattery"
+    },
+    "payload": {
+      "onLowBattery": 1
+    }
+  },
 
   "CarbonDioxideSensor": {
     "service": "CarbonDioxideSensor",

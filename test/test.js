@@ -281,6 +281,40 @@ describe('hap-client - homekit2mqtt', function () {
     });
 });
 
+
+
+describe('BatteryService BatteryLevel', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000); this.retries(5);
+        subscribe('homekit', /hap update BatteryService BatteryLevel 80/, () => {
+            done();
+        });
+        mqtt.publish('BatteryService/status', '80');
+    });
+});
+
+describe('BatteryService ChargingState', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000); this.retries(5);
+        subscribe('homekit', /hap update BatteryService ChargingState 2/, () => {
+            done();
+        });
+        mqtt.publish('BatteryService/status/ChargingState', '2');
+    });
+});
+
+describe('BatteryService StatusLowBattery', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000); this.retries(5);
+        subscribe('homekit', /hap update BatteryService StatusLowBattery 1/, () => {
+            done();
+        });
+        mqtt.publish('BatteryService/status/LowBattery', '1');
+    });
+});
+
+
+
 describe('Fan', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(36000); this.retries(5);
@@ -2434,6 +2468,7 @@ describe('StatelessProgrammableSwitch', () => {
         mqtt.publish('StatelessProgrammableSwitch/status', '1');
     });
 });
+
 
 
 
