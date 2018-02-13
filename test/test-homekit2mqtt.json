@@ -1,5 +1,4 @@
 {
-
   "BatteryService": {
     "name": "BatteryService",
     "service": "BatteryService",
@@ -12,7 +11,6 @@
       "onLowBattery": 1
     }
   },
-
   "CarbonDioxideSensor": {
     "service": "CarbonDioxideSensor",
     "name": "CarbonDioxideSensor",
@@ -33,10 +31,6 @@
     "manufacturer": "Generic",
     "model": "CarbonDioxideSensor"
   },
-
-
-
-
   "CarbonMonoxideSensor": {
     "service": "CarbonMonoxideSensor",
     "name": "CarbonMonoxideSensor",
@@ -51,10 +45,6 @@
     "manufacturer": "Generic",
     "model": "CarbonMonoxideSensor"
   },
-
-
-
-
   "ContactSensor": {
     "service": "ContactSensor",
     "name": "ContactSensor",
@@ -75,10 +65,6 @@
     "manufacturer": "Generic",
     "model": "ContactSensor"
   },
-
-
-
-
   "Door": {
     "service": "Door",
     "name": "Door",
@@ -97,10 +83,6 @@
       "onObstructionDetected": 1
     }
   },
-
-
-
-
   "Doorbell": {
     "service": "Doorbell",
     "name": "Doorbell",
@@ -110,10 +92,6 @@
     "manufacturer": "Generic",
     "model": "Doorbell"
   },
-
-
-
-
   "Fan": {
     "service": "Fan",
     "name": "Fan",
@@ -132,7 +110,6 @@
     "manufacturer": "Generic",
     "model": "Fan"
   },
-
   "Faucet": {
     "service": "Faucet",
     "name": "Faucet",
@@ -145,8 +122,6 @@
       "faultTrue": 1
     }
   },
-
-
   "GarageDoorOpener": {
     "service": "GarageDoorOpener",
     "name": "GarageDoorOpener",
@@ -170,7 +145,6 @@
     "manufacturer": "Generic",
     "model": "GarageDoorOpener"
   },
-
   "HumiditySensor": {
     "service": "HumiditySensor",
     "name": "HumiditySensor",
@@ -184,7 +158,6 @@
     "manufacturer": "Generic",
     "model": "HumiditySensor"
   },
-
   "IrrigationSystem": {
     "name": "IrrigationSystem",
     "service": "IrrigationSystem",
@@ -202,9 +175,7 @@
       "activeTrue": 1,
       "activeFalse": 0
     }
-
   },
-
   "LeakSensor": {
     "service": "LeakSensor",
     "name": "LeakSensor",
@@ -219,16 +190,12 @@
     "manufacturer": "Generic",
     "model": "LeakSensor"
   },
-
-
-
-
   "Lightbulb1": {
-    "service":  "Lightbulb",
-    "name":     "Licht Garten",
+    "service": "Lightbulb",
+    "name": "Licht Garten",
     "topic": {
-      "setOn":          "Lightbulb1/set",
-      "statusOn":       "Lightbulb1/status"
+      "setOn": "Lightbulb1/set",
+      "statusOn": "Lightbulb1/status"
     },
     "payload": {
       "onTrue": 1,
@@ -237,19 +204,15 @@
     "manufacturer": "Generic",
     "model": "Lightbulb"
   },
-
-
-
-
   "Lightbulb2": {
-    "service":  "Lightbulb",
-    "name":     "Lightbulb2",
+    "service": "Lightbulb",
+    "name": "Lightbulb2",
     "topic": {
-      "setOn":            "Lightbulb2/set",
-      "setBrightness":    "Lightbulb2/set/Brightness",
-      "statusOn":         "Lightbulb2/status",
+      "setOn": "Lightbulb2/set",
+      "setBrightness": "Lightbulb2/set/Brightness",
+      "statusOn": "Lightbulb2/status",
       "statusBrightness": "Lightbulb2/status/Brightness",
-      "identify":         "Lightbulb2/set/identify"
+      "identify": "Lightbulb2/set/identify"
     },
     "payload": {
       "onTrue": 254,
@@ -260,10 +223,6 @@
     "manufacturer": "Generic",
     "model": "Lightbulb Dimmable"
   },
-
-
-
-
   "Lightbulb": {
     "service": "Lightbulb",
     "name": "Lightbulb",
@@ -291,10 +250,6 @@
     "manufacturer": "Generic",
     "model": "Lightbulb Color"
   },
-
-
-
-
   "LightSensor": {
     "service": "LightSensor",
     "name": "LightSensor",
@@ -308,10 +263,6 @@
     "manufacturer": "Generic",
     "model": "LightSensor"
   },
-
-
-
-
   "LockMechanism": {
     "service": "LockMechanism",
     "name": "LockMechanism",
@@ -326,8 +277,6 @@
     "manufacturer": "Generic",
     "model": "LockMechanism"
   },
-
-
   "Microphone": {
     "service": "Microphone",
     "name": "Microphone",
@@ -338,8 +287,6 @@
       "statusVolume": "Microphone/status/Volume"
     }
   },
-
-
   "MotionSensor": {
     "service": "MotionSensor",
     "name": "MotionSensor",
@@ -354,10 +301,6 @@
     "manufacturer": "Generic",
     "model": "MotionSensor"
   },
-
-
-
-
   "OccupancySensor": {
     "service": "OccupancySensor",
     "name": "OccupancySensor",
@@ -372,10 +315,6 @@
     "manufacturer": "Generic",
     "model": "OccupancySensor"
   },
-
-
-
-
   "Outlet": {
     "service": "Outlet",
     "name": "Outlet",
@@ -393,10 +332,6 @@
     "manufacturer": "Generic",
     "model": "Outlet"
   },
-
-
-
-
   "SecuritySystem": {
     "service": "SecuritySystem",
     "name": "SecuritySystem",
@@ -405,7 +340,6 @@
       "statusSecuritySystemCurrentState": "SecuritySystem/status/CurrentState"
     }
   },
-
   "Slat": {
     "service": "Slat",
     "name": "Slat",
@@ -419,8 +353,6 @@
     },
     "payload": {}
   },
-
-
   "SmokeSensor": {
     "service": "SmokeSensor",
     "name": "SmokeSensor",
@@ -435,9 +367,6 @@
     "manufacturer": "Generic",
     "model": "SmokeSensor"
   },
-
-
-
   "StatelessProgrammableSwitch": {
     "service": "StatelessProgrammableSwitch",
     "name": "StatelessProgrammableSwitch",
@@ -448,9 +377,6 @@
     "model": "StatelessProgrammableSwitch",
     "serial": "7890"
   },
-
-
-
   "Speaker": {
     "service": "Speaker",
     "name": "Speaker",
@@ -466,10 +392,6 @@
     },
     "serial": "12345"
   },
-
-
-
-
   "Switch": {
     "service": "Switch",
     "name": "Switch1",
@@ -484,10 +406,6 @@
     "manufacturer": "Generic",
     "model": "Switch"
   },
-
-
-
-
   "TemperatureSensor": {
     "service": "TemperatureSensor",
     "name": "TemperatureSensor",
@@ -500,8 +418,6 @@
     },
     "manufacturer": "Generic"
   },
-
-
   "TemperatureSensorF": {
     "service": "TemperatureSensor",
     "name": "TemperatureSensorF",
@@ -513,8 +429,6 @@
     },
     "model": "TemperatureSensor"
   },
-
-
   "Thermostat": {
     "service": "Thermostat",
     "name": "Thermostat",
@@ -536,7 +450,6 @@
       "setCoolingThresholdTemperature": "Thermostat/set/CoolingThresholdTemperature"
     },
     "payload": {
-
     },
     "config": {
       "TemperatureDisplayUnits": 0
@@ -544,7 +457,6 @@
     "manufacturer": "Generic",
     "serial": "912341"
   },
-
   "ThermostatSimple": {
     "service": "Thermostat",
     "name": "ThermostatSimple",
@@ -557,7 +469,6 @@
     "manufacturer": "Generic",
     "serial": "912343"
   },
-
   "Valve": {
     "name": "Valve",
     "service": "Valve",
@@ -575,9 +486,7 @@
       "activeTrue": 1,
       "activeFalse": 0
     }
-
   },
-
   "Window": {
     "service": "Window",
     "name": "Window",
@@ -594,16 +503,14 @@
       "positionStatusDecreasing": 2
     }
   },
-
-
   "WindowCovering": {
-    "service":  "WindowCovering",
+    "service": "WindowCovering",
     "name": "WindowCovering",
     "topic": {
-      "setTargetPosition":  "WindowCovering/set/TargetPosition",
-      "statusTargetPosition":  "WindowCovering/status/TargetPosition",
-      "statusCurrentPosition":  "WindowCovering/status/CurrentPosition",
-      "statusPositionState":  "WindowCovering/status/PositionState"
+      "setTargetPosition": "WindowCovering/set/TargetPosition",
+      "statusTargetPosition": "WindowCovering/status/TargetPosition",
+      "statusCurrentPosition": "WindowCovering/status/CurrentPosition",
+      "statusPositionState": "WindowCovering/status/PositionState"
     },
     "payload": {
       "targetPositionFactor": 0.01,
@@ -614,5 +521,4 @@
     "serial": "1239431",
     "model": "WindowCovering"
   }
-
 }
