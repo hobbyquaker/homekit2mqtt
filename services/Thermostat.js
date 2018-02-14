@@ -60,12 +60,12 @@ module.exports = function (iface) {
         } else {
             const state = 1; // HEATING as default
             acc.getService(Service.Thermostat)
-            .getCharacteristic(Characteristic.CurrentHeatingCoolingState)
-            .on('get', callback => {
-                log.debug('< hap get', settings.name, 'CurrentHeatingCoolingState');
-                log.debug('> hap re_get', settings.name, 'CurrentHeatingCoolingState', state);
-                callback(null, state);
-            });
+                .getCharacteristic(Characteristic.CurrentHeatingCoolingState)
+                .on('get', callback => {
+                    log.debug('< hap get', settings.name, 'CurrentHeatingCoolingState');
+                    log.debug('> hap re_get', settings.name, 'CurrentHeatingCoolingState', state);
+                    callback(null, state);
+                });
             log.debug('> hap set', settings.name, 'CurrentHeatingCoolingState', state);
             acc.getService(Service.Thermostat)
                 .setCharacteristic(Characteristic.CurrentHeatingCoolingState, state);

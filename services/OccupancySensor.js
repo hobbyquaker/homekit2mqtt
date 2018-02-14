@@ -25,7 +25,7 @@ module.exports = function (iface) {
                     Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
         });
 
-	/* istanbul ignore else */
+        /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
             acc.getService(Service.OccupancySensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)

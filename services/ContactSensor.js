@@ -26,7 +26,7 @@ module.exports = function (iface) {
         });
 
         /* istanbul ignore else */
-		/* Optional: Low Battery Status */
+        /* Optional: Low Battery Status */
         if (settings.topic.statusLowBattery) {
             acc.getService(Service.ContactSensor)
                 .getCharacteristic(Characteristic.StatusLowBattery)

@@ -24,7 +24,7 @@ module.exports = function (iface) {
 
     return function createService_BatteryService(acc, settings) {
         acc.addService(Service.BatteryService);
-            /*
+        /*
             .getCharacteristic(Characteristic.BatteryLevel)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'BatteryLevel');

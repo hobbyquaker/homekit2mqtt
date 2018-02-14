@@ -19,8 +19,8 @@ log.setLevel(config.verbosity);
 
 log(pkg.name + ' ' + pkg.version + ' starting');
 
-const mqttStatus = {};        // Holds the payloads of the last-received message, keys are the topics.
-const mqttCallbacks = {};     // Holds arrays of subscription callbacks, keys are the topics.
+const mqttStatus = {}; // Holds the payloads of the last-received message, keys are the topics.
+const mqttCallbacks = {}; // Holds arrays of subscription callbacks, keys are the topics.
 let mqttConnected;
 
 let bridgeListening;
@@ -120,11 +120,7 @@ function mqttPub(topic, payload, options) {
 
 log.info('using hap-nodejs version', pkgHap.version);
 
-const uuid = HAP.uuid;
-const Bridge = HAP.Bridge;
-const Accessory = HAP.Accessory;
-const Service = HAP.Service;
-const Characteristic = HAP.Characteristic;
+const {uuid, Bridge, Accessory, Service, Characteristic} = HAP;
 
 /* istanbul ignore next */
 if (config.storagedir) {
@@ -220,7 +216,7 @@ function createBridge() {
         }
     });
 
-// Load and create all accessories
+    // Load and create all accessories
     log.info('loading HomeKit to MQTT mapping file ' + config.mapfile);
     mapping = require(config.mapfile);
     accCount = 0;

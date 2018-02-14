@@ -136,8 +136,8 @@ $(document).ready(() => {
         title: 'Stop homekit2mqtt',
         id: 'stop'
     })
-    .jqGrid('filterToolbar', {defaultSearch: 'cn', ignoreCase: true, searchOnEnter: false})
-    .jqGrid('gridResize');
+        .jqGrid('filterToolbar', {defaultSearch: 'cn', ignoreCase: true, searchOnEnter: false})
+        .jqGrid('gridResize');
 
     const $selectService = $('#selectService');
     const $dialogService = $('#dialogService');
@@ -424,7 +424,6 @@ $(document).ready(() => {
                 default:
                     $('#payload-string-' + payload).val(s.payload[payload]);
                     $('#payload-type-' + payload).val('String').trigger('change');
-
             }
         });
 

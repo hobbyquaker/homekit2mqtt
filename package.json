@@ -1,6 +1,6 @@
 {
   "name": "homekit2mqtt",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "HomeKit to MQTT bridge",
   "main": "index.js",
   "bin": {
@@ -15,8 +15,8 @@
     "test": "camo-purge ; xo --ignore test/test.js && nyc mocha --exit test/test.js && nyc report --reporter=text-lcov | coveralls --force",
     "testonly": "mocha --exit test/test.js",
     "testcov": "nyc mocha --exit test/test.js",
-    "lint": " xo --ignore test/test.js",
-    "lintfix": " xo --ignore test/test.js --fix"
+    "lint": " xo",
+    "lintfix": " xo --fix"
   },
   "author": "Sebastian 'hobbyquaker' Raff <hobbyquaker@gmail.com> (https://github.com/hobbyquaker)",
   "contributors": [

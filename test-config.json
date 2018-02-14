@@ -1,0 +1,24 @@
+{
+  "test/Heizung": {
+    "service": "Thermostat",
+    "name": "Heizung Test",
+    "topic": {
+      "setTargetTemperature": "test/set/TargetTemperature",
+      "statusTargetTemperature": "test/status/TargetTemperature",
+      "statusTargetHeatingCoolingState": "test/status/TargetHeatingCoolingState",
+      "setTargetHeatingCoolingState": "test/set/TargetHeatingCoolingState",
+      "statusCurrentHeatingCoolingState": "test/status/CurrentHeatingCoolingState",
+      "statusCurrentTemperature": "test/status/CurrentTemperature",
+      "statusCurrentRelativeHumidity": "test/status/CurrentRelativeHumidity"
+    },
+    "props": {
+      "TargetTemperature": {
+        "maxValue": 36,
+        "minValue": 4
+      },
+      "TargetHeatingCoolingState": {
+        "validValues": [0,1]
+      }
+    }
+  }
+}
