@@ -404,8 +404,7 @@ $(document).ready(() => {
             if (s.config) {
                 result.config = {};
                 s.config.forEach(c => {
-                    const val = $.trim($('#config-' + c.name).val());
-                    result.config[c.name] = val;
+                    result.config[c.name] = parseInt($.trim($('#config-' + c.name).val()), 10);
                 });
             }
 
@@ -530,11 +529,11 @@ $(document).ready(() => {
             }
             if (typeof obj.validValues !== 'undefined') {
                 $(`[id^=config-${p}-validValues-]`).each(function () {
-                   if (obj.validValues.indexOf(parseInt($(this).val(), 10)) === -1) {
-                       $(this).removeAttr('checked');
-                   } else {
-                       $(this).attr('checked', true)
-                   }
+                    if (obj.validValues.indexOf(parseInt($(this).val(), 10)) === -1) {
+                        $(this).removeAttr('checked');
+                    } else {
+                        $(this).attr('checked', true);
+                    }
                 });
             }
         });
@@ -666,13 +665,9 @@ $(document).ready(() => {
                     row += `</div></div>`;
                     $configuration.append(row);
                 }
-
-
             });
         }
     }
-
-
 
     function createConfigInput(c, $elem) {
         let html = '<div>';
