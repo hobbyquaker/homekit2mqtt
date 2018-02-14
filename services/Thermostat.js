@@ -88,6 +88,7 @@ module.exports = function (iface) {
             const state = 1; // HEATING as default
             acc.getService(Service.Thermostat)
                 .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+                .setProps((settings.props || {}).TargetHeatingCoolingState || {})
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'TargetHeatingCoolingState');
                     log.debug('> hap re_get', settings.name, 'TargetHeatingCoolingState', state);
