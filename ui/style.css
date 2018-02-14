@@ -72,3 +72,7 @@ tr.jqgrow[aria-selected='true'] td {
 .col-form-label {
     font-size: 0.90em !important;
 }
+
+.form-check-inline {
+    margin-top: 6px;
+}

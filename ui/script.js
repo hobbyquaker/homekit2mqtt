@@ -409,6 +409,27 @@ $(document).ready(() => {
                 });
             }
 
+            if (s.props) {
+                result.props = {};
+                s.props.forEach(p => {
+                    result.props[p.name] = {};
+                    if (typeof p.minValue !== 'undefined') {
+                        result.props[p.name].minValue = parseFloat($(`#config-${p.name}-minValue`).val());
+                    }
+                    if (typeof p.maxValue !== 'undefined') {
+                        result.props[p.name].maxValue = parseFloat($(`#config-${p.name}-maxValue`).val());
+                    }
+                    if (typeof p.validValues !== 'undefined') {
+                        result.props[p.name].validValues = [];
+                        for (let i = 0; i < p.validValues.length; i++) {
+                            if ($(`#config-${p.name}-validValues-${i}`).is(':checked')) {
+                                result.props[p.name].validValues.push(i);
+                            }
+                        }
+                    }
+                });
+            }
+
             if (!config[id]) {
                 config[id] = {};
             }
@@ -477,7 +498,6 @@ $(document).ready(() => {
         });
 
         Object.keys(s.payload).forEach(payload => {
-            console.log(payload, s.payload[payload]);
             switch (typeof s.payload[payload]) {
                 case 'boolean':
                     $('#payload-boolean-' + payload).val(String(Boolean(s.payload[payload])));
@@ -495,9 +515,27 @@ $(document).ready(() => {
         });
 
         Object.keys(s.config).forEach(c => {
-            console.log(c, s.config[c]);
             if (typeof s.config[c] !== 'undefined') {
                 $('#config-' + c).val(s.config[c]);
+            }
+        });
+
+        Object.keys(s.props).forEach(p => {
+            const obj = s.props[p];
+            if (typeof obj.minValue !== 'undefined') {
+                $(`#config-${p}-minValue`).val(obj.minValue);
+            }
+            if (typeof obj.maxValue !== 'undefined') {
+                $(`#config-${p}-maxValue`).val(obj.maxValue);
+            }
+            if (typeof obj.validValues !== 'undefined') {
+                $(`[id^=config-${p}-validValues-]`).each(function () {
+                   if (obj.validValues.indexOf(parseInt($(this).val(), 10)) === -1) {
+                       $(this).removeAttr('checked');
+                   } else {
+                       $(this).attr('checked', true)
+                   }
+                });
             }
         });
 
@@ -588,7 +626,53 @@ $(document).ready(() => {
                 createConfigInput(c, $('#config-input-' + c.name));
             });
         }
+
+        if (s.props && s.props.length > 0) {
+            $configuration.append('<h4>Properties</h4>');
+            s.props.forEach(p => {
+                $configuration.append(`<h5>${p.name}</h5>`);
+
+                if (typeof p.minValue !== 'undefined') {
+                    $configuration.append(`
+                   <div class="form-group row">
+                       <label for="config-input-${p.name}-minValue" class="col-sm-4 col-form-label">minValue</label>
+                       <div id="config-input-${p.name}-minValue" class="col-sm-8">
+                           <input id="config-${p.name}-minValue" class="config-props form-control" type="number" value="${p.minValue}">
+                       </div>
+                   </div>`);
+                }
+
+                if (typeof p.maxValue !== 'undefined') {
+                    $configuration.append(`
+                   <div class="form-group row">
+                       <label for="config-input-${p.name}-maxValue" class="col-sm-4 col-form-label">maxValue</label>
+                       <div id="config-input-${p.name}-maxValue" class="col-sm-8">
+                           <input id="config-${p.name}-maxValue" class="config-props form-control" type="number" value="${p.maxValue}">
+                       </div>
+                   </div>`);
+                }
+
+                if (typeof p.validValues !== 'undefined') {
+                    let row = `<div class="form-group row">
+                       <label for="config-input-${p.name}-validValues" class="col-sm-4 col-form-label">validValues</label>
+                       <div id="config-input-${p.name}-validValues" class="col-sm-8">`;
+
+                    p.validValues.forEach((v, i) => {
+                        row += `<div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="config-${p.name}-validValues-${i}" value="${i}" checked>
+                            <label class="form-check-label" for="config-${p.name}-validValues-${i}">${v}</label></div>`;
+                    });
+
+                    row += `</div></div>`;
+                    $configuration.append(row);
+                }
+
+
+            });
+        }
     }
+
+
 
     function createConfigInput(c, $elem) {
         let html = '<div>';
