@@ -1,6 +1,6 @@
 {
   "name": "homekit2mqtt",
-  "version": "0.8.0-pre.0",
+  "version": "0.8.0",
   "description": "HomeKit to MQTT bridge",
   "main": "index.js",
   "bin": {
@@ -77,6 +77,8 @@
   "homepage": "https://github.com/hobbyquaker/homekit2mqtt",
   "xo": {
     "space": 4,
-    "ignore": ["test/test.js"]
+    "ignore": [
+      "test/test.js"
+    ]
   }
 }
