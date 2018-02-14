@@ -16,7 +16,8 @@
     "testonly": "mocha --exit test/test.js",
     "testcov": "nyc mocha --exit test/test.js",
     "lint": " xo",
-    "lintfix": " xo --fix"
+    "lintfix": " xo --fix",
+    "testbridge": "index.js -v debug --username CC:22:3D:E3:CA:10 --bridgename testbridge -m ./test-config.json"
   },
   "author": "Sebastian 'hobbyquaker' Raff <hobbyquaker@gmail.com> (https://github.com/hobbyquaker)",
   "contributors": [
