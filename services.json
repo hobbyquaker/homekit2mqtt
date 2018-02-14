@@ -361,6 +361,9 @@
       },
       {"name": "onLowBattery", "optional": true},
       {"name": "identify", "optional": true}
+    ],
+    "props": [
+      {"name": "CurrentTemperature", "minValue": -100, "maxValue": 100}
     ]
   },
   "Thermostat": {
@@ -385,6 +388,10 @@
     ],
     "config": [
       {"name": "TemperatureDisplayUnits", "enum": ["CELSIUS", "FAHRENHEIT"]}
+    ],
+    "props": [
+      {"name": "TargetHeatingCoolingState", "validValues": ["OFF", "HEAT", "COOL", "AUTO"]},
+      {"name": "TargetTemperature", "minValue": 4, "maxValue": 38}
     ]
   },
   "Valve": {
