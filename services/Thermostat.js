@@ -79,6 +79,7 @@ module.exports = function (iface) {
             });
             acc.getService(Service.Thermostat)
                 .getCharacteristic(Characteristic.TargetHeatingCoolingState)
+                .setProps((settings.props || {}).TargetHeatingCoolingState || {})
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'TargetHeatingCoolingState');
                     log.debug('> hap re_get', settings.name, 'TargetHeatingCoolingState', mqttStatus[settings.topic.statusTargetHeatingCoolingState]);
