@@ -17,7 +17,7 @@
     "testcov": "nyc mocha --exit test/test.js",
     "lint": " xo",
     "lintfix": " xo --fix",
-    "testbridge": "node index.js -v debug --username CC:22:3D:E3:CA:10 --bridgename testbridge -m ./test-config.json"
+    "testbridge": "node index.js -v debug --username CC:22:3D:E3:CA:10 --bridgename testbridge -m ./test/test-config.json"
   },
   "author": "Sebastian 'hobbyquaker' Raff <hobbyquaker@gmail.com> (https://github.com/hobbyquaker)",
   "contributors": [

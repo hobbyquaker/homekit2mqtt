@@ -1,0 +1,51 @@
+{
+  "test/Heizung": {
+    "id": "test/Heizung",
+    "service": "Thermostat",
+    "name": "Heizung Test",
+    "services": [
+      {
+        "name": "Thermostat Test",
+        "topic": {
+          "setTargetTemperature": "test/set/TargetTemperature",
+          "statusTargetTemperature": "test/status/TargetTemperature",
+          "statusCurrentTemperature": "test/status/CurrentTemperature",
+          "setTargetHeatingCoolingState": "test/set/TargetHeatingCoolingState",
+          "statusTargetHeatingCoolingState": "test/status/TargetHeatingCoolingState",
+          "statusCurrentHeatingCoolingState": "test/status/CurrentHeatingCoolingState",
+          "statusCurrentRelativeHumidity": "test/status/CurrentRelativeHumidity"
+        },
+        "props": {
+          "TargetHeatingCoolingState": {
+            "validValues": [
+              0,
+              1
+            ]
+          },
+          "TargetTemperature": {
+            "minValue": 4,
+            "maxValue": 30
+          },
+          "payload": {},
+          "config": {
+            "TemperatureDisplayUnits": 0
+          }
+        }
+      }
+    ]
+  },
+  "hm//Fenster Hobbyraum": {
+    "service": "ContactSensor",
+    "name": "Fenster Hobbyraum",
+    "topic": {
+      "statusContactSensorState": "hm/status/Fenster Hobbyraum/STATE",
+      "statusLowBattery": "hm/status/Fenster Hobbyraum/LOWBAT"
+    },
+    "payload": {
+      "onContactDetected": 0,
+      "onLowBattery": 1
+    },
+    "manufacturer": "hm2mqtt - Homematic",
+    "model": "SHUTTER_CONTACT"
+  }
+}
