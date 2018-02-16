@@ -1,19 +1,19 @@
 {
   "test/Heizung": {
     "id": "test/Heizung",
-    "service": "Thermostat",
     "name": "Heizung Test",
     "services": [
       {
         "name": "Thermostat Test",
+        "service": "Thermostat",
         "topic": {
-          "setTargetTemperature": "test/set/TargetTemperature",
-          "statusTargetTemperature": "test/status/TargetTemperature",
-          "statusCurrentTemperature": "test/status/CurrentTemperature",
-          "setTargetHeatingCoolingState": "test/set/TargetHeatingCoolingState",
-          "statusTargetHeatingCoolingState": "test/status/TargetHeatingCoolingState",
-          "statusCurrentHeatingCoolingState": "test/status/CurrentHeatingCoolingState",
-          "statusCurrentRelativeHumidity": "test/status/CurrentRelativeHumidity"
+          "setTargetTemperature": "test/set/Thermostat/TargetTemperature",
+          "statusTargetTemperature": "test/status/Thermostat/TargetTemperature",
+          "statusCurrentTemperature": "test/status/Thermostat/CurrentTemperature",
+          "setTargetHeatingCoolingState": "test/set/Thermostat/TargetHeatingCoolingState",
+          "statusTargetHeatingCoolingState": "test/status/Thermostat/TargetHeatingCoolingState",
+          "statusCurrentHeatingCoolingState": "test/status/Thermostat/CurrentHeatingCoolingState",
+          "statusCurrentRelativeHumidity": "test/status/Thermostat/CurrentRelativeHumidity"
         },
         "props": {
           "TargetHeatingCoolingState": {
@@ -31,21 +31,32 @@
             "TemperatureDisplayUnits": 0
           }
         }
+      },
+      {
+        "name": "Thermostat Test Battery",
+        "service": "BatteryService",
+        "topic": {
+          "statusBatteryLevel": "test/status/Thermostat/BatteryLevel",
+          "statusChargingState": "test/status/Thermostat/ChargingState",
+          "statusLowBattery": "test/status/Thermostat/LowBattery"
+        }
       }
     ]
   },
   "hm//Fenster Hobbyraum": {
     "service": "ContactSensor",
-    "name": "Fenster Hobbyraum",
+    "name": "Contact Sensor",
     "topic": {
-      "statusContactSensorState": "hm/status/Fenster Hobbyraum/STATE",
-      "statusLowBattery": "hm/status/Fenster Hobbyraum/LOWBAT"
+      "statusContactSensorState": "test/status/ContactSensor",
+      "statusLowBattery": "test/status/ContactSensor/LowBattery",
+      "identify": "test/set/ContactSensor/identify"
     },
     "payload": {
       "onContactDetected": 0,
-      "onLowBattery": 1
+      "onLowBattery": 1,
+      "identify": ""
     },
-    "manufacturer": "hm2mqtt - Homematic",
-    "model": "SHUTTER_CONTACT"
+    "manufacturer": "test manuf",
+    "model": "test model"
   }
 }
