@@ -519,24 +519,26 @@ $(document).ready(() => {
             }
         });
 
-        Object.keys(s.props).forEach(p => {
-            const obj = s.props[p];
-            if (typeof obj.minValue !== 'undefined') {
-                $(`#config-${p}-minValue`).val(obj.minValue);
-            }
-            if (typeof obj.maxValue !== 'undefined') {
-                $(`#config-${p}-maxValue`).val(obj.maxValue);
-            }
-            if (typeof obj.validValues !== 'undefined') {
-                $(`[id^=config-${p}-validValues-]`).each(function () {
-                    if (obj.validValues.indexOf(parseInt($(this).val(), 10)) === -1) {
-                        $(this).removeAttr('checked');
-                    } else {
-                        $(this).attr('checked', true);
-                    }
-                });
-            }
-        });
+        if (s.props) {
+            Object.keys(s.props).forEach(p => {
+                const obj = s.props[p];
+                if (typeof obj.minValue !== 'undefined') {
+                    $(`#config-${p}-minValue`).val(obj.minValue);
+                }
+                if (typeof obj.maxValue !== 'undefined') {
+                    $(`#config-${p}-maxValue`).val(obj.maxValue);
+                }
+                if (typeof obj.validValues !== 'undefined') {
+                    $(`[id^=config-${p}-validValues-]`).each(function () {
+                        if (obj.validValues.indexOf(parseInt($(this).val(), 10)) === -1) {
+                            $(this).removeAttr('checked');
+                        } else {
+                            $(this).attr('checked', true);
+                        }
+                    });
+                }
+            });
+        }
 
         $('#manufacturer').val(s.manufacturer);
         $('#model').val(s.model);
