@@ -24,6 +24,7 @@ const mqttCallbacks = {}; // Holds arrays of subscription callbacks, keys are th
 let mqttConnected;
 
 let bridgeListening;
+const topics = [];
 
 log.info('mqtt trying to connect', config.url);
 const mqtt = Mqtt.connect(config.url, {will: {topic: config.name + '/connected', payload: '0', retain: true}});
@@ -144,9 +145,9 @@ bridge.on('identify', (paired, callback) => {
 /* istanbul ignore next */
 function identify(settings, paired, callback) {
     log.debug('< hap identify', settings.name, paired ? '(paired)' : '(unpaired)');
-    if (settings.topic.identify) {
-        log.debug('> mqtt', settings.topic.identify, settings.payload.identify);
-        mqttPub(settings.topic.identify, settings.payload.identify);
+    if (settings.topicIdentify) {
+        log.debug('> mqtt', settings.topicIdentify, settings.payloadIdentify);
+        mqttPub(settings.topicIdentify, settings.payloadIdentify);
     }
     callback();
 }
@@ -185,6 +186,53 @@ function loadService(service) {
 let mapping;
 let accCount;
 
+/* Convert old config file schema to keep compatiblity */
+function convertMapping() {
+    let isConverted;
+    Object.keys(mapping).forEach(id => {
+        const accConfig = mapping[id];
+
+        if (!accConfig.services) {
+            accConfig.services = [];
+            isConverted = true;
+        }
+
+        if (accConfig.topic && accConfig.topic.identify) {
+            accConfig.topicIdentify = accConfig.topic.identify;
+            delete accConfig.topic.identify;
+            isConverted = true;
+        }
+        if (accConfig.payload && accConfig.payload.identify) {
+            accConfig.payloadIdentify = accConfig.payload.identify;
+            delete accConfig.payload.identify;
+            isConverted = true;
+        }
+
+        if (accConfig.service) {
+            accConfig.services.unshift({
+                name: accConfig.name,
+                service: accConfig.service,
+                topic: accConfig.topic || {},
+                payload: accConfig.payload || {},
+                config: accConfig.config || {},
+                props: accConfig.props || {}
+            });
+            /* TODO can be deleted when UI is adapted to new scheme
+            delete accConfig.service;
+            delete accConfig.topic;
+            delete accConfig.payload;
+            delete accConfig.config;
+            delete accConfig.props;
+            */
+            isConverted = true;
+        }
+    });
+    if (isConverted) {
+        log.info('mapping file converted');
+        // TODO saveMapping(); can be done when UI is adapted to new scheme
+    }
+}
+
 function createBridge() {
     mqtt.on('message', (topic, payload) => {
         payload = payload.toString();
@@ -214,32 +262,23 @@ function createBridge() {
                 cb(state);
             });
         }
+        // Topics array Used for autocomplete in web ui)
+        if (topics.indexOf(topic) === -1 && topic !== config.name + '/connected') {
+            topics.push(topic);
+        }
     });
 
     // Load and create all accessories
     log.info('loading HomeKit to MQTT mapping file ' + config.mapfile);
     mapping = require(config.mapfile);
+    convertMapping();
     accCount = 0;
     Object.keys(mapping).forEach(id => {
         const accConfig = mapping[id];
         accConfig.id = id;
         const acc = newAccessory(accConfig);
 
-        const services = accConfig.services || [];
-
-        if (accConfig.service) {
-            // Keep compatibility with old scheme (version <= 0.8)
-            services.unshift({
-                name: accConfig.name,
-                service: accConfig.service,
-                topic: accConfig.topic || {},
-                payload: accConfig.payload || {},
-                config: accConfig.config || {},
-                props: accConfig.props || {}
-            });
-        }
-
-        services.forEach(s => {
+        accConfig.services.forEach(s => {
             if (!addService[s.service]) {
                 loadService(s.service);
             }
@@ -285,6 +324,11 @@ function createBridge() {
     });
 }
 
+function saveMapping() {
+    fs.writeFileSync(config.mapfile, JSON.stringify(mapping, null, '  '));
+    log.info('saved config to', config.mapfile);
+}
+
 let isStarted = false;
 
 function start() {
@@ -304,7 +348,6 @@ if (config.disableWeb) {
     // Get all retained messages (used for autocomplete in web ui)
     log.debug('mqtt subscribe #');
     mqtt.subscribe('#');
-    const topics = [];
     let retainTimeout = setTimeout(start, 1000);
     mqtt.on('message', (topic, payload, msg) => {
         if (isStarted) {
@@ -349,8 +392,7 @@ if (config.disableWeb) {
     app.post('/config', bodyParser.json(), (req, res) => {
         log.info('http < config');
         mapping = req.body;
-        fs.writeFileSync(config.mapfile, JSON.stringify(req.body, null, '  '));
-        log.info('saved config to', config.mapfile);
+        saveMapping();
         res.send('ok');
     });
 
