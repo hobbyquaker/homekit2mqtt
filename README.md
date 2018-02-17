@@ -22,10 +22,10 @@ I'm using this to control a multitude of MQTT-connected "Things" in my home auto
  * Debian, Ubuntu, Raspbian or macOS
  * [Node.js](https://nodejs.org) 6 or higher
  * If you're running on Linux, you'll need to make sure you have the libavahi-compat-libdnssd-dev package installed:
-   `sudo apt-get install libavahi-compat-libdnssd-dev`
+   `$ sudo apt-get install libavahi-compat-libdnssd-dev`
 
 
-`sudo npm install -g homekit2mqtt --unsafe-perm`   
+`$ sudo npm install -g homekit2mqtt --unsafe-perm`   
 
 ## Command Line Options
 
@@ -69,17 +69,29 @@ See [example-homekit2mqtt.json](example-homekit2mqtt.json) for an example config
 like this in the JSON file:
 
 ```javascript
-  "TemperatureSensor": {                                    // Unique Name - used to generate the accessory UUID
-    "service": "TemperatureSensor",                         // HomeKit Service Type (see below)
-    "name": "TemperatureSensor",                            // Display Name
-    "topic": {                                              
-        // ... MQTT Topic Configuration ...
-    },
-    "payload": {
-        // ... MQTT Payload Configuration ...
-    },
-    "manufacturer": "Generic",                              // Additional Accessory Infos (optional)
-    "model": "TemperatureSensor"                            // Additional Accessory Infos (optional)
+  "TemperatureSensor": {                                    // Unique name - used to generate the accessory UUID
+    "name": "TemperatureSensor LivingRoom",                 // Accessory name
+    "services": [
+        {
+            "service": "TemperatureSensor",                 // HomeKit service type (see available service types below)
+            "name": "Temperature LivingRoom",               // Service name
+            "topic": {                                              
+                // ... MQTT topic configuration ...
+            },
+            "payload": {
+                // ... MQTT payload configuration ...
+            },
+            "props": {
+                // ... Optional Characteristic properties
+            },
+            "config": {
+                // ... Optional Service configuration
+            }       
+        },
+        // ... more services
+    ],
+    "manufacturer": "DIY Home Brew",                        // Additional accessory infos (optional)
+    "model": "TemperatureSensor"                            // Additional accessory infos (optional)
   }
 ```
 ## Available Service Types

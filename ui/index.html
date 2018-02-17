@@ -15,6 +15,9 @@
     <table id="gridServices"></table>
 </div>
 
+<input type="hidden" id="idAccessory">
+<input type="hidden" id="indexService">
+
 <div id="dialogService" class="modal" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -58,7 +61,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Configuration</h4>
+                <h4 class="modal-title">Service Configuration</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -71,12 +74,6 @@
                             <input type="text" class="form-control" id="service" disabled>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="id" class="col-sm-4 col-form-label">id</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="id">
-                        </div>
-                    </div>
                    <div class="form-group row">
                        <label for="name" class="col-sm-4 col-form-label">Name</label>
                        <div class="col-sm-8">
@@ -84,25 +81,7 @@
                        </div>
                    </div>
                    <div id="configuration"></div>
-                   <h4>AccessoryInformation</h4>
-                   <div class="form-group row">
-                       <label for="manufacturer" class="col-sm-4 col-form-label">Manufacturer</label>
-                       <div class="col-sm-8">
-                           <input type="text" class="form-control" id="manufacturer">
-                       </div>
-                   </div>
-                   <div class="form-group row">
-                       <label for="model" class="col-sm-4 col-form-label">Model</label>
-                       <div class="col-sm-8">
-                           <input type="text" class="form-control" id="model">
-                       </div>
-                   </div>
-                   <div class="form-group row">
-                       <label for="serial" class="col-sm-4 col-form-label">Serial</label>
-                       <div class="col-sm-8">
-                           <input type="text" class="form-control" id="serial">
-                       </div>
-                   </div>
+
                 </div>
             </div>
             <div class="modal-footer">
@@ -113,11 +92,11 @@
     </div>
 </div>
 
-<div id="dialogConfirmDel" class="modal" data-backdrop="static">
-    <div class="modal-dialog" role="document">
+<div id="dialogAccessory" class="modal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Really Delete Service?</h4>
+                <h4 class="modal-title">Accessory Configuration</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -125,18 +104,101 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="form-group row">
+                        <label for="idAcc" class="col-sm-4 col-form-label">id</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="idAcc">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="nameAcc" class="col-sm-4 col-form-label">Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="nameAcc">
+                        </div>
+                    </div>
+                    <h4>AccessoryInformation</h4>
+                    <div class="form-group row">
+                        <label for="manufacturer" class="col-sm-4 col-form-label">Manufacturer</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="manufacturer">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="model" class="col-sm-4 col-form-label">Model</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="model">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="serial" class="col-sm-4 col-form-label">Serial</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="serial">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveAcc">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialogConfirmDelAcc" class="modal" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Really Delete Accessory?</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="form-group row">
+                        <label for="idConfirmAcc" class="col-sm-2 col-form-label">id</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="idConfirmAcc" placeholder="id" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="nameConfirmAcc" class="col-sm-2 col-form-label">Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="nameConfirmAcc" placeholder="Name" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="deleteAcc">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialogConfirmDel" class="modal" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Really Delete Service?</h4><br>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="form-group row">
+                        <div class="col-sm-12" id="accNameConfirm"></div>
+                    </div>
+
+                    <div class="form-group row">
                         <label for="serviceConfirm" class="col-sm-2 col-form-label">Service</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="serviceConfirm" disabled>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="idConfirm" class="col-sm-2 col-form-label">id</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="idConfirm" placeholder="id" disabled>
-                        </div>
-                    </div>
-                    <div class="form-group row">
+                     <div class="form-group row">
                         <label for="nameConfirm" class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="nameConfirm" placeholder="Name" disabled>
@@ -152,5 +214,6 @@
     </div>
 </div>
 
+<script src="templates.js"></script>
 <script src="script.js"></script>
 

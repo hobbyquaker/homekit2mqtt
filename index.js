@@ -217,19 +217,17 @@ function convertMapping() {
                 config: accConfig.config || {},
                 props: accConfig.props || {}
             });
-            /* TODO can be deleted when UI is adapted to new scheme
             delete accConfig.service;
             delete accConfig.topic;
             delete accConfig.payload;
             delete accConfig.config;
             delete accConfig.props;
-            */
             isConverted = true;
         }
     });
     if (isConverted) {
         log.info('mapping file converted');
-        // TODO saveMapping(); can be done when UI is adapted to new scheme
+        saveMapping();
     }
 }
 

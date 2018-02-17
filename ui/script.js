@@ -2,128 +2,91 @@
 
 let services = {};
 let config = {};
-const template = {
-    Lightbulb: {
-        'hue2mqtt extended color light': {
-            id: 'hue//lights/%name%',
-            name: 'Hue %name%',
-            topic: {
-                setOn: 'hue/set/lights/%name%',
-                statusOn: 'hue/status/lights/%name%',
-                setBrightness: 'hue/set/lights/%name%',
-                statusBrightness: 'hue/status/lights/%name%',
-                setHue: 'hue/set/lights/%name%/hue',
-                statusHue: 'hue/status/lights/%name%/hue',
-                setSaturation: 'hue/set/lights/%name%/sat',
-                statusSaturation: 'hue/status/lights/%name%/sat',
-                setColorTemperature: 'hue/set/lights/%name%/ct',
-                statusColorTemperature: 'hue/status/lights/%name%/ct',
-                identify: 'hue/status/lights/%name%/alert'
-            },
-            payload: {
-                onTrue: 254,
-                onFalse: 0,
-                brightnessFactor: 2.54,
-                hueFactor: 181.327,
-                saturationFactor: 2.54,
-                identify: 'select'
-            },
-            manufacturer: 'hue2mqtt',
-            model: 'extended color light'
-        },
-        'hue2mqtt color light': {
-            id: 'hue//lights/%name%',
-            name: 'Hue %name%',
-            topic: {
-                setOn: 'hue/set/lights/%name%',
-                statusOn: 'hue/status/lights/%name%',
-                setBrightness: 'hue/set/lights/%name%',
-                statusBrightness: 'hue/status/lights/%name%',
-                setHue: 'hue/set/lights/%name%/hue',
-                statusHue: 'hue/status/lights/%name%/hue',
-                setSaturation: 'hue/set/lights/%name%/sat',
-                statusSaturation: 'hue/status/lights/%name%/sat',
-                identify: 'hue/status/lights/%name%/alert'
-            },
-            payload: {
-                onTrue: 254,
-                onFalse: 0,
-                brightnessFactor: 2.54,
-                hueFactor: 181.327,
-                saturationFactor: 2.54,
-                identify: 'select'
-            },
-            manufacturer: 'hue2mqtt',
-            model: 'color light'
-        },
-        'hue2mqtt tunable white': {
-            id: 'hue//lights/%name%',
-            name: 'Hue %name%',
-            topic: {
-                setOn: 'hue/set/lights/%name%',
-                statusOn: 'hue/status/lights/%name%',
-                setBrightness: 'hue/set/lights/%name%',
-                statusBrightness: 'hue/status/lights/%name%',
-                setColorTemperature: 'hue/set/lights/%name%/ct',
-                statusColorTemperature: 'hue/status/lights/%name%/ct',
-                identify: 'hue/status/lights/%name%/alert'
-            },
-            payload: {
-                onTrue: 254,
-                onFalse: 0,
-                brightnessFactor: 2.54,
-                identify: 'select'
-            },
-            manufacturer: 'hue2mqtt',
-            model: 'tunable white'
-        },
-        'hue2mqtt plug': {
-            id: 'hue//lights/%name%',
-            name: 'Hue %name%',
-            topic: {
-                setOn: 'hue/set/lights/%name%',
-                statusOn: 'hue/status/lights/%name%',
-                setBrightness: 'hue/set/lights/%name%',
-                statusBrightness: 'hue/status/lights/%name%',
-                identify: 'hue/status/lights/%name%/alert'
-            },
-            payload: {
-                onTrue: 254,
-                onFalse: 0,
-                brightnessFactor: 2.54,
-                identify: 'select'
-            },
-            manufacturer: 'hue2mqtt',
-            model: 'plug'
-        }
-    },
-    WindowCovering: {
-        'hm2mqtt.js blind': {
-            id: 'hm//%name%',
-            name: '%name%',
-            topic: {
-                setTargetPosition: 'hm/set/%name%/LEVEL',
-                statusTargetPosition: 'hm/status/%name%/LEVEL_NOTWORKING',
-                statusCurrentPosition: 'hm/status/%name%/LEVEL_NOTWORKING',
-                statusPositionState: 'hm/status/%name%/DIRECTION'
-            },
-            payload: {
-                targetPositionFactor: 0.01,
-                currentPositionFactor: 0.01,
-                positionStatusDecreasing: 2,
-                positionStatusIncreasing: 1
-            },
-            manufacturer: 'hm2mqtt.js - Homematic',
-            model: 'BLIND'
-        }
-    }
-};
 
 $(document).ready(() => {
     let topics = [];
     $.get('/topics', body => {
         topics = JSON.parse(body);
     });
+
+    function subGrid(subgrid_id, row_id) {
+        console.log(subgrid_id, row_id)
+        // we pass two parameters
+        // subgrid_id is a id of the div tag created within a table
+        // the row_id is the id of the row
+        // If we want to pass additional parameters to the url we can use
+        // the method getRowData(row_id) - which returns associative array in type name-value
+        // here we can easy construct the following
+        const data = [];
+        config[row_id].services.forEach((service, id) => {
+            data.push({id, name: service.name, service: service.service})
+        });
+        const subgrid_table_id = 'subgrid_' + row_id + "_t";
+        $('[id="' + subgrid_id + '"]').html("<table id='" + subgrid_table_id + "' class='scroll'></table>");
+        $('[id="' + subgrid_table_id + '"]').jqGrid({
+            cmTemplate: {autoResizable: true},
+            autowidth: true,
+            width: '100%',
+            guiStyle: 'bootstrap',
+            hidegrid: false,
+            iconSet: 'fontAwesome',
+
+            data,
+
+            colNames: ['Name', 'Service', ''],
+            colModel: [
+                {name: "name", index: "name"},
+                {name: "service", index: "service"},
+                {
+                    name: 'act',
+                    template: 'actions',
+                    formatoptions: {
+                        editbutton: false,
+                        delbutton: false
+                    },
+                    width: 72,
+                    align: 'right'
+                }
+            ],
+            actionsNavOptions: {
+                editServiceicon: "fa-pencil",
+                editServicetitle: "Edit Service",
+                deleteServiceicon: "fa-trash",
+                deleteServicetitle: "Delete Service",
+                custom: [
+                    {
+                        action: "editService",
+                        position: "first",
+                        onClick: function (options) {
+                            console.log('edit', row_id, options.rowid);
+                            edit(row_id, options.rowid);
+
+
+                        }
+                    },
+                    {
+                        action: "deleteService",
+                        position: "first",
+                        onClick: function (options) {
+                            $idAccessory.val(row_id);
+                            $indexService.val(options.rowid);
+                            $('#accNameConfirm').html(config[row_id].name);
+                            $nameConfirm.val(config[row_id].services[options.rowid].name);
+                            $serviceConfirm.val(config[row_id].services[options.rowid].service);
+                            $('#dialogConfirmDel').modal();
+                        }
+                    },
+                ]
+            }
+        });
+    }
+
+    function addService(id) {
+        $idAccessory.val(id);
+        $indexService.val(config[id].services.length);
+        createTemplate($selectService.val());
+        $dialogService.modal();
+    }
 
     const $gridServices = $('#gridServices');
 
@@ -135,8 +98,13 @@ $(document).ready(() => {
         guiStyle: 'bootstrap',
         hidegrid: false,
         iconSet: 'fontAwesome',
-        colNames: ['id', 'name', 'service'],
 
+        subGrid: true,
+
+        subGridRowExpanded: subGrid,
+
+
+        colNames: ['id', 'name', 'services', ''],
         colModel: [
             {
                 name: 'id',
@@ -147,10 +115,49 @@ $(document).ready(() => {
                 index: 'name'
             },
             {
-                name: 'service',
-                index: 'service'
+                name: 'numServices',
+                index: 'numServices'
+            },
+            {
+                name: 'act',
+                template: 'actions',
+                formatoptions: {
+                    editbutton: false,
+                    delbutton: false
+                },
+                width: 72,
+                align: 'right'
+
             }
         ],
+        actionsNavOptions: {
+            deleteAccessoryicon: "fa-trash",
+            deleteAccessorytitle: "Delete Accessory",
+            editAccessoryicon: "fa-pencil",
+            editAccessorytitle: "Edit Accessory",
+            addServiceicon: "fa-plus-square",
+            addServicetitle: "Add Service",
+            custom: [
+                {
+                    action: "addService",
+                    position: "first",
+                    onClick: function (options) {
+                        addService(options.rowid);
+                    }
+                },
+                { action: "editAccessory", position: "first", onClick: function (options) { editAcc(options.rowid); } },
+                {
+                    action: "deleteAccessory",
+                    position: "first",
+                    onClick: function (options) {
+                        $('#nameConfirmAcc').val(config[options.rowid].name);
+                        $('#idConfirmAcc').val(options.rowid);
+                        $('#dialogConfirmDelAcc').modal();
+                    }
+                },
+            ]
+        },
+
         data: [],
         rowList: [25, 100, '10000:All'],
         rowNum: 10000,
@@ -158,14 +165,14 @@ $(document).ready(() => {
         pager: true,
 
         onSelectRow(id, status) {
-            if (status) {
-                $('#edit, #del').removeAttr('disabled');
-            } else {
-                $('#edit, #del').attr('disabled', true);
-            }
+        //    if (status) {
+        //        $('#edit, #del').removeAttr('disabled');
+        //    } else {
+        //        $('#edit, #del').attr('disabled', true);
+        //    }
         },
         ondblClickRow(id) {
-            edit(id);
+            //edit(id);
         },
 
         loadComplete() {
@@ -184,19 +191,9 @@ $(document).ready(() => {
         refresh: false
     }).jqGrid('navButtonAdd', {
         caption: 'Add',
-        buttonicon: 'fa-plus',
-        title: 'Add a Service',
-        id: 'add'
-    }).jqGrid('navButtonAdd', {
-        caption: 'Edit',
-        buttonicon: 'fa-wrench',
-        title: 'Edit Service',
-        id: 'edit'
-    }).jqGrid('navButtonAdd', {
-        caption: 'Del',
-        buttonicon: 'fa-trash',
-        title: 'Delete Service',
-        id: 'del'
+        buttonicon: 'fa-plus-square',
+        title: 'Add accessory',
+        id: 'addAcc'
     }).jqGrid('navButtonAdd', {
         caption: 'Stop',
         buttonicon: 'fa-stop-circle-o',
@@ -211,22 +208,24 @@ $(document).ready(() => {
     const $dialogConfig = $('#dialogConfig');
     const $dialogConfirmDel = $('#dialogConfirmDel');
     const $next = $('#next');
-    const $add = $('#add');
-    const $del = $('#del');
+    const $addAcc = $('#addAcc');
     const $edit = $('#edit');
     const $stop = $('#stop');
 
     const $service = $('#service');
     const $id = $('#id');
     const $name = $('#name');
+    const $nameAcc = $('#nameAcc');
+
+    const $idAcc = $('#idAcc');
+    const $idAccessory = $('#idAccessory');
+    const $indexService = $('#indexService');
 
     const $serviceConfirm = $('#serviceConfirm');
     const $idConfirm = $('#idConfirm');
     const $nameConfirm = $('#nameConfirm');
 
     const $configuration = $('#configuration');
-
-    $('#edit, #del').attr('disabled', true);
 
     $.get('/config', body => {
         config = JSON.parse(body);
@@ -238,7 +237,7 @@ $(document).ready(() => {
             $gridServices.jqGrid('addRowData', id, {
                 id,
                 name: config[id].name,
-                service: config[id].service
+                numServices: config[id].services.length
             });
         });
         $gridServices.jqGrid('sortGrid', 'name', true, 'asc');
@@ -275,9 +274,25 @@ $(document).ready(() => {
         }
     }
 
-    $add.click(() => {
-        createTemplate($selectService.val());
-        $dialogService.modal();
+    $addAcc.click(() => {
+        $idAcc.removeAttr('disabled').val('');
+        $nameAcc.val('');
+        $('#manufacturer').val('');
+        $('#serial').val('');
+        $('#model').val('');
+        $('#dialogAccessory').modal();
+    });
+
+    $('#deleteAcc').click(() => {
+        delete config[$('#idConfirmAcc').val()];
+        $gridServices.jqGrid('delRowData', $('#idConfirmAcc').val());
+        $('#dialogConfirmDelAcc').modal('hide');
+        $.ajax({
+            url: '/config',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(config)
+        });
     });
 
     $next.click(() => {
@@ -321,20 +336,17 @@ $(document).ready(() => {
         return val.replace(/%name%/g, name);
     }
 
-    $edit.click(() => {
-        edit($gridServices.getGridParam('selrow'));
-    });
-
-    $del.click(() => {
-        confirmDel($gridServices.getGridParam('selrow'));
-    });
-
     $('#delete').click(() => {
-        const id = $gridServices.getGridParam('selrow');
-        $gridServices.jqGrid('delRowData', id);
-        $('#edit, #del').attr('disabled', true);
-        console.log('delete', id);
-        delete config[id];
+        const idAcc = $idAccessory.val();
+        const indexService = parseInt($indexService.val(), 10);
+        console.log('delete', idAcc, indexService);
+        config[idAcc].services.splice(indexService, 1);
+        $gridServices.jqGrid('collapseSubGridRow', idAcc);
+        $gridServices.jqGrid('expandSubGridRow', idAcc);
+        $gridServices.jqGrid('setRowData', idAcc, {
+            numServices: config[idAcc].services.length
+        });
+
         $.ajax({
             url: '/config',
             type: 'POST',
@@ -351,30 +363,89 @@ $(document).ready(() => {
         }, 3000);
     });
 
-    $('#save').click(() => {
-        if (validate()) {
-            const id = $.trim($id.val());
-            const service = $service.val();
+    $('#saveAcc').click(() => {
+        if (validateAcc()) {
+            const id = $.trim($idAcc.val());
             const result = {
                 id,
-                name: $.trim($name.val()),
-                service,
+                name: $.trim($nameAcc.val()),
                 manufacturer: $.trim($('#manufacturer').val()),
                 model: $.trim($('#model').val()),
                 serial: $.trim($('#serial').val())
             };
 
+            if (!config[id]) {
+                config[id] = {};
+            }
+
+            $.extend(config[id], result);
+
+            if (!config[id].services) {
+                config[id].services = [];
+            }
+            if (config[id].serial === '') {
+                delete config[id].serial;
+            }
+            if (config[id].model === '') {
+                delete config[id].model;
+            }
+            if (config[id].manufacturer === '') {
+                delete config[id].manufacturer;
+            }
+
+
+            $('#dialogAccessory').modal('hide');
+
+            if (!$idAcc.attr('disabled')) {
+                // New Accessory
+                $gridServices.jqGrid('addRowData', id, {
+                    id,
+                    name: config[id].name,
+                    numServices: 0
+                });
+                addService(id);
+                $gridServices.trigger('reloadGrid').jqGrid('sortGrid', 'name', true, 'asc');
+                $gridServices.jqGrid('setSelection', id, true);
+                $('#gridServices [id="' + id + '"]').focus();
+            } else {
+                // Existing Accessory
+                $gridServices.jqGrid('setRowData', id, {
+                    name: config[id].name
+                });
+
+            }
+
+            $.ajax({
+                url: '/config',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(config)
+            });
+        }
+    });
+
+    $('#save').click(() => {
+        if (validate()) {
+            const id = $.trim($id.val());
+            const service = $service.val();
+            const result = {
+                name: $.trim($name.val()),
+                service,
+                topic: {},
+                payload: {},
+                config: {},
+                props: {}
+            };
+
             const s = services[service];
 
             if (s.topic) {
-                result.topic = {};
                 s.topic.forEach(topic => {
                     const val = $.trim($('#topic-' + topic.name).val());
                     result.topic[topic.name] = val;
                 });
             }
             if (s.payload) {
-                result.payload = {};
                 s.payload.forEach(payload => {
                     const type = $('#payload-type-' + payload.name).val();
                     let val;
@@ -393,8 +464,6 @@ $(document).ready(() => {
                             break;
                         default:
                     }
-                    console.log(payload.name, type, val);
-
                     if (typeof val !== 'undefined') {
                         result.payload[payload.name] = val;
                     }
@@ -402,14 +471,12 @@ $(document).ready(() => {
             }
 
             if (s.config) {
-                result.config = {};
                 s.config.forEach(c => {
                     result.config[c.name] = parseInt($.trim($('#config-' + c.name).val()), 10);
                 });
             }
 
             if (s.props) {
-                result.props = {};
                 s.props.forEach(p => {
                     result.props[p.name] = {};
                     if (typeof p.minValue !== 'undefined') {
@@ -429,28 +496,11 @@ $(document).ready(() => {
                 });
             }
 
-            if (!config[id]) {
-                config[id] = {};
-            }
-            console.log(result);
+            const index = parseInt($indexService.val(), 10);
+            const idAcc = $idAccessory.val();
 
-            $.extend(config[id], result);
+            config[idAcc].services[index] = result;
 
-            Object.keys(config[id].topic).forEach(t => {
-                if (config[id].topic[t] === '') {
-                    delete config[id].topic[t];
-                }
-            });
-
-            if (config[id].serial === '') {
-                delete config[id].serial;
-            }
-            if (config[id].model === '') {
-                delete config[id].model;
-            }
-            if (config[id].manufacturer === '') {
-                delete config[id].manufacturer;
-            }
             $.ajax({
                 url: '/config',
                 type: 'POST',
@@ -458,17 +508,14 @@ $(document).ready(() => {
                 data: JSON.stringify(config)
             });
 
+            $gridServices.jqGrid('collapseSubGridRow', idAcc);
+            $gridServices.jqGrid('expandSubGridRow', idAcc);
+
+            $gridServices.jqGrid('setRowData', idAcc, {
+                numServices: config[idAcc].services.length
+            });
+
             $dialogConfig.modal('hide');
-            if (!$id.attr('disabled')) {
-                $gridServices.jqGrid('addRowData', id, {
-                    id,
-                    name: config[id].name,
-                    service: config[id].service
-                });
-                $gridServices.trigger('reloadGrid').jqGrid('sortGrid', 'name', true, 'asc');
-                $gridServices.jqGrid('setSelection', id, true);
-                $('#gridServices [id="' + id + '"]').focus();
-            }
         }
     });
 
@@ -480,9 +527,22 @@ $(document).ready(() => {
         $dialogConfirmDel.modal();
     }
 
-    function edit(id) {
-        const s = config[id];
+    function editAcc(id) {
+        $idAcc.attr('disabled', true);
+        $idAcc.val(id);
+        $nameAcc.val(config[id].name);
+        $('#manufacturer').val(config[id].manufacturer || '');
+        $('#model').val(config[id].model || '');
+        $('#serial').val(config[id].serial || '');
+        $('#dialogAccessory').modal();
+    }
 
+    function edit(acc, id) {
+        console.log(acc, id);
+        $indexService.val(id);
+        $idAccessory.val(acc);
+        const s = config[acc].services[id];
+        console.log(s)
         createServiceForm(s.service);
 
         $id.attr('disabled', true);
@@ -490,34 +550,40 @@ $(document).ready(() => {
         $selectService.val(s.service);
         $name.val(s.name);
 
-        Object.keys(s.topic).forEach(topic => {
-            if (typeof s.topic[topic] !== 'undefined') {
-                $('#topic-' + topic).val(s.topic[topic]);
-            }
-        });
+        if (s.topic) {
+            Object.keys(s.topic).forEach(topic => {
+                if (typeof s.topic[topic] !== 'undefined') {
+                    $('#topic-' + topic).val(s.topic[topic]);
+                }
+            });
+        }
 
-        Object.keys(s.payload).forEach(payload => {
-            switch (typeof s.payload[payload]) {
-                case 'boolean':
-                    $('#payload-boolean-' + payload).val(String(Boolean(s.payload[payload])));
-                    $('#payload-type-' + payload).val('Boolean').trigger('change');
-                    break;
-                case 'number':
-                    $('#payload-number-' + payload).val(s.payload[payload]);
-                    $('#payload-type-' + payload).val('Number').trigger('change');
+        if (s.payload) {
+            Object.keys(s.payload).forEach(payload => {
+                switch (typeof s.payload[payload]) {
+                    case 'boolean':
+                        $('#payload-boolean-' + payload).val(String(Boolean(s.payload[payload])));
+                        $('#payload-type-' + payload).val('Boolean').trigger('change');
+                        break;
+                    case 'number':
+                        $('#payload-number-' + payload).val(s.payload[payload]);
+                        $('#payload-type-' + payload).val('Number').trigger('change');
 
-                    break;
-                default:
-                    $('#payload-string-' + payload).val(s.payload[payload]);
-                    $('#payload-type-' + payload).val('String').trigger('change');
-            }
-        });
+                        break;
+                    default:
+                        $('#payload-string-' + payload).val(s.payload[payload]);
+                        $('#payload-type-' + payload).val('String').trigger('change');
+                }
+            });
+        }
 
-        Object.keys(s.config).forEach(c => {
-            if (typeof s.config[c] !== 'undefined') {
-                $('#config-' + c).val(s.config[c]);
-            }
-        });
+        if (s.config) {
+            Object.keys(s.config).forEach(c => {
+                if (typeof s.config[c] !== 'undefined') {
+                    $('#config-' + c).val(s.config[c]);
+                }
+            });
+        }
 
         if (s.props) {
             Object.keys(s.props).forEach(p => {
@@ -549,34 +615,45 @@ $(document).ready(() => {
         });
     }
 
-    function validate() {
+    function validateAcc() {
         let valid = true;
-        const id = $.trim($id.val());
-        const name = $.trim($name.val());
-        if ($id.attr('disabled')) {
-            $name.removeClass('is-invalid');
+        const idAcc = $.trim($idAcc.val());
+        const name = $.trim($nameAcc.val());
+        if ($idAcc.attr('disabled')) {
+            $idAcc.removeClass('is-invalid');
             Object.keys(config).forEach(i => {
-                if (name === '' || (config[i].name === name && config[i].name !== config[id].name)) {
-                    $name.addClass('is-invalid');
+                if (name === '' || (config[i].name === name && config[i].name !== config[idAcc].name)) {
+                    $nameAcc.addClass('is-invalid');
                     valid = false;
                 }
             });
         } else {
-            if (config[id] || id === '') {
-                $id.addClass('is-invalid');
+            if (config[idAcc] || idAcc === '') {
+                $idAcc.addClass('is-invalid');
                 valid = false;
             } else {
-                $id.removeClass('is-invalid');
+                $idAcc.removeClass('is-invalid');
             }
-            $name.removeClass('is-invalid');
+            $nameAcc.removeClass('is-invalid');
             Object.keys(config).forEach(i => {
                 if (name === '' || config[i].name === name) {
-                    $name.addClass('is-invalid');
+                    $nameAcc.addClass('is-invalid');
                     valid = false;
                 }
             });
         }
         return valid;
+    }
+
+    function validate() {
+        const name = $.trim($name.val());
+        if (name) {
+            $name.removeClass('is-invalid');
+            return true;
+        } else {
+            $name.addClass('is-invalid');
+            return false;
+        }
     }
 
     function createServiceForm(service) {
