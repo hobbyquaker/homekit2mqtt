@@ -69,17 +69,29 @@ See [example-homekit2mqtt.json](example-homekit2mqtt.json) for an example config
 like this in the JSON file:
 
 ```javascript
-  "TemperatureSensor": {                                    // Unique Name - used to generate the accessory UUID
-    "service": "TemperatureSensor",                         // HomeKit Service Type (see below)
-    "name": "TemperatureSensor",                            // Display Name
-    "topic": {                                              
-        // ... MQTT Topic Configuration ...
-    },
-    "payload": {
-        // ... MQTT Payload Configuration ...
-    },
-    "manufacturer": "Generic",                              // Additional Accessory Infos (optional)
-    "model": "TemperatureSensor"                            // Additional Accessory Infos (optional)
+  "TemperatureSensor": {                                    // Unique name - used to generate the accessory UUID
+    "name": "TemperatureSensor LivingRoom",                 // Accessory name
+    "services": [
+        {
+            "service": "TemperatureSensor",                 // HomeKit service type (see available service types below)
+            "name": "Temperature LivingRoom",               // Service name
+            "topic": {                                              
+                // ... MQTT topic configuration ...
+            },
+            "payload": {
+                // ... MQTT payload configuration ...
+            },
+            "props": {
+                // ... Optional Characteristic properties
+            },
+            "config": {
+                // ... Optional Service configuration
+            }       
+        },
+        // ... more services
+    ],
+    "manufacturer": "DIY Home Brew",                        // Additional accessory infos (optional)
+    "model": "TemperatureSensor"                            // Additional accessory infos (optional)
   }
 ```
 ## Available Service Types
@@ -107,7 +119,6 @@ topic
 
 * statusCarbonDioxideDetected
 * statusLowBattery (optional)
-* identify (optional)
 * statusTampered (optional)
 * statusActive (optional)
 * statusFault (optional)
@@ -116,7 +127,6 @@ payload
 
 * onCarbonDioxideDetected
 * onLowBattery (optional)
-* identify (optional)
 * onTampered (optional)
 * onActive (optional)
 * onFault (optional)
@@ -128,13 +138,11 @@ topic
 
 * statusCarbonMonoxideDetected
 * statusLowBattery (optional)
-* identify (optional)
 
 payload
 
 * onCarbonMonoxideDetected
 * onLowBattery (optional)
-* identify (optional)
 
 
 #### ContactSensor
@@ -143,7 +151,6 @@ topic
 
 * statusContactSensorState
 * statusLowBattery (optional)
-* identify (optional)
 * statusTampered (optional)
 * statusActive (optional)
 * statusFault (optional)
@@ -152,7 +159,6 @@ payload
 
 * onContactDetected
 * onLowBattery (optional)
-* identify (optional)
 * onTampered (optional)
 * onActive (optional)
 * onFault (optional)
@@ -167,7 +173,6 @@ topic
 * statusCurrentPosition (optional)
 * statusPositionState (optional)
 * statusObstruction (optional)
-* identify (optional)
 
 payload
 
@@ -176,7 +181,6 @@ payload
 * positionStatusDecreasing (optional)
 * positionStatusIncreasing (optional)
 * onObstructionDetected (optional)
-* identify (optional)
 
 
 #### Doorbell
@@ -184,11 +188,9 @@ payload
 topic
 
 * statusEvent
-* identify (optional)
 
 payload
 
-* identify (optional)
 
 
 #### Fan
@@ -201,7 +203,6 @@ topic
 * statusRotationDirection (optional)
 * setRotationSpeed (optional)
 * statusRotationSpeed (optional)
-* identify (optional)
 
 payload
 
@@ -210,7 +211,6 @@ payload
 * rotationDirectionCounterClockwise (optional, default: `1`)
 * rotationDirectionClockwise (optional, default: `0`)
 * rotationSpeedFactor (optional, default: `1`)
-* identify (optional)
 
 
 #### Faucet
@@ -237,7 +237,6 @@ topic
 * statusObstruction (optional)
 * setLock (optional)
 * statusLock (optional)
-* identify (optional)
 
 payload
 
@@ -249,7 +248,6 @@ payload
 * onObstructionDetected (optional)
 * lockUnsecured (optional)
 * lockSecured (optional)
-* identify (optional)
 
 
 #### HumiditySensor
@@ -258,12 +256,10 @@ topic
 
 * statusHumidity
 * statusLowBattery (optional)
-* identify (optional)
 
 payload
 
 * onLowBattery (optional)
-* identify (optional)
 
 
 #### IrrigationSystem
@@ -291,13 +287,11 @@ topic
 
 * statusLeakDetected
 * statusLowBattery (optional)
-* identify (optional)
 
 payload
 
 * onLeakDetected
 * onLowBattery (optional)
-* identify (optional)
 
 
 #### Lightbulb
@@ -314,7 +308,6 @@ topic
 * statusSaturation (optional)
 * setColorTemperature (optional)
 * statusColorTemperature (optional)
-* identify (optional)
 
 payload
 
@@ -323,7 +316,6 @@ payload
 * brightnessFactor (optional, default: `1`)
 * hueFactor (optional, default: `1`)
 * saturationFactor (optional, default: `1`)
-* identify (optional)
 
 
 #### LightSensor
@@ -332,13 +324,11 @@ topic
 
 * statusAmbientLightLevel
 * statusLowBattery (optional)
-* identify (optional)
 
 payload
 
 * ambientLightLevelFactor (optional, default: `1`)
 * onLowBattery (optional)
-* identify (optional)
 
 
 #### LockMechanism
@@ -347,12 +337,10 @@ topic
 
 * setLock
 * statusLock (optional)
-* identify (optional)
 
 payload
 
 * lockSecured
-* identify (optional)
 
 
 #### Microphone
@@ -363,14 +351,12 @@ topic
 * statusMute (optional)
 * setVolume (optional)
 * statusVolume (optional)
-* identify (optional)
 
 payload
 
 * muteTrue
 * muteFalse
 * volumeFactor (optional, default: `1`)
-* identify (optional)
 
 
 #### MotionSensor
@@ -379,13 +365,11 @@ topic
 
 * statusMotionDetected
 * statusLowBattery (optional)
-* identify (optional)
 
 payload
 
 * onMotionDetected
 * onLowBattery (optional)
-* identify (optional)
 
 
 #### OccupancySensor
@@ -394,13 +378,11 @@ topic
 
 * statusOccupancyDetected
 * statusLowBattery (optional)
-* identify (optional)
 
 payload
 
 * onOccupancyDetected
 * onLowBattery (optional)
-* identify (optional)
 
 
 #### Outlet
@@ -410,14 +392,12 @@ topic
 * setOn
 * statusOn (optional)
 * statusOutletInUse
-* identify (optional)
 
 payload
 
 * onFalse
 * onTrue
 * onOutletInUse
-* identify (optional)
 
 
 #### SecuritySystem
@@ -426,11 +406,9 @@ topic
 
 * setSecuritySystemTargetState
 * statusSecuritySystemCurrentState (optional)
-* identify (optional)
 
 payload
 
-* identify (optional)
 
 
 #### Slat
@@ -462,13 +440,11 @@ topic
 
 * statusSmokeDetected
 * statusLowBattery (optional)
-* identify (optional)
 
 payload
 
 * onSmokeDetected
 * onLowBattery (optional)
-* identify (optional)
 
 
 #### Speaker
@@ -479,14 +455,12 @@ topic
 * statusMute (optional)
 * setVolume (optional)
 * statusVolume (optional)
-* identify (optional)
 
 payload
 
 * muteTrue
 * muteFalse
 * volumeFactor, default: `1`)
-* identify (optional)
 
 
 #### StatelessProgrammableSwitch
@@ -494,11 +468,9 @@ payload
 topic
 
 * statusEvent
-* identify (optional)
 
 payload
 
-* identify (optional)
 
 
 #### Switch
@@ -507,13 +479,11 @@ topic
 
 * setOn
 * statusOn (optional)
-* identify (optional)
 
 payload
 
 * onFalse
 * onTrue
-* identify (optional)
 
 
 #### TemperatureSensor
@@ -522,14 +492,12 @@ topic
 
 * statusTemperature
 * statusLowBattery (optional)
-* identify (optional)
 
 payload
 
 * fahrenheit, default: `false`)    
   Set to true if your sensor publishes values in degree fahrenheit
 * onLowBattery (optional)
-* identify (optional)
 
 
 #### Thermostat
@@ -552,11 +520,9 @@ topic
 * statusCoolingThresholdTemperature (optional)
 * setHeatingThresholdTemperature (optional)
 * statusHeatingThresholdTemperature (optional)
-* identify (optional)
 
 payload
 
-* identify (optional)
 
 config
 
@@ -597,7 +563,6 @@ topic
 * statusCurrentPosition (optional)
 * statusPositionState (optional)
 * statusObstruction (optional)
-* identify (optional)
 
 payload
 
@@ -606,7 +571,6 @@ payload
 * positionStatusDecreasing (optional)
 * positionStatusIncreasing (optional)
 * onObstructionDetected (optional)
-* identify (optional)
 
 
 #### WindowCovering
@@ -617,7 +581,6 @@ topic
 * statusTargetPosition (optional)
 * statusCurrentPosition (optional)
 * statusPositionState (optional)
-* identify (optional)
 
 payload
 
@@ -625,7 +588,6 @@ payload
 * currentPositionFactor (optional, default: `1`)
 * positionStatusDecreasing (optional)
 * positionStatusIncreasing (optional)
-* identify (optional)
 
 
 

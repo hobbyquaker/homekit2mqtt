@@ -69,17 +69,29 @@ See [example-homekit2mqtt.json](example-homekit2mqtt.json) for an example config
 like this in the JSON file:
 
 ```javascript
-  "TemperatureSensor": {                                    // Unique Name - used to generate the accessory UUID
-    "service": "TemperatureSensor",                         // HomeKit Service Type (see below)
-    "name": "TemperatureSensor",                            // Display Name
-    "topic": {                                              
-        // ... MQTT Topic Configuration ...
-    },
-    "payload": {
-        // ... MQTT Payload Configuration ...
-    },
-    "manufacturer": "Generic",                              // Additional Accessory Infos (optional)
-    "model": "TemperatureSensor"                            // Additional Accessory Infos (optional)
+  "TemperatureSensor": {                                    // Unique name - used to generate the accessory UUID
+    "name": "TemperatureSensor LivingRoom",                 // Accessory name
+    "services": [
+        {
+            "service": "TemperatureSensor",                 // HomeKit service type (see available service types below)
+            "name": "Temperature LivingRoom",               // Service name
+            "topic": {                                              
+                // ... MQTT topic configuration ...
+            },
+            "payload": {
+                // ... MQTT payload configuration ...
+            },
+            "props": {
+                // ... Optional Characteristic properties
+            },
+            "config": {
+                // ... Optional Service configuration
+            }       
+        },
+        // ... more services
+    ],
+    "manufacturer": "DIY Home Brew",                        // Additional accessory infos (optional)
+    "model": "TemperatureSensor"                            // Additional accessory infos (optional)
   }
 ```
 ## Available Service Types
