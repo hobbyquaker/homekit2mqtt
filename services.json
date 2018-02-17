@@ -6,7 +6,9 @@
       {"name": "statusLowBattery"}
     ],
     "payload": [
-      {"name": "onLowBattery"}
+      {"name": "onLowBattery"},
+      {"name": "minBatteryLevel", "type": "Number", "optional": true, "default": 0},
+      {"name": "maxBatteryLevel", "type": "Number", "optional": true, "default": 100}
     ]
   },
   "CarbonDioxideSensor": {

@@ -35,6 +35,12 @@ module.exports = function (iface) {
             */
 
         mqttSub(settings.topic.statusBatteryLevel, val => {
+            if (settings.config && (typeof settings.payload.maxBatteryLevel !== 'undefined')) {
+                const max = settings.payload.maxBatteryLevel;
+                const min = settings.payload.minBatteryLevel || 0;
+                const range = max - min;
+                val = ((val - min) / range) * 100;
+            }
             log.debug('> hap update', settings.name, 'BatteryLevel', val);
             acc.getService(Service.BatteryService)
                 .updateCharacteristic(Characteristic.BatteryLevel, val);
