@@ -1,4 +1,37 @@
 {
+  "123": {
+    "id": "123",
+    "name": "123",
+    "services": [
+      {
+        "name": "Hue tewst",
+        "service": "Lightbulb",
+        "topic": {
+          "setOn": "hue/set/lights/tewst",
+          "statusOn": "hue/status/lights/tewst",
+          "setBrightness": "hue/set/lights/tewst",
+          "statusBrightness": "hue/status/lights/tewst",
+          "setHue": "hue/set/lights/tewst/hue",
+          "statusHue": "hue/status/lights/tewst/hue",
+          "setSaturation": "hue/set/lights/tewst/sat",
+          "statusSaturation": "hue/status/lights/tewst/sat",
+          "setColorTemperature": "",
+          "statusColorTemperature": "",
+          "identify": "hue/status/lights/tewst/alert"
+        },
+        "payload": {
+          "onTrue": 254,
+          "onFalse": 0,
+          "brightnessFactor": 2.54,
+          "hueFactor": 181.327,
+          "saturationFactor": 2.54,
+          "identify": "select"
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
+  },
   "test/Heizung": {
     "id": "test/Heizung",
     "name": "Heizung Test",
@@ -41,22 +74,39 @@
           "statusLowBattery": "test/status/Thermostat/LowBattery"
         }
       }
-    ]
+    ],
+    "payload": {},
+    "config": {}
   },
   "hm//Fenster Hobbyraum": {
-    "service": "ContactSensor",
-    "name": "Contact Sensor",
-    "topic": {
-      "statusContactSensorState": "test/status/ContactSensor",
-      "statusLowBattery": "test/status/ContactSensor/LowBattery",
-      "identify": "test/set/ContactSensor/identify"
-    },
-    "payload": {
-      "onContactDetected": 0,
-      "onLowBattery": 1,
-      "identify": ""
-    },
+    "name": "Contact Sensor1",
     "manufacturer": "test manuf",
-    "model": "test model"
+    "model": "test model",
+    "services": [
+      {
+        "name": "Contact Sensor2",
+        "service": "ContactSensor",
+        "topic": {
+          "statusContactSensorState": "test/status/ContactSensor",
+          "statusLowBattery": "test/status/ContactSensor/LowBattery",
+          "identify": "",
+          "statusTampered": "",
+          "statusActive": "",
+          "statusFault": ""
+        },
+        "payload": {
+          "onContactDetected": 0,
+          "onLowBattery": 1,
+          "identify": ""
+        },
+        "config": {},
+        "props": {}
+      }
+    ],
+    "topicIdentify": "test/set/ContactSensor/identify",
+    "id": "hm//Fenster Hobbyraum",
+    "payload": {},
+    "config": {},
+    "serial": ""
   }
 }

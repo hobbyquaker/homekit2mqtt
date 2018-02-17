@@ -1,524 +1,765 @@
 {
   "BatteryService": {
     "name": "BatteryService",
-    "service": "BatteryService",
-    "topic": {
-      "statusBatteryLevel": "BatteryService/status",
-      "statusChargingState": "BatteryService/status/ChargingState",
-      "statusLowBattery": "BatteryService/status/LowBattery"
-    },
-    "payload": {
-      "onLowBattery": 1
-    }
+    "services": [
+      {
+        "name": "BatteryService",
+        "service": "BatteryService",
+        "topic": {
+          "statusBatteryLevel": "BatteryService/status",
+          "statusChargingState": "BatteryService/status/ChargingState",
+          "statusLowBattery": "BatteryService/status/LowBattery"
+        },
+        "payload": {
+          "onLowBattery": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "CarbonDioxideSensor": {
-    "service": "CarbonDioxideSensor",
     "name": "CarbonDioxideSensor",
-    "topic": {
-      "statusCarbonDioxideDetected": "CarbonDioxideSensor/status",
-      "statusLowBattery": "CarbonDioxideSensor/status/LowBattery",
-      "statusActive": "CarbonDioxideSensor/status/Active",
-      "statusFault": "CarbonDioxideSensor/status/Fault",
-      "statusTampered": "CarbonDioxideSensor/status/Tampered"
-    },
-    "payload": {
-      "onCarbonDioxideDetected": 1,
-      "onLowBattery": 1,
-      "onActive": 1,
-      "onFault": 1,
-      "onTampered": 1
-    },
     "manufacturer": "Generic",
-    "model": "CarbonDioxideSensor"
+    "model": "CarbonDioxideSensor",
+    "services": [
+      {
+        "name": "CarbonDioxideSensor",
+        "service": "CarbonDioxideSensor",
+        "topic": {
+          "statusCarbonDioxideDetected": "CarbonDioxideSensor/status",
+          "statusLowBattery": "CarbonDioxideSensor/status/LowBattery",
+          "statusActive": "CarbonDioxideSensor/status/Active",
+          "statusFault": "CarbonDioxideSensor/status/Fault",
+          "statusTampered": "CarbonDioxideSensor/status/Tampered"
+        },
+        "payload": {
+          "onCarbonDioxideDetected": 1,
+          "onLowBattery": 1,
+          "onActive": 1,
+          "onFault": 1,
+          "onTampered": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "CarbonMonoxideSensor": {
-    "service": "CarbonMonoxideSensor",
     "name": "CarbonMonoxideSensor",
-    "topic": {
-      "statusCarbonMonoxideDetected": "CarbonMonoxideSensor/status",
-      "statusLowBattery": "CarbonMonoxideSensor/status/LowBattery"
-    },
-    "payload": {
-      "onCarbonMonoxideDetected": 1,
-      "onLowBattery": 1
-    },
     "manufacturer": "Generic",
-    "model": "CarbonMonoxideSensor"
+    "model": "CarbonMonoxideSensor",
+    "services": [
+      {
+        "name": "CarbonMonoxideSensor",
+        "service": "CarbonMonoxideSensor",
+        "topic": {
+          "statusCarbonMonoxideDetected": "CarbonMonoxideSensor/status",
+          "statusLowBattery": "CarbonMonoxideSensor/status/LowBattery"
+        },
+        "payload": {
+          "onCarbonMonoxideDetected": 1,
+          "onLowBattery": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "ContactSensor": {
-    "service": "ContactSensor",
     "name": "ContactSensor",
-    "topic": {
-      "statusContactSensorState": "ContactSensor/status",
-      "statusLowBattery": "ContactSensor/status/LowBattery",
-      "statusActive": "ContactSensor/status/Active",
-      "statusFault": "ContactSensor/status/Fault",
-      "statusTampered": "ContactSensor/status/Tampered"
-    },
-    "payload": {
-      "onContactDetected": 0,
-      "onLowBattery": 1,
-      "onActive": 1,
-      "onFault": 1,
-      "onTampered": 1
-    },
     "manufacturer": "Generic",
-    "model": "ContactSensor"
+    "model": "ContactSensor",
+    "services": [
+      {
+        "name": "ContactSensor",
+        "service": "ContactSensor",
+        "topic": {
+          "statusContactSensorState": "ContactSensor/status",
+          "statusLowBattery": "ContactSensor/status/LowBattery",
+          "statusActive": "ContactSensor/status/Active",
+          "statusFault": "ContactSensor/status/Fault",
+          "statusTampered": "ContactSensor/status/Tampered"
+        },
+        "payload": {
+          "onContactDetected": 0,
+          "onLowBattery": 1,
+          "onActive": 1,
+          "onFault": 1,
+          "onTampered": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Door": {
-    "service": "Door",
     "name": "Door",
-    "topic": {
-      "setTargetPosition": "Door/set/TargetPosition",
-      "statusTargetPosition": "Door/status/TargetPosition",
-      "setCurrentPosition": "Door/set/CurrentPosition",
-      "statusCurrentPosition": "Door/status/CurrentPosition",
-      "statusPositionState": "Door/status/PositionState",
-      "statusObstruction": "Door/status/Obstruction"
-    },
-    "payload": {
-      "positionStatusDecreasing": 2,
-      "positionStatusIncreasing": 1,
-      "positionStatusStopped": 0,
-      "onObstructionDetected": 1
-    }
+    "services": [
+      {
+        "name": "Door",
+        "service": "Door",
+        "topic": {
+          "setTargetPosition": "Door/set/TargetPosition",
+          "statusTargetPosition": "Door/status/TargetPosition",
+          "setCurrentPosition": "Door/set/CurrentPosition",
+          "statusCurrentPosition": "Door/status/CurrentPosition",
+          "statusPositionState": "Door/status/PositionState",
+          "statusObstruction": "Door/status/Obstruction"
+        },
+        "payload": {
+          "positionStatusDecreasing": 2,
+          "positionStatusIncreasing": 1,
+          "positionStatusStopped": 0,
+          "onObstructionDetected": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Doorbell": {
-    "service": "Doorbell",
     "name": "Doorbell",
-    "topic": {
-      "statusEvent": "Doorbell/status"
-    },
     "manufacturer": "Generic",
-    "model": "Doorbell"
+    "model": "Doorbell",
+    "services": [
+      {
+        "name": "Doorbell",
+        "service": "Doorbell",
+        "topic": {
+          "statusEvent": "Doorbell/status"
+        },
+        "payload": {},
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Fan": {
-    "service": "Fan",
     "name": "Fan",
-    "topic": {
-      "statusOn": "Fan/status",
-      "setOn": "Fan/set",
-      "statusRotationDirection": "Fan/status/RotationDirection",
-      "setRotationDirection": "Fan/set/RotationDirection",
-      "statusRotationSpeed": "Fan/status/RotationSpeed",
-      "setRotationSpeed": "Fan/set/RotationSpeed"
-    },
-    "payload": {
-      "rotationDirectionCounterClockwise": "left",
-      "rotationDirectionClockwise": "right"
-    },
     "manufacturer": "Generic",
-    "model": "Fan"
+    "model": "Fan",
+    "services": [
+      {
+        "name": "Fan",
+        "service": "Fan",
+        "topic": {
+          "statusOn": "Fan/status",
+          "setOn": "Fan/set",
+          "statusRotationDirection": "Fan/status/RotationDirection",
+          "setRotationDirection": "Fan/set/RotationDirection",
+          "statusRotationSpeed": "Fan/status/RotationSpeed",
+          "setRotationSpeed": "Fan/set/RotationSpeed"
+        },
+        "payload": {
+          "rotationDirectionCounterClockwise": "left",
+          "rotationDirectionClockwise": "right"
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Faucet": {
-    "service": "Faucet",
     "name": "Faucet",
-    "topic": {
-      "setActive": "faucet/set",
-      "statusActive": "faucet/status",
-      "statusFault": "faucet/status/fault"
-    },
-    "payload": {
-      "faultTrue": 1
-    }
+    "services": [
+      {
+        "name": "Faucet",
+        "service": "Faucet",
+        "topic": {
+          "setActive": "faucet/set",
+          "statusActive": "faucet/status",
+          "statusFault": "faucet/status/fault"
+        },
+        "payload": {
+          "faultTrue": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "GarageDoorOpener": {
-    "service": "GarageDoorOpener",
     "name": "GarageDoorOpener",
-    "topic": {
-      "setDoor": "GarageDoorOpener/set",
-      "statusDoor": "GarageDoorOpener/status",
-      "statusObstruction": "GarageDoorOpener/status/Obstruction",
-      "setLock": "GarageDoorOpener/set/Lock",
-      "statusLock": "GarageDoorOpener/status/Lock"
-    },
-    "payload": {
-      "doorClosed": 0,
-      "doorOpening": 1,
-      "doorClosing": 2,
-      "doorStopped": 3,
-      "doorOpen": 4,
-      "onObstructionDetected": 1,
-      "lockUnsecured": 0,
-      "lockSecured": 1
-    },
     "manufacturer": "Generic",
-    "model": "GarageDoorOpener"
+    "model": "GarageDoorOpener",
+    "services": [
+      {
+        "name": "GarageDoorOpener",
+        "service": "GarageDoorOpener",
+        "topic": {
+          "setDoor": "GarageDoorOpener/set",
+          "statusDoor": "GarageDoorOpener/status",
+          "statusObstruction": "GarageDoorOpener/status/Obstruction",
+          "setLock": "GarageDoorOpener/set/Lock",
+          "statusLock": "GarageDoorOpener/status/Lock"
+        },
+        "payload": {
+          "doorClosed": 0,
+          "doorOpening": 1,
+          "doorClosing": 2,
+          "doorStopped": 3,
+          "doorOpen": 4,
+          "onObstructionDetected": 1,
+          "lockUnsecured": 0,
+          "lockSecured": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "HumiditySensor": {
-    "service": "HumiditySensor",
     "name": "HumiditySensor",
-    "topic": {
-      "statusHumidity": "HumiditySensor/status",
-      "statusLowBattery": "HumiditySensor/status/LowBattery"
-    },
-    "payload": {
-      "onLowBattery": 1
-    },
     "manufacturer": "Generic",
-    "model": "HumiditySensor"
+    "model": "HumiditySensor",
+    "services": [
+      {
+        "name": "HumiditySensor",
+        "service": "HumiditySensor",
+        "topic": {
+          "statusHumidity": "HumiditySensor/status",
+          "statusLowBattery": "HumiditySensor/status/LowBattery"
+        },
+        "payload": {
+          "onLowBattery": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "IrrigationSystem": {
     "name": "IrrigationSystem",
-    "service": "IrrigationSystem",
-    "topic": {
-      "setActive": "IrrigationSystem/set",
-      "statusActive": "IrrigationSystem/status",
-      "statusProgramMode": "IrrigationSystem/status/ProgramMode",
-      "statusInUse": "IrrigationSystem/status/InUse",
-      "statusRemainingDuration": "IrrigationSystem/status/RemainingDuration",
-      "statusFault": "IrrigationSystem/status/Fault"
-    },
-    "payload": {
-      "inUseTrue": 1,
-      "faultTrue": 1,
-      "activeTrue": 1,
-      "activeFalse": 0
-    }
+    "services": [
+      {
+        "name": "IrrigationSystem",
+        "service": "IrrigationSystem",
+        "topic": {
+          "setActive": "IrrigationSystem/set",
+          "statusActive": "IrrigationSystem/status",
+          "statusProgramMode": "IrrigationSystem/status/ProgramMode",
+          "statusInUse": "IrrigationSystem/status/InUse",
+          "statusRemainingDuration": "IrrigationSystem/status/RemainingDuration",
+          "statusFault": "IrrigationSystem/status/Fault"
+        },
+        "payload": {
+          "inUseTrue": 1,
+          "faultTrue": 1,
+          "activeTrue": 1,
+          "activeFalse": 0
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "LeakSensor": {
-    "service": "LeakSensor",
     "name": "LeakSensor",
-    "topic": {
-      "statusLeakDetected": "LeakSensor/status",
-      "statusLowBattery": "LeakSensor/status/LowBattery"
-    },
-    "payload": {
-      "onLeakDetected": 1,
-      "onLowBattery": 1
-    },
     "manufacturer": "Generic",
-    "model": "LeakSensor"
+    "model": "LeakSensor",
+    "services": [
+      {
+        "name": "LeakSensor",
+        "service": "LeakSensor",
+        "topic": {
+          "statusLeakDetected": "LeakSensor/status",
+          "statusLowBattery": "LeakSensor/status/LowBattery"
+        },
+        "payload": {
+          "onLeakDetected": 1,
+          "onLowBattery": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Lightbulb1": {
-    "service": "Lightbulb",
     "name": "Licht Garten",
-    "topic": {
-      "setOn": "Lightbulb1/set",
-      "statusOn": "Lightbulb1/status"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0
-    },
     "manufacturer": "Generic",
-    "model": "Lightbulb"
+    "model": "Lightbulb",
+    "services": [
+      {
+        "name": "Licht Garten",
+        "service": "Lightbulb",
+        "topic": {
+          "setOn": "Lightbulb1/set",
+          "statusOn": "Lightbulb1/status"
+        },
+        "payload": {
+          "onTrue": 1,
+          "onFalse": 0
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Lightbulb2": {
-    "service": "Lightbulb",
     "name": "Lightbulb2",
-    "topic": {
-      "setOn": "Lightbulb2/set",
-      "setBrightness": "Lightbulb2/set/Brightness",
-      "statusOn": "Lightbulb2/status",
-      "statusBrightness": "Lightbulb2/status/Brightness",
-      "identify": "Lightbulb2/set/identify"
-    },
-    "payload": {
-      "onTrue": 254,
-      "onFalse": 0,
-      "brightnessFactor": 2.54,
-      "identify": "select"
-    },
     "manufacturer": "Generic",
-    "model": "Lightbulb Dimmable"
+    "model": "Lightbulb Dimmable",
+    "services": [
+      {
+        "name": "Lightbulb2",
+        "service": "Lightbulb",
+        "topic": {
+          "setOn": "Lightbulb2/set",
+          "setBrightness": "Lightbulb2/set/Brightness",
+          "statusOn": "Lightbulb2/status",
+          "statusBrightness": "Lightbulb2/status/Brightness"
+        },
+        "payload": {
+          "onTrue": 254,
+          "onFalse": 0,
+          "brightnessFactor": 2.54
+        },
+        "config": {},
+        "props": {}
+      }
+    ],
+    "topicIdentify": "Lightbulb2/set/identify",
+    "payloadIdentify": "select"
   },
   "Lightbulb": {
-    "service": "Lightbulb",
     "name": "Lightbulb",
-    "topic": {
-      "setOn": "Lightbulb/set",
-      "setBrightness": "Lightbulb/set/Brightness",
-      "setHue": "Lightbulb/set/Hue",
-      "setSaturation": "Lightbulb/set/Saturation",
-      "setColorTemperature": "Lightbulb/set/ColorTemperature",
-      "statusOn": "Lightbulb/status",
-      "statusBrightness": "Lightbulb/status/Brightness",
-      "statusHue": "Lightbulb/status/Hue",
-      "statusSaturation": "Lightbulb/status/Saturation",
-      "statusColorTemperature": "Lightbulb/status/ColorTemperature",
-      "identify": "Lightbulb/set/identify"
-    },
-    "payload": {
-      "onTrue": 254,
-      "onFalse": 0,
-      "brightnessFactor": 2.54,
-      "hueFactor": 182.04166666666666,
-      "saturationFactor": 2.54,
-      "identify": "select"
-    },
     "manufacturer": "Generic",
-    "model": "Lightbulb Color"
+    "model": "Lightbulb Color",
+    "services": [
+      {
+        "name": "Lightbulb",
+        "service": "Lightbulb",
+        "topic": {
+          "setOn": "Lightbulb/set",
+          "setBrightness": "Lightbulb/set/Brightness",
+          "setHue": "Lightbulb/set/Hue",
+          "setSaturation": "Lightbulb/set/Saturation",
+          "setColorTemperature": "Lightbulb/set/ColorTemperature",
+          "statusOn": "Lightbulb/status",
+          "statusBrightness": "Lightbulb/status/Brightness",
+          "statusHue": "Lightbulb/status/Hue",
+          "statusSaturation": "Lightbulb/status/Saturation",
+          "statusColorTemperature": "Lightbulb/status/ColorTemperature"
+        },
+        "payload": {
+          "onTrue": 254,
+          "onFalse": 0,
+          "brightnessFactor": 2.54,
+          "hueFactor": 182.04166666666666,
+          "saturationFactor": 2.54
+        },
+        "config": {},
+        "props": {}
+      }
+    ],
+    "topicIdentify": "Lightbulb/set/identify",
+    "payloadIdentify": "select"
   },
   "LightSensor": {
-    "service": "LightSensor",
     "name": "LightSensor",
-    "topic": {
-      "statusAmbientLightLevel": "LightSensor/Brightness",
-      "statusLowBattery": "LightSensor/status/LowBattery"
-    },
-    "payload": {
-      "onLowBattery": 1
-    },
     "manufacturer": "Generic",
-    "model": "LightSensor"
+    "model": "LightSensor",
+    "services": [
+      {
+        "name": "LightSensor",
+        "service": "LightSensor",
+        "topic": {
+          "statusAmbientLightLevel": "LightSensor/Brightness",
+          "statusLowBattery": "LightSensor/status/LowBattery"
+        },
+        "payload": {
+          "onLowBattery": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "LockMechanism": {
-    "service": "LockMechanism",
     "name": "LockMechanism",
-    "topic": {
-      "setLock": "LockMechanism/set",
-      "statusLock": "LockMechanism/status"
-    },
-    "payload": {
-      "lockUnsecured": 1,
-      "lockSecured": 0
-    },
     "manufacturer": "Generic",
-    "model": "LockMechanism"
+    "model": "LockMechanism",
+    "services": [
+      {
+        "name": "LockMechanism",
+        "service": "LockMechanism",
+        "topic": {
+          "setLock": "LockMechanism/set",
+          "statusLock": "LockMechanism/status"
+        },
+        "payload": {
+          "lockUnsecured": 1,
+          "lockSecured": 0
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Microphone": {
-    "service": "Microphone",
     "name": "Microphone",
-    "topic": {
-      "statusMute": "Microphone/status/Mute",
-      "setMute": "Microphone/set/Mute",
-      "setVolume": "Microphone/set/Volume",
-      "statusVolume": "Microphone/status/Volume"
-    }
+    "services": [
+      {
+        "name": "Microphone",
+        "service": "Microphone",
+        "topic": {
+          "statusMute": "Microphone/status/Mute",
+          "setMute": "Microphone/set/Mute",
+          "setVolume": "Microphone/set/Volume",
+          "statusVolume": "Microphone/status/Volume"
+        },
+        "payload": {},
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "MotionSensor": {
-    "service": "MotionSensor",
     "name": "MotionSensor",
-    "topic": {
-      "statusMotionDetected": "MotionSensor/status",
-      "statusLowBattery": "MotionSensor/status/LowBattery"
-    },
-    "payload": {
-      "onMotionDetected": 1,
-      "onLowBattery": 1
-    },
     "manufacturer": "Generic",
-    "model": "MotionSensor"
+    "model": "MotionSensor",
+    "services": [
+      {
+        "name": "MotionSensor",
+        "service": "MotionSensor",
+        "topic": {
+          "statusMotionDetected": "MotionSensor/status",
+          "statusLowBattery": "MotionSensor/status/LowBattery"
+        },
+        "payload": {
+          "onMotionDetected": 1,
+          "onLowBattery": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "OccupancySensor": {
-    "service": "OccupancySensor",
     "name": "OccupancySensor",
-    "topic": {
-      "statusOccupancyDetected": "OccupancySensor/status",
-      "statusLowBattery": "OccupancySensor/status/LowBattery"
-    },
-    "payload": {
-      "onOccupancyDetected": 1,
-      "onLowBattery": 1
-    },
     "manufacturer": "Generic",
-    "model": "OccupancySensor"
+    "model": "OccupancySensor",
+    "services": [
+      {
+        "name": "OccupancySensor",
+        "service": "OccupancySensor",
+        "topic": {
+          "statusOccupancyDetected": "OccupancySensor/status",
+          "statusLowBattery": "OccupancySensor/status/LowBattery"
+        },
+        "payload": {
+          "onOccupancyDetected": 1,
+          "onLowBattery": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Outlet": {
-    "service": "Outlet",
     "name": "Outlet",
-    "topic": {
-      "statusOn": "Outlet/status",
-      "setOn": "Outlet/set",
-      "statusOutletInUse": "Outlet/status/OutletInUse",
-      "setOutletInUse": "Outlet/set/OutletInUse"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0,
-      "onOutletInUse": 1
-    },
     "manufacturer": "Generic",
-    "model": "Outlet"
+    "model": "Outlet",
+    "services": [
+      {
+        "name": "Outlet",
+        "service": "Outlet",
+        "topic": {
+          "statusOn": "Outlet/status",
+          "setOn": "Outlet/set",
+          "statusOutletInUse": "Outlet/status/OutletInUse",
+          "setOutletInUse": "Outlet/set/OutletInUse"
+        },
+        "payload": {
+          "onTrue": 1,
+          "onFalse": 0,
+          "onOutletInUse": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "SecuritySystem": {
-    "service": "SecuritySystem",
     "name": "SecuritySystem",
-    "topic": {
-      "setSecuritySystemTargetState": "SecuritySystem/set/TargetState",
-      "statusSecuritySystemCurrentState": "SecuritySystem/status/CurrentState"
-    }
+    "services": [
+      {
+        "name": "SecuritySystem",
+        "service": "SecuritySystem",
+        "topic": {
+          "setSecuritySystemTargetState": "SecuritySystem/set/TargetState",
+          "statusSecuritySystemCurrentState": "SecuritySystem/status/CurrentState"
+        },
+        "payload": {},
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Slat": {
-    "service": "Slat",
     "name": "Slat",
-    "topic": {
-      "statusCurrentSlatState": "Slat/status",
-      "statusCurrentTiltAngle": "Slat/status/CurrentTiltAngle",
-      "statusTargetTiltAngle": "Slat/status/TargetTiltAngle",
-      "setTargetTiltAngle": "Slat/set/TargetTiltAngle",
-      "statusSwingMode": "Slat/status/SwingMode",
-      "setSwingMode": "Slat/set/SwingMode"
-    },
-    "payload": {}
+    "services": [
+      {
+        "name": "Slat",
+        "service": "Slat",
+        "topic": {
+          "statusCurrentSlatState": "Slat/status",
+          "statusCurrentTiltAngle": "Slat/status/CurrentTiltAngle",
+          "statusTargetTiltAngle": "Slat/status/TargetTiltAngle",
+          "setTargetTiltAngle": "Slat/set/TargetTiltAngle",
+          "statusSwingMode": "Slat/status/SwingMode",
+          "setSwingMode": "Slat/set/SwingMode"
+        },
+        "payload": {},
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "SmokeSensor": {
-    "service": "SmokeSensor",
     "name": "SmokeSensor",
-    "topic": {
-      "statusSmokeDetected": "SmokeSensor/status",
-      "statusLowBattery": "SmokeSensor/status/LowBattery"
-    },
-    "payload": {
-      "onSmokeDetected": 1,
-      "onLowBattery": 1
-    },
     "manufacturer": "Generic",
-    "model": "SmokeSensor"
+    "model": "SmokeSensor",
+    "services": [
+      {
+        "name": "SmokeSensor",
+        "service": "SmokeSensor",
+        "topic": {
+          "statusSmokeDetected": "SmokeSensor/status",
+          "statusLowBattery": "SmokeSensor/status/LowBattery"
+        },
+        "payload": {
+          "onSmokeDetected": 1,
+          "onLowBattery": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "StatelessProgrammableSwitch": {
-    "service": "StatelessProgrammableSwitch",
     "name": "StatelessProgrammableSwitch",
-    "topic": {
-      "statusEvent": "StatelessProgrammableSwitch/status"
-    },
     "manufacturer": "Generic",
     "model": "StatelessProgrammableSwitch",
-    "serial": "7890"
+    "serial": "7890",
+    "services": [
+      {
+        "name": "StatelessProgrammableSwitch",
+        "service": "StatelessProgrammableSwitch",
+        "topic": {
+          "statusEvent": "StatelessProgrammableSwitch/status"
+        },
+        "payload": {},
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Speaker": {
-    "service": "Speaker",
     "name": "Speaker",
-    "topic": {
-      "setMute": "Speaker/set/Mute",
-      "statusMute": "Speaker/status/Mute",
-      "setVolume": "Speaker/set/Volume",
-      "statusVolume": "Speaker/status/Volume"
-    },
-    "payload": {
-      "muteTrue": true,
-      "muteFalse": false
-    },
-    "serial": "12345"
+    "serial": "12345",
+    "services": [
+      {
+        "name": "Speaker",
+        "service": "Speaker",
+        "topic": {
+          "setMute": "Speaker/set/Mute",
+          "statusMute": "Speaker/status/Mute",
+          "setVolume": "Speaker/set/Volume",
+          "statusVolume": "Speaker/status/Volume"
+        },
+        "payload": {
+          "muteTrue": true,
+          "muteFalse": false
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Switch": {
-    "service": "Switch",
     "name": "Switch1",
-    "topic": {
-      "statusOn": "Switch/status",
-      "setOn": "Switch/set"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0
-    },
     "manufacturer": "Generic",
-    "model": "Switch"
+    "model": "Switch",
+    "services": [
+      {
+        "name": "Switch1",
+        "service": "Switch",
+        "topic": {
+          "statusOn": "Switch/status",
+          "setOn": "Switch/set"
+        },
+        "payload": {
+          "onTrue": 1,
+          "onFalse": 0
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "TemperatureSensor": {
-    "service": "TemperatureSensor",
     "name": "TemperatureSensor",
-    "topic": {
-      "statusTemperature": "TemperatureSensor/Temperature",
-      "statusLowBattery": "TemperatureSensor/status/LowBattery"
-    },
-    "payload": {
-      "onLowBattery": 1
-    },
-    "manufacturer": "Generic"
+    "manufacturer": "Generic",
+    "services": [
+      {
+        "name": "TemperatureSensor",
+        "service": "TemperatureSensor",
+        "topic": {
+          "statusTemperature": "TemperatureSensor/Temperature",
+          "statusLowBattery": "TemperatureSensor/status/LowBattery"
+        },
+        "payload": {
+          "onLowBattery": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "TemperatureSensorF": {
-    "service": "TemperatureSensor",
     "name": "TemperatureSensorF",
-    "topic": {
-      "statusTemperature": "TemperatureSensorF/Temperature"
-    },
-    "payload": {
-      "fahrenheit": true
-    },
-    "model": "TemperatureSensor"
+    "model": "TemperatureSensor",
+    "services": [
+      {
+        "name": "TemperatureSensorF",
+        "service": "TemperatureSensor",
+        "topic": {
+          "statusTemperature": "TemperatureSensorF/Temperature"
+        },
+        "payload": {
+          "fahrenheit": true
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Thermostat": {
-    "service": "Thermostat",
     "name": "Thermostat",
-    "topic": {
-      "setTargetTemperature": "Thermostat/set/TargetTemperature",
-      "statusTargetTemperature": "Thermostat/status/TargetTemperature",
-      "setTargetHeatingCoolingState": "Thermostat/set/TargetHeatingCoolingState",
-      "statusTargetHeatingCoolingState": "Thermostat/status/TargetHeatingCoolingState",
-      "setCurrentHeatingCoolingState": "Thermostat/set/CurrentHeatingCoolingState",
-      "statusCurrentHeatingCoolingState": "Thermostat/status/CurrentHeatingCoolingState",
-      "statusCurrentTemperature": "Thermostat/status/CurrentTemperature",
-      "setCurrentRelativeHumidity": "Thermostat/set/CurrentRelativeHumidity",
-      "statusCurrentRelativeHumidity": "Thermostat/status/CurrentRelativeHumidity",
-      "statusTargetRelativeHumidity": "Thermostat/status/TargetRelativeHumidity",
-      "setTargetRelativeHumidity": "Thermostat/set/TargetRelativeHumidity",
-      "statusHeatingThresholdTemperature": "Thermostat/status/HeatingThresholdTemperature",
-      "setHeatingThresholdTemperature": "Thermostat/set/HeatingThresholdTemperature",
-      "statusCoolingThresholdTemperature": "Thermostat/status/CoolingThresholdTemperature",
-      "setCoolingThresholdTemperature": "Thermostat/set/CoolingThresholdTemperature"
-    },
-    "payload": {
-    },
-    "config": {
-      "TemperatureDisplayUnits": 0
-    },
     "manufacturer": "Generic",
-    "serial": "912341"
+    "serial": "912341",
+    "services": [
+      {
+        "name": "Thermostat",
+        "service": "Thermostat",
+        "topic": {
+          "setTargetTemperature": "Thermostat/set/TargetTemperature",
+          "statusTargetTemperature": "Thermostat/status/TargetTemperature",
+          "setTargetHeatingCoolingState": "Thermostat/set/TargetHeatingCoolingState",
+          "statusTargetHeatingCoolingState": "Thermostat/status/TargetHeatingCoolingState",
+          "setCurrentHeatingCoolingState": "Thermostat/set/CurrentHeatingCoolingState",
+          "statusCurrentHeatingCoolingState": "Thermostat/status/CurrentHeatingCoolingState",
+          "statusCurrentTemperature": "Thermostat/status/CurrentTemperature",
+          "setCurrentRelativeHumidity": "Thermostat/set/CurrentRelativeHumidity",
+          "statusCurrentRelativeHumidity": "Thermostat/status/CurrentRelativeHumidity",
+          "statusTargetRelativeHumidity": "Thermostat/status/TargetRelativeHumidity",
+          "setTargetRelativeHumidity": "Thermostat/set/TargetRelativeHumidity",
+          "statusHeatingThresholdTemperature": "Thermostat/status/HeatingThresholdTemperature",
+          "setHeatingThresholdTemperature": "Thermostat/set/HeatingThresholdTemperature",
+          "statusCoolingThresholdTemperature": "Thermostat/status/CoolingThresholdTemperature",
+          "setCoolingThresholdTemperature": "Thermostat/set/CoolingThresholdTemperature"
+        },
+        "payload": {},
+        "config": {
+          "TemperatureDisplayUnits": 0
+        },
+        "props": {}
+      }
+    ]
   },
   "ThermostatSimple": {
-    "service": "Thermostat",
     "name": "ThermostatSimple",
-    "topic": {
-      "setTargetTemperature": "ThermostatSimple/set/TargetTemperature",
-      "statusTargetTemperature": "ThermostatSimple/status/TargetTemperature",
-      "setCurrentTemperature": "ThermostatSimple/set/CurrentTemperature",
-      "statusCurrentTemperature": "ThermostatSimple/status/CurrentTemperature"
-    },
     "manufacturer": "Generic",
-    "serial": "912343"
+    "serial": "912343",
+    "services": [
+      {
+        "name": "ThermostatSimple",
+        "service": "Thermostat",
+        "topic": {
+          "setTargetTemperature": "ThermostatSimple/set/TargetTemperature",
+          "statusTargetTemperature": "ThermostatSimple/status/TargetTemperature",
+          "setCurrentTemperature": "ThermostatSimple/set/CurrentTemperature",
+          "statusCurrentTemperature": "ThermostatSimple/status/CurrentTemperature"
+        },
+        "payload": {},
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Valve": {
     "name": "Valve",
-    "service": "Valve",
-    "topic": {
-      "setActive": "Valve/set",
-      "statusActive": "Valve/status",
-      "setDuration": "Valve/set/Duration",
-      "statusInUse": "Valve/status/InUse",
-      "statusRemainingDuration": "Valve/status/RemainingDuration",
-      "statusFault": "Valve/status/Fault"
-    },
-    "payload": {
-      "inUseTrue": 1,
-      "faultTrue": 1,
-      "activeTrue": 1,
-      "activeFalse": 0
-    }
+    "services": [
+      {
+        "name": "Valve",
+        "service": "Valve",
+        "topic": {
+          "setActive": "Valve/set",
+          "statusActive": "Valve/status",
+          "setDuration": "Valve/set/Duration",
+          "statusInUse": "Valve/status/InUse",
+          "statusRemainingDuration": "Valve/status/RemainingDuration",
+          "statusFault": "Valve/status/Fault"
+        },
+        "payload": {
+          "inUseTrue": 1,
+          "faultTrue": 1,
+          "activeTrue": 1,
+          "activeFalse": 0
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Window": {
-    "service": "Window",
     "name": "Window",
-    "topic": {
-      "setTargetPosition": "Window/set/TargetPosition",
-      "statusTargetPosition": "Window/status/TargetPosition",
-      "statusCurrentPosition": "Window/status/CurrentPosition",
-      "statusPositionState": "Window/status/PositionState",
-      "statusObstruction": "Window/status/Obstruction"
-    },
-    "payload": {
-      "onObstructionDetected": 1,
-      "positionStatusIncreasing": 1,
-      "positionStatusDecreasing": 2
-    }
+    "services": [
+      {
+        "name": "Window",
+        "service": "Window",
+        "topic": {
+          "setTargetPosition": "Window/set/TargetPosition",
+          "statusTargetPosition": "Window/status/TargetPosition",
+          "statusCurrentPosition": "Window/status/CurrentPosition",
+          "statusPositionState": "Window/status/PositionState",
+          "statusObstruction": "Window/status/Obstruction"
+        },
+        "payload": {
+          "onObstructionDetected": 1,
+          "positionStatusIncreasing": 1,
+          "positionStatusDecreasing": 2
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "WindowCovering": {
-    "service": "WindowCovering",
     "name": "WindowCovering",
-    "topic": {
-      "setTargetPosition": "WindowCovering/set/TargetPosition",
-      "statusTargetPosition": "WindowCovering/status/TargetPosition",
-      "statusCurrentPosition": "WindowCovering/status/CurrentPosition",
-      "statusPositionState": "WindowCovering/status/PositionState"
-    },
-    "payload": {
-      "targetPositionFactor": 0.01,
-      "currentPositionFactor": 0.01,
-      "positionStatusIncreasing": 1,
-      "positionStatusDecreasing": 2
-    },
     "serial": "1239431",
-    "model": "WindowCovering"
+    "model": "WindowCovering",
+    "services": [
+      {
+        "name": "WindowCovering",
+        "service": "WindowCovering",
+        "topic": {
+          "setTargetPosition": "WindowCovering/set/TargetPosition",
+          "statusTargetPosition": "WindowCovering/status/TargetPosition",
+          "statusCurrentPosition": "WindowCovering/status/CurrentPosition",
+          "statusPositionState": "WindowCovering/status/PositionState"
+        },
+        "payload": {
+          "targetPositionFactor": 0.01,
+          "currentPositionFactor": 0.01,
+          "positionStatusIncreasing": 1,
+          "positionStatusDecreasing": 2
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   }
 }
