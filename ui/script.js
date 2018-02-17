@@ -1,29 +1,44 @@
-/* global $, document, window, location */
+/* global $, document, window, location, template */
 
 let services = {};
 let config = {};
+let topics = [];
 
 $(document).ready(() => {
-    let topics = [];
+    const $selectService = $('#selectService');
+    const $dialogService = $('#dialogService');
+    const $dialogConfig = $('#dialogConfig');
+    const $dialogConfirmDel = $('#dialogConfirmDel');
+    const $next = $('#next');
+    const $addAcc = $('#addAcc');
+    const $stop = $('#stop');
+
+    const $service = $('#service');
+    const $id = $('#id');
+    const $name = $('#name');
+    const $nameAcc = $('#nameAcc');
+
+    const $idAcc = $('#idAcc');
+    const $idAccessory = $('#idAccessory');
+    const $indexService = $('#indexService');
+
+    const $serviceConfirm = $('#serviceConfirm');
+    const $nameConfirm = $('#nameConfirm');
+
+    const $configuration = $('#configuration');
+
     $.get('/topics', body => {
         topics = JSON.parse(body);
     });
 
-    function subGrid(subgrid_id, row_id) {
-        console.log(subgrid_id, row_id)
-        // we pass two parameters
-        // subgrid_id is a id of the div tag created within a table
-        // the row_id is the id of the row
-        // If we want to pass additional parameters to the url we can use
-        // the method getRowData(row_id) - which returns associative array in type name-value
-        // here we can easy construct the following
+    function subGrid(idSubgrid, idRow) {
         const data = [];
-        config[row_id].services.forEach((service, id) => {
-            data.push({id, name: service.name, service: service.service})
+        config[idRow].services.forEach((service, id) => {
+            data.push({id, name: service.name, service: service.service});
         });
-        const subgrid_table_id = 'subgrid_' + row_id + "_t";
-        $('[id="' + subgrid_id + '"]').html("<table id='" + subgrid_table_id + "' class='scroll'></table>");
-        $('[id="' + subgrid_table_id + '"]').jqGrid({
+        const idSubGridTable = 'subgrid_' + idRow + '_t';
+        $('[id="' + idSubgrid + '"]').html('<table id=\'' + idSubGridTable + '\' class=\'scroll\'></table>');
+        $('[id="' + idSubGridTable + '"]').jqGrid({
             cmTemplate: {autoResizable: true},
             autowidth: true,
             width: '100%',
@@ -35,8 +50,8 @@ $(document).ready(() => {
 
             colNames: ['Name', 'Service', ''],
             colModel: [
-                {name: "name", index: "name"},
-                {name: "service", index: "service"},
+                {name: 'name', index: 'name'},
+                {name: 'service', index: 'service'},
                 {
                     name: 'act',
                     template: 'actions',
@@ -49,33 +64,31 @@ $(document).ready(() => {
                 }
             ],
             actionsNavOptions: {
-                editServiceicon: "fa-pencil",
-                editServicetitle: "Edit Service",
-                deleteServiceicon: "fa-trash",
-                deleteServicetitle: "Delete Service",
+                editServiceicon: 'fa-pencil',
+                editServicetitle: 'Edit Service',
+                deleteServiceicon: 'fa-trash',
+                deleteServicetitle: 'Delete Service',
                 custom: [
                     {
-                        action: "editService",
-                        position: "first",
-                        onClick: function (options) {
-                            console.log('edit', row_id, options.rowid);
-                            edit(row_id, options.rowid);
-
-
+                        action: 'editService',
+                        position: 'first',
+                        onClick(options) {
+                            console.log('edit', idRow, options.rowid);
+                            edit(idRow, options.rowid);
                         }
                     },
                     {
-                        action: "deleteService",
-                        position: "first",
-                        onClick: function (options) {
-                            $idAccessory.val(row_id);
+                        action: 'deleteService',
+                        position: 'first',
+                        onClick(options) {
+                            $idAccessory.val(idRow);
                             $indexService.val(options.rowid);
-                            $('#accNameConfirm').html(config[row_id].name);
-                            $nameConfirm.val(config[row_id].services[options.rowid].name);
-                            $serviceConfirm.val(config[row_id].services[options.rowid].service);
+                            $('#accNameConfirm').html(config[idRow].name);
+                            $nameConfirm.val(config[idRow].services[options.rowid].name);
+                            $serviceConfirm.val(config[idRow].services[options.rowid].service);
                             $('#dialogConfirmDel').modal();
                         }
-                    },
+                    }
                 ]
             }
         });
@@ -102,7 +115,6 @@ $(document).ready(() => {
         subGrid: true,
 
         subGridRowExpanded: subGrid,
-
 
         colNames: ['id', 'name', 'services', ''],
         colModel: [
@@ -131,30 +143,32 @@ $(document).ready(() => {
             }
         ],
         actionsNavOptions: {
-            deleteAccessoryicon: "fa-trash",
-            deleteAccessorytitle: "Delete Accessory",
-            editAccessoryicon: "fa-pencil",
-            editAccessorytitle: "Edit Accessory",
-            addServiceicon: "fa-plus-square",
-            addServicetitle: "Add Service",
+            deleteAccessoryicon: 'fa-trash',
+            deleteAccessorytitle: 'Delete Accessory',
+            editAccessoryicon: 'fa-pencil',
+            editAccessorytitle: 'Edit Accessory',
+            addServiceicon: 'fa-plus-square',
+            addServicetitle: 'Add Service',
             custom: [
                 {
-                    action: "addService",
-                    position: "first",
-                    onClick: function (options) {
+                    action: 'addService',
+                    position: 'first',
+                    onClick(options) {
                         addService(options.rowid);
                     }
                 },
-                { action: "editAccessory", position: "first", onClick: function (options) { editAcc(options.rowid); } },
+                {action: 'editAccessory', position: 'first', onClick(options) {
+                    editAcc(options.rowid);
+                }},
                 {
-                    action: "deleteAccessory",
-                    position: "first",
-                    onClick: function (options) {
+                    action: 'deleteAccessory',
+                    position: 'first',
+                    onClick(options) {
                         $('#nameConfirmAcc').val(config[options.rowid].name);
                         $('#idConfirmAcc').val(options.rowid);
                         $('#dialogConfirmDelAcc').modal();
                     }
-                },
+                }
             ]
         },
 
@@ -163,17 +177,6 @@ $(document).ready(() => {
         rowNum: 10000,
         viewrecords: true,
         pager: true,
-
-        onSelectRow(id, status) {
-        //    if (status) {
-        //        $('#edit, #del').removeAttr('disabled');
-        //    } else {
-        //        $('#edit, #del').attr('disabled', true);
-        //    }
-        },
-        ondblClickRow(id) {
-            //edit(id);
-        },
 
         loadComplete() {
             $('#edit, #del').attr('disabled', true);
@@ -202,30 +205,6 @@ $(document).ready(() => {
     })
         .jqGrid('filterToolbar', {defaultSearch: 'cn', ignoreCase: true, searchOnEnter: false})
         .jqGrid('gridResize');
-
-    const $selectService = $('#selectService');
-    const $dialogService = $('#dialogService');
-    const $dialogConfig = $('#dialogConfig');
-    const $dialogConfirmDel = $('#dialogConfirmDel');
-    const $next = $('#next');
-    const $addAcc = $('#addAcc');
-    const $edit = $('#edit');
-    const $stop = $('#stop');
-
-    const $service = $('#service');
-    const $id = $('#id');
-    const $name = $('#name');
-    const $nameAcc = $('#nameAcc');
-
-    const $idAcc = $('#idAcc');
-    const $idAccessory = $('#idAccessory');
-    const $indexService = $('#indexService');
-
-    const $serviceConfirm = $('#serviceConfirm');
-    const $idConfirm = $('#idConfirm');
-    const $nameConfirm = $('#nameConfirm');
-
-    const $configuration = $('#configuration');
 
     $.get('/config', body => {
         config = JSON.parse(body);
@@ -393,10 +372,14 @@ $(document).ready(() => {
                 delete config[id].manufacturer;
             }
 
-
             $('#dialogAccessory').modal('hide');
 
-            if (!$idAcc.attr('disabled')) {
+            if ($idAcc.attr('disabled')) {
+                // Existing Accessory
+                $gridServices.jqGrid('setRowData', id, {
+                    name: config[id].name
+                });
+            } else {
                 // New Accessory
                 $gridServices.jqGrid('addRowData', id, {
                     id,
@@ -407,12 +390,6 @@ $(document).ready(() => {
                 $gridServices.trigger('reloadGrid').jqGrid('sortGrid', 'name', true, 'asc');
                 $gridServices.jqGrid('setSelection', id, true);
                 $('#gridServices [id="' + id + '"]').focus();
-            } else {
-                // Existing Accessory
-                $gridServices.jqGrid('setRowData', id, {
-                    name: config[id].name
-                });
-
             }
 
             $.ajax({
@@ -426,7 +403,6 @@ $(document).ready(() => {
 
     $('#save').click(() => {
         if (validate()) {
-            const id = $.trim($id.val());
             const service = $service.val();
             const result = {
                 name: $.trim($name.val()),
@@ -519,14 +495,6 @@ $(document).ready(() => {
         }
     });
 
-    function confirmDel(id) {
-        const s = config[id];
-        $idConfirm.val(id);
-        $serviceConfirm.val(s.service);
-        $nameConfirm.val(s.name);
-        $dialogConfirmDel.modal();
-    }
-
     function editAcc(id) {
         $idAcc.attr('disabled', true);
         $idAcc.val(id);
@@ -542,7 +510,7 @@ $(document).ready(() => {
         $indexService.val(id);
         $idAccessory.val(acc);
         const s = config[acc].services[id];
-        console.log(s)
+        console.log(s);
         createServiceForm(s.service);
 
         $id.attr('disabled', true);
@@ -650,10 +618,9 @@ $(document).ready(() => {
         if (name) {
             $name.removeClass('is-invalid');
             return true;
-        } else {
-            $name.addClass('is-invalid');
-            return false;
         }
+        $name.addClass('is-invalid');
+        return false;
     }
 
     function createServiceForm(service) {

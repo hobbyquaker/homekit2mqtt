@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 const template = {
     Lightbulb: {
         'hue2mqtt extended color light': {
