@@ -15,6 +15,9 @@ HomeKit to MQTT bridge 🏡📱
 This project follows the [mqtt-smarthome architecture](https://github.com/mqtt-smarthome).
 I'm using this to control a multitude of MQTT-connected "Things" in my home automation through Siri and with HomeKit apps.
 
+See changes history in [CHANGELOG.md](CHANGELOG.md)
+
+
 ## Installation
 
 **Prerequisites:** 
@@ -27,33 +30,60 @@ I'm using this to control a multitude of MQTT-connected "Things" in my home auto
 
 `sudo npm install -g homekit2mqtt --unsafe-perm`   
 
+I suggest to use [pm2](http://pm2.keymetrics.io/) to manage the homekit2mqtt process (start on system boot, manage log 
+files, ...)
+
+
 ## Command Line Options
 
 <pre>
 Usage: homekit2mqtt [options]
 
 Options:
-  -v, --verbosity    possible values: "error", "warn", "info", "debug"
+  -v, --verbosity       possible values: "error", "warn", "info", "debug"
                                                                [default: "info"]
-  -m, --mapfile      JSON file containing HomeKit Services to MQTT mapping
-                     definitions. See Readme.                          [default:
-         "/Users/basti/WebstormProjects/homekit2mqtt/example-homekit2mqtt.json"]
-  -n, --name         instance name. used as mqtt client id and as prefix for
-                     connected topic                        [default: "homekit"]
-  -u, --url          mqtt broker url. See
-                     https://github.com/mqttjs/MQTT.js/wiki/mqtt
-                                                   [default: "mqtt://127.0.0.1"]
-  -s, --storagedir   directory to store homekit data
-  -p, --port         port homekit2mqtt is listening on          [default: 51826]
-  -w, --web-port     port webserver is listening on             [default: 51888]
-  -x, --disable-web  disable webserver
-  -h, --help         Show help                                         [boolean]
-  --version          Show version number                               [boolean]
+  -m, --mapfile         JSON file containing HomeKit Services to MQTT mapping
+                        definitions. See Readme.                       [default: 
+                                                    "example-homekit2mqtt.json"]
+  -n, --name            instance name. used as prefix for connected topic
+                                                            [default: "homekit"]
+  -u, --url             mqtt broker url.           [default: "mqtt://127.0.0.1"]
+  -s, --storagedir      directory to store homekit data
+  -p, --port            port homekit2mqtt is listening on       [default: 51826]
+  -w, --web-port        port webserver is listening on          [default: 51888]
+  -x, --disable-web     disable webserver
+  --disable-json-parse  disable json parsing of received mqtt payloads [boolean]
+  -h, --help            Show help                                      [boolean]
+  --version             Show version number                            [boolean]
   -c, --pincode                                          [default: "031-45-154"]
   -a, --username                                  [default: "CC:22:3D:E3:CE:F6"]
   -b, --bridgename                                      [default: "MQTT Bridge"]
-                                                                 
+                                                             
 </pre>
+
+#### Persisted Data
+
+I strongly advice you to set the `--storagedir` and `--mapfile` option to a directory outside of the homekit2mqtt 
+folder, otherwise an update of homekit2mqtt could overwrite your config.
+
+#### MQTT Authentication and TLS
+
+You can put credentials for authentication in the url supplied to the `--url` option: `mqtt://user:password@broker`. If
+you want to use TLS for the connection to the broker use `mqtts://` as URL scheme, e.g. `mqtts://broker:8883`.
+
+#### MQTT Payload parsing
+
+By default homekit2mqtt parses incoming JSON payloads and tries to use the attribute `val` (following 
+[mqtt-smarthome payload convention](https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/Architecture.md). For
+a future release it is planned that this attribute will be configurable 
+(see https://github.com/hobbyquaker/homekit2mqtt/issues/67).
+
+If you set the `--disable-json-parse` option there will be no JSON parsing at all and homekit2mqtt just hands the 
+incoming JSON through as string.
+
+Plain (non-JSON) payloads containing the the strings `true` or `false` are casted to boolean. Strings containing numbers
+are casted to numbers with parseFloat().
+
 
 ## Configuration
 

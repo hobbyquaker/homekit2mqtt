@@ -125,5 +125,3 @@
   * payload option naming
   * add mqtt-smarthome badge
   * test ContactSensor StatusActive, StatusFault, StatusTampered
-  * hide homekit2mqtt stdout
-  * xo conf
