@@ -401,6 +401,8 @@ if (config.disableWeb) {
     app.get('/quit', (req, res) => {
         log.info('http < quit');
         res.send('ok');
-        process.exit(0);
+        setTimeout(() => {
+            process.exit(0);
+        }, 250);
     });
 }
