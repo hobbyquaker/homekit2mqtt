@@ -47,6 +47,7 @@
   },
   "devDependencies": {
     "camo-purge": "latest",
+    "changelog": "^1.4.2",
     "coveralls": "latest",
     "debug": "^3.0.1",
     "hap-client-cli": "latest",
