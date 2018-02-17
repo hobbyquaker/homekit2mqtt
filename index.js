@@ -81,6 +81,10 @@ function typeGuess(payload) {
 // Not meant to be used with wildcards!
 function mqttSub(topic, callback) {
     topic = String(topic);
+    if (topic === '') {
+        log.error('trying to subscribe empty topic');
+        return;
+    }
     /* istanbul ignore else */
     if (typeof callback === 'function') {
         /* istanbul ignore if */
