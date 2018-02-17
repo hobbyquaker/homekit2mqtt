@@ -28,7 +28,7 @@ Object.keys(services).forEach(s => {
         if (p.optional) {
             output += ' (optional';
         }
-        if (p.default) {
+        if (typeof p.default !== 'undefined') {
             output += ', default: `' + p.default + '`)';
         } else if (p.optional) {
             output += ')';
