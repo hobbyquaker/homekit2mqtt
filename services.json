@@ -15,7 +15,6 @@
     "topic": [
       {"name": "statusCarbonDioxideDetected"},
       {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true},
       {"name": "statusTampered", "optional": true},
       {"name": "statusActive", "optional": true},
       {"name": "statusFault", "optional": true}
@@ -23,7 +22,6 @@
     "payload": [
       {"name": "onCarbonDioxideDetected"},
       {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true},
       {"name": "onTampered", "optional": true},
       {"name": "onActive", "optional": true},
       {"name": "onFault", "optional": true}
@@ -32,20 +30,17 @@
   "CarbonMonoxideSensor": {
     "topic": [
       {"name": "statusCarbonMonoxideDetected"},
-      {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusLowBattery", "optional": true}
     ],
     "payload": [
       {"name": "onCarbonMonoxideDetected"},
-      {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "onLowBattery", "optional": true}
     ]
   },
   "ContactSensor": {
     "topic": [
       {"name": "statusContactSensorState"},
       {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true},
       {"name": "statusTampered", "optional": true},
       {"name": "statusActive", "optional": true},
       {"name": "statusFault", "optional": true}
@@ -53,7 +48,6 @@
     "payload": [
       {"name": "onContactDetected"},
       {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true},
       {"name": "onTampered", "optional": true},
       {"name": "onActive", "optional": true},
       {"name": "onFault", "optional": true}
@@ -65,25 +59,22 @@
       {"name": "statusTargetPosition", "optional": true},
       {"name": "statusCurrentPosition", "optional": true},
       {"name": "statusPositionState", "optional": true},
-      {"name": "statusObstruction", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusObstruction", "optional": true}
     ],
     "payload": [
       {"name": "targetPositionFactor", "type": "Number", "optional": true},
       {"name": "currentPositionFactor", "type": "Number", "optional": true},
       {"name": "positionStatusDecreasing", "optional": true},
       {"name": "positionStatusIncreasing", "optional": true},
-      {"name": "onObstructionDetected", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "onObstructionDetected", "optional": true}
     ]
   },
   "Doorbell": {
     "topic": [
-      {"name": "statusEvent"},
-      {"name": "identify", "optional": true}
+      {"name": "statusEvent"}
     ],
     "payload": [
-      {"name": "identify", "optional": true}
+      
     ]
   },
   "Fan": {
@@ -93,16 +84,14 @@
       {"name": "setRotationDirection", "optional": true},
       {"name": "statusRotationDirection", "optional": true},
       {"name": "setRotationSpeed", "optional": true},
-      {"name": "statusRotationSpeed", "optional": true},
-      {"name": "identify", "optional": true, "optional": true}
+      {"name": "statusRotationSpeed", "optional": true}
     ],
     "payload": [
       {"name": "onTrue", "optional": true, "default": true},
       {"name": "onFalse", "optional": true, "default": false},
       {"name": "rotationDirectionCounterClockwise", "optional": true, "default": 1},
       {"name": "rotationDirectionClockwise", "optional": true, "default": 0},
-      {"name": "rotationSpeedFactor", "type": "Number", "optional": true, "default": 1},
-      {"name": "identify", "optional": true, "optional": true}
+      {"name": "rotationSpeedFactor", "type": "Number", "optional": true, "default": 1}
     ]
   },
   "Faucet": {
@@ -123,8 +112,7 @@
       {"name": "statusDoor", "optional": true},
       {"name": "statusObstruction", "optional": true},
       {"name": "setLock", "optional": true},
-      {"name": "statusLock", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusLock", "optional": true}
     ],
     "payload": [
       {"name": "doorOpen"},
@@ -134,19 +122,16 @@
       {"name": "doorStopped", "optional": true},
       {"name": "onObstructionDetected", "optional": true},
       {"name": "lockUnsecured", "optional": true},
-      {"name": "lockSecured", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "lockSecured", "optional": true}
     ]
   },
   "HumiditySensor": {
     "topic": [
       {"name": "statusHumidity"},
-      {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusLowBattery", "optional": true}
     ],
     "payload": [
-      {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "onLowBattery", "optional": true}
     ]
   },
   "IrrigationSystem": {
@@ -168,13 +153,11 @@
   "LeakSensor": {
     "topic": [
       {"name": "statusLeakDetected"},
-      {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusLowBattery", "optional": true}
     ],
     "payload": [
       {"name": "onLeakDetected"},
-      {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "onLowBattery", "optional": true}
     ]
   },
   "Lightbulb": {
@@ -188,39 +171,33 @@
       {"name": "setSaturation", "optional": true},
       {"name": "statusSaturation", "optional": true},
       {"name": "setColorTemperature", "optional": true},
-      {"name": "statusColorTemperature", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusColorTemperature", "optional": true}
     ],
     "payload": [
       {"name": "onTrue"},
       {"name": "onFalse"},
       {"name": "brightnessFactor", "type": "Number", "optional": true, "default": 1},
       {"name": "hueFactor", "type": "Number", "optional": true, "default": 1},
-      {"name": "saturationFactor", "type": "Number", "optional": true, "default": 1},
-      {"name": "identify", "optional": true}
+      {"name": "saturationFactor", "type": "Number", "optional": true, "default": 1}
     ]
   },
   "LightSensor": {
     "topic": [
       {"name": "statusAmbientLightLevel"},
-      {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusLowBattery", "optional": true}
     ],
     "payload": [
       {"name": "ambientLightLevelFactor", "optional": true, "default": 1},
-      {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "onLowBattery", "optional": true}
     ]
   },
   "LockMechanism": {
     "topic": [
       {"name": "setLock"},
-      {"name": "statusLock", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusLock", "optional": true}
     ],
     "payload": [
-      {"name": "lockSecured"},
-      {"name": "identify", "optional": true}
+      {"name": "lockSecured"}
     ]
   },
   "Microphone": {
@@ -228,62 +205,53 @@
       {"name": "setMute"},
       {"name": "statusMute", "optional": true},
       {"name": "setVolume", "optional": true},
-      {"name": "statusVolume", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusVolume", "optional": true}
     ],
     "payload": [
       {"name": "muteTrue"},
       {"name": "muteFalse"},
-      {"name": "volumeFactor", "type": "Number", "optional": true, "default": 1},
-      {"name": "identify", "optional": true, "optional": true}
+      {"name": "volumeFactor", "type": "Number", "optional": true, "default": 1}
     ]
   },
   "MotionSensor": {
     "topic": [
       {"name": "statusMotionDetected"},
-      {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusLowBattery", "optional": true}
     ],
     "payload": [
       {"name": "onMotionDetected"},
-      {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "onLowBattery", "optional": true}
     ]
   },
   "OccupancySensor": {
     "topic": [
       {"name": "statusOccupancyDetected"},
-      {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusLowBattery", "optional": true}
     ],
     "payload": [
       {"name": "onOccupancyDetected"},
-      {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "onLowBattery", "optional": true}
     ]
   },
   "Outlet": {
     "topic": [
       {"name": "setOn"},
       {"name": "statusOn", "optional": true},
-      {"name": "statusOutletInUse"},
-      {"name": "identify", "optional": true}
+      {"name": "statusOutletInUse"}
     ],
     "payload": [
       {"name": "onFalse"},
       {"name": "onTrue"},
-      {"name": "onOutletInUse"},
-      {"name": "identify", "optional": true}
+      {"name": "onOutletInUse"}
     ]
   },
   "SecuritySystem": {
     "topic": [
       {"name": "setSecuritySystemTargetState"},
-      {"name": "statusSecuritySystemCurrentState", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusSecuritySystemCurrentState", "optional": true}
     ],
     "payload": [
-      {"name": "identify", "optional": true}
+      
     ]
   },
   "Slat": {
@@ -303,13 +271,11 @@
   "SmokeSensor": {
     "topic": [
       {"name": "statusSmokeDetected"},
-      {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusLowBattery", "optional": true}
     ],
     "payload": [
       {"name": "onSmokeDetected"},
-      {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "onLowBattery", "optional": true}
     ]
   },
   "Speaker": {
@@ -317,42 +283,36 @@
       {"name": "setMute"},
       {"name": "statusMute", "optional": true},
       {"name": "setVolume", "optional": true},
-      {"name": "statusVolume", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusVolume", "optional": true}
     ],
     "payload": [
       {"name": "muteTrue"},
       {"name": "muteFalse"},
-      {"name": "volumeFactor", "type": "Number", "default": 1},
-      {"name": "identify", "optional": true}
+      {"name": "volumeFactor", "type": "Number", "default": 1}
     ]
   },
   "StatelessProgrammableSwitch": {
     "topic": [
-      {"name": "statusEvent"},
-      {"name": "identify", "optional": true}
+      {"name": "statusEvent"}
     ],
     "payload": [
-      {"name": "identify", "optional": true}
+      
     ]
   },
   "Switch": {
     "topic": [
       {"name": "setOn"},
-      {"name": "statusOn", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusOn", "optional": true}
     ],
     "payload": [
       {"name": "onFalse"},
-      {"name": "onTrue"},
-      {"name": "identify", "optional": true}
+      {"name": "onTrue"}
     ]
   },
   "TemperatureSensor": {
     "topic": [
       {"name": "statusTemperature"},
-      {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusLowBattery", "optional": true}
     ],
     "payload": [
       {
@@ -361,8 +321,7 @@
         "desc": "Set to true if your sensor publishes values in degree fahrenheit",
         "default": false
       },
-      {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "onLowBattery", "optional": true}
     ],
     "props": [
       {"name": "CurrentTemperature", "minValue": -100, "maxValue": 100}
@@ -382,11 +341,10 @@
       {"name": "setCoolingThresholdTemperature", "optional": true},
       {"name": "statusCoolingThresholdTemperature", "optional": true},
       {"name": "setHeatingThresholdTemperature", "optional": true},
-      {"name": "statusHeatingThresholdTemperature", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusHeatingThresholdTemperature", "optional": true}
     ],
     "payload": [
-      {"name": "identify", "optional": true}
+      
     ],
     "config": [
       {"name": "TemperatureDisplayUnits", "enum": ["CELSIUS", "FAHRENHEIT"]}
@@ -421,16 +379,14 @@
       {"name": "statusTargetPosition", "optional": true},
       {"name": "statusCurrentPosition", "optional": true},
       {"name": "statusPositionState", "optional": true},
-      {"name": "statusObstruction", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusObstruction", "optional": true}
     ],
     "payload": [
       {"name": "targetPositionFactor", "type": "Number", "optional": true, "default": 1},
       {"name": "currentPositionFactor", "type": "Number", "optional": true, "default": 1},
       {"name": "positionStatusDecreasing", "optional": true},
       {"name": "positionStatusIncreasing", "optional": true},
-      {"name": "onObstructionDetected", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "onObstructionDetected", "optional": true}
     ]
   },
   "WindowCovering": {
@@ -438,15 +394,13 @@
       {"name": "setTargetPosition"},
       {"name": "statusTargetPosition", "optional": true},
       {"name": "statusCurrentPosition", "optional": true},
-      {"name": "statusPositionState", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusPositionState", "optional": true}
     ],
     "payload": [
       {"name": "targetPositionFactor", "type": "Number", "optional": true, "default": 1},
       {"name": "currentPositionFactor", "type": "Number", "optional": true, "default": 1},
       {"name": "positionStatusDecreasing", "optional": true},
-      {"name": "positionStatusIncreasing", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "positionStatusIncreasing", "optional": true}
     ]
   }
 }
