@@ -34,29 +34,35 @@ module.exports = function (iface) {
             });
             */
 
-        mqttSub(settings.topic.statusBatteryLevel, val => {
-            if (settings.config && (typeof settings.payload.maxBatteryLevel !== 'undefined')) {
-                const max = settings.payload.maxBatteryLevel;
-                const min = settings.payload.minBatteryLevel || 0;
-                const range = max - min;
-                val = ((val - min) / range) * 100;
-            }
-            log.debug('> hap update', settings.name, 'BatteryLevel', val);
-            acc.getService(Service.BatteryService)
-                .updateCharacteristic(Characteristic.BatteryLevel, val);
-        });
+        if (settings.topic.statusBatteryLevel) {
+            mqttSub(settings.topic.statusBatteryLevel, val => {
+                if (settings.config && (typeof settings.payload.maxBatteryLevel !== 'undefined')) {
+                    const max = settings.payload.maxBatteryLevel;
+                    const min = settings.payload.minBatteryLevel || 0;
+                    const range = max - min;
+                    val = ((val - min) / range) * 100;
+                }
+                log.debug('> hap update', settings.name, 'BatteryLevel', val);
+                acc.getService(Service.BatteryService)
+                    .updateCharacteristic(Characteristic.BatteryLevel, val);
+            });
+        }
 
-        mqttSub(settings.topic.statusChargingState, val => {
-            log.debug('> hap update', settings.name, 'ChargingState', val);
-            acc.getService(Service.BatteryService)
-                .updateCharacteristic(Characteristic.ChargingState, val);
-        });
+        if (settings.topic.statusChargingState) {
+            mqttSub(settings.topic.statusChargingState, val => {
+                log.debug('> hap update', settings.name, 'ChargingState', val);
+                acc.getService(Service.BatteryService)
+                    .updateCharacteristic(Characteristic.ChargingState, val);
+            });
+        }
 
-        mqttSub(settings.topic.statusLowBattery, val => {
-            val = (val === settings.payload.onLowBattery) ? 1 : 0;
-            log.debug('> hap update', settings.name, 'StatusLowBattery', val);
-            acc.getService(Service.BatteryService)
-                .updateCharacteristic(Characteristic.StatusLowBattery, val);
-        });
+        if (settings.topic.statusLowBattery) {
+            mqttSub(settings.topic.statusLowBattery, val => {
+                val = (val === settings.payload.onLowBattery) ? 1 : 0;
+                log.debug('> hap update', settings.name, 'StatusLowBattery', val);
+                acc.getService(Service.BatteryService)
+                    .updateCharacteristic(Characteristic.StatusLowBattery, val);
+            });
+        }
     };
 };
