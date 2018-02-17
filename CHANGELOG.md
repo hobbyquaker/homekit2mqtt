@@ -127,4 +127,3 @@
   * test ContactSensor StatusActive, StatusFault, StatusTampered
   * hide homekit2mqtt stdout
   * xo conf
-  * fix test termination
