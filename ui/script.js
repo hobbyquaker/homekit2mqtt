@@ -137,7 +137,7 @@ $(document).ready(() => {
                     editbutton: false,
                     delbutton: false
                 },
-                width: 72,
+                width: 82,
                 align: 'right'
 
             }
