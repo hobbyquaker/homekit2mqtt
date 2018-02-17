@@ -97,7 +97,7 @@ topic
 payload
 
 * onLowBattery
-* minBatteryLevel (optional)
+* minBatteryLevel (optional, default: `0`)
 * maxBatteryLevel (optional, default: `100`)
 
 
@@ -206,9 +206,9 @@ topic
 payload
 
 * onTrue (optional, default: `true`)
-* onFalse (optional)
+* onFalse (optional, default: `false`)
 * rotationDirectionCounterClockwise (optional, default: `1`)
-* rotationDirectionClockwise (optional)
+* rotationDirectionClockwise (optional, default: `0`)
 * rotationSpeedFactor (optional, default: `1`)
 * identify (optional)
 
@@ -224,7 +224,7 @@ topic
 payload
 
 * activeTrue (optional, default: `true`)
-* activeFalse (optional)
+* activeFalse (optional, default: `false`)
 * faultTrue (optional, default: `true`)
 
 
@@ -280,7 +280,7 @@ topic
 payload
 
 * activeTrue (optional, default: `true`)
-* activeFalse (optional)
+* activeFalse (optional, default: `false`)
 * faultTrue (optional, default: `true`)
 * inUseTrue (optional, default: `true`)
 
@@ -526,7 +526,7 @@ topic
 
 payload
 
-* fahrenheit    
+* fahrenheit, default: `false`)    
   Set to true if your sensor publishes values in degree fahrenheit
 * onLowBattery (optional)
 * identify (optional)
@@ -578,7 +578,7 @@ topic
 payload
 
 * activeTrue (optional, default: `true`)
-* activeFalse (optional)
+* activeFalse (optional, default: `false`)
 * faultTrue (optional, default: `true`)
 * inUseTrue (optional, default: `true`)
 
