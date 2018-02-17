@@ -5,3 +5,4 @@ coverage
 .travis.yml
 test
 config
+docs
