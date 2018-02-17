@@ -10,8 +10,6 @@ $(document).ready(() => {
     const $dialogConfig = $('#dialogConfig');
     const $dialogConfirmDel = $('#dialogConfirmDel');
     const $next = $('#next');
-    const $addAcc = $('#addAcc');
-    const $stop = $('#stop');
 
     const $service = $('#service');
     const $id = $('#id');
@@ -211,6 +209,9 @@ $(document).ready(() => {
         loadConfig();
     });
 
+    const $addAcc = $('#addAcc');
+    const $stop = $('#stop');
+
     function loadConfig() {
         Object.keys(config).forEach(id => {
             $gridServices.jqGrid('addRowData', id, {
@@ -336,6 +337,7 @@ $(document).ready(() => {
     });
 
     $stop.click(() => {
+        alert('stop')
         $.get('/quit');
         setTimeout(() => {
             location.reload();
