@@ -337,7 +337,6 @@ $(document).ready(() => {
     });
 
     $stop.click(() => {
-        alert('stop')
         $.get('/quit');
         setTimeout(() => {
             location.reload();
