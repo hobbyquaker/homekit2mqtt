@@ -212,12 +212,20 @@ $(document).ready(() => {
     const $addAcc = $('#addAcc');
     const $stop = $('#stop');
 
+    function numServices(id) {
+        const list = [];
+        config[id].services.forEach(s => {
+            list.push(s.service);
+        });
+        return list.length + ': ' + list.join(', ');
+    }
+
     function loadConfig() {
         Object.keys(config).forEach(id => {
             $gridServices.jqGrid('addRowData', id, {
                 id,
                 name: config[id].name,
-                numServices: config[id].services.length
+                numServices: numServices(id)
             });
         });
         $gridServices.jqGrid('sortGrid', 'name', true, 'asc');
@@ -324,7 +332,7 @@ $(document).ready(() => {
         $gridServices.jqGrid('collapseSubGridRow', idAcc);
         $gridServices.jqGrid('expandSubGridRow', idAcc);
         $gridServices.jqGrid('setRowData', idAcc, {
-            numServices: config[idAcc].services.length
+            numServices: numServices(idAcc)
         });
 
         $.ajax({
@@ -489,7 +497,7 @@ $(document).ready(() => {
             $gridServices.jqGrid('expandSubGridRow', idAcc);
 
             $gridServices.jqGrid('setRowData', idAcc, {
-                numServices: config[idAcc].services.length
+                numServices: numServices(idAcc)
             });
 
             $dialogConfig.modal('hide');
@@ -529,7 +537,16 @@ $(document).ready(() => {
 
         if (s.payload) {
             Object.keys(s.payload).forEach(payload => {
-                switch (typeof s.payload[payload]) {
+                let type;
+                if (services[s.service] && services[s.service].payload) {
+                    services[s.service].payload.forEach(pconf => {
+                        if (pconf.name === payload && typeof pconf.type !== 'undefined') {
+                            type = pconf.type.toLowerCase();
+                        }
+                    });
+                }
+                type = type || typeof s.payload[payload];
+                switch (type) {
                     case 'boolean':
                         $('#payload-boolean-' + payload).val(String(Boolean(s.payload[payload])));
                         $('#payload-type-' + payload).val('Boolean').trigger('change');
@@ -537,7 +554,6 @@ $(document).ready(() => {
                     case 'number':
                         $('#payload-number-' + payload).val(s.payload[payload]);
                         $('#payload-type-' + payload).val('Number').trigger('change');
-
                         break;
                     default:
                         $('#payload-string-' + payload).val(s.payload[payload]);
@@ -733,10 +749,10 @@ $(document).ready(() => {
         const html = `<div class="input-group">
       <span class="input-group-addon">
         <select id="payload-type-${p.name}" data-payload="${p.name}" class="payload-type form-control" ${p.type ? 'disabled' : ''}>
-          <option>Undefined</option>
-          <option ${p.type === 'Number' ? 'selected' : ''}>Number</option>
-          <option ${p.type === 'Boolean' ? 'selected' : ''}>Boolean</option>
-          <option ${p.type === 'String' ? 'selected' : ''}>String</option>
+          <option value="undefined">Undefined</option>
+          <option value="Number" ${p.type === 'Number' ? 'selected' : ''}>Number</option>
+          <option value="Boolean" ${p.type === 'Boolean' ? 'selected' : ''}>Boolean</option>
+          <option value="String" ${p.type === 'String' ? 'selected' : ''}>String</option>
         </select>
       </span>
       <input id="payload-undefined-${p.name}" data-payload="${p.name}" type="string" class="form-control payload Undefined" disabled>
