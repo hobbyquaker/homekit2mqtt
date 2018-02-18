@@ -74,14 +74,14 @@ you want to use TLS for the connection to the broker use `mqtts://` as URL schem
 #### MQTT Payload parsing
 
 By default homekit2mqtt parses incoming JSON payloads and tries to use the attribute `val` (following 
-[mqtt-smarthome payload convention](https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/Architecture.md). For
+[mqtt-smarthome payload convention](https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/Architecture.md)). For
 a future release it is planned that this attribute will be configurable 
 (see https://github.com/hobbyquaker/homekit2mqtt/issues/67).
 
 If you set the `--disable-json-parse` option there will be no JSON parsing at all and homekit2mqtt just hands the 
 incoming JSON through as string.
 
-Plain (non-JSON) payloads containing the the strings `true` or `false` are casted to boolean. Strings containing numbers
+Plain (non-JSON) payloads containing the strings `true` or `false` are casted to boolean. Strings containing numbers
 are casted to numbers with parseFloat().
 
 

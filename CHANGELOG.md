@@ -1,3 +1,16 @@
+0.9.2 / 2018-02-18
+==================
+
+  * implement identify (closes [#83](https://github.com/hobbyquaker/homekit2mqtt/issues/83))
+  * send empty string for undefined payloads
+  * add command line option --insecure (closes [#85](https://github.com/hobbyquaker/homekit2mqtt/issues/85))
+  * improve documentation
+  * changelog
+  * exclude docs
+  * prepare identify config ([#83](https://github.com/hobbyquaker/homekit2mqtt/issues/83))
+  * fix type selector
+  * new config schema
+
 0.9.1 / 2018-02-17
 ==================
 
@@ -122,6 +135,3 @@
 
   * ContactSensor StatusActive, StatusFault, StatusTampered
   * statusActive bool
-  * payload option naming
-  * add mqtt-smarthome badge
-  * test ContactSensor StatusActive, StatusFault, StatusTampered
