@@ -35,14 +35,14 @@ span.fa {
     z-index: 10000;
 }
 
-input.payload {
+input.payload, input.payloadIdentify {
     margin-left: 16px !important;
     border-top-right-radius: 4px !important;
     border-bottom-right-radius: 4px !important;
 
 }
 
-select.payload {
+select.payload, select.payloadIdentify {
     margin-left: 16px !important;
     border-top-left-radius: 0px !important;
     border-bottom-left-radius: 0px !important;

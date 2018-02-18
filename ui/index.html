@@ -115,21 +115,37 @@
                             <input type="text" class="form-control" id="nameAcc">
                         </div>
                     </div>
-                    <!-- TODO payload type select
+
                     <h4>Identify</h4>
                     <div class="form-group row">
                         <label for="manufacturer" class="col-sm-4 col-form-label">Topic</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="identifyTopic">
+                            <input class="form-control" id="topicIdentify">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="model" class="col-sm-4 col-form-label">Payload</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="identifyPayload">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <select id="payloadIdentify-type" class="payload-type form-control">
+                                        <option value="String">String</option>
+                                        <option value="Number">Number</option>
+                                        <option value="Boolean">Boolean</option>
+                                        <option value="undefined">Undefined</option>
+                                     </select>
+                                </span>
+                                <input id="payloadIdentify-undefined" class="form-control payloadIdentify Undefined" disabled>
+                                <input id="payloadIdentify-number" type="number" class="form-control payloadIdentify Number">
+                                <input id="payloadIdentify-string" class="form-control payloadIdentify String">
+                                <select id="payloadIdentify-boolean" class="form-control payloadIdentify Boolean">
+                                    <option value="false">False</option>
+                                    <option value="true">True</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    -->
+
                     <h4>AccessoryInformation</h4>
                     <div class="form-group row">
                         <label for="manufacturer" class="col-sm-4 col-form-label">Manufacturer</label>

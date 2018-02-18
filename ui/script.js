@@ -299,7 +299,6 @@ $(document).ready(() => {
             });
             Object.keys(tpl.payload).forEach(p => {
                 const val = tpl.payload[p];
-                console.log(p, val, typeof val);
                 switch (typeof val) {
                     case 'number':
                         $('#payload-type-' + p).val('Number').trigger('change');
@@ -327,7 +326,6 @@ $(document).ready(() => {
     $('#delete').click(() => {
         const idAcc = $idAccessory.val();
         const indexService = parseInt($indexService.val(), 10);
-        console.log('delete', idAcc, indexService);
         config[idAcc].services.splice(indexService, 1);
         $gridServices.jqGrid('collapseSubGridRow', idAcc);
         $gridServices.jqGrid('expandSubGridRow', idAcc);
@@ -359,8 +357,23 @@ $(document).ready(() => {
                 name: $.trim($nameAcc.val()),
                 manufacturer: $.trim($('#manufacturer').val()),
                 model: $.trim($('#model').val()),
-                serial: $.trim($('#serial').val())
+                serial: $.trim($('#serial').val()),
+                topicIdentify: $('#topicIdentify').val()
             };
+
+            switch ($('#payloadIdentify-type').val()) {
+                case 'Boolean':
+                    result.payloadIdentify = $('#payloadIdentify-boolean').val() === 'true';
+                    break;
+                case 'String':
+                    result.payloadIdentify = $('#payloadIdentify-string').val();
+                    break;
+                case 'Number':
+                    result.payloadIdentify = parseFloat($('#payloadIdentify-number').val());
+                    break;
+                default:
+                    delete config[id].payloadIdentify;
+            }
 
             if (!config[id]) {
                 config[id] = {};
@@ -379,6 +392,9 @@ $(document).ready(() => {
             }
             if (config[id].manufacturer === '') {
                 delete config[id].manufacturer;
+            }
+            if (config[id].topicIdentify === '') {
+                delete config[id].topicIdentify;
             }
 
             $('#dialogAccessory').modal('hide');
@@ -504,10 +520,43 @@ $(document).ready(() => {
         }
     });
 
+    $('#payloadIdentify-type').change(function () {
+        $('.payloadIdentify').hide();
+        $('.payloadIdentify.' + $(this).val()).show();
+    });
+
     function editAcc(id) {
         $idAcc.attr('disabled', true);
         $idAcc.val(id);
         $nameAcc.val(config[id].name);
+        $('#topicIdentify').val(config[id].topicIdentify || '');
+
+        $('#payloadIdentify-boolean').val('false');
+        $('#payloadIdentify-number').val('');
+        $('#payloadIdentify-string').val('');
+
+        switch (typeof config[id].payloadIdentify) {
+            case 'boolean':
+                $('#payloadIdentify-type').val('Boolean').trigger('change');
+                if (config[id].payloadIdentify) {
+                    $('#payloadIdentify-boolean').val('true');
+                } else {
+                    $('#payloadIdentify-boolean').val('false');
+                }
+                break;
+            case 'number':
+                $('#payloadIdentify-type').val('Number').trigger('change');
+                $('#payloadIdentify-number').val(config[id].payloadIdentify);
+                break;
+            case 'string':
+                $('#payloadIdentify-type').val('String').trigger('change');
+                $('#payloadIdentify-string').val(config[id].payloadIdentify);
+                break;
+            default:
+                $('#payloadIdentify-type').val('undefined').trigger('change');
+        }
+
+
         $('#manufacturer').val(config[id].manufacturer || '');
         $('#model').val(config[id].model || '');
         $('#serial').val(config[id].serial || '');
@@ -765,13 +814,15 @@ $(document).ready(() => {
     </div>`;
         $elem.append(html);
         const $type = $('#payload-type-' + p.name);
-        $type.change(changeType);
-        changeType();
+        $type.change(() => {
+            changeType($elem, $type.val());
+        });
+        changeType($elem, $type.val());
+    }
 
-        function changeType() {
-            $elem.find('.payload').hide();
-            $elem.find('.payload.' + $type.val()).show();
-        }
+    function changeType($elem, type) {
+        $elem.find('.payload').hide();
+        $elem.find('.payload.' + type).show();
     }
 
     resizeGrid();
