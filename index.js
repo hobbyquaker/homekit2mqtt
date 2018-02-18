@@ -113,6 +113,8 @@ function mqttPub(topic, payload, options) {
         /* istanbul ignore if */
         if (typeof payload === 'object') {
             payload = JSON.stringify(payload);
+        } else if (typeof payload === 'undefined') {
+            payload = '';
         } else if (typeof payload !== 'string') {
             payload = String(payload);
         }
