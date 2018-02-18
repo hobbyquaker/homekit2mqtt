@@ -556,7 +556,6 @@ $(document).ready(() => {
                 $('#payloadIdentify-type').val('undefined').trigger('change');
         }
 
-
         $('#manufacturer').val(config[id].manufacturer || '');
         $('#model').val(config[id].model || '');
         $('#serial').val(config[id].serial || '');
