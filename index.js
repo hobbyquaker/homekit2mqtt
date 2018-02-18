@@ -27,7 +27,10 @@ let bridgeListening;
 const topics = [];
 
 log.info('mqtt trying to connect', config.url);
-const mqtt = Mqtt.connect(config.url, {will: {topic: config.name + '/connected', payload: '0', retain: true}});
+const mqtt = Mqtt.connect(config.url, {
+    will: {topic: config.name + '/connected', payload: '0', retain: true},
+    rejectUnauthorized: !config.insecure
+});
 
 mqtt.on('connect', () => {
     mqttConnected = true;

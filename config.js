@@ -11,6 +11,8 @@ const config = require('yargs')
     .describe('x', 'disable webserver')
     .describe('disable-json-parse', 'disable json parsing of received mqtt payloads')
     .boolean('disable-json-parse')
+    .describe('insecure', 'allow tls connections with invalid certificates')
+    .boolean('insecure')
     .describe('h', 'show help')
     .alias({
         h: 'help',
