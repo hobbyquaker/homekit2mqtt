@@ -1,13 +1,54 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
+const convert = require('color-convert');
+
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     return function createService_Lightbulb(acc, settings) {
+
+        const current = {
+            on: false,
+            hue: 0,
+            sat: 0,
+            bri: 0,
+        };
+
+        function publishRGB() {
+            if (settings.topic.setRGB) {
+                if (current.on) {
+                    const rgb = convert.rgb.hex(convert.hsv.rgb([current.hue, current.sat, current.bri]));
+                    mqttPub(settings.topic.setRGB, rgb);
+                } else {
+                    mqttPub(settings.topic.setRGB, '000000');
+                }
+            }
+        }
+
+        if (settings.topic.statusRGB) {
+            mqttSub(settings.topic.statusRGB, val => {
+                const r = parseInt(val.substr(0, 2), 16);
+                const g = parseInt(val.substr(2, 2), 16);
+                const b = parseInt(val.substr(4, 2), 16);
+                const [hue, sat, bri] = convert.rgb.hsv([r, g, b]);
+                current.hue = hue;
+                current.sat = sat;
+                current.bri = bri;
+                current.on = bri > 0;
+                acc.getService(Service.Lightbulb)
+                    .updateCharacteristic(Characteristic.On, bri > 0)
+                    .updateCharacteristic(Characteristic.Hue, hue)
+                    .updateCharacteristic(Characteristic.Saturation, sat)
+                    .updateCharacteristic(Characteristic.Brightness, bri);
+            });
+        }
+
         acc.addService(Service.Lightbulb)
             .getCharacteristic(Characteristic.On)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'On', value);
+                current.on = value;
+                publishRGB();
                 const payload = value ? settings.payload.onTrue : settings.payload.onFalse;
                 if (mqttStatus[settings.topic.statusOn] !== payload) {
                     // TODO test!
@@ -29,6 +70,7 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusOn, val => {
             const on = mqttStatus[settings.topic.statusOn] !== settings.payload.onFalse;
             log.debug('> hap update', settings.name, 'On', on);
+            current.on = on;
             acc.getService(Service.Lightbulb)
                 .updateCharacteristic(Characteristic.On, on);
         });
@@ -48,6 +90,8 @@ module.exports = function (iface) {
                 .addCharacteristic(Characteristic.Brightness)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'Brightness', value);
+                    current.bri = value;
+                    publishRGB();
                     /* istanbul ignore next */
                     const bri = (value * (settings.payload.brightnessFactor || 1)) || 0;
                     mqttPub(settings.topic.setBrightness, bri);
@@ -60,6 +104,7 @@ module.exports = function (iface) {
                     /* istanbul ignore next */
                     const brightness = Math.round(mqttStatus[settings.topic.statusBrightness] / (settings.payload.brightnessFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Brightness', brightness);
+                    current.bri = brightness;
                     acc.getService(Service.Lightbulb)
                         .updateCharacteristic(Characteristic.Brightness, brightness);
                 });
@@ -82,6 +127,8 @@ module.exports = function (iface) {
                 .addCharacteristic(Characteristic.Hue)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'Hue', value);
+                    current.hue = value;
+                    publishRGB();
                     /* istanbul ignore next */
                     const hue = (value * (settings.payload.hueFactor || 1));
                     mqttPub(settings.topic.setHue, hue);
@@ -93,6 +140,7 @@ module.exports = function (iface) {
                     /* istanbul ignore next */
                     const hue = (val / (settings.payload.hueFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Hue', hue);
+                    current.hue = hue;
                     acc.getService(Service.Lightbulb)
                         .updateCharacteristic(Characteristic.Hue, hue);
                 });
@@ -114,6 +162,8 @@ module.exports = function (iface) {
                 .addCharacteristic(Characteristic.Saturation)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'Saturation', value);
+                    current.sat = value;
+                    publishRGB();
                     /* istanbul ignore next */
                     const sat = (value * (settings.payload.saturationFactor || 1)) || 0;
                     mqttPub(settings.topic.setSaturation, sat);
@@ -125,6 +175,7 @@ module.exports = function (iface) {
                     /* istanbul ignore next */
                     const sat = (val / (settings.payload.saturationFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Saturation', sat);
+                    current.sat = sat;
                     acc.getService(Service.Lightbulb)
                         .updateCharacteristic(Characteristic.Saturation, sat);
                 });

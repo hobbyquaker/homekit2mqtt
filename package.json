@@ -35,6 +35,7 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "bootstrap": "^4.0.0",
+    "color-convert": "^1.9.1",
     "express": "^4.15.4",
     "express-basic-auth": "^1.1.2",
     "font-awesome": "^4.7.0",

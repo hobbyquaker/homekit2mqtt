@@ -171,7 +171,9 @@
       {"name": "setSaturation", "optional": true},
       {"name": "statusSaturation", "optional": true},
       {"name": "setColorTemperature", "optional": true},
-      {"name": "statusColorTemperature", "optional": true}
+      {"name": "statusColorTemperature", "optional": true},
+      {"name": "statusRGB", "optional": true},
+      {"name": "setRGB", "optional": true}
     ],
     "payload": [
       {"name": "onTrue"},
