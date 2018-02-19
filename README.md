@@ -338,6 +338,8 @@ topic
 * statusSaturation (optional)
 * setColorTemperature (optional)
 * statusColorTemperature (optional)
+* statusRGB (optional)
+* setRGB (optional)
 
 payload
 

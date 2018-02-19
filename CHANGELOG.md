@@ -1,3 +1,8 @@
+0.9.3 / 2018-02-19
+==================
+
+  * RGB topics for LightBulb (closes [#78](https://github.com/hobbyquaker/homekit2mqtt/issues/78))
+
 0.9.2 / 2018-02-18
 ==================
 
@@ -127,11 +132,3 @@
 
   * Add support for statusActive, statusFault, and statusTampered characteristics to CarbonDioxideSensor.
   * decrease test timeouts
-  * retry all tests. trying to mitigate test fail issues on travis...
-  * increase test timeout
-
-0.7.3 / 2018-01-06
-==================
-
-  * ContactSensor StatusActive, StatusFault, StatusTampered
-  * statusActive bool
