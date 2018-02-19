@@ -6,12 +6,11 @@ module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     return function createService_Lightbulb(acc, settings) {
-
         const current = {
             on: false,
             hue: 0,
             sat: 0,
-            bri: 0,
+            bri: 0
         };
 
         function publishRGB() {
