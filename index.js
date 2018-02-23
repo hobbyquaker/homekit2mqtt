@@ -164,8 +164,7 @@ function identify(settings, paired, callback) {
 }
 
 function newAccessory(settings) {
-    log.debug('creating new accessory', settings.name);
-    console.log(settings.id, uuid.generate(settings.id));
+    log.debug('creating new accessory', '"' + settings.name + '"', '"' + settings.id + '"', uuid.generate(settings.id));
     const acc = new Accessory(settings.name, uuid.generate(settings.id));
     if (settings.manufacturer || settings.model || settings.serial) {
         acc.getService(Service.AccessoryInformation)
