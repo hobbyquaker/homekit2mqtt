@@ -3,6 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const Mqtt = require('mqtt');
+const chalk = require('chalk');
+const qrcode = require('qrcode-terminal');
 const express = require('express');
 const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
@@ -314,6 +316,16 @@ function createBridge() {
         bridgeListening = true;
         mqttPub(config.name + '/connected', '2', {retain: true});
         log('hap Bridge listening on port', config.port);
+
+        console.log('\nScan this code with your HomeKit app on your iOS device to pair with homekit2mqtt:');
+        qrcode.generate(bridge.setupURI());
+        console.log('Or enter this code with your HomeKit app on your iOS device to pair with homekit2mqtt:');
+        console.log(chalk.black.bgWhite('                       '));
+        console.log(chalk.black.bgWhite('    ┌────────────┐     '));
+        console.log(chalk.black.bgWhite('    │ ' + config.pincode + ' │     '));
+        console.log(chalk.black.bgWhite('    └────────────┘     '));
+        console.log(chalk.black.bgWhite('                       '));
+        console.log('');
     });
 
     bridge._server.on('pair', username => {
