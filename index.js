@@ -304,13 +304,14 @@ function createBridge() {
     });
     log.info('hap created', accCount, 'Accessories');
 
-    log('hap publishing bridge "' + config.bridgename + '" username=' + config.username, 'port=' + config.port, 'pincode=' + config.c);
     bridge.publish({
         username: config.username,
         port: config.port,
         pincode: config.c,
         category: Accessory.Categories.OTHER
     });
+    log('hap publishing bridge "' + config.bridgename + '" username=' + config.username, 'port=' + config.port,
+        'pincode=' + config.c, 'setupURI=' + bridge.setupURI());
 
     bridge._server.on('listening', () => {
         bridgeListening = true;
