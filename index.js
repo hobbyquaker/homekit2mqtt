@@ -84,19 +84,27 @@ function typeGuess(payload) {
 
 // MQTT subscribe function that provides a callback on incoming messages.
 // Not meant to be used with wildcards!
-function mqttSub(topic, callback) {
+function mqttSub(topic, /* string, optional, default "val" */ attr, callback) {
     topic = String(topic);
     if (topic === '') {
         log.error('trying to subscribe empty topic');
         return;
     }
+    if (typeof attr === 'function') {
+        callback = attr;
+        attr = 'val';
+    } else if (typeof attr === 'undefined' || attr === '') {
+        attr = 'val';
+    } else {
+        attr = String(attr);
+    }
     /* istanbul ignore else */
     if (typeof callback === 'function') {
         /* istanbul ignore if */
         if (mqttCallbacks[topic]) {
-            mqttCallbacks[topic].push(callback);
+            mqttCallbacks[topic].push({attr, callback});
         } else {
-            mqttCallbacks[topic] = [callback];
+            mqttCallbacks[topic] = [{attr, callback}];
             log.debug('mqtt subscribe', topic);
             mqtt.subscribe(topic);
         }
@@ -251,10 +259,11 @@ function createBridge() {
             try {
                 // We got an Object - let's hope it follows mqtt-smarthome architecture and has an attribute "val"
                 // see https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/Architecture.md
-                state = JSON.parse(payload).val;
                 // TODO make attribute configurable to support non-mqtt-smarthome json payloads https://github.com/hobbyquaker/homekit2mqtt/issues/67
+                // the attibute configuration has to be part of the service settings
+                state = JSON.parse(payload).val;
                 if (typeof state === 'undefined') {
-                    // :-( there is no "val" attribute
+                    // :-( attribute does not exist
                     throw new TypeError('attribute val undefined');
                 }
             } catch (err) {
@@ -262,12 +271,17 @@ function createBridge() {
             }
         }
 
-        log.debug('< mqtt', topic, state);
+        log.debug('< mqtt', topic, state, payload);
+        // TODO take care when mqttStatus is used on hap get, these have to handle the attribute themselfes https://github.com/hobbyquaker/homekit2mqtt/issues/67
         mqttStatus[topic] = state;
         /* istanbul ignore else */
         if (mqttCallbacks[topic]) {
-            mqttCallbacks[topic].forEach(cb => {
-                cb(state);
+            mqttCallbacks[topic].forEach(obj => {
+                const {attr, callback} = obj; // eslint-disable-line no-unused-vars
+                if (typeof callback === 'function') {
+                    // TODO make attribute configurable to support non-mqtt-smarthome json payloads https://github.com/hobbyquaker/homekit2mqtt/issues/67
+                    callback(state);
+                }
             });
         }
         // Topics array Used for autocomplete in web ui)
