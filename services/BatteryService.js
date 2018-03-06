@@ -43,7 +43,7 @@ module.exports = function (iface) {
                     val = ((val - min) / range) * 100;
                 }
                 log.debug('> hap update', settings.name, 'BatteryLevel', val);
-                acc.getService(Service.BatteryService)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.BatteryLevel, val);
             });
         }
@@ -51,7 +51,7 @@ module.exports = function (iface) {
         if (settings.topic.statusChargingState) {
             mqttSub(settings.topic.statusChargingState, val => {
                 log.debug('> hap update', settings.name, 'ChargingState', val);
-                acc.getService(Service.BatteryService)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.ChargingState, val);
             });
         }
@@ -60,7 +60,7 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusLowBattery, val => {
                 val = (val === settings.payload.onLowBattery) ? 1 : 0;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', val);
-                acc.getService(Service.BatteryService)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.StatusLowBattery, val);
             });
         }

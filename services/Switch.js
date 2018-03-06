@@ -18,10 +18,10 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusOn, val => {
                 const on = val === settings.payload.onTrue;
                 log.debug('> hap update', settings.name, 'On', on);
-                acc.getService(Service.Switch)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.On, on);
             });
-            acc.getService(Service.Switch)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.On)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'On');

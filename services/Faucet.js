@@ -40,10 +40,10 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusActive, val => {
                 const active = val === settings.payload.activeTrue ? 1 : 0;
                 log.debug('> hap update', settings.name, 'Active', active);
-                acc.getService(Service.Faucet)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.Active, active);
             });
-            acc.getService(Service.Faucet)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.Active)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'Active');
@@ -58,10 +58,10 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusFault, val => {
                 const fault = val === settings.payload.faultTrue ? 1 : 0;
                 log.debug('> hap update', settings.name, 'StatusFault', fault);
-                acc.getService(Service.Faucet)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.StatusFault, fault);
             });
-            acc.getService(Service.Faucet)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusFault)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusFault');

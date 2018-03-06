@@ -27,13 +27,13 @@ module.exports = function (iface) {
                 Characteristic.SmokeDetected.SMOKE_DETECTED :
                 Characteristic.SmokeDetected.SMOKE_NOT_DETECTED;
             log.debug('> hap update', settings.name, 'SmokeDetected', smoke);
-            acc.getService(Service.SmokeSensor)
+            acc.getService(subtype)
                 .updateCharacteristic(Characteristic.SmokeDetected, smoke);
         });
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            acc.getService(Service.SmokeSensor)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -49,7 +49,7 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                acc.getService(Service.SmokeSensor)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }

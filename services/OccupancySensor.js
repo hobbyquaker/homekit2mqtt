@@ -19,7 +19,7 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusOccupancyDetected, val => {
             const motion = val === settings.payload.onOccupancyDetected;
             log.debug('> hap update', settings.name, 'OccupancyDetected', motion);
-            acc.getService(Service.OccupancySensor)
+            acc.getService(subtype)
                 .updateCharacteristic(Characteristic.OccupancyDetected, motion ?
                     Characteristic.OccupancyDetected.OCCUPANCY_DETECTED :
                     Characteristic.OccupancyDetected.OCCUPANCY_NOT_DETECTED);
@@ -27,7 +27,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            acc.getService(Service.OccupancySensor)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -43,7 +43,7 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                acc.getService(Service.OccupancySensor)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }

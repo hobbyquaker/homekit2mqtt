@@ -63,15 +63,15 @@ module.exports = function (iface) {
             }
             */
             log.debug('> hap update', settings.name, 'SecuritySystemCurrentState', val);
-            acc.getService(Service.SecuritySystem)
+            acc.getService(subtype)
                 .setCharacteristic(Characteristic.SecuritySystemCurrentState, val);
             if (val !== 4) {
-                acc.getService(Service.SecuritySystem)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.SecuritySystemTargetState, val);
             }
         });
 
-        acc.getService(Service.SecuritySystem)
+        acc.getService(subtype)
             .getCharacteristic(Characteristic.SecuritySystemCurrentState)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'SecuritySystemCurrentState');

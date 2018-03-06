@@ -30,19 +30,19 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusCurrentSlatState, val => {
             const angle = mqttStatus[settings.topic.statusCurrentSlatState];
             log.debug('> hap update', settings.name, 'CurrentSlatState', angle);
-            acc.getService(Service.Slat)
+            acc.getService(subtype)
                 .updateCharacteristic(Characteristic.CurrentSlatState, angle);
         });
 
         const type = settings.config.SlatType || 0;
         log.debug('> hap set', settings.name, 'SlatType', type);
-        acc.getService(Service.Slat)
+        acc.getService(subtype)
             .setCharacteristic(Characteristic.SlatType, type);
 
         if (settings.topic.statusCurrentTiltAngle) {
             mqttSub(settings.topic.statusCurrentTiltAngle, val => {
                 log.debug('> hap update', settings.name, 'CurrentTiltAngle', val);
-                acc.getService(Service.Slat)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.CurrentTiltAngle, val);
             });
         }
@@ -50,13 +50,13 @@ module.exports = function (iface) {
         if (settings.topic.statusTargetTiltAngle) {
             mqttSub(settings.topic.statusTargetTiltAngle, val => {
                 log.debug('> hap update', settings.name, 'TargetTiltAngle', val);
-                acc.getService(Service.Slat)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.TargetTiltAngle, val);
             });
         }
 
         if (settings.topic.setTargetTiltAngle) {
-            acc.getService(Service.Slat)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.TargetTiltAngle)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'TargetTiltAngle', value);
@@ -68,13 +68,13 @@ module.exports = function (iface) {
         if (settings.topic.statusSwingMode) {
             mqttSub(settings.topic.statusSwingMode, val => {
                 log.debug('> hap update', settings.name, 'SwingMode', val);
-                acc.getService(Service.Slat)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.SwingMode, val);
             });
         }
 
         if (settings.topic.setSwingMode) {
-            acc.getService(Service.Slat)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.SwingMode)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'SwingMode', value);

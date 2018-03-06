@@ -34,10 +34,10 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusTargetPosition, val => {
                 const position = val / (settings.payload.targetPositionFactor || 1);
                 log.debug('> hap update', settings.name, 'TargetPosition', position);
-                acc.getService(Service.Window)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.TargetPosition, position);
             });
-            acc.getService(Service.Window)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.TargetPosition)
                 .on('get', callback => {
                     const position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
@@ -51,10 +51,10 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusCurrentPosition, val => {
                 const pos = Math.round(val / (settings.payload.currentPositionFactor || 1));
                 log.debug('> hap update', settings.name, 'CurrentPosition', pos);
-                acc.getService(Service.Window)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.CurrentPosition, pos);
             });
-            acc.getService(Service.Window)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.CurrentPosition)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'CurrentPosition');
@@ -78,10 +78,10 @@ module.exports = function (iface) {
                     state = Characteristic.PositionState.STOPPED;
                     log.debug('> hap update', settings.name, 'PositionState.STOPPED');
                 }
-                acc.getService(Service.Window)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.PositionState, state);
             });
-            acc.getService(Service.Window)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.PositionState)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'PositionState');
@@ -101,7 +101,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusObstruction) {
-            acc.getService(Service.Window)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.ObstructionDetected)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'ObstructionDetected');
@@ -113,7 +113,7 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusObstruction, val => {
                 const obstruction = val === settings.payload.onObstructionDetected;
                 log.debug('> hap update', settings.name, 'ObstructionDetected', obstruction);
-                acc.getService(Service.Window)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.ObstructionDetected, obstruction);
             });
         }

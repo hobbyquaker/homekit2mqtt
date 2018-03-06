@@ -13,7 +13,7 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusAmbientLightLevel, val => {
             val /= (settings.payload.ambientLightLevelFactor || 1);
             log.debug('> hap update', settings.name, 'CurrentAmbientLightLevel', mqttStatus[settings.topic.statusAmbientLightLevel]);
-            acc.getService(Service.LightSensor)
+            acc.getService(subtype)
                 .updateCharacteristic(Characteristic.CurrentAmbientLightLevel, val);
         });
 
@@ -28,7 +28,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            acc.getService(Service.LightSensor)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -45,7 +45,7 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                acc.getService(Service.LightSensor)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }

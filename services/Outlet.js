@@ -18,10 +18,10 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusOn, val => {
                 const on = val === settings.payload.onTrue;
                 log.debug('> hap update', settings.name, 'On', on);
-                acc.getService(Service.Outlet)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.On, on);
             });
-            acc.getService(Service.Outlet)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.On)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'On');
@@ -31,7 +31,7 @@ module.exports = function (iface) {
                 });
         }
 
-        acc.getService(Service.Outlet)
+        acc.getService(subtype)
             .getCharacteristic(Characteristic.OutletInUse)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'OutletInUse');
@@ -43,7 +43,7 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusOutletInUse, val => {
             const inUse = val === settings.payload.onOutletInUse;
             log.debug('> hap update', settings.name, 'OutletInUse', inUse);
-            acc.getService(Service.Outlet)
+            acc.getService(subtype)
                 .updateCharacteristic(Characteristic.OutletInUse, inUse);
         });
     };

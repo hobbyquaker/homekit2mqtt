@@ -19,12 +19,12 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusMute, val => {
                 const mute = val === settings.payload.muteTrue;
                 log.debug('> hap update', settings.name, 'Mute', mute);
-                acc.getService(Service.Speaker)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.Mute, mute);
             });
         }
 
-        acc.getService(Service.Speaker)
+        acc.getService(subtype)
             .getCharacteristic(Characteristic.Mute)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'Mute');
@@ -35,7 +35,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.setVolume) {
-            acc.getService(Service.Speaker)
+            acc.getService(subtype)
                 .addCharacteristic(Characteristic.Volume)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'Volume', value);
@@ -51,11 +51,11 @@ module.exports = function (iface) {
                     /* istanbul ignore next */
                     const volume = (value / (settings.payload.volumeFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Volume', volume);
-                    acc.getService(Service.Speaker)
+                    acc.getService(subtype)
                         .updateCharacteristic(Characteristic.Volume, volume);
                 });
 
-                acc.getService(Service.Speaker)
+                acc.getService(subtype)
                     .getCharacteristic(Characteristic.Volume)
                     .on('get', callback => {
                         log.debug('< hap get', settings.name, 'Volume');

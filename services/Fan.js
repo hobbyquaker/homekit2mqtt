@@ -38,10 +38,10 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusOn, val => {
                 const on = val === settings.payload.onTrue;
                 log.debug('> hap update', settings.name, 'On', on);
-                acc.getService(Service.Fan)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.On, on);
             });
-            acc.getService(Service.Fan)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.On)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'On');
@@ -53,7 +53,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.setRotationDirection) {
-            acc.getService(Service.Fan)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.RotationDirection)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'RotationDirection', value);
@@ -75,10 +75,10 @@ module.exports = function (iface) {
                     Characteristic.RotationDirection.COUNTER_CLOCKWISE :
                     Characteristic.RotationDirection.CLOCKWISE;
                 log.debug('> hap update', settings.name, 'RotationDirection', dir);
-                acc.getService(Service.Fan)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.RotationDirection, dir);
             });
-            acc.getService(Service.Fan)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.RotationDirection)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'RotationDirection');
@@ -93,7 +93,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.setRotationSpeed) {
-            acc.getService(Service.Fan)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.RotationSpeed)
                 .on('set', (value, callback) => {
                     log.debug('< hap set', settings.name, 'RotationSpeed', value);
@@ -110,10 +110,10 @@ module.exports = function (iface) {
                 /* istanbul ignore next */
                 const speed = (val / (settings.payload.rotationSpeedFactor || 1)) || 0;
                 log.debug('> hap update', settings.name, 'RotationSpeed', speed);
-                acc.getService(Service.Fan)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.RotationSpeed, speed);
             });
-            acc.getService(Service.Fan)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.RotationSpeed)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'RotationSpeed');

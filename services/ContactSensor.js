@@ -21,14 +21,14 @@ module.exports = function (iface) {
                 Characteristic.ContactSensorState.CONTACT_DETECTED :
                 Characteristic.ContactSensorState.CONTACT_NOT_DETECTED;
             log.debug('> hap update', settings.name, 'ContactSensorState', contact);
-            acc.getService(Service.ContactSensor)
+            acc.getService(subtype)
                 .updateCharacteristic(Characteristic.ContactSensorState, contact);
         });
 
         /* istanbul ignore else */
         /* Optional: Low Battery Status */
         if (settings.topic.statusLowBattery) {
-            acc.getService(Service.ContactSensor)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -44,7 +44,7 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                acc.getService(Service.ContactSensor)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
@@ -52,7 +52,7 @@ module.exports = function (iface) {
         /* istanbul ignore else */
         /* Optional: Status Active */
         if (settings.topic.statusActive) {
-            acc.getService(Service.ContactSensor)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusActive)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusActive');
@@ -64,7 +64,7 @@ module.exports = function (iface) {
             mqttSub(settings.topic.statusActive, val => {
                 const act = val === settings.payload.onActive;
                 log.debug('> hap update', settings.name, 'StatusActive', act);
-                acc.getService(Service.ContactSensor)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.StatusActive, act);
             });
         }
@@ -72,7 +72,7 @@ module.exports = function (iface) {
         /* istanbul ignore else */
         /* Optional: Status Fault */
         if (settings.topic.statusFault) {
-            acc.getService(Service.ContactSensor)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusFault)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusFault');
@@ -88,7 +88,7 @@ module.exports = function (iface) {
                     Characteristic.StatusFault.NO_FAULT :
                     Characteristic.StatusFault.GENERAL_FAULT;
                 log.debug('> hap update', settings.name, 'StatusFault', fault);
-                acc.getService(Service.ContactSensor)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.StatusFault, fault);
             });
         }
@@ -96,7 +96,7 @@ module.exports = function (iface) {
         /* istanbul ignore else */
         /* Optional: Status Tampered */
         if (settings.topic.statusTampered) {
-            acc.getService(Service.ContactSensor)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusTampered)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusTampered');
@@ -112,7 +112,7 @@ module.exports = function (iface) {
                     Characteristic.StatusTampered.NOT_TAMPERED :
                     Characteristic.StatusTampered.TAMPERED;
                 log.debug('> hap update', settings.name, 'StatusTampered', tampered);
-                acc.getService(Service.ContactSensor)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.StatusTampered, tampered);
             });
         }

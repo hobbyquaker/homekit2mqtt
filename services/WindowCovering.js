@@ -24,10 +24,10 @@ module.exports = function (iface) {
                 /* istanbul ignore next */
                 const position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / (settings.payload.targetPositionFactor || 1));
                 log.debug('> hap update', settings.name, 'TargetPosition', position);
-                acc.getService(Service.WindowCovering)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.TargetPosition, position);
             });
-            acc.getService(Service.WindowCovering)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.TargetPosition)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'TargetPosition');
@@ -44,10 +44,10 @@ module.exports = function (iface) {
                 /* istanbul ignore next */
                 const pos = Math.round(val / (settings.payload.currentPositionFactor || 1));
                 log.debug('> hap update', settings.name, 'CurrentPosition', pos);
-                acc.getService(Service.WindowCovering)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.CurrentPosition, pos);
             });
-            acc.getService(Service.WindowCovering)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.CurrentPosition)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'CurrentPosition');
@@ -72,10 +72,10 @@ module.exports = function (iface) {
                     state = Characteristic.PositionState.STOPPED;
                     log.debug('> hap update', settings.name, 'PositionState.STOPPED');
                 }
-                acc.getService(Service.WindowCovering)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.PositionState, state);
             });
-            acc.getService(Service.WindowCovering)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.PositionState)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'PositionState');

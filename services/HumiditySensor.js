@@ -12,7 +12,7 @@ module.exports = function (iface) {
     return function createService_HumiditySensor(acc, settings, subtype) {
         mqttSub(settings.topic.statusHumidity, val => {
             log.debug('> hap update', settings.name, 'CurrentRelativeHumidity', mqttStatus[settings.topic.statusHumidity]);
-            acc.getService(Service.HumiditySensor)
+            acc.getService(subtype)
                 .updateCharacteristic(Characteristic.CurrentRelativeHumidity, val);
         });
 
@@ -26,7 +26,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            acc.getService(Service.HumiditySensor)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -43,7 +43,7 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                acc.getService(Service.HumiditySensor)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }

@@ -27,13 +27,13 @@ module.exports = function (iface) {
                 Characteristic.LeakDetected.LEAK_DETECTED :
                 Characteristic.LeakDetected.LEAK_NOT_DETECTED;
             log.debug('> hap update', settings.name, 'LeakDetected', contact);
-            acc.getService(Service.LeakSensor)
+            acc.getService(subtype)
                 .updateCharacteristic(Characteristic.LeakDetected, contact);
         });
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            acc.getService(Service.LeakSensor)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -49,7 +49,7 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                acc.getService(Service.LeakSensor)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }

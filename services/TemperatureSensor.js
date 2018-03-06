@@ -32,12 +32,12 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusTemperature, val => {
             const temperature = convertTemperature(settings, val);
             log.debug('> hap update', settings.name, 'CurrentTemperature', temperature);
-            acc.getService(Service.TemperatureSensor)
+            acc.getService(subtype)
                 .updateCharacteristic(Characteristic.CurrentTemperature, temperature);
         });
 
         if (settings.topic.statusLowBattery) {
-            acc.getService(Service.TemperatureSensor, settings.name)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -54,7 +54,7 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                acc.getService(Service.TemperatureSensor)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }

@@ -27,13 +27,13 @@ module.exports = function (iface) {
                 Characteristic.CarbonMonoxideDetected.CO_LEVELS_ABNORMAL :
                 Characteristic.CarbonMonoxideDetected.CO_LEVELS_NORMAL;
             log.debug('> hap update', settings.name, 'CarbonMonoxideDetected', contact);
-            acc.getService(Service.CarbonMonoxideSensor)
+            acc.getService(subtype)
                 .updateCharacteristic(Characteristic.CarbonMonoxideDetected, contact);
         });
 
         /* istanbul ignore else */
         if (settings.topic.statusLowBattery) {
-            acc.getService(Service.CarbonMonoxideSensor)
+            acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusLowBattery)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'StatusLowBattery');
@@ -49,7 +49,7 @@ module.exports = function (iface) {
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW;
                 log.debug('> hap update', settings.name, 'StatusLowBattery', bat);
-                acc.getService(Service.CarbonMonoxideSensor)
+                acc.getService(subtype)
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
