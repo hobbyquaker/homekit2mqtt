@@ -300,12 +300,12 @@ function createBridge() {
         accConfig.id = id;
         const acc = newAccessory(accConfig);
 
-        accConfig.services.forEach(s => {
+        accConfig.services.forEach((s, i) => {
             if (!addService[s.service]) {
                 loadService(s.service);
             }
             log.debug('adding service', s.service, 'to accessory', accConfig.name);
-            addService[s.service](acc, s);
+            addService[s.service](acc, s, i);
             if (s.name) {
                 acc.getService(Service[s.service]).setCharacteristic(Characteristic.Name, s.name);
             }
