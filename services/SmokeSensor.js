@@ -9,8 +9,8 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_SmokeSensor(acc, settings) {
-        acc.addService(Service.SmokeSensor)
+    return function createService_SmokeSensor(acc, settings, subtype) {
+        acc.addService(Service.SmokeSensor, settings.name, subtype)
             .getCharacteristic(Characteristic.SmokeDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'SmokeDetected');

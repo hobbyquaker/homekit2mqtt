@@ -15,7 +15,7 @@ module.exports = function (iface) {
   this.addOptionalCharacteristic(Characteristic.StatusFault);
      */
 
-    return function createService_IrrigationSystem(acc, settings) {
+    return function createService_IrrigationSystem(acc, settings, subtype) {
         if (typeof settings.payload.activeTrue === 'undefined') {
             settings.payload.activeTrue = true;
         }
@@ -32,7 +32,7 @@ module.exports = function (iface) {
             settings.payload.activeFalse = false;
         }
 
-        acc.addService(Service.IrrigationSystem, settings.name)
+        acc.addService(Service.IrrigationSystem, settings.name, subtype)
             .getCharacteristic(Characteristic.Active)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'Active', value);

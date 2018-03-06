@@ -30,7 +30,7 @@ module.exports = function (iface) {
      Characteristic.LockLastKnownAction.SECURED_BY_AUTO_SECURE_TIMEOUT = 8;
      */
 
-    return function createService_LockManagement(acc, settings) {
+    return function createService_LockManagement(acc, settings, subtype) {
         throw new Error('Service LockManagement not yet implemented');
     };
 };

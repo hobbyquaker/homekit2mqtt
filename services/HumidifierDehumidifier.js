@@ -22,7 +22,7 @@ module.exports = function (iface) {
   this.addOptionalCharacteristic(Characteristic.RotationSpeed);
      */
 
-    return function createService_HumidifierDehumidifier(acc, settings) {
+    return function createService_HumidifierDehumidifier(acc, settings, subtype) {
         throw new Error('Service HumidifierDehumidifier not yet implemented');
     };
 };

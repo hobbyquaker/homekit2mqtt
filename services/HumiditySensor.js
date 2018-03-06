@@ -9,14 +9,14 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_HumiditySensor(acc, settings) {
+    return function createService_HumiditySensor(acc, settings, subtype) {
         mqttSub(settings.topic.statusHumidity, val => {
             log.debug('> hap update', settings.name, 'CurrentRelativeHumidity', mqttStatus[settings.topic.statusHumidity]);
             acc.getService(Service.HumiditySensor)
                 .updateCharacteristic(Characteristic.CurrentRelativeHumidity, val);
         });
 
-        acc.addService(Service.HumiditySensor)
+        acc.addService(Service.HumiditySensor, settings.name, subtype)
             .getCharacteristic(Characteristic.CurrentRelativeHumidity)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'HumiditySensor', 'CurrentRelativeHumidity');

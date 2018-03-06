@@ -9,8 +9,8 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_LeakSensor(acc, settings) {
-        acc.addService(Service.LeakSensor)
+    return function createService_LeakSensor(acc, settings, subtype) {
+        acc.addService(Service.LeakSensor, settings.name, subtype)
             .getCharacteristic(Characteristic.LeakDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'LeakDetected');

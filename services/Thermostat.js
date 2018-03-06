@@ -3,8 +3,8 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_Thermostat(acc, settings) {
-        acc.addService(Service.Thermostat)
+    return function createService_Thermostat(acc, settings, subtype) {
+        acc.addService(Service.Thermostat, settings.name, subtype)
             .getCharacteristic(Characteristic.TargetTemperature)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'TargetTemperature', value);

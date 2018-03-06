@@ -18,7 +18,7 @@ module.exports = function (iface) {
   this.addOptionalCharacteristic(Characteristic.RotationSpeed);
      */
 
-    return function createService_AirPurifier(acc, settings) {
+    return function createService_AirPurifier(acc, settings, subtype) {
         throw new Error('Service AirPurifier not yet implemented');
     };
 };

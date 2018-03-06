@@ -3,8 +3,8 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_Doorbell(acc, settings) {
-        acc.addService(Service.Doorbell);
+    return function createService_Doorbell(acc, settings, subtype) {
+        acc.addService(Service.Doorbell, settings.name, subtype);
 
         mqttSub(settings.topic.statusEvent, () => {
             log.debug('> hap set', settings.name, 'ProgrammableSwitchEvent', 1);

@@ -3,8 +3,8 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_MotionSensor(acc, settings) {
-        acc.addService(Service.MotionSensor)
+    return function createService_MotionSensor(acc, settings, subtype) {
+        acc.addService(Service.MotionSensor, settings.name, subtype)
             .getCharacteristic(Characteristic.MotionDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'MotionDetected');

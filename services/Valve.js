@@ -27,7 +27,7 @@ module.exports = function (iface) {
     this.addOptionalCharacteristic(Characteristic.Name);
      */
 
-    return function createService_Valve(acc, settings) {
+    return function createService_Valve(acc, settings, subtype) {
         if (typeof settings.payload.activeTrue === 'undefined') {
             settings.payload.activeTrue = true;
         }
@@ -44,7 +44,7 @@ module.exports = function (iface) {
             settings.payload.activeFalse = false;
         }
 
-        acc.addService(Service.Valve)
+        acc.addService(Service.Valve, settings.name, subtype)
             .getCharacteristic(Characteristic.Active)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'Active', value);

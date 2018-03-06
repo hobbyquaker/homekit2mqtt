@@ -15,7 +15,7 @@ module.exports = function (iface) {
   this.addOptionalCharacteristic(Characteristic.Name);
      */
 
-    return function createService_FilterMaintenance(acc, settings) {
+    return function createService_FilterMaintenance(acc, settings, subtype) {
         throw new Error('Service FilterMaintenance not yet implemented');
     };
 };

@@ -3,7 +3,7 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_CameraControl(acc, settings) {
+    return function createService_CameraControl(acc, settings, subtype) {
         throw new Error('Service CameraControl not yet implemented');
     };
 };

@@ -3,8 +3,8 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_LockMechanism(acc, settings) {
-        acc.addService(Service.LockMechanism)
+    return function createService_LockMechanism(acc, settings, subtype) {
+        acc.addService(Service.LockMechanism, settings.name, subtype)
             .getCharacteristic(Characteristic.LockTargetState)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'LockTargetState', value);

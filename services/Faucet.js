@@ -12,7 +12,7 @@ module.exports = function (iface) {
     this.addOptionalCharacteristic(Characteristic.StatusFault);
     */
 
-    return function createService_Faucet(acc, settings) {
+    return function createService_Faucet(acc, settings, subtype) {
         if (typeof settings.payload.activeTrue === 'undefined') {
             settings.payload.activeTrue = true;
         }
@@ -25,7 +25,7 @@ module.exports = function (iface) {
             settings.payload.faultTrue = true;
         }
 
-        acc.addService(Service.Faucet)
+        acc.addService(Service.Faucet, settings.name, subtype)
             .getCharacteristic(Characteristic.Active)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'Active', value);

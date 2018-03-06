@@ -18,8 +18,8 @@ module.exports = function (iface) {
         return value;
     }
 
-    return function createService_TemperatureSensor(acc, settings) {
-        acc.addService(Service.TemperatureSensor)
+    return function createService_TemperatureSensor(acc, settings, subtype) {
+        acc.addService(Service.TemperatureSensor, settings.name, subtype)
             .getCharacteristic(Characteristic.CurrentTemperature)
             .setProps((settings.props || {}).CurrentTemperature || {minValue: -100})
             .on('get', callback => {

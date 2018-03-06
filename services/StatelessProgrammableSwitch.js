@@ -3,8 +3,8 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_StatelessProgrammableSwitch(acc, settings) {
-        acc.addService(Service.StatelessProgrammableSwitch);
+    return function createService_StatelessProgrammableSwitch(acc, settings, subtype) {
+        acc.addService(Service.StatelessProgrammableSwitch, settings.name, subtype);
 
         mqttSub(settings.topic.statusEvent, val => {
             log.debug('> hap set', settings.name, 'ProgrammableSwitchEvent', val);

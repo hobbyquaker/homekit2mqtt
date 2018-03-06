@@ -12,8 +12,8 @@ module.exports = function (iface) {
      this.addOptionalCharacteristic(Characteristic.Name);
      */
 
-    return function createService_Microphone(acc, settings) {
-        acc.addService(Service.Microphone)
+    return function createService_Microphone(acc, settings, subtype) {
+        acc.addService(Service.Microphone, settings.name, subtype)
             .getCharacteristic(Characteristic.Mute)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'Mute', value);

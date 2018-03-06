@@ -24,7 +24,7 @@ module.exports = function (iface) {
      Characteristic.AirQuality.POOR = 5;
      */
 
-    return function createService_AirQualitySensor(acc, settings) {
+    return function createService_AirQualitySensor(acc, settings, subtype) {
         throw new Error('Service AirQualitySensor not yet implemented');
     };
 };

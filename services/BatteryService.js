@@ -22,8 +22,8 @@ module.exports = function (iface) {
      Characteristic.ChargingState.NOT_CHARGEABLE = 2;
      */
 
-    return function createService_BatteryService(acc, settings) {
-        acc.addService(Service.BatteryService);
+    return function createService_BatteryService(acc, settings, subtype) {
+        acc.addService(Service.BatteryService, settings.name, subtype);
         /*
             .getCharacteristic(Characteristic.BatteryLevel)
             .on('get', callback => {

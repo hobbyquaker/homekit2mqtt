@@ -3,8 +3,8 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_OccupancySensor(acc, settings) {
-        acc.addService(Service.OccupancySensor)
+    return function createService_OccupancySensor(acc, settings, subtype) {
+        acc.addService(Service.OccupancySensor, settings.name, subtype)
             .getCharacteristic(Characteristic.OccupancyDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'OccupancyDetected');

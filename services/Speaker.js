@@ -3,8 +3,8 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_Speaker(acc, settings) {
-        acc.addService(Service.Speaker, settings.name)
+    return function createService_Speaker(acc, settings, subtype) {
+        acc.addService(Service.Speaker, settings.name, subtype)
             .getCharacteristic(Characteristic.Mute)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'Mute', value);

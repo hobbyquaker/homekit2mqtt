@@ -3,8 +3,8 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_CarbonDioxideSensor(acc, settings) {
-        acc.addService(Service.CarbonDioxideSensor)
+    return function createService_CarbonDioxideSensor(acc, settings, subtype) {
+        acc.addService(Service.CarbonDioxideSensor, settings.name, subtype)
             .getCharacteristic(Characteristic.CarbonDioxideDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'CarbonDioxideDetected');

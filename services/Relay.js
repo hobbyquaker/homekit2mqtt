@@ -11,7 +11,7 @@ module.exports = function (iface) {
 
      */
 
-    return function createService_Relay(acc, settings) {
+    return function createService_Relay(acc, settings, subtype) {
         throw new Error('Service Relay not yet implemented');
     };
 };

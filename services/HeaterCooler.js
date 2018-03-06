@@ -22,7 +22,7 @@ module.exports = function (iface) {
   this.addOptionalCharacteristic(Characteristic.RotationSpeed);
      */
 
-    return function createService_HeaterCooler(acc, settings) {
+    return function createService_HeaterCooler(acc, settings, subtype) {
         throw new Error('Service HeaterCooler not yet implemented');
     };
 };

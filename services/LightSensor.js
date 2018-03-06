@@ -9,7 +9,7 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_LightSensor(acc, settings) {
+    return function createService_LightSensor(acc, settings, subtype) {
         mqttSub(settings.topic.statusAmbientLightLevel, val => {
             val /= (settings.payload.ambientLightLevelFactor || 1);
             log.debug('> hap update', settings.name, 'CurrentAmbientLightLevel', mqttStatus[settings.topic.statusAmbientLightLevel]);
@@ -17,7 +17,7 @@ module.exports = function (iface) {
                 .updateCharacteristic(Characteristic.CurrentAmbientLightLevel, val);
         });
 
-        acc.addService(Service.LightSensor)
+        acc.addService(Service.LightSensor, settings.name, subtype)
             .getCharacteristic(Characteristic.CurrentAmbientLightLevel)
             .on('get', callback => {
                 const val = mqttStatus[settings.topic.statusAmbientLightLevel] / (settings.payload.ambientLightLevelFactor || 1);

@@ -24,8 +24,8 @@ module.exports = function (iface) {
     Characteristic.SwingMode.SWING_ENABLED = 1;
      */
 
-    return function createService_Slat(acc, settings) {
-        acc.addService(Service.Slat);
+    return function createService_Slat(acc, settings, subtype) {
+        acc.addService(Service.Slat, settings.name, subtype);
 
         mqttSub(settings.topic.statusCurrentSlatState, val => {
             const angle = mqttStatus[settings.topic.statusCurrentSlatState];

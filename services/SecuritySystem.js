@@ -5,7 +5,7 @@ module.exports = function (iface) {
 
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_SecuritySystem(acc, settings) {
+    return function createService_SecuritySystem(acc, settings, subtype) {
         // Required Characteristics
 
         /*
@@ -18,7 +18,7 @@ module.exports = function (iface) {
 
          */
 
-        acc.addService(Service.SecuritySystem)
+        acc.addService(Service.SecuritySystem, settings.name, subtype)
             .getCharacteristic(Characteristic.SecuritySystemTargetState)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'SecuritySystemTargetState', value);

@@ -3,8 +3,8 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_WindowCovering(acc, settings) {
-        acc.addService(Service.WindowCovering)
+    return function createService_WindowCovering(acc, settings, subtype) {
+        acc.addService(Service.WindowCovering, settings.name, subtype)
             .getCharacteristic(Characteristic.TargetPosition)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'TargetPosition', value);

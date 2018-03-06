@@ -3,8 +3,8 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_Switch(acc, settings) {
-        acc.addService(Service.Switch)
+    return function createService_Switch(acc, settings, subtype) {
+        acc.addService(Service.Switch, settings.name, subtype)
             .getCharacteristic(Characteristic.On)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'On', value);

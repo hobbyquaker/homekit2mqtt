@@ -5,7 +5,7 @@ const convert = require('color-convert');
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_Lightbulb(acc, settings) {
+    return function createService_Lightbulb(acc, settings, subtype) {
         const current = {
             on: false,
             hue: 0,
@@ -42,7 +42,7 @@ module.exports = function (iface) {
             });
         }
 
-        acc.addService(Service.Lightbulb)
+        acc.addService(Service.Lightbulb, settings.name, subtype)
             .getCharacteristic(Characteristic.On)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'On', value);

@@ -15,8 +15,8 @@ module.exports = function (iface) {
     this.addOptionalCharacteristic(Characteristic.Name);
     */
 
-    return function createService_Door(acc, settings) {
-        acc.addService(Service.Door)
+    return function createService_Door(acc, settings, subtype) {
+        acc.addService(Service.Door, settings.name, subtype)
             .getCharacteristic(Characteristic.TargetPosition)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'TargetPosition', value);

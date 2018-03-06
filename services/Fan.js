@@ -3,7 +3,7 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_Fan(acc, settings) {
+    return function createService_Fan(acc, settings, subtype) {
         /* istanbul ignore else */
         if (typeof settings.payload.onTrue === 'undefined') {
             settings.payload.onTrue = true;
@@ -24,7 +24,7 @@ module.exports = function (iface) {
             settings.payload.rotationDirectionClockwise = Characteristic.RotationDirection.CLOCKWISE;
         }
 
-        acc.addService(Service.Fan)
+        acc.addService(Service.Fan, settings.name, subtype)
             .getCharacteristic(Characteristic.On)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'On', value);

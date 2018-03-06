@@ -3,8 +3,8 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    return function createService_ContactSensor(acc, settings) {
-        acc.addService(Service.ContactSensor)
+    return function createService_ContactSensor(acc, settings, subtype) {
+        acc.addService(Service.ContactSensor, settings.name, subtype)
             .getCharacteristic(Characteristic.ContactSensorState)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'ContactSensorState');
