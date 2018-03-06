@@ -1,3 +1,15 @@
+0.9.4 / 2018-03-06
+==================
+
+  * WARNING - possibly breaking change. See Readme
+  * remove obsolete services
+  * set service subtype (fix [#89](https://github.com/hobbyquaker/homekit2mqtt/issues/89))
+  * hand over service index for subtype (prepare [#89](https://github.com/hobbyquaker/homekit2mqtt/issues/89))
+  * save attr in mqttCallbacks (prepare [#67](https://github.com/hobbyquaker/homekit2mqtt/issues/67))
+  * cleanup accessory uuid log
+  * log setupURI
+  * show QR code on start (closes [#88](https://github.com/hobbyquaker/homekit2mqtt/issues/88))
+
 0.9.3 / 2018-02-19
 ==================
 
@@ -113,22 +125,3 @@
   * prepare [#41](https://github.com/hobbyquaker/homekit2mqtt/issues/41)
   * add param --disable-json-parse (implements [#63](https://github.com/hobbyquaker/homekit2mqtt/issues/63))
   * bootstrap css fixes
-  * hap-nodejs 0.4.41
-
-0.7.6 / 2018-01-24
-==================
-
-  * add unnecessary popper.js to get rid of stupid unmet peer dep warning
-
-0.7.5 / 2018-01-24
-==================
-
-  * adapt gridsize to bootstrap 4
-  * prepare service valve
-  * update deps
-
-0.7.4 / 2018-01-24
-==================
-
-  * Add support for statusActive, statusFault, and statusTampered characteristics to CarbonDioxideSensor.
-  * decrease test timeouts
