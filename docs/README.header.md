@@ -18,8 +18,8 @@ I'm using this to control a multitude of MQTT-connected "Things" in my home auto
 See changes history in [CHANGELOG.md](CHANGELOG.md)
 
 ***Warning***: Version 0.9.4 possibly introduces a breaking change. Due to the issue #89 service subtypes where 
-added, if the bridge doesn't work anymore after an update from <=0.9.3 to >=0.9.4 you have to delete the persistence 
-files and delete and re-add the bridge in iOS...:-(
+added, please give your Home app a few minutes to get updates, if the accessories don't work at all anymore after an 
+update from <=0.9.3 to >=0.9.4 you have to delete the persistence files and delete and re-add the bridge in iOS...:-(
 
 ## Installation
 
