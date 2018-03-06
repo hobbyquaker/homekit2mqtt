@@ -1,3 +1,8 @@
+0.9.5 / 2018-03-06
+==================
+
+  * fix multiservices accessories, getService by subtype
+
 0.9.4 / 2018-03-06
 ==================
 
@@ -121,7 +126,3 @@
 
 0.7.7 / 2018-02-09
 ==================
-
-  * prepare [#41](https://github.com/hobbyquaker/homekit2mqtt/issues/41)
-  * add param --disable-json-parse (implements [#63](https://github.com/hobbyquaker/homekit2mqtt/issues/63))
-  * bootstrap css fixes
