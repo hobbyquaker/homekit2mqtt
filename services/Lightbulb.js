@@ -16,19 +16,19 @@ module.exports = function (iface) {
         function publishRGB() {
             if (settings.topic.setRGB) {
                 if (current.on) {
-                    const rgb = convert.rgb.hex(convert.hsv.rgb([current.hue, current.sat, current.bri]));
+                    const rgb = '#' + convert.rgb.hex(convert.hsv.rgb([current.hue, current.sat, current.bri]));
                     mqttPub(settings.topic.setRGB, rgb);
                 } else {
-                    mqttPub(settings.topic.setRGB, '000000');
+                    mqttPub(settings.topic.setRGB, '#000000');
                 }
             }
         }
 
         if (settings.topic.statusRGB) {
             mqttSub(settings.topic.statusRGB, val => {
-                const r = parseInt(val.substr(0, 2), 16);
-                const g = parseInt(val.substr(2, 2), 16);
-                const b = parseInt(val.substr(4, 2), 16);
+                const r = parseInt(val.substr(1, 2), 16);
+                const g = parseInt(val.substr(3, 2), 16);
+                const b = parseInt(val.substr(5, 2), 16);
                 const [hue, sat, bri] = convert.rgb.hsv([r, g, b]);
                 current.hue = hue;
                 current.sat = sat;
