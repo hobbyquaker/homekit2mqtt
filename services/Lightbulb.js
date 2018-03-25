@@ -26,6 +26,7 @@ module.exports = function (iface) {
 
         if (settings.topic.statusRGB) {
             mqttSub(settings.topic.statusRGB, val => {
+                val = String(val);
                 const r = parseInt(val.substr(1, 2), 16);
                 const g = parseInt(val.substr(3, 2), 16);
                 const b = parseInt(val.substr(5, 2), 16);
