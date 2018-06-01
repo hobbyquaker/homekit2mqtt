@@ -292,7 +292,7 @@ function createBridge() {
 
     // Load and create all accessories
     log.info('loading HomeKit to MQTT mapping file ' + config.mapfile);
-    mapping = require(config.mapfile);
+    mapping = JSON.parse(fs.readFileSync(config.mapfile));
     convertMapping();
     accCount = 0;
     Object.keys(mapping).forEach(id => {
