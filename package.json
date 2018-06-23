@@ -41,11 +41,11 @@
     "express-basic-auth": "^1.1.2",
     "font-awesome": "^4.7.0",
     "free-jqgrid": "^4.14.1",
-    "hap-nodejs": "0.4.41",
+    "hap-nodejs": "0.4.46",
     "jquery": "^3.2.1",
     "mqtt": "^2.9.3",
     "popper.js": "^1.12.9",
-    "qrcode-terminal": "^0.11.0",
+    "qrcode-terminal": "^0.12.0",
     "yalm": "^4.0.2",
     "yargs": "^11.0.0"
   },
