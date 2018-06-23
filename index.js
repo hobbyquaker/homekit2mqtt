@@ -13,7 +13,7 @@ const app = express();
 
 const log = require('yalm');
 const HAP = require('hap-nodejs');
-const pkgHap = require('./node_modules/hap-nodejs/package.json');
+const pkgHap = require('hap-nodejs/package.json');
 const pkg = require('./package.json');
 const config = require('./config.js');
 
