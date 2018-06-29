@@ -22,7 +22,7 @@ module.exports = function (iface) {
       {"name": "statusVOCDensity", "type": "Number", "optional": true},
       {"name": "statusCarbonMonoxideLevel", "type": "Number", "optional": true},
       {"name": "statusCarbonDioxideLevel", "type": "Number", "optional": true}
-    
+
      Characteristic.AirQuality.UNKNOWN = 0;
      Characteristic.AirQuality.EXCELLENT = 1;
      Characteristic.AirQuality.GOOD = 2;
@@ -45,9 +45,9 @@ module.exports = function (iface) {
                 log.debug('> hap re_get', settings.name, mqttStatus[settings.topic.statusAirQuality]);
                 callback(null, mqttStatus[settings.topic.statusAirQuality]);
             });
-            
+
         if (settings.topic.statusOzoneDensity) {
-             mqttSub(settings.topic.statusOzoneDensity, val => {
+            mqttSub(settings.topic.statusOzoneDensity, val => {
                 log.debug('> hap update', settings.name, 'OzoneDensity', val);
                 acc.getService(subtype)
                     .updateCharacteristic(Characteristic.OzoneDensity, val);
@@ -58,11 +58,11 @@ module.exports = function (iface) {
                     log.debug('< hap get', settings.name, 'OzoneDensity');
                     log.debug('> hap re_get', settings.name, 'OzoneDensity', mqttStatus[settings.topic.statusOzoneDensity]);
                     callback(null, mqttStatus[settings.topic.statusOzoneDensity]);
-                });       	
-      	}    
-            
+                });
+        }
+
         if (settings.topic.statusNitrogenDioxideDensity) {
-             mqttSub(settings.topic.statusNitrogenDioxideDensity, val => {
+            mqttSub(settings.topic.statusNitrogenDioxideDensity, val => {
                 log.debug('> hap update', settings.name, 'NitrogenDioxideDensity', val);
                 acc.getService(subtype)
                     .updateCharacteristic(Characteristic.NitrogenDioxideDensity, val);
@@ -73,11 +73,11 @@ module.exports = function (iface) {
                     log.debug('< hap get', settings.name, 'NitrogenDioxideDensity');
                     log.debug('> hap re_get', settings.name, 'NitrogenDioxideDensity', mqttStatus[settings.topic.statusNitrogenDioxideDensity]);
                     callback(null, mqttStatus[settings.topic.statusNitrogenDioxideDensity]);
-                });       	
-      	}                
-            
+                });
+        }
+
         if (settings.topic.statusSulphurDioxideDensity) {
-             mqttSub(settings.topic.statusSulphurDioxideDensity, val => {
+            mqttSub(settings.topic.statusSulphurDioxideDensity, val => {
                 log.debug('> hap update', settings.name, 'SulphurDioxideDensity', val);
                 acc.getService(subtype)
                     .updateCharacteristic(Characteristic.SulphurDioxideDensity, val);
@@ -88,11 +88,11 @@ module.exports = function (iface) {
                     log.debug('< hap get', settings.name, 'SulphurDioxideDensity');
                     log.debug('> hap re_get', settings.name, 'SulphurDioxideDensity', mqttStatus[settings.topic.statusSulphurDioxideDensity]);
                     callback(null, mqttStatus[settings.topic.statusSulphurDioxideDensity]);
-                });       	
-      	}                
-            
+                });
+        }
+
         if (settings.topic.statusPM2_5Density) {
-             mqttSub(settings.topic.statusPM2_5Density, val => {
+            mqttSub(settings.topic.statusPM2_5Density, val => {
                 log.debug('> hap update', settings.name, 'PM2_5Density', val);
                 acc.getService(subtype)
                     .updateCharacteristic(Characteristic.PM2_5Density, val);
@@ -103,11 +103,11 @@ module.exports = function (iface) {
                     log.debug('< hap get', settings.name, 'PM2_5Density');
                     log.debug('> hap re_get', settings.name, 'PM2_5Density', mqttStatus[settings.topic.statusPM2_5Density]);
                     callback(null, mqttStatus[settings.topic.statusPM2_5Density]);
-                });       	
-      	}                     
-            
+                });
+        }
+
         if (settings.topic.statusPM10Density) {
-             mqttSub(settings.topic.statusPM10Density, val => {
+            mqttSub(settings.topic.statusPM10Density, val => {
                 log.debug('> hap update', settings.name, 'PM10Density', val);
                 acc.getService(subtype)
                     .updateCharacteristic(Characteristic.PM10Density, val);
@@ -118,12 +118,11 @@ module.exports = function (iface) {
                     log.debug('< hap get', settings.name, 'PM10Density');
                     log.debug('> hap re_get', settings.name, 'PM10Density', mqttStatus[settings.topic.statusPM10Density]);
                     callback(null, mqttStatus[settings.topic.statusPM10Density]);
-                });       	
-      	}                
-           
+                });
+        }
 
         if (settings.topic.statusVOCDensity) {
-             mqttSub(settings.topic.statusVOCDensity, val => {
+            mqttSub(settings.topic.statusVOCDensity, val => {
                 log.debug('> hap update', settings.name, 'VOCDensity', val);
                 acc.getService(subtype)
                     .updateCharacteristic(Characteristic.VOCDensity, val);
@@ -134,11 +133,11 @@ module.exports = function (iface) {
                     log.debug('< hap get', settings.name, 'VOCDensity');
                     log.debug('> hap re_get', settings.name, 'VOCDensity', mqttStatus[settings.topic.statusVOCDensity]);
                     callback(null, mqttStatus[settings.topic.statusVOCDensity]);
-                });       	
-      	}    
-            
+                });
+        }
+
         if (settings.topic.statusCarbonMonoxideLevel) {
-             mqttSub(settings.topic.statusCarbonMonoxideLevel, val => {
+            mqttSub(settings.topic.statusCarbonMonoxideLevel, val => {
                 log.debug('> hap update', settings.name, 'CarbonMonoxideLevel', val);
                 acc.getService(subtype)
                     .updateCharacteristic(Characteristic.CarbonMonoxideLevel, val);
@@ -149,11 +148,11 @@ module.exports = function (iface) {
                     log.debug('< hap get', settings.name, 'CarbonMonoxideLevel');
                     log.debug('> hap re_get', settings.name, 'CarbonMonoxideLevel', mqttStatus[settings.topic.statusCarbonMonoxideLevel]);
                     callback(null, mqttStatus[settings.topic.statusCarbonMonoxideLevel]);
-                });       	
-      	}            
-            
+                });
+        }
+
         if (settings.topic.statusCarbonDioxideLevel) {
-             mqttSub(settings.topic.statusCarbonDioxideLevel, val => {
+            mqttSub(settings.topic.statusCarbonDioxideLevel, val => {
                 log.debug('> hap update', settings.name, 'CarbonDioxideLevel', val);
                 acc.getService(subtype)
                     .updateCharacteristic(Characteristic.CarbonDioxideLevel, val);
@@ -164,9 +163,7 @@ module.exports = function (iface) {
                     log.debug('< hap get', settings.name, 'CarbonDioxideLevel');
                     log.debug('> hap re_get', settings.name, 'CarbonDioxideLevel', mqttStatus[settings.topic.statusCarbonDioxideLevel]);
                     callback(null, mqttStatus[settings.topic.statusCarbonDioxideLevel]);
-                });       	
-      	}
-
-            
+                });
+        }
     };
 };
