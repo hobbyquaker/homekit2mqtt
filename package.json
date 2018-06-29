@@ -1,6 +1,6 @@
 {
   "name": "homekit2mqtt",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "HomeKit to MQTT bridge",
   "main": "index.js",
   "bin": {
@@ -30,7 +30,8 @@
     "Michael Teeuw https://github.com/MichMich",
     "Dave Arter https://github.com/davea",
     "Matthew Sheffield https://github.com/mattsheffiel",
-    "EdJoPaTo https://github.com/EdJoPaTo"
+    "EdJoPaTo https://github.com/EdJoPaTo",
+    "m17design https://github.com/m17design"
   ],
   "license": "MIT",
   "dependencies": {
