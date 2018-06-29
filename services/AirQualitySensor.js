@@ -137,6 +137,7 @@ module.exports = function (iface) {
             });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusOzoneDensity) {
             mqttSub(settings.topic.statusOzoneDensity, val => {
                 log.debug('> hap update', settings.name, 'OzoneDensity', val);
@@ -152,6 +153,7 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusNitrogenDioxideDensity) {
             mqttSub(settings.topic.statusNitrogenDioxideDensity, val => {
                 log.debug('> hap update', settings.name, 'NitrogenDioxideDensity', val);
@@ -167,6 +169,7 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusSulphurDioxideDensity) {
             mqttSub(settings.topic.statusSulphurDioxideDensity, val => {
                 log.debug('> hap update', settings.name, 'SulphurDioxideDensity', val);
@@ -182,6 +185,7 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusPM2_5Density) {
             mqttSub(settings.topic.statusPM2_5Density, val => {
                 log.debug('> hap update', settings.name, 'PM2_5Density', val);
@@ -197,6 +201,7 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusPM10Density) {
             mqttSub(settings.topic.statusPM10Density, val => {
                 log.debug('> hap update', settings.name, 'PM10Density', val);
@@ -212,6 +217,7 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusVOCDensity) {
             mqttSub(settings.topic.statusVOCDensity, val => {
                 log.debug('> hap update', settings.name, 'VOCDensity', val);
@@ -227,6 +233,7 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusCarbonMonoxideLevel) {
             mqttSub(settings.topic.statusCarbonMonoxideLevel, val => {
                 log.debug('> hap update', settings.name, 'CarbonMonoxideLevel', val);
@@ -242,6 +249,7 @@ module.exports = function (iface) {
                 });
         }
 
+        /* istanbul ignore else */
         if (settings.topic.statusCarbonDioxideLevel) {
             mqttSub(settings.topic.statusCarbonDioxideLevel, val => {
                 log.debug('> hap update', settings.name, 'CarbonDioxideLevel', val);
