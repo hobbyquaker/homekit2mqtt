@@ -1,5 +1,22 @@
 {
-  "BatteryService": {
+"AirQualitySensor": {
+    "topic": [
+      {"name": "statusAirQuality"},
+      {"name": "statusOzoneDensity", "type": "Number", "optional": true},
+      {"name": "statusNitrogenDioxideDensity", "type": "Number", "optional": true},
+      {"name": "statusSulphurDioxideDensity", "type": "Number", "optional": true},
+      {"name": "statusPM2_5Density", "type": "Number", "optional": true},
+      {"name": "statusPM10Density", "type": "Number", "optional": true},
+      {"name": "statusVOCDensity", "type": "Number", "optional": true},
+      {"name": "statusCarbonMonoxideLevel", "type": "Number", "optional": true},
+      {"name": "statusCarbonDioxideLevel", "type": "Number", "optional": true},
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
+    ]
+  },
+   "BatteryService": {
     "topic": [
       {"name": "statusBatteryLevel", "desc": "Percentage 0-100"},
       {"name": "statusChargingState", "desc": "0 = NOT_CHARGING, 1 = CHARGING, 2 = NOT_CHARGEABLE"},
@@ -17,7 +34,9 @@
       {"name": "statusLowBattery", "optional": true},
       {"name": "statusTampered", "optional": true},
       {"name": "statusActive", "optional": true},
-      {"name": "statusFault", "optional": true}
+      {"name": "statusFault", "optional": true},
+      {"name": "statusCarbonDioxideLevel", "optional": true},
+      {"name": "statusCarbonDioxidePeakLevel", "optional": true}
     ],
     "payload": [
       {"name": "onCarbonDioxideDetected"},
