@@ -7,7 +7,7 @@ const path = require('path');
 const streamSplitter = require('stream-splitter');
 const Mqtt = require('mqtt');
 
-const homekitOutput = false;
+const homekitOutput = true;
 
 mqtt = Mqtt.connect('mqtt://127.0.0.1');
 
@@ -349,6 +349,70 @@ describe('CarbonDioxideSensor CarbonDioxideSensorState', () => {
         this.timeout(36000); this.retries(5);
         cp.exec(clientCmd + ' get --aid ' + aid.CarbonDioxideSensor + ' --iid ' + iid.CarbonDioxideSensor.CarbonDioxideDetected, (err, stdout, stderr) => {
             if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+});
+describe('CarbonDioxideSensor statusCarbonDioxideLevel', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000); this.retries(5);
+        subscribe('homekit', /hap update CarbonDioxideSensor CarbonDioxideLevel 50000/, () => {
+            done();
+        });
+        mqtt.publish('CarbonDioxideSensor/Level', '50000');
+    });
+    it('client should get the status of the CarbonDioxideSensor', function (done) {
+        this.timeout(36000); this.retries(5);
+        cp.exec(clientCmd + ' get --aid ' + aid.CarbonDioxideSensor + ' --iid ' + iid.CarbonDioxideSensor.CarbonDioxideLevel, (err, stdout, stderr) => {
+            if (stdout === '50000\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000); this.retries(5);
+        subscribe('homekit', /hap update CarbonDioxideSensor CarbonDioxideLevel 10000/, () => {
+            done();
+        });
+        mqtt.publish('CarbonDioxideSensor/Level', '10000');
+    });
+    it('client should get the status of the CarbonDioxideSensor', function (done) {
+        this.timeout(36000); this.retries(5);
+        cp.exec(clientCmd + ' get --aid ' + aid.CarbonDioxideSensor + ' --iid ' + iid.CarbonDioxideSensor.CarbonDioxideLevel, (err, stdout, stderr) => {
+            if (stdout === '10000\n') {
+                done();
+            }
+        });
+    });
+});
+describe('CarbonDioxideSensor CarbonDioxidePeakLevel', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000); this.retries(5);
+        subscribe('homekit', /hap update CarbonDioxideSensor CarbonDioxidePeakLevel 60000/, () => {
+            done();
+        });
+        mqtt.publish('CarbonDioxideSensor/PeakLevel', '60000');
+    });
+    it('client should get the status of the CarbonDioxideSensor', function (done) {
+        this.timeout(36000); this.retries(5);
+        cp.exec(clientCmd + ' get --aid ' + aid.CarbonDioxideSensor + ' --iid ' + iid.CarbonDioxideSensor.CarbonDioxidePeakLevel, (err, stdout, stderr) => {
+            if (stdout === '60000\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000); this.retries(5);
+        subscribe('homekit', /hap update CarbonDioxideSensor CarbonDioxidePeakLevel 20000/, () => {
+            done();
+        });
+        mqtt.publish('CarbonDioxideSensor/PeakLevel', '20000');
+    });
+    it('client should get the status of the CarbonDioxideSensor', function (done) {
+        this.timeout(36000); this.retries(5);
+        cp.exec(clientCmd + ' get --aid ' + aid.CarbonDioxideSensor + ' --iid ' + iid.CarbonDioxideSensor.CarbonDioxidePeakLevel, (err, stdout, stderr) => {
+            if (stdout === '20000\n') {
                 done();
             }
         });
