@@ -2,7 +2,7 @@
 
 [![mqtt-smarthome](https://img.shields.io/badge/mqtt-smarthome-blue.svg)](https://github.com/mqtt-smarthome/mqtt-smarthome)
 [![NPM version](https://badge.fury.io/js/homekit2mqtt.svg)](http://badge.fury.io/js/homekit2mqtt)
-[![dependencies Status](https://david-dm.org/hobbyquaker/homekit2mqtt/status.svg)](https://david-dm.org/hobbyquaker/homekit2mqtt)
+[![Dependency Status](https://img.shields.io/gemnasium/hobbyquaker/homekit2mqtt.svg?maxAge=2592000)](https://gemnasium.com/github.com/hobbyquaker/homekit2mqtt)
 [![Build Status](https://travis-ci.org/hobbyquaker/homekit2mqtt.svg?branch=master)](https://travis-ci.org/hobbyquaker/homekit2mqtt)
 [![Coverage Status](https://coveralls.io/repos/github/hobbyquaker/homekit2mqtt/badge.svg?branch=master)](https://coveralls.io/github/hobbyquaker/homekit2mqtt?branch=master)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
@@ -17,14 +17,19 @@ I'm using this to control a multitude of MQTT-connected "Things" in my home auto
 
 See changes history in [CHANGELOG.md](CHANGELOG.md)
 
+***Warning***: Version 0.9.4 possibly introduces a breaking change. Due to the issue #89 service subtypes where 
+added, please give your Home app a few minutes to get updates, if the accessories don't work at all anymore after an 
+update from <=0.9.3 to >=0.9.4 you have to delete the persistence files and delete and re-add the bridge in iOS...:-(
 
 ## Installation
 
 **Prerequisites:** 
 
  * Debian, Ubuntu, Raspbian or macOS
- * [Node.js](https://nodejs.org) 8 or higher
- 
+ * [Node.js](https://nodejs.org) 6 or higher
+ * If you're running on Linux, you'll need to make sure you have the libavahi-compat-libdnssd-dev package installed:
+   `sudo apt-get install libavahi-compat-libdnssd-dev`
+
 
 `sudo npm install -g homekit2mqtt --unsafe-perm`   
 
@@ -124,6 +129,28 @@ like this in the JSON file:
 ```
 ## Available Service Types
 
+#### AirQualitySensor
+
+topic
+
+* statusAirQuality
+* statusOzoneDensity (optional)
+* statusNitrogenDioxideDensity (optional)
+* statusSulphurDioxideDensity (optional)
+* statusPM2_5Density (optional)
+* statusPM10Density (optional)
+* statusVOCDensity (optional)
+* statusCarbonMonoxideLevel (optional)
+* statusCarbonDioxideLevel (optional)
+* statusLowBattery (optional)
+* statusTampered (optional)
+* statusActive (optional)
+* statusFault (optional)
+
+payload
+
+
+
 #### BatteryService
 
 topic
@@ -150,6 +177,8 @@ topic
 * statusTampered (optional)
 * statusActive (optional)
 * statusFault (optional)
+* statusCarbonDioxideLevel (optional)
+* statusCarbonDioxidePeakLevel (optional)
 
 payload
 
