@@ -9,7 +9,11 @@
       {"name": "statusPM10Density", "type": "Number", "optional": true},
       {"name": "statusVOCDensity", "type": "Number", "optional": true},
       {"name": "statusCarbonMonoxideLevel", "type": "Number", "optional": true},
-      {"name": "statusCarbonDioxideLevel", "type": "Number", "optional": true}
+      {"name": "statusCarbonDioxideLevel", "type": "Number", "optional": true},
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ]
   },
    "BatteryService": {
