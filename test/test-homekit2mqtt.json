@@ -28,6 +28,8 @@
         "service": "CarbonDioxideSensor",
         "topic": {
           "statusCarbonDioxideDetected": "CarbonDioxideSensor/status",
+          "statusCarbonDioxideLevel": "CarbonDioxideSensor/Level",
+          "statusCarbonDioxidePeakLevel": "CarbonDioxideSensor/PeakLevel",
           "statusLowBattery": "CarbonDioxideSensor/status/LowBattery",
           "statusActive": "CarbonDioxideSensor/status/Active",
           "statusFault": "CarbonDioxideSensor/status/Fault",
