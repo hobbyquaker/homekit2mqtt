@@ -1,4 +1,39 @@
 {
+  "AirQualitySensor": {
+    "name": "AirQualitySensor",
+    "manufacturer": "Generic",
+    "model": "AirQualitySensor",
+    "services": [
+      {
+        "name": "AirQualitySensor",
+        "service": "AirQualitySensor",
+        "topic": {
+          "statusAirQuality": "AirQualitySensor/AirQuality",
+          "statusOzoneDensity": "AirQualitySensor/OzoneDensity",
+          "statusNitrogenDioxideDensity": "AirQualitySensor/NitrogenDioxideDensity",
+          "statusSulphurDioxideDensity": "AirQualitySensor/SulphurDioxideDensity",
+          "statusVOCDensity": "AirQualitySensor/VOCDensity",
+          "statusPM2_5Density": "AirQualitySensor/PM2_5Density",
+          "statusPM10Density": "AirQualitySensor/PM10Density",
+          "statusCarbonMonoxideLevel": "AirQualitySensor/CarbonMonoxideLevel",
+          "statusCarbonDioxideLevel": "AirQualitySensor/CarbonDioxideLevel",
+          "statusLowBattery": "AirQualitySensor/status/LowBattery",
+          "statusActive": "AirQualitySensor/status/Active",
+          "statusFault": "AirQualitySensor/status/Fault",
+          "statusTampered": "AirQualitySensor/status/Tampered"
+        },
+        "payload": {
+          "onCarbonDioxideDetected": 1,
+          "onLowBattery": 1,
+          "onActive": 1,
+          "onFault": 1,
+          "onTampered": 1
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
+  },
   "BatteryService": {
     "name": "BatteryService",
     "services": [
