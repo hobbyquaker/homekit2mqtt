@@ -7,7 +7,7 @@ const path = require('path');
 const streamSplitter = require('stream-splitter');
 const Mqtt = require('mqtt');
 
-const homekitOutput = true;
+const homekitOutput = false;
 
 mqtt = Mqtt.connect('mqtt://127.0.0.1');
 
