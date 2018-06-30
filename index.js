@@ -129,6 +129,12 @@ function mqttPub(topic, payload, options) {
             payload = String(payload);
         }
         log.debug('> mqtt', topic, payload);
+        if (config.retain) {
+            if (!options) {
+                options = {};
+            }
+            options.retain = true;
+        }
         mqtt.publish(topic, payload, options, err => {
             /* istanbul ignore next */
             if (err) {

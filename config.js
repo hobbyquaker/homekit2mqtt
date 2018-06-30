@@ -13,6 +13,8 @@ const config = require('yargs')
     .boolean('disable-json-parse')
     .describe('insecure', 'allow tls connections with invalid certificates')
     .boolean('insecure')
+    .describe('retain', 'if set, ALL MQTT messages sent will have the retain flag set')
+    .boolean('retain')
     .describe('h', 'show help')
     .alias({
         h: 'help',
