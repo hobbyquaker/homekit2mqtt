@@ -46,8 +46,8 @@ Options:
   -v, --verbosity       possible values: "error", "warn", "info", "debug"
                                                                [default: "info"]
   -m, --mapfile         JSON file containing HomeKit Services to MQTT mapping
-                        definitions. See Readme.                       [default: 
-                                                    "example-homekit2mqtt.json"]
+                        definitions. See Readme.                       [default:
+         "/Users/basti/WebstormProjects/homekit2mqtt/example-homekit2mqtt.json"]
   -n, --name            instance name. used as prefix for connected topic
                                                             [default: "homekit"]
   -u, --url             mqtt broker url.           [default: "mqtt://127.0.0.1"]
@@ -56,11 +56,15 @@ Options:
   -w, --web-port        port webserver is listening on          [default: 51888]
   -x, --disable-web     disable webserver
   --disable-json-parse  disable json parsing of received mqtt payloads [boolean]
+  --insecure            allow tls connections with invalid certificates[boolean]
+  --retain              if set, ALL MQTT messages sent will have the retain flag
+                        set                                            [boolean]
   -h, --help            Show help                                      [boolean]
   --version             Show version number                            [boolean]
   -c, --pincode                                          [default: "031-45-154"]
   -a, --username                                  [default: "CC:22:3D:E3:CE:F6"]
   -b, --bridgename                                      [default: "MQTT Bridge"]
+
                                                              
 </pre>
 
