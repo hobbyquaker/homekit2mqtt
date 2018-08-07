@@ -22,8 +22,6 @@ module.exports = function (iface) {
             }
         };
 
-        console.log('\n\n', JSON.stringify(config, null, '  '), '\n\n');
-
         const cameraSource = new FFMPEG(HAP, config, log, settings.config.videoProcessor || 'ffmpeg');
         acc.configureCameraSource(cameraSource);
     };
