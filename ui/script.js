@@ -776,7 +776,7 @@ $(document).ready(() => {
                    <div class="form-group row">
                        <label for="config-input-${p.name}-minValue" class="col-sm-4 col-form-label">minValue</label>
                        <div id="config-input-${p.name}-minValue" class="col-sm-8">
-                           <input id="config-${p.name}-minValue" class="config-props form-control" type="number" value="${p.minValue}">
+                           <input id="config-${p.name}-minValue" class="config-props form-control" type="number" step="0.01" value="${p.minValue}">
                        </div>
                    </div>`);
                 }
@@ -786,7 +786,7 @@ $(document).ready(() => {
                    <div class="form-group row">
                        <label for="config-input-${p.name}-maxValue" class="col-sm-4 col-form-label">maxValue</label>
                        <div id="config-input-${p.name}-maxValue" class="col-sm-8">
-                           <input id="config-${p.name}-maxValue" class="config-props form-control" type="number" value="${p.maxValue}">
+                           <input id="config-${p.name}-maxValue" class="config-props form-control" type="number" step="0.01" value="${p.maxValue}">
                        </div>
                    </div>`);
                 }
@@ -820,7 +820,7 @@ $(document).ready(() => {
         } else if (c.type === 'String') {
             html += `<input id="config-${c.name}" data-payload="${c.name}" class="form-control config-string" value="">`;
         } else if (c.type === 'Number') {
-            html += `<input id="config-${c.name}" data-payload="${c.name}" type="number" class="form-control config-number" value="">`;
+            html += `<input id="config-${c.name}" data-payload="${c.name}" type="number" step="0.01" class="form-control config-number" value="">`;
         } else if (c.type === 'Boolean') {
             html += `<input id="config-${c.name}" data-payload="${c.name}" type="checkbox" class="form-control config-boolean">`;
         }
@@ -840,7 +840,7 @@ $(document).ready(() => {
         </select>
       </span>
       <input id="payload-undefined-${p.name}" data-payload="${p.name}" type="string" class="form-control payload Undefined" disabled>
-      <input id="payload-number-${p.name}" data-payload="${p.name}" type="number" class="form-control payload Number">
+      <input id="payload-number-${p.name}" data-payload="${p.name}" type="number" step="0.01" class="form-control payload Number">
       <input id="payload-string-${p.name}" data-payload="${p.name}" type="text" class="form-control payload String">
       <select id="payload-boolean-${p.name}" data-payload="${p.name}" class="form-control payload Boolean">
           <option value="false">False</option>
