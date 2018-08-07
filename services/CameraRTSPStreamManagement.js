@@ -1,0 +1,30 @@
+/* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
+
+module.exports = function (iface) {
+    const {HAP, mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
+    const {FFMPEG} = require('homebridge-camera-ffmpeg/ffmpeg');
+
+    return function createService_CameraRTSPStreamManagement(acc, settings, subtype) {
+        const config = {
+            name: settings.name,
+            videoConfig: {
+                source: settings.config.source,
+                stillImageSource: settings.config.stillImageSource || undefined,
+                maxStreams: settings.config.maxStreams || 2,
+                maxWidth: settings.config.maxWidth || 1280,
+                maxHeight: settings.config.maxHeight || 720,
+                maxFPS: settings.config.maxFPS || 10,
+                debug: settings.config.debug,
+                vcodec: settings.config.vcodec || 'libx264',
+                audio: settings.config.audio,
+                packetSize: settings.config.packetSize || 1316,
+                maxBitrate: settings.config.maxBitrate || 300
+            }
+        };
+
+        console.log('\n\n', JSON.stringify(config, null, '  '), '\n\n');
+
+        const cameraSource = new FFMPEG(HAP, config, log, settings.config.videoProcessor || 'ffmpeg');
+        acc.configureCameraSource(cameraSource);
+    };
+};

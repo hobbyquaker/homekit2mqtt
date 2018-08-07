@@ -286,7 +286,8 @@ $(document).ready(() => {
     $next.click(() => {
         $dialogService.modal('hide');
         $id.removeAttr('disabled');
-        createServiceForm($selectService.val());
+        const service = $selectService.val();
+        createServiceForm(service);
         if ($('#selectTemplate').val() !== 'none') {
             const tpl = template[$selectService.val()][$('#selectTemplate').val()];
             const name = $('#nameTemplate').val();
@@ -313,6 +314,16 @@ $(document).ready(() => {
                         $('#payload-boolean-' + p).val(String(val));
                         break;
                     default:
+                }
+            });
+        } else if (services[service].config) {
+            services[service].config.forEach(c => {
+                if (c.type === 'Number' || c.type === 'String') {
+                    $('#config-' + c.name).val(c.default);
+                } else if (c.type === 'Boolean') {
+                    if (c.default) {
+                        $('#config-' + c.name).attr('checked', true);
+                    }
                 }
             });
         }
@@ -472,9 +483,20 @@ $(document).ready(() => {
             }
 
             if (s.config) {
+                console.log('save config', s.config);
                 s.config.forEach(c => {
-                    result.config[c.name] = parseInt($.trim($('#config-' + c.name).val()), 10);
+                    console.log(c.name, c.type);
+                    if (c.enum) {
+                        result.config[c.name] = parseInt($.trim($('#config-' + c.name).val()), 10);
+                    } else if (c.type === 'Number') {
+                        result.config[c.name] = parseFloat($.trim($('#config-' + c.name).val())) || 0;
+                    } else if (c.type === 'String') {
+                        result.config[c.name] = $.trim($('#config-' + c.name).val());
+                    } else if (c.type === 'Boolean') {
+                        result.config[c.name] = $('#config-' + c.name).is(':checked');
+                    }
                 });
+                console.log('save config result', result.config);
             }
 
             if (s.props) {
@@ -612,7 +634,11 @@ $(document).ready(() => {
 
         if (s.config) {
             Object.keys(s.config).forEach(c => {
-                if (typeof s.config[c] !== 'undefined') {
+                if ($('#config-' + c).attr('type') === 'checkbox') {
+                    if (s.config[c]) {
+                        $('#config-' + c).attr('checked', true);
+                    }
+                } else {
                     $('#config-' + c).val(s.config[c]);
                 }
             });
@@ -697,21 +723,24 @@ $(document).ready(() => {
 
         const s = services[service];
         $service.val(service);
-        $configuration.html('<h4>MQTT Topics</h4>');
+        $configuration.html('');
+        if (s.topic && s.topic.length > 0) {
+            $configuration.append('<h4>MQTT Topics</h4>');
 
-        s.topic.forEach(t => {
-            $configuration.append(`
+            s.topic.forEach(t => {
+                $configuration.append(`
                <div class="form-group row">
                    <label for="topic-${t.name}" class="col-sm-4 col-form-label">${t.name}</label>
                    <div class="col-sm-8">
                        <input type="text" class="form-control topic" id="topic-${t.name}" data-topic="${t.name}" autocomplete="off">
                    </div>
                </div>`);
-        });
+            });
 
-        $('input.topic').each(function () {
-            $(this).typeahead({source: topics});
-        });
+            $('input.topic').each(function () {
+                $(this).typeahead({source: topics});
+            });
+        }
 
         if (s.payload && s.payload.length > 0) {
             $configuration.append('<h4>MQTT Payloads</h4>');
@@ -788,7 +817,14 @@ $(document).ready(() => {
                 html += `<option value="${i}">${o}</option>`;
             });
             html += '</select>';
+        } else if (c.type === 'String') {
+            html += `<input id="config-${c.name}" data-payload="${c.name}" class="form-control config-string" value="">`;
+        } else if (c.type === 'Number') {
+            html += `<input id="config-${c.name}" data-payload="${c.name}" type="number" class="form-control config-number" value="">`;
+        } else if (c.type === 'Boolean') {
+            html += `<input id="config-${c.name}" data-payload="${c.name}" type="checkbox" class="form-control config-boolean">`;
         }
+
         html += '</div>';
         $elem.append(html);
     }

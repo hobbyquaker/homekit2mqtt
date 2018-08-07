@@ -204,7 +204,7 @@ const addService = {};
 function loadService(service) {
     const file = 'services/' + service + '.js';
     log.debug('loading', file);
-    addService[service] = require(path.join(__dirname, file))({mqttPub, mqttSub, mqttStatus, log, Service, Characteristic});
+    addService[service] = require(path.join(__dirname, file))({mqttPub, mqttSub, mqttStatus, log, Service, Characteristic, HAP});
 }
 
 let mapping;

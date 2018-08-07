@@ -170,6 +170,37 @@ payload
 * maxBatteryLevel (optional, default: `100`)
 
 
+#### CameraRTSPStreamManagement
+
+topic
+
+
+payload
+
+
+config
+
+* source , default: `-re -i rtsp://myfancy_rtsp_stream`)
+* stillImageSource , default: `-i http://faster_still_image_grab_url/this_is_optional.jpg`)
+* maxStreams , default: `2`)    
+  the maximum number of streams that will be generated for this camera
+* maxWidth , default: `1280`)
+* maxHeight , default: `720`)
+* maxFPS , default: `10`)    
+  the maximum frame rate of the stream
+* maxBitrate , default: `300`)    
+  the maximum bit rate of the stream in kbit/s
+* vcodec , default: `libx264`)    
+  If you're running on a RPi with the omx version of ffmpeg installed, you can change to "h264_omx" for hardware accelerated video codec
+* audio     
+  can be set to true to enable audio streaming from camera. To use audio ffmpeg must be compiled with --enable-libfdk-aac, see https://github.com/KhaosT/homebridge-camera-ffmpeg/wiki
+* packetSize , default: `1316`)    
+  If audio or video is choppy try a smaller value, set to a multiple of 188
+* debug     
+  Show the output of ffmpeg in the log
+* videoProcessor , default: `ffmpeg`)
+
+
 #### CarbonDioxideSensor
 
 topic

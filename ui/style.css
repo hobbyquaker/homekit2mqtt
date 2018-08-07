@@ -78,3 +78,7 @@ select.payload, select.payloadIdentify {
     border: 0;
     border-radius: 0;
 }
+
+input[type=checkbox] {
+    margin-top: 0.5em;
+}

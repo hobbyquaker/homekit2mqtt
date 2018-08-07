@@ -31,6 +31,24 @@
       {"name": "maxBatteryLevel", "type": "Number", "optional": true, "default": 100}
     ]
   },
+  "CameraRTSPStreamManagement": {
+    "topic": [],
+    "payload": [],
+    "config": [
+      {"name": "source", "optional": false, "type": "String", "default": "-re -i rtsp://myfancy_rtsp_stream"},
+      {"name": "stillImageSource", "optional": false, "type": "String", "default": "-i http://faster_still_image_grab_url/this_is_optional.jpg"},
+      {"name": "maxStreams", "optional": false, "type": "Number", "default": "2", "desc": "the maximum number of streams that will be generated for this camera"},
+      {"name": "maxWidth", "optional": false, "type": "Number", "default": "1280"},
+      {"name": "maxHeight", "optional": false, "type": "Number", "default": "720"},
+      {"name": "maxFPS", "optional": false, "type": "Number", "default": "10", "desc": "the maximum frame rate of the stream"},
+      {"name": "maxBitrate", "optional": false, "type": "Number", "default": "300", "desc": "the maximum bit rate of the stream in kbit/s"},
+      {"name": "vcodec", "optional": false, "type": "String", "default": "libx264", "desc": "If you're running on a RPi with the omx version of ffmpeg installed, you can change to \"h264_omx\" for hardware accelerated video codec"},
+      {"name": "audio", "optional": false, "type": "Boolean", "default": false, "desc": "can be set to true to enable audio streaming from camera. To use audio ffmpeg must be compiled with --enable-libfdk-aac, see https://github.com/KhaosT/homebridge-camera-ffmpeg/wiki"},
+      {"name": "packetSize", "optional": false, "type": "Number", "default": "1316", "desc": "If audio or video is choppy try a smaller value, set to a multiple of 188"},
+      {"name": "debug", "optional": false, "type": "Boolean", "default": false, "desc": "Show the output of ffmpeg in the log"},
+      {"name": "videoProcessor", "optional": false, "type": "String", "default": "ffmpeg"}
+    ]
+  },
   "CarbonDioxideSensor": {
     "topic": [
       {"name": "statusCarbonDioxideDetected"},
