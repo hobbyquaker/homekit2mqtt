@@ -21,13 +21,11 @@ update from <=0.9.3 to >=0.9.4 you have to delete the persistence files and dele
 
 ## Installation
 
-**Prerequisites:** 
+**Requirements** 
 
  * Debian, Ubuntu, Raspbian or macOS
  * [Node.js](https://nodejs.org) 6 or higher
- * If you're running on Linux, you'll need to make sure you have the libavahi-compat-libdnssd-dev package installed:
-   `sudo apt-get install libavahi-compat-libdnssd-dev`
-
+ 
 
 `sudo npm install -g homekit2mqtt --unsafe-perm`   
 
