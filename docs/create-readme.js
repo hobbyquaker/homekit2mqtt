@@ -24,7 +24,7 @@ Object.keys(services).forEach(s => {
 
     output += 'payload\n\n';
     services[s].payload.forEach(p => {
-        const outputArr = []
+        const outputArr = [];
         output += '* ' + p.name;
         if (p.optional) {
             outputArr.push('optional');
@@ -34,7 +34,7 @@ Object.keys(services).forEach(s => {
         }
         if (outputArr.length > 0) {
             output += ' (' + outputArr.join(', ') + ')';
-         }
+        }
         if (p.desc) {
             output += '    \n  ' + p.desc;
         }
@@ -46,14 +46,16 @@ Object.keys(services).forEach(s => {
     if (services[s].config) {
         output += 'config\n\n';
         services[s].config.forEach(c => {
+            const outputArr = [];
             output += '* ' + c.name + ' ';
             if (c.optional) {
-                output += '(optional';
+                outputArr.push('optional');
             }
             if (c.default) {
-                output += ', default: `' + c.default + '`)';
-            } else if (c.optional) {
-                output += ')';
+                outputArr.push('default: `' + c.default + '`');
+            }
+            if (outputArr.length > 0) {
+                output += ' (' + outputArr.join(', ') + ')';
             }
             if (c.enum) {
                 output += '    \n  ';

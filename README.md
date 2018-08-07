@@ -21,13 +21,11 @@ update from <=0.9.3 to >=0.9.4 you have to delete the persistence files and dele
 
 ## Installation
 
-**Prerequisites:** 
+**Requirements** 
 
  * Debian, Ubuntu, Raspbian or macOS
  * [Node.js](https://nodejs.org) 6 or higher
- * If you're running on Linux, you'll need to make sure you have the libavahi-compat-libdnssd-dev package installed:
-   `sudo apt-get install libavahi-compat-libdnssd-dev`
-
+ 
 
 `sudo npm install -g homekit2mqtt --unsafe-perm`   
 
@@ -180,25 +178,25 @@ payload
 
 config
 
-* source , default: `-re -i rtsp://myfancy_rtsp_stream`)
-* stillImageSource , default: `-i http://faster_still_image_grab_url/this_is_optional.jpg`)
-* maxStreams , default: `2`)    
+* source  (default: `-re -i rtsp://myfancy_rtsp_stream`)
+* stillImageSource  (default: `-i http://faster_still_image_grab_url/this_is_optional.jpg`)
+* maxStreams  (default: `2`)    
   the maximum number of streams that will be generated for this camera
-* maxWidth , default: `1280`)
-* maxHeight , default: `720`)
-* maxFPS , default: `10`)    
+* maxWidth  (default: `1280`)
+* maxHeight  (default: `720`)
+* maxFPS  (default: `10`)    
   the maximum frame rate of the stream
-* maxBitrate , default: `300`)    
+* maxBitrate  (default: `300`)    
   the maximum bit rate of the stream in kbit/s
-* vcodec , default: `libx264`)    
+* vcodec  (default: `libx264`)    
   If you're running on a RPi with the omx version of ffmpeg installed, you can change to "h264_omx" for hardware accelerated video codec
 * audio     
   can be set to true to enable audio streaming from camera. To use audio ffmpeg must be compiled with --enable-libfdk-aac, see https://github.com/KhaosT/homebridge-camera-ffmpeg/wiki
-* packetSize , default: `1316`)    
+* packetSize  (default: `1316`)    
   If audio or video is choppy try a smaller value, set to a multiple of 188
 * debug     
   Show the output of ffmpeg in the log
-* videoProcessor , default: `ffmpeg`)
+* videoProcessor  (default: `ffmpeg`)
 
 
 #### CarbonDioxideSensor
@@ -552,7 +550,7 @@ payload
 
 * muteTrue
 * muteFalse
-* volumeFactor, default: `1`)
+* volumeFactor (default: `1`)
 
 
 #### StatelessProgrammableSwitch
@@ -587,7 +585,7 @@ topic
 
 payload
 
-* fahrenheit, default: `false`)    
+* fahrenheit (default: `false`)    
   Set to true if your sensor publishes values in degree fahrenheit
 * onLowBattery (optional)
 
@@ -642,7 +640,7 @@ payload
 
 config
 
-* ValveType (optional, default: `0`)    
+* ValveType  (optional, default: `0`)    
   0 = GENERIC_VALVE, 1 = IRRIGATION, 2 = SHOWER_HEAD, 3 = WATER_FAUCET
 
 
