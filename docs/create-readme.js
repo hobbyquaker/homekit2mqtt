@@ -24,15 +24,17 @@ Object.keys(services).forEach(s => {
 
     output += 'payload\n\n';
     services[s].payload.forEach(p => {
+        const outputArr = []
         output += '* ' + p.name;
         if (p.optional) {
-            output += ' (optional';
+            outputArr.push('optional');
         }
         if (typeof p.default !== 'undefined') {
-            output += ', default: `' + p.default + '`)';
-        } else if (p.optional) {
-            output += ')';
+            outputArr.push('default: `' + p.default + '`');
         }
+        if (outputArr.length > 0) {
+            output += ' (' + outputArr.join(', ') + ')';
+         }
         if (p.desc) {
             output += '    \n  ' + p.desc;
         }
