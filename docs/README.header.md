@@ -25,7 +25,7 @@ update from <=0.9.3 to >=0.9.4 you have to delete the persistence files and dele
 
  * Debian, Ubuntu, Raspbian or macOS
  * [Node.js](https://nodejs.org) 6 or higher
- 
+ * If you want to use the Camera Service [FFmpeg](https://www.ffmpeg.org/) has to be installed (on Linux: `sudo apt install ffmpeg`)
 
 `sudo npm install -g homekit2mqtt --unsafe-perm`   
 
