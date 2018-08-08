@@ -977,10 +977,10 @@ describe('Door Obstruction', function () {
 describe('Doorbell', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(36000); this.retries(5);
-        subscribe('homekit', /hap set Doorbell ProgrammableSwitchEvent 1/, () => {
+        subscribe('homekit', /hap set Doorbell ProgrammableSwitchEvent 0/, () => {
             done();
         });
-        mqtt.publish('Doorbell/status', '1');
+        mqtt.publish('Doorbell/status', '0');
     });
 });
 
