@@ -144,7 +144,7 @@ describe('start homekit2mqtt', () => {
     });
     it('should create accessories', function (done) {
         this.timeout(20000);
-        subscribe('homekit', /hap created [0-9]+ Accessories/, () => {
+        subscribe('homekit', /hap created [0-9]+ Camera Accessories and [0-9]+ Bridged Accessories/, () => {
             done();
         });
     });
