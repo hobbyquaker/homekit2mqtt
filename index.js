@@ -179,7 +179,7 @@ function identify(settings, paired, callback) {
 
 function newAccessory(settings) {
     log.debug('creating new accessory', '"' + settings.name + '"', '"' + settings.id + '"', uuid.generate(settings.id));
-    const acc = new Accessory(settings.name, uuid.generate(settings.id));
+    const acc = new Accessory(settings.name, uuid.generate(settings.id), settings.category);
     if (settings.manufacturer || settings.model || settings.serial) {
         acc.getService(Service.AccessoryInformation)
             .setCharacteristic(Characteristic.Manufacturer, settings.manufacturer || '-')
@@ -418,6 +418,11 @@ if (config.disableWeb) {
     app.get('/topics', (req, res) => {
         log.info('http > topics');
         res.send(JSON.stringify(topics));
+    });
+
+    app.get('/categories', (req, res) => {
+        log.info('http > categories');
+        res.send(JSON.stringify(HAP.Accessory.Categories));
     });
 
     app.get('/config', (req, res) => {

@@ -29,6 +29,13 @@ $(document).ready(() => {
         topics = JSON.parse(body);
     });
 
+    $.get('/categories', body => {
+        const categories = JSON.parse(body);
+        Object.keys(categories).forEach(name => {
+            $('#categoryAcc').append(`<option value="${categories[name]}">${name}</option>`);
+        });
+    });
+
     function subGrid(idSubgrid, idRow) {
         const data = [];
         config[idRow].services.forEach((service, id) => {
@@ -369,7 +376,8 @@ $(document).ready(() => {
                 manufacturer: $.trim($('#manufacturer').val()),
                 model: $.trim($('#model').val()),
                 serial: $.trim($('#serial').val()),
-                topicIdentify: $('#topicIdentify').val()
+                topicIdentify: $('#topicIdentify').val(),
+                category: parseInt($('#categoryAcc').val(), 10)
             };
 
             switch ($('#payloadIdentify-type').val()) {
@@ -581,6 +589,7 @@ $(document).ready(() => {
         $('#manufacturer').val(config[id].manufacturer || '');
         $('#model').val(config[id].model || '');
         $('#serial').val(config[id].serial || '');
+        $('#categoryAcc').val(config[id].category || 1);
         $('#dialogAccessory').modal();
     }
 
