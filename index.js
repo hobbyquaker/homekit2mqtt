@@ -2,9 +2,11 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const Mqtt = require('mqtt');
 const chalk = require('chalk');
 const qrcode = require('qrcode-terminal');
+const nextport = require('nextport');
 const express = require('express');
 const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
@@ -177,6 +179,17 @@ function identify(settings, paired, callback) {
     callback();
 }
 
+function mac(data) {
+    var sha1sum = crypto.createHash('sha1');
+    sha1sum.update(data);
+    var s = sha1sum.digest('hex');
+    var i = -1;
+    return 'xx:xx:xx:xx:xx:xx'.replace(/[x]/g, function(c) {
+        i += 1;
+        return s[i];
+    }).toUpperCase();
+};
+
 function newAccessory(settings) {
     log.debug('creating new accessory', '"' + settings.name + '"', '"' + settings.id + '"', uuid.generate(settings.id));
     const acc = new Accessory(settings.name, uuid.generate(settings.id), settings.category);
@@ -301,12 +314,18 @@ function createBridge() {
     mapping = JSON.parse(fs.readFileSync(config.mapfile));
     convertMapping();
     accCount = 0;
+    accCountBridged = 0;
     Object.keys(mapping).forEach(id => {
         const accConfig = mapping[id];
         accConfig.id = id;
         const acc = newAccessory(accConfig);
 
+        let cam = false;
+        let camName = accConfig.name;
         accConfig.services.forEach((s, i) => {
+            if (s.service === 'CameraRTSPStreamManagement') {
+                cam = true;
+            }
             if (!addService[s.service]) {
                 loadService(s.service);
             }
@@ -314,11 +333,55 @@ function createBridge() {
             addService[s.service](acc, s, String(i));
         });
 
-        log.debug('addBridgedAccessory ' + accConfig.name);
-        bridge.addBridgedAccessory(acc);
-        accCount++;
+
+        if (cam) {
+            nextport(config.port, port => {
+                const username = mac(acc.UUID);
+                log.debug('hap publishing camera accessory ' + accConfig.name);
+                acc.publish({
+                    username,
+                    port,
+                    pincode: config.c,
+                    category: Accessory.Categories.CAMERA
+                });
+
+                log.debug('hap publishing camera accessory "' + camName + '" username=' + username, 'port=' + port,
+                    'pincode=' + config.c, 'setupURI=' + acc.setupURI());
+                acc._server.on('listening', () => {
+                    bridgeListening = true;
+                    mqttPub(config.name + '/connected', '2', {retain: true});
+                    log('hap camera', camName, 'listening on port', port);
+
+                    console.log('\nScan this code with your HomeKit app on your iOS device to pair with', camName);
+                    qrcode.generate(acc.setupURI());
+                    console.log('');
+                });
+
+                acc._server.on('pair', username => {
+                    log('hap camera', camName, 'paired', username);
+                });
+
+                /* istanbul ignore next */
+                acc._server.on('unpair', username => {
+                    log('hap camera', camName, 'unpaired', username);
+                });
+
+                /* istanbul ignore next */
+                acc._server.on('verify', () => {
+                    log('hap camera', camName, 'verify');
+                });
+
+            });
+            accCount++;
+        } else {
+            log.debug('addBridgedAccessory ' + accConfig.name);
+            bridge.addBridgedAccessory(acc);
+            accCountBridged++;
+        }
+
+
     });
-    log.info('hap created', accCount, 'Accessories');
+    log.info('hap created', accCount, 'Camera Accessories and', accCountBridged, 'Bridged Accessories.');
 
     bridge.publish({
         username: config.username,
@@ -326,7 +389,7 @@ function createBridge() {
         pincode: config.c,
         category: Accessory.Categories.OTHER
     });
-    log('hap publishing bridge "' + config.bridgename + '" username=' + config.username, 'port=' + config.port,
+    log.debug('hap publishing bridge "' + config.bridgename + '" username=' + config.username, 'port=' + config.port,
         'pincode=' + config.c, 'setupURI=' + bridge.setupURI());
 
     bridge._server.on('listening', () => {
@@ -334,7 +397,7 @@ function createBridge() {
         mqttPub(config.name + '/connected', '2', {retain: true});
         log('hap Bridge listening on port', config.port);
 
-        console.log('\nScan this code with your HomeKit app on your iOS device to pair with homekit2mqtt:');
+        console.log('\nScan this code with your HomeKit app on your iOS device to pair with the bridge');
         qrcode.generate(bridge.setupURI());
         console.log('Or enter this code with your HomeKit app on your iOS device to pair with homekit2mqtt:');
         console.log(chalk.black.bgWhite('                       '));
@@ -346,17 +409,17 @@ function createBridge() {
     });
 
     bridge._server.on('pair', username => {
-        log('hap paired', username);
+        log('hap bridge paired', username);
     });
 
     /* istanbul ignore next */
     bridge._server.on('unpair', username => {
-        log('hap unpaired', username);
+        log('hap bridge unpaired', username);
     });
 
     /* istanbul ignore next */
     bridge._server.on('verify', () => {
-        log('hap verify');
+        log('hap bridge verify');
     });
 }
 
