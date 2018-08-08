@@ -180,15 +180,15 @@ function identify(settings, paired, callback) {
 }
 
 function mac(data) {
-    var sha1sum = crypto.createHash('sha1');
+    const sha1sum = crypto.createHash('sha1');
     sha1sum.update(data);
-    var s = sha1sum.digest('hex');
-    var i = -1;
-    return 'xx:xx:xx:xx:xx:xx'.replace(/[x]/g, function(c) {
+    const s = sha1sum.digest('hex');
+    let i = -1;
+    return 'xx:xx:xx:xx:xx:xx'.replace(/[x]/g, () => {
         i += 1;
         return s[i];
     }).toUpperCase();
-};
+}
 
 function newAccessory(settings) {
     log.debug('creating new accessory', '"' + settings.name + '"', '"' + settings.id + '"', uuid.generate(settings.id));
@@ -314,14 +314,14 @@ function createBridge() {
     mapping = JSON.parse(fs.readFileSync(config.mapfile));
     convertMapping();
     accCount = 0;
-    accCountBridged = 0;
+    let accCountBridged = 0;
     Object.keys(mapping).forEach(id => {
         const accConfig = mapping[id];
         accConfig.id = id;
         const acc = newAccessory(accConfig);
 
         let cam = false;
-        let camName = accConfig.name;
+        const camName = accConfig.name;
         accConfig.services.forEach((s, i) => {
             if (s.service === 'CameraRTSPStreamManagement') {
                 cam = true;
@@ -332,7 +332,6 @@ function createBridge() {
             log.debug('adding service', s.service, 'to accessory', accConfig.name);
             addService[s.service](acc, s, String(i));
         });
-
 
         if (cam) {
             nextport(config.port, port => {
@@ -370,7 +369,6 @@ function createBridge() {
                 acc._server.on('verify', () => {
                     log('hap camera', camName, 'verify');
                 });
-
             });
             accCount++;
         } else {
@@ -378,8 +376,6 @@ function createBridge() {
             bridge.addBridgedAccessory(acc);
             accCountBridged++;
         }
-
-
     });
     log.info('hap created', accCount, 'Camera Accessories and', accCountBridged, 'Bridged Accessories.');
 
