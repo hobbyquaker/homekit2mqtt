@@ -389,8 +389,8 @@
   },
   "SecuritySystem": {
     "topic": [
-      {"name": "setSecuritySystemTargetState"},
-      {"name": "statusSecuritySystemCurrentState", "optional": true}
+      {"name": "setSecuritySystemTargetState", "desc": "0 = STAY_ARM, 1 = AWAY_ARM, 2 = NIGHT_ARM, 3 = DISARM"},
+      {"name": "statusSecuritySystemCurrentState", "optional": true, "desc": "0 = STAY_ARM, 1 = AWAY_ARM, 2 = NIGHT_ARM, 3 = DISARMED, 4 = ALARM_TRIGGERED"}
     ],
     "payload": [
       
