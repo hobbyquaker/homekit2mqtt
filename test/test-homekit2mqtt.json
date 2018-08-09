@@ -92,11 +92,17 @@
         "service": "CarbonMonoxideSensor",
         "topic": {
           "statusCarbonMonoxideDetected": "CarbonMonoxideSensor/status",
-          "statusLowBattery": "CarbonMonoxideSensor/status/LowBattery"
+          "statusLowBattery": "CarbonMonoxideSensor/status/LowBattery",
+          "statusActive": "CarbonMonoxideSensor/status/Active",
+          "statusFault": "CarbonMonoxideSensor/status/Fault",
+          "statusTampered": "CarbonMonoxideSensor/status/Tampered"
         },
         "payload": {
           "onCarbonMonoxideDetected": 1,
-          "onLowBattery": 1
+          "onLowBattery": 1,
+          "onActive": 1,
+          "onFault": 1,
+          "onTampered": 1
         },
         "config": {},
         "props": {}
@@ -256,10 +262,16 @@
         "service": "HumiditySensor",
         "topic": {
           "statusHumidity": "HumiditySensor/status",
-          "statusLowBattery": "HumiditySensor/status/LowBattery"
+          "statusLowBattery": "HumiditySensor/status/LowBattery",
+          "statusActive": "HumiditySensor/status/Active",
+          "statusFault": "HumiditySensor/status/Fault",
+          "statusTampered": "HumiditySensor/status/Tampered"
         },
         "payload": {
-          "onLowBattery": 1
+          "onLowBattery": 1,
+          "onActive": 1,
+          "onFault": 1,
+          "onTampered": 1
         },
         "config": {},
         "props": {}
@@ -301,11 +313,17 @@
         "service": "LeakSensor",
         "topic": {
           "statusLeakDetected": "LeakSensor/status",
-          "statusLowBattery": "LeakSensor/status/LowBattery"
+          "statusLowBattery": "LeakSensor/status/LowBattery",
+          "statusActive": "LeakSensor/status/Active",
+          "statusFault": "LeakSensor/status/Fault",
+          "statusTampered": "LeakSensor/status/Tampered"
         },
         "payload": {
           "onLeakDetected": 1,
-          "onLowBattery": 1
+          "onLowBattery": 1,
+          "onActive": 1,
+          "onFault": 1,
+          "onTampered": 1
         },
         "config": {},
         "props": {}
@@ -528,7 +546,8 @@
           "setSecuritySystemTargetState": "SecuritySystem/set/TargetState",
           "statusSecuritySystemCurrentState": "SecuritySystem/status/CurrentState"
         },
-        "payload": {},
+        "payload": {
+        },
         "config": {},
         "props": {}
       }

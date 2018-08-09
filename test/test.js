@@ -1988,9 +1988,8 @@ describe('SecuritySystem CurrentState', () => {
     });
 });
 
-testActive('SecuritySystem');
-testFault('SecuritySystem');
-testTampered('SecuritySystem');
+//testFault('SecuritySystem');
+//testTampered('SecuritySystem');
 
 describe('Slat CurrentSlatState', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
@@ -2057,9 +2056,9 @@ describe('SmokeSensor SmokeSensorState', () => {
 });
 
 testLowBattery('SmokeSensor');
-testActive('SmokeSensor');
-testFault('SmokeSensor');
-testTampered('SmokeSensor');
+//testActive('SmokeSensor');
+//testFault('SmokeSensor');
+//testTampered('SmokeSensor');
 
 describe('Speaker Mute', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
@@ -2251,9 +2250,9 @@ describe('TemperatureSensor', () => {
 });
 
 testLowBattery('TemperatureSensor');
-testActive('TemperatureSensor');
-testFault('TemperatureSensor');
-testTampered('TemperatureSensor');
+//testActive('TemperatureSensor');
+//testFault('TemperatureSensor');
+//testTampered('TemperatureSensor');
 
 describe('TemperatureSensor Fahrenheit', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
