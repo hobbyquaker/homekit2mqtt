@@ -3,36 +3,6 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    // TODO Implement
-
-    /*
-  // Required Characteristics
-  this.addCharacteristic(Characteristic.Active);
-
-  // Optional Characteristics
-  this.addOptionalCharacteristic(Characteristic.CurrentFanState); READ TODO
-   Characteristic.CurrentFanState.INACTIVE = 0;
-   Characteristic.CurrentFanState.IDLE = 1;
-   Characteristic.CurrentFanState.BLOWING_AIR = 2;
-
-  this.addOptionalCharacteristic(Characteristic.TargetFanState); READ/WRITE TODO
-   Characteristic.TargetFanState.MANUAL = 0;
-   Characteristic.TargetFanState.AUTO = 1;
-
-  this.addOptionalCharacteristic(Characteristic.LockPhysicalControls); READ/WRITE TODO
-   Characteristic.LockPhysicalControls.CONTROL_LOCK_DISABLED = 0;
-   Characteristic.LockPhysicalControls.CONTROL_LOCK_ENABLED = 1;
-
-  this.addOptionalCharacteristic(Characteristic.Name);
-  this.addOptionalCharacteristic(Characteristic.RotationDirection);
-  this.addOptionalCharacteristic(Characteristic.RotationSpeed);
-
-  this.addOptionalCharacteristic(Characteristic.SwingMode); READ/WRITE TODO
-   Characteristic.SwingMode.SWING_DISABLED = 0;
-   Characteristic.SwingMode.SWING_ENABLED = 1;
-
-     */
-
     return function createService_Fanv2(acc, settings, subtype) {
         /* istanbul ignore else */
         if (typeof settings.payload.activeActive === 'undefined') {
@@ -151,6 +121,98 @@ module.exports = function (iface) {
                     const speed = (mqttStatus[settings.topic.statusRotationSpeed] / (settings.payload.rotationSpeedFactor || 1)) || 0;
                     log.debug('> hap re_get', settings.name, 'RotationSpeed', speed);
                     callback(null, speed);
+                });
+        }
+
+        mqttSub(settings.topic.statusCurrentFanState, val => {
+            log.debug('> hap update', settings.name, 'CurrentFanState', val);
+            acc.getService(subtype)
+                .updateCharacteristic(Characteristic.CurrentFanState, val);
+        });
+        acc.getService(subtype)
+            .getCharacteristic(Characteristic.CurrentFanState)
+            .on('get', callback => {
+                log.debug('< hap get', settings.name, 'CurrentFanState');
+                const state = mqttStatus[settings.topic.statusCurrentFanState];
+                log.debug('> hap re_get', settings.name, 'CurrentFanState', state);
+                callback(null, state);
+            });
+
+        acc.getService(subtype)
+            .getCharacteristic(Characteristic.TargetFanState)
+            .on('set', (value, callback) => {
+                log.debug('< hap set', settings.name, 'TargetFanState', value);
+                mqttPub(settings.topic.setTargetFanState, value);
+                callback();
+            });
+
+        mqttSub(settings.topic.statusTargetFanState, val => {
+            log.debug('> hap update', settings.name, 'TargetFanState', val);
+            acc.getService(subtype)
+                .updateCharacteristic(Characteristic.TargetFanState, val);
+        });
+        acc.getService(subtype)
+            .getCharacteristic(Characteristic.TargetFanState)
+            .on('get', callback => {
+                log.debug('< hap get', settings.name, 'TargetFanState');
+                const state = mqttStatus[settings.topic.statusTargetFanState];
+                log.debug('> hap re_get', settings.name, 'TargetFanState', state);
+                callback(null, state);
+            });
+
+        /* istanbul ignore else */
+        if (settings.topic.setLockPhysicalControls) {
+            acc.getService(subtype)
+                .getCharacteristic(Characteristic.LockPhysicalControls)
+                .on('set', (value, callback) => {
+                    log.debug('< hap set', settings.name, 'LockPhysicalControls', value);
+                    mqttPub(settings.topic.setLockPhysicalControls, value);
+                    callback();
+                });
+        }
+
+        /* istanbul ignore else */
+        if (settings.topic.statusLockPhysicalControls) {
+            mqttSub(settings.topic.statusLockPhysicalControls, val => {
+                log.debug('> hap update', settings.name, 'LockPhysicalControls', val);
+                acc.getService(subtype)
+                    .updateCharacteristic(Characteristic.LockPhysicalControls, val);
+            });
+            acc.getService(subtype)
+                .getCharacteristic(Characteristic.LockPhysicalControls)
+                .on('get', callback => {
+                    log.debug('< hap get', settings.name, 'LockPhysicalControls');
+                    const state = mqttStatus[settings.topic.statusLockPhysicalControls];
+                    log.debug('> hap re_get', settings.name, 'LockPhysicalControls', state);
+                    callback(null, state);
+                });
+        }
+
+        /* istanbul ignore else */
+        if (settings.topic.setSwingMode) {
+            acc.getService(subtype)
+                .getCharacteristic(Characteristic.SwingMode)
+                .on('set', (value, callback) => {
+                    log.debug('< hap set', settings.name, 'SwingMode', value);
+                    mqttPub(settings.topic.setSwingMode, value);
+                    callback();
+                });
+        }
+
+        /* istanbul ignore else */
+        if (settings.topic.statusSwingMode) {
+            mqttSub(settings.topic.statusSwingMode, val => {
+                log.debug('> hap update', settings.name, 'SwingMode', val);
+                acc.getService(subtype)
+                    .updateCharacteristic(Characteristic.SwingMode, val);
+            });
+            acc.getService(subtype)
+                .getCharacteristic(Characteristic.SwingMode)
+                .on('get', callback => {
+                    log.debug('< hap get', settings.name, 'SwingMode');
+                    const state = mqttStatus[settings.topic.statusSwingMode];
+                    log.debug('> hap re_get', settings.name, 'SwingMode', state);
+                    callback(null, state);
                 });
         }
     };
