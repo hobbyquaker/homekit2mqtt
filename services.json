@@ -30,13 +30,16 @@
       {"name": "statusVOCDensity", "type": "Number", "optional": true},
       {"name": "statusCarbonMonoxideLevel", "type": "Number", "optional": true},
       {"name": "statusCarbonDioxideLevel", "type": "Number", "optional": true},
-      {"name": "statusLowBattery", "optional": true},
-      {"name": "statusTampered", "optional": true},
-      {"name": "statusActive", "optional": true},
-      {"name": "statusFault", "optional": true}
+      {"name": "onLowBattery", "optional": true},
+      {"name": "onTampered", "optional": true},
+      {"name": "onActive", "optional": true},
+      {"name": "onFault", "optional": true}
     ],
     "payload": [
-
+      {"name": "onLowBattery", "optional": true},
+      {"name": "onTampered", "optional": true},
+      {"name": "onActive", "optional": true},
+      {"name": "onFault", "optional": true}
     ]
   },
    "BatteryService": {
@@ -90,11 +93,17 @@
   "CarbonMonoxideSensor": {
     "topic": [
       {"name": "statusCarbonMonoxideDetected"},
-      {"name": "statusLowBattery", "optional": true}
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {"name": "onCarbonMonoxideDetected"},
-      {"name": "onLowBattery", "optional": true}
+      {"name": "onLowBattery", "optional": true},
+      {"name": "onTampered", "optional": true},
+      {"name": "onActive", "optional": true},
+      {"name": "onFault", "optional": true}
     ]
   },
   "ContactSensor": {
@@ -268,10 +277,16 @@
   "HumiditySensor": {
     "topic": [
       {"name": "statusHumidity"},
-      {"name": "statusLowBattery", "optional": true}
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
-      {"name": "onLowBattery", "optional": true}
+      {"name": "onLowBattery", "optional": true},
+      {"name": "onTampered", "optional": true},
+      {"name": "onActive", "optional": true},
+      {"name": "onFault", "optional": true}
     ]
   },
   "IrrigationSystem": {
@@ -293,11 +308,17 @@
   "LeakSensor": {
     "topic": [
       {"name": "statusLeakDetected"},
-      {"name": "statusLowBattery", "optional": true}
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {"name": "onLeakDetected"},
-      {"name": "onLowBattery", "optional": true}
+      {"name": "onLowBattery", "optional": true},
+      {"name": "onTampered", "optional": true},
+      {"name": "onActive", "optional": true},
+      {"name": "onFault", "optional": true}
     ]
   },
   "Lightbulb": {
@@ -390,10 +411,16 @@
   "SecuritySystem": {
     "topic": [
       {"name": "setSecuritySystemTargetState", "desc": "0 = STAY_ARM, 1 = AWAY_ARM, 2 = NIGHT_ARM, 3 = DISARM"},
-      {"name": "statusSecuritySystemCurrentState", "optional": true, "desc": "0 = STAY_ARM, 1 = AWAY_ARM, 2 = NIGHT_ARM, 3 = DISARMED, 4 = ALARM_TRIGGERED"}
+      {"name": "statusSecuritySystemCurrentState", "optional": true, "desc": "0 = STAY_ARM, 1 = AWAY_ARM, 2 = NIGHT_ARM, 3 = DISARMED, 4 = ALARM_TRIGGERED"},
+      {"name": "statusSecuritySystemAlarmType", "optional": true},
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
-      
+      {"name": "onTampered", "optional": true},
+      {"name": "onActive", "optional": true},
+      {"name": "onFault", "optional": true}
     ]
   },
   "Slat": {
@@ -413,11 +440,17 @@
   "SmokeSensor": {
     "topic": [
       {"name": "statusSmokeDetected"},
-      {"name": "statusLowBattery", "optional": true}
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {"name": "onSmokeDetected"},
-      {"name": "onLowBattery", "optional": true}
+      {"name": "onLowBattery", "optional": true},
+      {"name": "onTampered", "optional": true},
+      {"name": "onActive", "optional": true},
+      {"name": "onFault", "optional": true}
     ]
   },
   "Speaker": {
@@ -454,7 +487,10 @@
   "TemperatureSensor": {
     "topic": [
       {"name": "statusTemperature"},
-      {"name": "statusLowBattery", "optional": true}
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {
@@ -463,7 +499,10 @@
         "desc": "Set to true if your sensor publishes values in degree fahrenheit",
         "default": false
       },
-      {"name": "onLowBattery", "optional": true}
+      {"name": "onLowBattery", "optional": true},
+      {"name": "onTampered", "optional": true},
+      {"name": "onActive", "optional": true},
+      {"name": "onFault", "optional": true}
     ],
     "props": [
       {"name": "CurrentTemperature", "minValue": -100, "maxValue": 100}
