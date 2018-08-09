@@ -9,7 +9,7 @@ module.exports = function (iface) {
         mqttSub(settings.topic.statusEvent, val => {
             log.debug('> hap set', settings.name, 'ProgrammableSwitchEvent', val);
             acc.getService(subtype)
-                .setCharacteristic(Characteristic.ProgrammableSwitchEvent, val); // TODO clarify if updateCharacteristic should be used here
+                .updateCharacteristic(Characteristic.ProgrammableSwitchEvent, val);
         });
     };
 };
