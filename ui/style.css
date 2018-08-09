@@ -51,6 +51,12 @@ select.payload, select.payloadIdentify {
 
 }
 
+
+@media (min-width: 1096px) {
+    .modal-lg {
+        max-width: 1024px;
+    }
+}
 .modal-body h4 {
         padding-top: 12px;
         border-top: 1px solid #ddd;
@@ -81,4 +87,13 @@ select.payload, select.payloadIdentify {
 
 input[type=checkbox] {
     margin-top: 0.5em;
+}
+
+.attr-desc {
+    font-size: 11px;
+    color: #888;
+}
+
+.attr-name {
+    word-wrap: break-word;
 }
