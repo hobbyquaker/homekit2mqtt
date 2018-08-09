@@ -134,7 +134,7 @@
       {"name": "statusEvent"}
     ],
     "payload": [
-      
+
     ]
   },
   "Fan": {
@@ -205,6 +205,37 @@
       {"name": "onObstructionDetected", "optional": true},
       {"name": "lockUnsecured", "optional": true},
       {"name": "lockSecured", "optional": true}
+    ]
+  },
+  "HeaterCooler": {
+    "topic": [
+      {"name": "statusActive"},
+      {"name": "setActive"},
+      {"name": "statusCurrentTemperature"},
+      {"name": "statusCurrentHeaterCoolerState", "desc": "0 = INACTIVE, 1 = IDLE, 2 = HEATING, 3 = COOLING"},
+      {"name": "statusTargetHeaterCoolerState", "desc": "0 = AUTO, 1 = HEAT, 2 = COOL"},
+      {"name": "setTargetHeaterCoolerState", "desc": "0 = AUTO, 1 = HEAT, 2 = COOL"},
+      {"name": "statusLockPhysicalControls", "optional": true, "desc": "0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED"},
+      {"name": "setLockPhysicalControls", "optional": true, "desc": "0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED"},
+      {"name": "statusSwingMode", "optional": true, "desc": "0 = SWING_DISABLED, 1 = SWING_ENABLED"},
+      {"name": "setLockSwingMode", "optional": true, "desc": "0 = SWING_DISABLED, 1 = SWING_ENABLED"},
+      {"name": "statusRotationSpeed", "optional": true, "desc": "Percentage 0-100"},
+      {"name": "setRotationSpeed", "optional": true, "desc": "Percentage 0-100"},
+      {"name": "statusCoolingThresholdTemperature", "optional": true},
+      {"name": "setCoolingThresholdTemperature", "optional": true},
+      {"name": "statusHeatingThresholdTemperature", "optional": true},
+      {"name": "setHeatingThresholdTemperature", "optional": true}
+    ],
+    "payload": [
+      {"name": "activeTrue", "optional": true, "default": true},
+      {"name": "activeFalse", "optional": true, "default": false},
+      {"name": "rotationSpeedFactor", "type": "Number", "optional": true, "default": 1}
+    ],
+    "config": [
+      {"name": "TemperatureDisplayUnits", "enum": ["CELSIUS", "FAHRENHEIT"]}
+    ],
+    "props": [
+      {"name": "CurrentTemperature", "minValue": 0, "maxValue": 100}
     ]
   },
   "HumiditySensor": {
