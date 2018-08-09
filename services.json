@@ -21,7 +21,7 @@
   },
   "AirQualitySensor": {
     "topic": [
-      {"name": "statusAirQuality"},
+      {"name": "statusAirQuality", "desc": "0 = UNKNOWN, 1 = EXCELLENT, 2 = GOOD, 3 = FAIR, 4 = INFERIOR, 5 = POOR"},
       {"name": "statusOzoneDensity", "type": "Number", "optional": true},
       {"name": "statusNitrogenDioxideDensity", "type": "Number", "optional": true},
       {"name": "statusSulphurDioxideDensity", "type": "Number", "optional": true},
@@ -46,7 +46,7 @@
     "topic": [
       {"name": "statusBatteryLevel", "desc": "Percentage 0-100"},
       {"name": "statusChargingState", "desc": "0 = NOT_CHARGING, 1 = CHARGING, 2 = NOT_CHARGEABLE"},
-      {"name": "statusLowBattery"}
+      {"name": "statusLowBattery", "desc": "0 = BATTERY_LEVEL_NORMAL, 1 = BATTERY_LEVEL_LOW"}
     ],
     "payload": [
       {"name": "onLowBattery"},

@@ -49,7 +49,6 @@ module.exports = function (iface) {
         }
 
         /* istanbul ignore else */
-        /* Optional: Status Active */
         if (settings.topic.statusActive) {
             acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusActive)
@@ -69,7 +68,6 @@ module.exports = function (iface) {
         }
 
         /* istanbul ignore else */
-        /* Optional: Status Fault */
         if (settings.topic.statusFault) {
             acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusFault)
@@ -93,7 +91,6 @@ module.exports = function (iface) {
         }
 
         /* istanbul ignore else */
-        /* Optional: Status Tampered */
         if (settings.topic.statusTampered) {
             acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusTampered)

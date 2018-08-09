@@ -3,34 +3,6 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    /*
-     // Required Characteristics
-     this.addCharacteristic(Characteristic.AirQuality);
-
-     // Optional Characteristics
-
-      {"name": "statusAirQuality"},
-      {"name": "statusLowBattery", "optional": true},
-      {"name": "statusTampered", "optional": true},
-      {"name": "statusActive", "optional": true},
-      {"name": "statusFault", "optional": true},
-      {"name": "statusOzoneDensity", "type": "Number", "optional": true},
-      {"name": "statusNitrogenDioxideDensity", "type": "Number", "optional": true},
-      {"name": "statusSulphurDioxideDensity", "type": "Number", "optional": true},
-      {"name": "statusPM2_5Density", "type": "Number", "optional": true},
-      {"name": "statusPM10Density", "type": "Number", "optional": true},
-      {"name": "statusVOCDensity", "type": "Number", "optional": true},
-      {"name": "statusCarbonMonoxideLevel", "type": "Number", "optional": true},
-      {"name": "statusCarbonDioxideLevel", "type": "Number", "optional": true}
-
-     Characteristic.AirQuality.UNKNOWN = 0;
-     Characteristic.AirQuality.EXCELLENT = 1;
-     Characteristic.AirQuality.GOOD = 2;
-     Characteristic.AirQuality.FAIR = 3;
-     Characteristic.AirQuality.INFERIOR = 4;
-     Characteristic.AirQuality.POOR = 5;
-     */
-
     return function createService_AirQualitySensor(acc, settings, subtype) {
         mqttSub(settings.topic.statusAirQuality, val => {
             log.debug('> hap update', settings.name, 'AirQuality', mqttStatus[settings.topic.statusAirQuality]);
@@ -70,7 +42,6 @@ module.exports = function (iface) {
         }
 
         /* istanbul ignore else */
-        /* Optional: Status Active */
         if (settings.topic.statusActive) {
             acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusActive)
@@ -90,7 +61,6 @@ module.exports = function (iface) {
         }
 
         /* istanbul ignore else */
-        /* Optional: Status Fault */
         if (settings.topic.statusFault) {
             acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusFault)
@@ -114,7 +84,6 @@ module.exports = function (iface) {
         }
 
         /* istanbul ignore else */
-        /* Optional: Status Tampered */
         if (settings.topic.statusTampered) {
             acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusTampered)

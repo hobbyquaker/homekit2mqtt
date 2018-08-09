@@ -1,11 +1,5 @@
 /* eslint unicorn/filename-case: "off", func-names: "off", camelcase: "off", no-unused-vars: "off" */
 
-/* TODO
- this.addOptionalCharacteristic(Characteristic.StatusActive);
- this.addOptionalCharacteristic(Characteristic.StatusFault);
- this.addOptionalCharacteristic(Characteristic.StatusTampered);
- */
-
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
@@ -49,7 +43,6 @@ module.exports = function (iface) {
                     .updateCharacteristic(Characteristic.StatusLowBattery, bat);
             });
         }
-
 
         /* istanbul ignore else */
         if (settings.topic.statusActive) {
