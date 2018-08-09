@@ -354,12 +354,18 @@
   },
   "LightSensor": {
     "topic": [
-      {"name": "statusAmbientLightLevel"},
-      {"name": "statusLowBattery", "optional": true}
+      {"name": "statusAmbientLightLevel", "desc": "0.0001 - 100000"},
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {"name": "ambientLightLevelFactor", "optional": true, "default": 1},
-      {"name": "onLowBattery", "optional": true}
+      {"name": "onLowBattery", "optional": true},
+      {"name": "onTampered", "optional": true},
+      {"name": "onActive", "optional": true},
+      {"name": "onFault", "optional": true}
     ]
   },
   "LockMechanism": {
