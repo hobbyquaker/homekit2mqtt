@@ -197,6 +197,14 @@
       {"name": "faultTrue", "optional": true, "default": true}
     ]
   },
+  "FilterMaintenance": {
+    "topic": [
+      {"name": "statusFilterChangeIndication"},
+      {"name": "statusFilterLifeLevel", "optional": true, "desc": "Percentage 0-100"},
+      {"name": "setResetFilterIndication", "optional": true}
+    ],
+    "payload": []
+  },
   "GarageDoorOpener": {
     "topic": [
       {"name": "setDoor"},
