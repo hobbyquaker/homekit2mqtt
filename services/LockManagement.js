@@ -3,7 +3,7 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    /*
+    /* TODO #114
      // Required Characteristics
      this.addCharacteristic(Characteristic.LockControlPoint);
      this.addCharacteristic(Characteristic.Version);
