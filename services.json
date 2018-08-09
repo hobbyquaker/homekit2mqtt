@@ -468,7 +468,7 @@
   },
   "StatelessProgrammableSwitch": {
     "topic": [
-      {"name": "statusEvent"}
+      {"name": "statusEvent", "desc": "0 = SINGLE_PRESS, 1 = DOUBLE_PRESS, 2 = LONG_PRESS"}
     ],
     "payload": [
       
