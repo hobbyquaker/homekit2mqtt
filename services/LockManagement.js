@@ -26,7 +26,6 @@ module.exports = function (iface) {
     Characteristic.CurrentDoorState.CLOSING = 3;
     Characteristic.CurrentDoorState.STOPPED = 4;
 
-
     // The value property of LockLastKnownAction must be one of the following:
     Characteristic.LockLastKnownAction.SECURED_PHYSICALLY_INTERIOR = 0;
     Characteristic.LockLastKnownAction.UNSECURED_PHYSICALLY_INTERIOR = 1;

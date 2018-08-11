@@ -89,7 +89,7 @@
   "xo": {
     "space": 4,
     "ignore": [
-      "test/test.js"
+
     ]
   }
 }

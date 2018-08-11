@@ -3,12 +3,6 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    /* TODO
-
-    // Optional Characteristics
-    this.addOptionalCharacteristic(Characteristic.HoldPosition); WRITE, BOOL
-    */
-
     return function createService_Door(acc, settings, subtype) {
         acc.addService(Service.Door, settings.name, subtype)
             .getCharacteristic(Characteristic.TargetPosition)
