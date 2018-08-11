@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* global describe, it */
 
 require('should');
 
@@ -9,9 +10,9 @@ const Mqtt = require('mqtt');
 
 const homekitOutput = false;
 
-mqtt = Mqtt.connect('mqtt://127.0.0.1');
+const mqtt = Mqtt.connect('mqtt://127.0.0.1');
 
-const config = require(__dirname + '/test-homekit2mqtt.json');
+let config;
 
 const homekitCmd = path.join(__dirname, '/../index.js');
 
@@ -19,7 +20,6 @@ function randomHex() {
     return ('0' + Math.floor(Math.random() * 0xff)).slice(-2);
 }
 
-const homekitArgs = ['-m', __dirname + '/test-homekit2mqtt.json', '-v', 'debug', '-a', 'CC:22:3D:' + randomHex() + ':' + randomHex() + ':' + randomHex()];
 let homekit;
 let homekitPipeOut;
 let homekitPipeErr;
@@ -30,11 +30,12 @@ let subIndex = 0;
 
 const clientCmd = path.join(__dirname, '/../node_modules/.bin/hap-client-tool -d 127.0.0.1 -p 51826');
 let clientAccs;
-
+let aid = {};
+let iid = {};
 
 const mqttSubscriptions = {};
 function mqttSubscribe(topic, callback) {
-    if (mqttSubscriptions[topic]) {
+    if (mqttSubscriptions[topic] && mqttSubscriptions[topic].length > 0) {
         mqttSubscriptions[topic].push(callback);
         return mqttSubscriptions[topic] - 1;
     } else {
@@ -53,6 +54,9 @@ mqtt.on('message', (topic, payload) => {
 
 function mqttUnsubscribe(topic, id) {
     mqttSubscriptions[topic].splice(id, 1);
+    if (topic === 'homekit/connected' && mqttSubscriptions[topic].length === 0) {
+        mqtt.unsubscribe(topic);
+    }
 }
 
 function subscribe(type, rx, cb) {
@@ -99,7 +103,10 @@ function matchSubscriptions(type, data) {
     });
 }
 
-function startHomekit() {
+function startHomekit(mapFile) {
+    config = require(mapFile);
+    const homekitArgs = ['-m', mapFile, '-v', 'debug', '-a', 'CC:22:3D:' + randomHex() + ':' + randomHex() + ':' + randomHex()];
+
     homekit = cp.spawn(homekitCmd, homekitArgs);
     homekitPipeOut = homekit.stdout.pipe(streamSplitter('\n'));
     homekitPipeErr = homekit.stderr.pipe(streamSplitter('\n'));
@@ -117,13 +124,39 @@ function startHomekit() {
     });
 }
 
+function stopHomekit() {
+    describe('stop homekit2mqtt', function () {
+        it('should stop the bridge', function (done) {
+            if (homekit && homekit.kill) {
+                homekit.on('close', () => {
+                    done();
+                });
+                homekit.kill();
+            } else {
+                done('can\'t kill the bridge');
+            }
+        });
+        it('should leave last will connected=0 on mqtt', function (done) {
+            mqttSubscribe('homekit/connected', function (payload) {
+                if (payload === '0') {
+                    mqttUnsubscribe('homekit/connected');
+                    done();
+                }
+            });
+        });
+    });
+}
+
 function end(code) {
-    if (homekit.kill) {
-        homekit.kill();
-    }
-    if (typeof code !== 'undefined') {
-        process.exit(code);
-    }
+    stopHomekit();
+    describe('exit', function () {
+        it('should exit', () => {
+            if (typeof code !== 'undefined') {
+                process.exit(code);
+            }
+        })
+    });
+
 }
 
 process.on('SIGINT', () => {
@@ -134,152 +167,161 @@ process.on('exit', () => {
     end();
 });
 
-describe('start homekit2mqtt', () => {
-    it('should start without error', function (done) {
-        this.timeout(20000);
-        subscribe('homekit', /homekit2mqtt [0-9a-z.-]+ starting/, () => {
-            done();
-        });
-        startHomekit();
-    });
-    it('should create accessories', function (done) {
-        this.timeout(20000);
-        subscribe('homekit', /hap created [0-9]+ Camera Accessories and [0-9]+ Bridged Accessories/, () => {
-            done();
-        });
-    });
-    it('should announce the bridge', function (done) {
-        subscribe('homekit', /hap publishing bridge/, () => {
-            done();
-        });
-    });
-    it('should listen on port 51826', function (done) {
-        subscribe('homekit', /hap Bridge listening on port 51826/, () => {
-            done();
-        });
-    });
-});
-
-describe('homekit2mqtt - mqtt connection', () => {
-    it('homekit2mqtt should connect to the mqtt broker', function (done) {
-        this.timeout(36000); this.retries(5);
-        subscribe('homekit', /mqtt connected/, () => {
-            done();
-        });
-    });
-    it('should publish connected=2 on mqtt', function (done) {
-        mqttSubscribe('homekit/connected', function (payload) {
-            if (payload === '2') {
+function initTest(mapFile) {
+    describe('start homekit2mqtt', () => {
+        it('should start without error', function (done) {
+            this.timeout(20000);
+            subscribe('homekit', /homekit2mqtt [0-9a-z.-]+ starting/, () => {
                 done();
-            }
-        });
-    });
-});
-
-let aid = {};
-let iid = {};
-/*
-if (process.platform !== 'darwin' && process.env.TRAVIS) {
-    describe('start dbus', function () {
-
-        it('should start dbus', done => {
-            cp.exec('dbus-launch', (err, stdout, stderr) => {
-		if (!err) {
-                	setTimeout(done, 3000);
-		}
             });
+            startHomekit(mapFile);
         });
-    });
-}
-*/
-
-describe('hap-client - homekit2mqtt pairing', function () {
-    this.timeout(180000);
-    it('should pair without error', function (done) {
-        this.timeout(180000);
-        subscribe('homekit', /hap bridge paired/, () => {
-            setTimeout(function () {
+        it('should create accessories', function (done) {
+            this.timeout(20000);
+            subscribe('homekit', /hap created [0-9]+ Camera Accessories and [0-9]+ Bridged Accessories/, () => {
                 done();
-            }, 3000);
+            });
         });
+        it('should announce the bridge', function (done) {
+            subscribe('homekit', /hap publishing bridge/, () => {
+                done();
+            });
+        });
+        it('should listen on port 51826', function (done) {
+            subscribe('homekit', /hap Bridge listening on port 51826/, () => {
+                done();
+            });
+        });
+    });
 
-        console.log('--- trying to pair...');
-        try {
-            var pair = cp.spawn(path.join(__dirname, '/../node_modules/.bin/hap-client-tool'), ['-d', '127.0.0.1', '-p', '51826', 'pair']);
-
-            pair.on('close', (code) => {
-                console.log(`--- pair close - child process exited with code ${code}`);
+    describe('homekit2mqtt - mqtt connection', () => {
+        it('homekit2mqtt should connect to the mqtt broker', function (done) {
+            this.timeout(36000); this.retries(5);
+            subscribe('homekit', /mqtt connected/, () => {
+                done();
             });
-            pair.on('exit', (code) => {
-                console.log(`--- pair exit- child process exited with code ${code}`);
-            });
-            pair.on('error', (err) => {
-                console.log('--- pair error - Failed to start child process.', err);
-            });
-            pair.stdout.on('data', data => {
-                data = data.toString();
-                console.log('pair stdout', data);
-                if (data.match(/pin code/)) {
-                    console.log('--- writing pin to stdin');
-                    pair.stdin.write('031-45-154\n');
-                    pair.stdin.write('\n');
+        });
+        it('should publish connected=2 on mqtt', function (done) {
+            this.timeout(15000);
+            mqttSubscribe('homekit/connected', function (payload) {
+                if (payload === '2') {
+                    mqttUnsubscribe('homekit/connected');
+                    done();
                 }
             });
-            pair.stderr.on('data', data => {
-                console.log('pair stderr', data.toString());
-            });
-        } catch (err) {
-            console.log('...', err);
-        }
-
-
-    });
-
-
-});
-
-describe('hap-client - homekit2mqtt', function () {
-    this.retries(5);
-    it('should be able to dump accessories', function (done) {
-        this.timeout(36000); this.retries(5);
-
-        cp.exec(clientCmd + ' dump', {maxBuffer: 1024 * 2048}, (err, stdout, stderr) => {
-            console.log(err, stderr);
-            if (err) {
-                done(err);
-            }
-            let clientAccs;
-            try {
-                clientAccs = JSON.parse(stdout).accessories;
-            } catch (err) {
-                done(err);
-            }
-            clientAccs.forEach(acc => {
-                let name;
-                let iidTmp = {};
-
-                acc.services.forEach(service => {
-                    service.characteristics.forEach(ch => {
-                        iidTmp[String(ch.Name).replace(/ /g, '')] = ch.iid;
-                        if (ch.Name === 'Name') {
-                            name = ch.value
-                        }
-                    });
-
-                });
-                aid[name] = acc.aid;
-                iid[name] = iidTmp;
-            });
-
-            // add one because the bridge itself is also an accessory
-            if (clientAccs.length === (Object.keys(config).length + 1)) {
-                done();
-            } else {
-                done(new Error('wrong clientAccs length'));
-            }
         });
     });
-});
+
+
+    /*
+    if (process.platform !== 'darwin' && process.env.TRAVIS) {
+        describe('start dbus', function () {
+
+            it('should start dbus', done => {
+                cp.exec('dbus-launch', (err, stdout, stderr) => {
+            if (!err) {
+                        setTimeout(done, 3000);
+            }
+                });
+            });
+        });
+    }
+    */
+
+    describe('hap-client - homekit2mqtt pairing', function () {
+        this.timeout(180000);
+        it('should pair without error', function (done) {
+            this.timeout(180000);
+            subscribe('homekit', /hap bridge paired/, () => {
+                setTimeout(function () {
+                    done();
+                }, 3000);
+            });
+
+            //console.log('--- trying to pair...');
+            try {
+                var pair = cp.spawn(path.join(__dirname, '/../node_modules/.bin/hap-client-tool'), ['-d', '127.0.0.1', '-p', '51826', 'pair']);
+
+                pair.on('close', (code) => {
+                    //console.log(`--- pair close - child process exited with code ${code}`);
+                });
+                pair.on('exit', (code) => {
+                    //console.log(`--- pair exit- child process exited with code ${code}`);
+                });
+                pair.on('error', (err) => {
+                    done(err);
+                    //console.log('--- pair error - Failed to start child process.', err);
+                });
+                pair.stdout.on('data', data => {
+                    data = data.toString();
+                    //console.log('pair stdout', data);
+                    if (data.match(/pin code/)) {
+                        //console.log('--- writing pin to stdin');
+                        pair.stdin.write('031-45-154\n');
+                        pair.stdin.write('\n');
+                    }
+                });
+                pair.stderr.on('data', data => {
+                    console.log('pair stderr', data.toString());
+                });
+            } catch (err) {
+                done(err)
+            }
+
+
+        });
+
+
+    });
+
+    describe('hap-client - homekit2mqtt', function () {
+        this.retries(5);
+        it('should be able to dump accessories', function (done) {
+            this.timeout(36000); this.retries(5);
+
+            cp.exec(clientCmd + ' dump', {maxBuffer: 1024 * 2048}, (err, stdout, stderr) => {
+                if (err) {
+                    done(err);
+                }
+                let clientAccs;
+                try {
+                    clientAccs = JSON.parse(stdout).accessories;
+                } catch (err) {
+                    done(err);
+                }
+                aid = {};
+                iid = {};
+                clientAccs.forEach(acc => {
+                    let name;
+                    let iidTmp = {};
+
+                    acc.services.forEach(service => {
+                        service.characteristics.forEach(ch => {
+                            iidTmp[String(ch.Name).replace(/ /g, '')] = ch.iid;
+                            if (ch.Name === 'Name') {
+                                name = ch.value
+                            }
+                        });
+
+                    });
+                    aid[name] = acc.aid;
+                    iid[name] = iidTmp;
+                });
+
+                // add one because the bridge itself is also an accessory
+                if (clientAccs.length === (Object.keys(config).length + 1)) {
+                    done();
+                } else {
+                    done(new Error('wrong clientAccs length'));
+                }
+            });
+        });
+    });
+
+}
+
+
+initTest(__dirname + '/test-am.json');
 
 describe('AirQualitySensor AirQuality', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
@@ -883,7 +925,6 @@ describe('Door TargetPosition', function () {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Door + ' --iid ' + iid.Door.TargetPosition + ' 50';
-        console.log(cmd);
         cp.exec(cmd);
     });
 });
@@ -950,7 +991,6 @@ describe('Door Obstruction', function () {
     it('client should get the status of the Door', function (done) {
         this.timeout(36000); this.retries(5);
         cp.exec(clientCmd + ' get --aid ' + aid.Door + ' --iid ' + iid.Door.ObstructionDetected, (err, stdout, stderr) => {
-            console.log(stdout);
             if (stdout === 'false\n') {
                 done();
             }
@@ -1014,7 +1054,6 @@ describe('Fan', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Fan + ' --iid ' + iid.Fan.On + ' 1';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -1026,7 +1065,6 @@ describe('Fan', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Fan + ' --iid ' + iid.Fan.On + ' 0';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -1057,7 +1095,6 @@ describe('Fan RotationSpeed', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Fan + ' --iid ' + iid.Fan.RotationSpeed + ' 20';
-        console.log(cmd);
         cp.exec(cmd);
     });
 });
@@ -1087,7 +1124,6 @@ describe('Fan RotationDirection', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Fan + ' --iid ' + iid.Fan.RotationDirection + ' 0';
-        console.log(cmd);
         cp.exec(cmd);
     });
 });
@@ -1186,7 +1222,6 @@ describe('GarageDoorOpener TargetDoorState', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.TargetDoorState + ' 0';
-        console.log(cmd);
         cp.exec(cmd);
     });
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
@@ -1197,7 +1232,6 @@ describe('GarageDoorOpener TargetDoorState', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.TargetDoorState + ' 1';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -1215,7 +1249,6 @@ describe('GarageDoorOpener Obstruction', function () {
     it('client should get the status of the GarageDoorOpener', function (done) {
         this.timeout(36000); this.retries(5);
         cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.ObstructionDetected, (err, stdout, stderr) => {
-            console.log(stdout);
             if (stdout === 'false\n') {
                 done();
             }
@@ -1252,7 +1285,6 @@ describe('GarageDoorOpener LockCurrentState', function () {
     it('client should get the status of the GarageDoorOpener', function (done) {
         this.timeout(36000); this.retries(5);
         cp.exec(clientCmd + ' get --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.LockCurrentState, (err, stdout, stderr) => {
-            console.log(stdout)
             if (stdout === '0\n') {
                 done();
             }
@@ -1286,7 +1318,6 @@ describe('GarageDoorOpener LockTargetState', function () {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.LockTargetState + ' 0';
-        console.log(cmd);
         cp.exec(cmd);
     });
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
@@ -1297,7 +1328,6 @@ describe('GarageDoorOpener LockTargetState', function () {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.GarageDoorOpener + ' --iid ' + iid.GarageDoorOpener.LockTargetState + ' 1';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -1408,7 +1438,6 @@ describe('Lightbulb', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.On + ' 1';
-        console.log(cmd);
         cp.exec(cmd);
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
@@ -1426,7 +1455,6 @@ describe('Lightbulb', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.On + ' 0';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -1476,7 +1504,6 @@ describe('Lightbulb Brightness', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.Brightness + ' 100';
-        console.log(cmd);
         cp.exec(cmd);
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
@@ -1494,7 +1521,6 @@ describe('Lightbulb Brightness', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.Brightness + ' 0';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -1545,7 +1571,6 @@ describe('Lightbulb ColorTemperature', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.ColorTemperature + ' 254';
-        console.log(cmd);
         cp.exec(cmd);
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
@@ -1563,7 +1588,6 @@ describe('Lightbulb ColorTemperature', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.ColorTemperature + ' 200';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -1614,7 +1638,6 @@ describe('Lightbulb Saturation', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.Saturation + ' 100';
-        console.log(cmd);
         cp.exec(cmd);
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
@@ -1632,7 +1655,6 @@ describe('Lightbulb Saturation', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.Saturation + ' 0';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -1679,7 +1701,6 @@ describe('Lightbulb Hue', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.Hue + ' 360';
-        console.log(cmd);
         cp.exec(cmd);
     });
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
@@ -1697,7 +1718,6 @@ describe('Lightbulb Hue', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.Hue + ' 0';
-        console.log(cmd);
         cp.exec(cmd);
     });
 });
@@ -1737,7 +1757,6 @@ describe('LockMechanism LockCurrentState', function () {
     it('client should get the status of the LockMechanism', function (done) {
         this.timeout(36000); this.retries(5);
         cp.exec(clientCmd + ' get --aid ' + aid.LockMechanism + ' --iid ' + iid.LockMechanism.LockCurrentState, (err, stdout, stderr) => {
-            console.log(stdout)
             if (stdout === '0\n') {
                 done();
             }
@@ -1772,7 +1791,6 @@ describe('LockMechanism LockTargetState', function () {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.LockMechanism + ' --iid ' + iid.LockMechanism.LockTargetState + ' 0';
-        console.log(cmd);
         cp.exec(cmd);
     });
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
@@ -1783,7 +1801,6 @@ describe('LockMechanism LockTargetState', function () {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.LockMechanism + ' --iid ' + iid.LockMechanism.LockTargetState + ' 1';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -1824,6 +1841,10 @@ describe('MotionSensor MotionSensorState', () => {
 });
 
 testLowBattery('MotionSensor');
+
+
+stopHomekit();
+initTest(__dirname + '/test-oz.json');
 
 
 describe('OccupancySensor OccupancySensorState', () => {
@@ -1889,7 +1910,6 @@ describe('Outlet', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Outlet + ' --iid ' + iid.Outlet.On + ' 1';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -1901,7 +1921,6 @@ describe('Outlet', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Outlet + ' --iid ' + iid.Outlet.On + ' 0';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -1983,13 +2002,12 @@ describe('SecuritySystem CurrentState', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.SecuritySystem + ' --iid ' + iid.SecuritySystem.SecuritySystemTargetState + ' 2';
-        console.log(cmd);
         cp.exec(cmd);
     });
 });
 
-//testFault('SecuritySystem');
-//testTampered('SecuritySystem');
+testFault('SecuritySystem');
+testTampered('SecuritySystem');
 
 describe('Slat CurrentSlatState', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
@@ -2094,25 +2112,21 @@ describe('Speaker Mute', () => {
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
         this.timeout(36000); this.retries(5);
         mqttSubscribe('Speaker/set/Mute', payload => {
-            console.log(payload);
             if (payload === 'false') {
                 done();
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Speaker + ' --iid ' + iid.Speaker.Mute + ' 0';
-        console.log(cmd);
         cp.exec(cmd);
     });
     it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
         this.timeout(36000); this.retries(5);
         mqttSubscribe('Speaker/set/Mute', payload => {
-            console.log(payload);
             if (payload === 'true') {
                 done();
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Speaker + ' --iid ' + iid.Speaker.Mute + ' 1';
-        console.log(cmd);
         cp.exec(cmd);
     });
 });
@@ -2144,7 +2158,6 @@ describe('Speaker Volume', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Speaker + ' --iid ' + iid.Speaker.Volume + ' 20';
-        console.log(cmd);
         cp.exec(cmd);
     });
 });
@@ -2212,7 +2225,6 @@ describe('Switch', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Switch1 + ' --iid ' + iid.Switch1.On + ' 1';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -2224,7 +2236,6 @@ describe('Switch', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Switch1 + ' --iid ' + iid.Switch1.On + ' 0';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -2318,7 +2329,6 @@ describe('Thermostat TargetTemperature', function () {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.TargetTemperature + ' 24';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -2369,7 +2379,6 @@ describe('Thermostat TargetHeatingCoolingState', function () {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.TargetHeatingCoolingState + ' 1';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -2420,7 +2429,6 @@ describe('Thermostat TargetRelativeHumidity', function () {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.TargetRelativeHumidity + ' 24';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -2452,7 +2460,6 @@ describe('Thermostat HeatingThresholdTemperature', function () {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.HeatingThresholdTemperature + ' 24';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -2484,7 +2491,6 @@ describe('Thermostat CoolingThresholdTemperature', function () {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Thermostat + ' --iid ' + iid.Thermostat.CoolingThresholdTemperature + ' 24';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -2535,7 +2541,6 @@ describe('ThermostatSimple TargetTemperature', function () {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.ThermostatSimple + ' --iid ' + iid.ThermostatSimple.TargetTemperature + ' 24';
-        console.log(cmd);
         cp.exec(cmd);
     });
 
@@ -2654,7 +2659,6 @@ describe('Window TargetPosition', function () {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.Window + ' --iid ' + iid.Window.TargetPosition + ' 50';
-        console.log(cmd);
         cp.exec(cmd);
     });
 });
@@ -2721,7 +2725,6 @@ describe('Window Obstruction', function () {
     it('client should get the status of the Window', function (done) {
         this.timeout(36000); this.retries(5);
         cp.exec(clientCmd + ' get --aid ' + aid.Window + ' --iid ' + iid.Window.ObstructionDetected, (err, stdout, stderr) => {
-            console.log(stdout);
             if (stdout === 'false\n') {
                 done();
             }
@@ -2823,7 +2826,6 @@ describe('WindowCovering TargetPosition', () => {
             }
         });
         const cmd = clientCmd + ' set --aid ' + aid.WindowCovering + ' --iid ' + iid.WindowCovering.TargetPosition + ' 50';
-        console.log(cmd);
         cp.exec(cmd);
     });
 });
@@ -2878,7 +2880,7 @@ describe('WindowCovering PositionState', function () {
 
 });
 
-
+end(0);
 
 function testLowBattery(name) {
     describe(name + ' StatusLowBattery', function () {
