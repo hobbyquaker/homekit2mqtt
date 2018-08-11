@@ -4,6 +4,16 @@ module.exports = function (iface) {
     const {HAP, mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
     const {FFMPEG} = require('homebridge-camera-ffmpeg/ffmpeg');
 
+    function logger(...args) {
+        let str = args.join(' ');
+        if (str.match(/^(error: )/i)) {
+            str = str.replace(/^error: (.*)/i, '$1');
+            log.error(str);
+        } else {
+            log.debug(str);
+        }
+    }
+
     return function createService_CameraRTSPStreamManagement(acc, settings, subtype) {
         const config = {
             name: settings.name,
@@ -22,7 +32,7 @@ module.exports = function (iface) {
             }
         };
 
-        const cameraSource = new FFMPEG(HAP, config, log, settings.config.videoProcessor || 'ffmpeg');
+        const cameraSource = new FFMPEG(HAP, config, logger, settings.config.videoProcessor || 'ffmpeg');
         acc.configureCameraSource(cameraSource);
     };
 };
