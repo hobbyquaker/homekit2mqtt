@@ -22,6 +22,7 @@ const config = require('./config.js');
 log.setLevel(config.verbosity);
 
 log(pkg.name + ' ' + pkg.version + ' starting');
+process.title = pkg.name;
 
 const mqttStatus = {}; // Holds the payloads of the last-received message, keys are the topics.
 const mqttCallbacks = {}; // Holds arrays of subscription callbacks, keys are the topics.
