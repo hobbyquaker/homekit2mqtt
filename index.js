@@ -352,9 +352,9 @@ function createBridge() {
                     mqttPub(config.name + '/connected', '2', {retain: true});
                     log('hap camera', camName, 'listening on port', port);
 
-                    console.log('\nScan this code with your HomeKit app on your iOS device to pair with', camName);
+                    console.log('  \nScan this code with your HomeKit app on your iOS device to pair with', camName);
                     qrcode.generate(acc.setupURI());
-                    console.log('');
+                    console.log('  ');
                 });
 
                 acc._server.on('pair', username => {
