@@ -43,7 +43,7 @@ Options:
                                                                [default: "info"]
   -m, --mapfile         JSON file containing HomeKit Services to MQTT mapping
                         definitions. See Readme.                       [default:
-         "/Users/basti/WebstormProjects/homekit2mqtt/example-homekit2mqtt.json"]
+                                                  "./example-homekit2mqtt.json"]
   -n, --name            instance name. used as prefix for connected topic
                                                             [default: "homekit"]
   -u, --url             mqtt broker url.           [default: "mqtt://127.0.0.1"]

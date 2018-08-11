@@ -43,7 +43,7 @@ Options:
                                                                [default: "info"]
   -m, --mapfile         JSON file containing HomeKit Services to MQTT mapping
                         definitions. See Readme.                       [default:
-         "/Users/basti/WebstormProjects/homekit2mqtt/example-homekit2mqtt.json"]
+                                                  "./example-homekit2mqtt.json"]
   -n, --name            instance name. used as prefix for connected topic
                                                             [default: "homekit"]
   -u, --url             mqtt broker url.           [default: "mqtt://127.0.0.1"]
@@ -129,11 +129,44 @@ like this in the JSON file:
 ```
 ## Available Service Types
 
+#### AirPurifier
+
+topic
+
+* statusActive
+* setActive
+* statusCurrentAirPurifierState    
+  0 = INACTIVE, 1 = IDLE, 2 = PURIFYING_AIR
+* statusTargetAirPurifierState    
+  0 = MANUAL, 1 = AUTO
+* setTargetAirPurifierState    
+  0 = MANUAL, 1 = AUTO
+* statusLockPhysicalControls (optional)    
+  0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED
+* setLockPhysicalControls (optional)    
+  0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED
+* statusSwingMode (optional)    
+  0 = SWING_DISABLED, 1 = SWING_ENABLED
+* setLockSwingMode (optional)    
+  0 = SWING_DISABLED, 1 = SWING_ENABLED
+* statusRotationSpeed (optional)    
+  Percentage 0-100
+* setRotationSpeed (optional)    
+  Percentage 0-100
+
+payload
+
+* activeTrue (optional, default: `true`)
+* activeFalse (optional, default: `false`)
+* rotationSpeedFactor (optional, default: `1`)
+
+
 #### AirQualitySensor
 
 topic
 
-* statusAirQuality
+* statusAirQuality    
+  0 = UNKNOWN, 1 = EXCELLENT, 2 = GOOD, 3 = FAIR, 4 = INFERIOR, 5 = POOR
 * statusOzoneDensity (optional)
 * statusNitrogenDioxideDensity (optional)
 * statusSulphurDioxideDensity (optional)
@@ -142,13 +175,17 @@ topic
 * statusVOCDensity (optional)
 * statusCarbonMonoxideLevel (optional)
 * statusCarbonDioxideLevel (optional)
-* statusLowBattery (optional)
-* statusTampered (optional)
-* statusActive (optional)
-* statusFault (optional)
+* onLowBattery (optional)
+* onTampered (optional)
+* onActive (optional)
+* onFault (optional)
 
 payload
 
+* onLowBattery (optional)
+* onTampered (optional)
+* onActive (optional)
+* onFault (optional)
 
 
 #### BatteryService
@@ -159,7 +196,8 @@ topic
   Percentage 0-100
 * statusChargingState    
   0 = NOT_CHARGING, 1 = CHARGING, 2 = NOT_CHARGEABLE
-* statusLowBattery
+* statusLowBattery    
+  0 = BATTERY_LEVEL_NORMAL, 1 = BATTERY_LEVEL_LOW
 
 payload
 
@@ -226,11 +264,17 @@ topic
 
 * statusCarbonMonoxideDetected
 * statusLowBattery (optional)
+* statusTampered (optional)
+* statusActive (optional)
+* statusFault (optional)
 
 payload
 
 * onCarbonMonoxideDetected
 * onLowBattery (optional)
+* onTampered (optional)
+* onActive (optional)
+* onFault (optional)
 
 
 #### ContactSensor
@@ -261,6 +305,7 @@ topic
 * statusCurrentPosition (optional)
 * statusPositionState (optional)
 * statusObstruction (optional)
+* setHoldPosition (optional)
 
 payload
 
@@ -269,6 +314,8 @@ payload
 * positionStatusDecreasing (optional)
 * positionStatusIncreasing (optional)
 * onObstructionDetected (optional)
+* holdPositionTrue (optional, default: `true`)
+* holdPositionFalse (optional, default: `false`)
 
 
 #### Doorbell
@@ -301,6 +348,42 @@ payload
 * rotationSpeedFactor (optional, default: `1`)
 
 
+#### Fanv2
+
+topic
+
+* statusActive
+* setActive
+* statusCurrentFanState    
+  0 = INACTIVE, 1 = IDLE, 2 = PURIFYING_AIR
+* statusTargetFanState    
+  0 = MANUAL, 1 = AUTO
+* setTargetFanState    
+  0 = MANUAL, 1 = AUTO
+* statusLockPhysicalControls (optional)    
+  0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED
+* setLockPhysicalControls (optional)    
+  0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED
+* statusSwingMode (optional)    
+  0 = SWING_DISABLED, 1 = SWING_ENABLED
+* setLockSwingMode (optional)    
+  0 = SWING_DISABLED, 1 = SWING_ENABLED
+* statusRotationSpeed (optional)    
+  Percentage 0-100
+* setRotationSpeed (optional)    
+  Percentage 0-100
+* statusRotationDirection (optional)    
+  0 = CLOCKWISE, 1 = COUNTER_CLOCKWISE
+* setRotationDirection (optional)    
+  0 = CLOCKWISE, 1 = COUNTER_CLOCKWISE
+
+payload
+
+* activeTrue (optional, default: `true`)
+* activeFalse (optional, default: `false`)
+* rotationSpeedFactor (optional, default: `1`)
+
+
 #### Faucet
 
 topic
@@ -314,6 +397,19 @@ payload
 * activeTrue (optional, default: `true`)
 * activeFalse (optional, default: `false`)
 * faultTrue (optional, default: `true`)
+
+
+#### FilterMaintenance
+
+topic
+
+* statusFilterChangeIndication
+* statusFilterLifeLevel (optional)    
+  Percentage 0-100
+* setResetFilterIndication (optional)
+
+payload
+
 
 
 #### GarageDoorOpener
@@ -338,16 +434,104 @@ payload
 * lockSecured (optional)
 
 
+#### HeaterCooler
+
+topic
+
+* statusActive
+* setActive
+* statusCurrentTemperature
+* statusCurrentHeaterCoolerState    
+  0 = INACTIVE, 1 = IDLE, 2 = HEATING, 3 = COOLING
+* statusTargetHeaterCoolerState    
+  0 = AUTO, 1 = HEAT, 2 = COOL
+* setTargetHeaterCoolerState    
+  0 = AUTO, 1 = HEAT, 2 = COOL
+* statusLockPhysicalControls (optional)    
+  0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED
+* setLockPhysicalControls (optional)    
+  0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED
+* statusSwingMode (optional)    
+  0 = SWING_DISABLED, 1 = SWING_ENABLED
+* setLockSwingMode (optional)    
+  0 = SWING_DISABLED, 1 = SWING_ENABLED
+* statusRotationSpeed (optional)    
+  Percentage 0-100
+* setRotationSpeed (optional)    
+  Percentage 0-100
+* statusCoolingThresholdTemperature (optional)
+* setCoolingThresholdTemperature (optional)
+* statusHeatingThresholdTemperature (optional)
+* setHeatingThresholdTemperature (optional)
+
+payload
+
+* activeTrue (optional, default: `true`)
+* activeFalse (optional, default: `false`)
+* rotationSpeedFactor (optional, default: `1`)
+
+config
+
+* TemperatureDisplayUnits     
+  0 = CELSIUS, 1 = FAHRENHEIT
+
+
+#### HumidifierDehumidifier
+
+topic
+
+* statusActive
+* setActive
+* statusCurrentTemperature
+* statusWaterLevel    
+  Percentage 0-100
+* statusCurrentHumidifierDehumidifierState    
+  0 = INACTIVE, 1 = IDLE, 2 = HUMIDIFYING, 3 = DEHUMIDIFYING
+* statusTargetHumidifierDehumidifierState    
+  0 = HUMIDIFIER_OR_DEHUMIDIFIER, 1 = HUMIDIFIER, 2 = DEHUMIDIFIER
+* setTargetHumidifierDehumidifierState    
+  0 = HUMIDIFIER_OR_DEHUMIDIFIER, 1 = HUMIDIFIER, 2 = DEHUMIDIFIER
+* statusLockPhysicalControls (optional)    
+  0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED
+* setLockPhysicalControls (optional)    
+  0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED
+* statusSwingMode (optional)    
+  0 = SWING_DISABLED, 1 = SWING_ENABLED
+* setLockSwingMode (optional)    
+  0 = SWING_DISABLED, 1 = SWING_ENABLED
+* statusRotationSpeed (optional)    
+  Percentage 0-100
+* setRotationSpeed (optional)    
+  Percentage 0-100
+* statusRelativeHumidityDehumidifierThreshold (optional)
+* setRelativeHumidityDehumidifierThreshold (optional)
+* statusRelativeHumidityHumidifierThreshold (optional)
+* setRelativeHumidityHumidifierThreshold (optional)
+
+payload
+
+* activeTrue (optional, default: `true`)
+* activeFalse (optional, default: `false`)
+* rotationSpeedFactor (optional, default: `1`)
+* waterLevelFactor (optional, default: `1`)
+
+
 #### HumiditySensor
 
 topic
 
 * statusHumidity
 * statusLowBattery (optional)
+* statusTampered (optional)
+* statusActive (optional)
+* statusFault (optional)
 
 payload
 
 * onLowBattery (optional)
+* onTampered (optional)
+* onActive (optional)
+* onFault (optional)
 
 
 #### IrrigationSystem
@@ -375,11 +559,17 @@ topic
 
 * statusLeakDetected
 * statusLowBattery (optional)
+* statusTampered (optional)
+* statusActive (optional)
+* statusFault (optional)
 
 payload
 
 * onLeakDetected
 * onLowBattery (optional)
+* onTampered (optional)
+* onActive (optional)
+* onFault (optional)
 
 
 #### Lightbulb
@@ -412,13 +602,20 @@ payload
 
 topic
 
-* statusAmbientLightLevel
+* statusAmbientLightLevel    
+  0.0001 - 100000
 * statusLowBattery (optional)
+* statusTampered (optional)
+* statusActive (optional)
+* statusFault (optional)
 
 payload
 
 * ambientLightLevelFactor (optional, default: `1`)
 * onLowBattery (optional)
+* onTampered (optional)
+* onActive (optional)
+* onFault (optional)
 
 
 #### LockMechanism
@@ -494,11 +691,20 @@ payload
 
 topic
 
-* setSecuritySystemTargetState
-* statusSecuritySystemCurrentState (optional)
+* setSecuritySystemTargetState    
+  0 = STAY_ARM, 1 = AWAY_ARM, 2 = NIGHT_ARM, 3 = DISARM
+* statusSecuritySystemCurrentState (optional)    
+  0 = STAY_ARM, 1 = AWAY_ARM, 2 = NIGHT_ARM, 3 = DISARMED, 4 = ALARM_TRIGGERED
+* statusSecuritySystemAlarmType (optional)
+* statusTampered (optional)
+* statusActive (optional)
+* statusFault (optional)
 
 payload
 
+* onTampered (optional)
+* onActive (optional)
+* onFault (optional)
 
 
 #### Slat
@@ -530,11 +736,17 @@ topic
 
 * statusSmokeDetected
 * statusLowBattery (optional)
+* statusTampered (optional)
+* statusActive (optional)
+* statusFault (optional)
 
 payload
 
 * onSmokeDetected
 * onLowBattery (optional)
+* onTampered (optional)
+* onActive (optional)
+* onFault (optional)
 
 
 #### Speaker
@@ -557,7 +769,8 @@ payload
 
 topic
 
-* statusEvent
+* statusEvent    
+  0 = SINGLE_PRESS, 1 = DOUBLE_PRESS, 2 = LONG_PRESS
 
 payload
 
@@ -582,12 +795,18 @@ topic
 
 * statusTemperature
 * statusLowBattery (optional)
+* statusTampered (optional)
+* statusActive (optional)
+* statusFault (optional)
 
 payload
 
 * fahrenheit (default: `false`)    
   Set to true if your sensor publishes values in degree fahrenheit
 * onLowBattery (optional)
+* onTampered (optional)
+* onActive (optional)
+* onFault (optional)
 
 
 #### Thermostat
