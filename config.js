@@ -44,6 +44,15 @@ const config = require('yargs')
     // .config('config')
     .version()
     .help('help')
+    .check(argv => {
+        if (!String(argv.username).match(/^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$/)) {
+            throw new Error('Error: Argument username has to be a colon separated 6 byte hex value xx:xx:xx:xx:xx:xx (format of a MAC address)');
+        }
+        if (!String(argv.pincode).match(/^[0-9]{3}-[0-9]{2}-[0-9]{3}$/)) {
+            throw new Error('Error: Argument pincode has to be a eight digit decimal number the format xxx-xx-xxx')
+        }
+        return true;
+    })
     .argv;
 
 module.exports = config;
