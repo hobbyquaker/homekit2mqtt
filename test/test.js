@@ -1742,6 +1742,9 @@ describe('LightSensor', () => {
 });
 
 testLowBattery('LightSensor');
+testActive('LightSensor');
+testFault('LightSensor');
+testTampered('LightSensor');
 
 
 describe('LockMechanism LockCurrentState', function () {
@@ -1841,7 +1844,9 @@ describe('MotionSensor MotionSensorState', () => {
 });
 
 testLowBattery('MotionSensor');
-
+testActive('MotionSensor');
+testFault('MotionSensor');
+testTampered('MotionSensor');
 
 stopHomekit();
 initTest(__dirname + '/test-oz.json');
@@ -1881,7 +1886,9 @@ describe('OccupancySensor OccupancySensorState', () => {
 });
 
 testLowBattery('OccupancySensor');
-
+testActive('OccupancySensor');
+testFault('OccupancySensor');
+testTampered('OccupancySensor');
 
 describe('Outlet', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
@@ -2074,9 +2081,9 @@ describe('SmokeSensor SmokeSensorState', () => {
 });
 
 testLowBattery('SmokeSensor');
-//testActive('SmokeSensor');
-//testFault('SmokeSensor');
-//testTampered('SmokeSensor');
+testActive('SmokeSensor');
+testFault('SmokeSensor');
+testTampered('SmokeSensor');
 
 describe('Speaker Mute', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
@@ -2261,9 +2268,9 @@ describe('TemperatureSensor', () => {
 });
 
 testLowBattery('TemperatureSensor');
-//testActive('TemperatureSensor');
-//testFault('TemperatureSensor');
-//testTampered('TemperatureSensor');
+testActive('TemperatureSensor');
+testFault('TemperatureSensor');
+testTampered('TemperatureSensor');
 
 describe('TemperatureSensor Fahrenheit', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {

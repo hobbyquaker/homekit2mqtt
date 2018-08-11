@@ -421,10 +421,16 @@
         "service": "LightSensor",
         "topic": {
           "statusAmbientLightLevel": "LightSensor/Brightness",
-          "statusLowBattery": "LightSensor/status/LowBattery"
+          "statusLowBattery": "LightSensor/status/LowBattery",
+          "statusActive": "LightSensor/status/Active",
+          "statusFault": "LightSensor/status/Fault",
+          "statusTampered": "LightSensor/status/Tampered"
         },
         "payload": {
-          "onLowBattery": 1
+          "onLowBattery": 1,
+          "onActive": 1,
+          "onFault": 1,
+          "onTampered": 1
         },
         "config": {},
         "props": {}
@@ -480,11 +486,17 @@
         "service": "MotionSensor",
         "topic": {
           "statusMotionDetected": "MotionSensor/status",
-          "statusLowBattery": "MotionSensor/status/LowBattery"
+          "statusLowBattery": "MotionSensor/status/LowBattery",
+          "statusActive": "MotionSensor/status/Active",
+          "statusFault": "MotionSensor/status/Fault",
+          "statusTampered": "MotionSensor/status/Tampered"
         },
         "payload": {
           "onMotionDetected": 1,
-          "onLowBattery": 1
+          "onLowBattery": 1,
+          "onActive": 1,
+          "onFault": 1,
+          "onTampered": 1
         },
         "config": {},
         "props": {}

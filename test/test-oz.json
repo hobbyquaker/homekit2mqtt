@@ -9,11 +9,17 @@
         "service": "OccupancySensor",
         "topic": {
           "statusOccupancyDetected": "OccupancySensor/status",
-          "statusLowBattery": "OccupancySensor/status/LowBattery"
+          "statusLowBattery": "OccupancySensor/status/LowBattery",
+          "statusActive": "OccupancySensor/status/Active",
+          "statusFault": "OccupancySensor/status/Fault",
+          "statusTampered": "OccupancySensor/status/Tampered"
         },
         "payload": {
           "onOccupancyDetected": 1,
-          "onLowBattery": 1
+          "onLowBattery": 1,
+          "onActive": 1,
+          "onFault": 1,
+          "onTampered": 1
         },
         "config": {},
         "props": {}
@@ -95,11 +101,17 @@
         "service": "SmokeSensor",
         "topic": {
           "statusSmokeDetected": "SmokeSensor/status",
-          "statusLowBattery": "SmokeSensor/status/LowBattery"
+          "statusLowBattery": "SmokeSensor/status/LowBattery",
+          "statusActive": "SmokeSensor/status/Active",
+          "statusFault": "SmokeSensor/status/Fault",
+          "statusTampered": "SmokeSensor/status/Tampered"
         },
         "payload": {
           "onSmokeDetected": 1,
-          "onLowBattery": 1
+          "onLowBattery": 1,
+          "onActive": 1,
+          "onFault": 1,
+          "onTampered": 1
         },
         "config": {},
         "props": {}
@@ -176,10 +188,16 @@
         "service": "TemperatureSensor",
         "topic": {
           "statusTemperature": "TemperatureSensor/Temperature",
-          "statusLowBattery": "TemperatureSensor/status/LowBattery"
+          "statusLowBattery": "TemperatureSensor/status/LowBattery",
+          "statusActive": "TemperatureSensor/status/Active",
+          "statusFault": "TemperatureSensor/status/Fault",
+          "statusTampered": "TemperatureSensor/status/Tampered"
         },
         "payload": {
-          "onLowBattery": 1
+          "onLowBattery": 1,
+          "onActive": 1,
+          "onFault": 1,
+          "onTampered": 1
         },
         "config": {},
         "props": {}
