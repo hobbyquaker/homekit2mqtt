@@ -148,13 +148,16 @@
           "setCurrentPosition": "Door/set/CurrentPosition",
           "statusCurrentPosition": "Door/status/CurrentPosition",
           "statusPositionState": "Door/status/PositionState",
-          "statusObstruction": "Door/status/Obstruction"
+          "statusObstruction": "Door/status/Obstruction",
+          "setHoldPosition": "Door/set/HoldPosition"
         },
         "payload": {
           "positionStatusDecreasing": 2,
           "positionStatusIncreasing": 1,
           "positionStatusStopped": 0,
-          "onObstructionDetected": 1
+          "onObstructionDetected": 1,
+          "holdPositionTrue": 1,
+          "holdPositionFalse": 0
         },
         "config": {},
         "props": {}

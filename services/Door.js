@@ -6,7 +6,7 @@ module.exports = function (iface) {
     /* TODO
 
     // Optional Characteristics
-    this.addOptionalCharacteristic(Characteristic.HoldPosition);
+    this.addOptionalCharacteristic(Characteristic.HoldPosition); WRITE, BOOL
     */
 
     return function createService_Door(acc, settings, subtype) {
@@ -112,6 +112,22 @@ module.exports = function (iface) {
                 acc.getService(subtype)
                     .updateCharacteristic(Characteristic.ObstructionDetected, obstruction);
             });
+        }
+
+        if (settings.topic.setHoldPosition) {
+            acc.getService(subtype)
+                .getCharacteristic(Characteristic.HoldPosition)
+                .on('set', (value, callback) => {
+                    log.debug('< hap set', settings.name, 'HoldPosition', value);
+                    if (typeof settings.payload.holdPositionTrue !== 'undefined' && value) {
+                        value = settings.payload.holdPositionTrue;
+                    } else if (typeof settings.payload.holdPositionFalse !== 'undefined' && !value) {
+                        value = settings.payload.holdPositionFalse;
+                    }
+                    log.debug('> mqtt', settings.topic.setHoldPosition, value);
+                    mqttPub(settings.topic.setHoldPosition, value);
+                    callback();
+                });
         }
     };
 };

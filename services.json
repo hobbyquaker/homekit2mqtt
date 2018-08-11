@@ -128,14 +128,18 @@
       {"name": "statusTargetPosition", "optional": true},
       {"name": "statusCurrentPosition", "optional": true},
       {"name": "statusPositionState", "optional": true},
-      {"name": "statusObstruction", "optional": true}
+      {"name": "statusObstruction", "optional": true},
+      {"name": "setHoldPosition", "optional": true}
     ],
     "payload": [
       {"name": "targetPositionFactor", "type": "Number", "optional": true},
       {"name": "currentPositionFactor", "type": "Number", "optional": true},
       {"name": "positionStatusDecreasing", "optional": true},
       {"name": "positionStatusIncreasing", "optional": true},
-      {"name": "onObstructionDetected", "optional": true}
+      {"name": "onObstructionDetected", "optional": true},
+      {"name": "holdPositionTrue", "optional": true, "default": true},
+      {"name": "holdPositionFalse", "optional": true, "default": false}
+
     ]
   },
   "Doorbell": {

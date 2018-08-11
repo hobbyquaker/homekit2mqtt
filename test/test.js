@@ -929,6 +929,29 @@ describe('Door TargetPosition', function () {
     });
 });
 
+describe('Door HoldPosition', function () {
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(36000); this.retries(5);
+        mqttSubscribe('Door/set/HoldPosition', payload => {
+            if (payload === '1') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.Door + ' --iid ' + iid.Door.HoldPosition + ' 1';
+        cp.exec(cmd);
+    });
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(36000); this.retries(5);
+        mqttSubscribe('Door/set/HoldPosition', payload => {
+            if (payload === '0') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.Door + ' --iid ' + iid.Door.HoldPosition + ' 0';
+        cp.exec(cmd);
+    });
+});
+
 describe('Door PositionState', function () {
 
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {

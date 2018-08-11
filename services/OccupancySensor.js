@@ -48,7 +48,6 @@ module.exports = function (iface) {
             });
         }
 
-
         /* istanbul ignore else */
         if (settings.topic.statusActive) {
             acc.getService(subtype)
