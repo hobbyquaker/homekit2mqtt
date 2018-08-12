@@ -397,11 +397,18 @@
   "MotionSensor": {
     "topic": [
       {"name": "statusMotionDetected"},
-      {"name": "statusLowBattery", "optional": true}
+      {"name": "statusLowBattery", "optional": true},
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {"name": "onMotionDetected"},
-      {"name": "onLowBattery", "optional": true}
+      {"name": "onLowBattery", "optional": true},
+
+      {"name": "onTampered", "optional": true},
+      {"name": "onActive", "optional": true},
+      {"name": "onFault", "optional": true}
     ]
   },
   "OccupancySensor": {
