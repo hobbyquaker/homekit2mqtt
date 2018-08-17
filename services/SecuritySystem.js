@@ -32,52 +32,6 @@ module.exports = function (iface) {
             });
 
         /* istanbul ignore else */
-        if (settings.topic.statusFault) {
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.StatusFault)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'StatusFault');
-                    const fault = mqttStatus[settings.topic.statusFault] === settings.payload.onFault ?
-                        Characteristic.StatusFault.GENERAL_FAULT :
-                        Characteristic.StatusFault.NO_FAULT;
-                    log.debug('> hap re_get', settings.name, 'StatusFault', fault);
-                    callback(null, fault);
-                });
-
-            mqttSub(settings.topic.statusFault, val => {
-                const fault = val === settings.payload.onFault ?
-                    Characteristic.StatusFault.GENERAL_FAULT :
-                    Characteristic.StatusFault.NO_FAULT;
-                log.debug('> hap update', settings.name, 'StatusFault', fault);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.StatusFault, fault);
-            });
-        }
-
-        /* istanbul ignore else */
-        if (settings.topic.statusTampered) {
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.StatusTampered)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'StatusTampered');
-                    const tampered = mqttStatus[settings.topic.statusTampered] === settings.payload.onTampered ?
-                        Characteristic.StatusTampered.TAMPERED :
-                        Characteristic.StatusTampered.NOT_TAMPERED;
-                    log.debug('> hap re_get', settings.name, 'StatusTampered', tampered);
-                    callback(null, tampered);
-                });
-
-            mqttSub(settings.topic.statusTampered, val => {
-                const tampered = val === settings.payload.onTampered ?
-                    Characteristic.StatusTampered.TAMPERED :
-                    Characteristic.StatusTampered.NOT_TAMPERED;
-                log.debug('> hap update', settings.name, 'StatusTampered', tampered);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.StatusTampered, tampered);
-            });
-        }
-
-        /* istanbul ignore else */
         if (settings.topic.statusSecuritySystemAlarmType) {
             acc.getService(subtype)
                 .getCharacteristic(Characteristic.StatusSecuritySystemAlarmType)
@@ -95,5 +49,8 @@ module.exports = function (iface) {
                     .updateCharacteristic(Characteristic.StatusSecuritySystemAlarmType, SecuritySystemAlarmType);
             });
         }
+
+        require('../characteristics/StatusFault')({acc, settings, subtype}, iface);
+        require('../characteristics/StatusTampered')({acc, settings, subtype}, iface);
     };
 };

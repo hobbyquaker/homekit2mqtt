@@ -21,24 +21,6 @@ module.exports = function (iface) {
                 callback();
             });
 
-        /* istanbul ignore else  */
-        if (settings.topic.statusActive) {
-            mqttSub(settings.topic.statusActive, val => {
-                const active = val === settings.payload.activeTrue ? 1 : 0;
-                log.debug('> hap update', settings.name, 'Active', active);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.Active, active);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.Active)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'Active');
-                    const active = mqttStatus[settings.topic.statusActive] === settings.payload.activeTrue ? 1 : 0;
-                    log.debug('> hap re_get', settings.name, 'Active', active);
-                    callback(null, active);
-                });
-        }
-
         mqttSub(settings.topic.statusCurrentAirPurifierState, val => {
             log.debug('> hap update', settings.name, 'CurrentAirPurifierState', val);
             acc.getService(subtype)
@@ -159,5 +141,7 @@ module.exports = function (iface) {
                     callback(null, speed);
                 });
         }
+
+        require('../characteristics/StatusActive')({acc, settings, subtype}, iface);
     };
 };
