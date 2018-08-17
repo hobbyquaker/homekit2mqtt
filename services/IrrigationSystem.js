@@ -80,24 +80,7 @@ module.exports = function (iface) {
                 });
         }
 
-        /* istanbul ignore else  */
-        if (settings.topic.statusFault) {
-            mqttSub(settings.topic.statusFault, val => {
-                const fault = val === settings.payload.faultTrue ? 1 : 0;
-                log.debug('> hap update', settings.name, 'StatusFault', fault);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.StatusFault, fault);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.StatusFault)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'StatusFault');
-                    const fault = mqttStatus[settings.topic.statusFault] === settings.payload.faultTrue ? 1 : 0;
-                    log.debug('> hap re_get', settings.name, 'StatusFault', fault);
-                    callback(null, fault);
-                });
-        }
-
         require('../characteristics/Active')({acc, settings, subtype}, iface);
+        require('../characteristics/StatusFault')({acc, settings, subtype}, iface);
     };
 };
