@@ -4,23 +4,9 @@ module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     return function createService_MotionSensor(acc, settings, subtype) {
-        acc.addService(Service.MotionSensor, settings.name, subtype)
-            .getCharacteristic(Characteristic.MotionDetected)
-            .on('get', callback => {
-                log.debug('< hap get', settings.name, 'MotionDetected');
-                const motion = mqttStatus[settings.topic.statusMotionDetected] === settings.payload.onMotionDetected;
+        acc.addService(Service.MotionSensor, settings.name, subtype);
 
-                log.debug('> hap re_get', settings.name, 'MotionDetected', motion);
-                callback(null, motion);
-            });
-
-        mqttSub(settings.topic.statusMotionDetected, val => {
-            const motion = val === settings.payload.onMotionDetected;
-            log.debug('> hap update', settings.name, 'MotionDetected', motion);
-            acc.getService(subtype)
-                .updateCharacteristic(Characteristic.MotionDetected, motion);
-        });
-
+        require('../characteristics/MotionDetected')({acc, settings, subtype}, iface);
         require('../characteristics/StatusLowBattery')({acc, settings, subtype}, iface);
         require('../characteristics/StatusActive')({acc, settings, subtype}, iface);
         require('../characteristics/StatusFault')({acc, settings, subtype}, iface);
