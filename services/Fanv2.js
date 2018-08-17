@@ -4,16 +4,6 @@ module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     return function createService_Fanv2(acc, settings, subtype) {
-        /* istanbul ignore else */
-        if (typeof settings.payload.activeActive === 'undefined') {
-            settings.payload.activeActive = 1;
-        }
-
-        /* istanbul ignore else */
-        if (typeof settings.payload.activeInactive === 'undefined') {
-            settings.payload.activeInactive = 0;
-        }
-
         /* istanbul ignore if */
         if (typeof settings.payload.rotationDirectionCounterClockwise === 'undefined') {
             settings.payload.rotationDirectionCounterClockwise = Characteristic.RotationDirection.COUNTER_CLOCKWISE;
@@ -24,32 +14,7 @@ module.exports = function (iface) {
             settings.payload.rotationDirectionClockwise = Characteristic.RotationDirection.CLOCKWISE;
         }
 
-        acc.addService(Service.Fanv2)
-            .getCharacteristic(Characteristic.Active)
-            .on('set', (value, callback) => {
-                log.debug('< hap set', settings.name, 'Active', value);
-                const active = value ? settings.payload.activeActive : settings.payload.activeInactive;
-                mqttPub(settings.topic.setActive, active);
-                callback();
-            });
-
-        /* istanbul ignore else */
-        if (settings.topic.statusActive) {
-            mqttSub(settings.topic.statusActive, val => {
-                const active = (val === settings.payload.activeActive ? 1 : 0);
-                log.debug('> hap update', settings.name, 'Active', active);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.Active, active);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.Active)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'Active');
-                    const active = (mqttStatus[settings.topic.statusActive] === settings.payload.activeActive ? 1 : 0);
-                    log.debug('> hap re_get', settings.name, 'Active', active);
-                    callback(null, active);
-                });
-        }
+        acc.addService(Service.Fanv2);
 
         /* istanbul ignore else */
         if (settings.topic.setRotationDirection) {
@@ -215,5 +180,7 @@ module.exports = function (iface) {
                     callback(null, state);
                 });
         }
+
+        require('../characteristics/Active')({acc, settings, subtype}, iface);
     };
 };

@@ -44,37 +44,7 @@ module.exports = function (iface) {
             settings.payload.activeFalse = false;
         }
 
-        acc.addService(Service.Valve, settings.name, subtype)
-            .getCharacteristic(Characteristic.Active)
-            .on('set', (value, callback) => {
-                log.debug('< hap set', settings.name, 'Active', value);
-                const active = value ? settings.payload.activeTrue : settings.payload.activeFalse;
-                mqttPub(settings.topic.setActive, active);
-                callback();
-            });
-
-        const type = settings.config.ValveType || 0;
-        log.debug('> hap set', settings.name, 'ValveType', type);
-        acc.getService(subtype)
-            .setCharacteristic(Characteristic.ValveType, type);
-
-        /* istanbul ignore else  */
-        if (settings.topic.statusActive) {
-            mqttSub(settings.topic.statusActive, val => {
-                const active = val === settings.payload.activeTrue ? 1 : 0;
-                log.debug('> hap update', settings.name, 'Active', active);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.Active, active);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.Active)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'Active');
-                    const active = mqttStatus[settings.topic.statusActive] === settings.payload.activeTrue ? 1 : 0;
-                    log.debug('> hap re_get', settings.name, 'Active', active);
-                    callback(null, active);
-                });
-        }
+        acc.addService(Service.Valve, settings.name, subtype);
 
         mqttSub(settings.topic.statusInUse, val => {
             const inUse = val === settings.payload.inUseTrue ? 1 : 0;
@@ -118,22 +88,7 @@ module.exports = function (iface) {
                 });
         }
 
-        /* istanbul ignore else  */
-        if (settings.topic.statusFault) {
-            mqttSub(settings.topic.statusFault, val => {
-                const fault = val === settings.payload.faultTrue ? 1 : 0;
-                log.debug('> hap update', settings.name, 'StatusFault', fault);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.StatusFault, fault);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.StatusFault)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'StatusFault');
-                    const fault = mqttStatus[settings.topic.statusFault] === settings.payload.faultTrue ? 1 : 0;
-                    log.debug('> hap re_get', settings.name, 'StatusFault', fault);
-                    callback(null, fault);
-                });
-        }
+        require('../characteristics/Active')({acc, settings, subtype}, iface);
+        require('../characteristics/StatusFault')({acc, settings, subtype}, iface);
     };
 };

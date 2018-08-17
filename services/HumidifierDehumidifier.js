@@ -12,32 +12,7 @@ module.exports = function (iface) {
             settings.payload.activeFalse = false;
         }
 
-        acc.addService(Service.HumidifierDehumidifier, settings.name, subtype)
-            .getCharacteristic(Characteristic.Active)
-            .on('set', (value, callback) => {
-                log.debug('< hap set', settings.name, 'Active', value);
-                const active = value ? settings.payload.activeTrue : settings.payload.activeFalse;
-                mqttPub(settings.topic.setActive, active);
-                callback();
-            });
-
-        /* istanbul ignore else  */
-        if (settings.topic.statusActive) {
-            mqttSub(settings.topic.statusActive, val => {
-                const active = val === settings.payload.activeTrue ? 1 : 0;
-                log.debug('> hap update', settings.name, 'Active', active);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.Active, active);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.Active)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'Active');
-                    const active = mqttStatus[settings.topic.statusActive] === settings.payload.activeTrue ? 1 : 0;
-                    log.debug('> hap re_get', settings.name, 'Active', active);
-                    callback(null, active);
-                });
-        }
+        acc.addService(Service.HumidifierDehumidifier, settings.name, subtype);
 
         acc.getService(subtype)
             .getCharacteristic(Characteristic.WaterLevel)
@@ -222,5 +197,7 @@ module.exports = function (iface) {
                     .updateCharacteristic(Characteristic.WaterLevel, val);
             });
         }
+
+        require('../characteristics/Active')({acc, settings, subtype}, iface);
     };
 };
