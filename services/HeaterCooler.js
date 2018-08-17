@@ -43,13 +43,13 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.CurrentTemperature)
             .setProps((settings.props || {}).CurrentTemperature)
             .on('get', callback => {
-                const temperature = mqttStatus[settings.topic.statusTemperature];
+                const temperature = mqttStatus[settings.topic.statusCurrentTemperature];
                 log.debug('< hap get', settings.name, 'TemperatureSensor', 'CurrentTemperature');
                 log.debug('> hap re_get', settings.name, temperature);
                 callback(null, temperature);
             });
 
-        mqttSub(settings.topic.statusTemperature, val => {
+        mqttSub(settings.topic.statusCurrentTemperature, val => {
             log.debug('> hap update', settings.name, 'CurrentTemperature', val);
             acc.getService(subtype)
                 .updateCharacteristic(Characteristic.CurrentTemperature, val);
