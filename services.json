@@ -378,7 +378,10 @@
       {"name": "statusLock", "optional": true}
     ],
     "payload": [
-      {"name": "lockSecured"}
+      {"name": "lockSecured"},
+      {"name": "lockUnsecured"},
+      {"name": "lockJammed", "optional": true},
+      {"name": "lockUnknown", "optiomal": true}
     ]
   },
   "Microphone": {

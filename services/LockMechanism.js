@@ -4,6 +4,23 @@ module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     return function createService_LockMechanism(acc, settings, subtype) {
+        /* istanbul ignore else */
+        if (typeof settings.payload.lockUnknown === 'undefined') {
+            settings.payload.lockUnknown = 3;
+        }
+        /* istanbul ignore else */
+        if (typeof settings.payload.lockJammed === 'undefined') {
+            settings.payload.lockJammed = 2;
+        }
+        /* istanbul ignore else */
+        if (typeof settings.payload.lockSecured === 'undefined') {
+            settings.payload.lockSecured = 1;
+        }
+        /* istanbul ignore else */
+        if (typeof settings.payload.lockUnsecured === 'undefined') {
+            settings.payload.lockUnsecured = 0;
+        }
+
         acc.addService(Service.LockMechanism, settings.name, subtype)
             .getCharacteristic(Characteristic.LockTargetState)
             .on('set', (value, callback) => {
@@ -32,7 +49,25 @@ module.exports = function (iface) {
                             .updateCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.SECURED);
                         initial = false;
                     }
-                } else {
+                } else if (val === settings.payload.lockJammed) {
+                    log.debug('> hap update', settings.name, 'LockCurrentState.JAMMED');
+                    acc.getService(subtype)
+                        .updateCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.JAMMED);
+                    if (initial) {
+                        acc.getService(subtype)
+                            .updateCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.JAMMED);
+                        initial = false;
+                    }
+                } else if (val === settings.payload.lockUnknown) {
+                    log.debug('> hap update', settings.name, 'LockCurrentState.UNKNOWN');
+                    acc.getService(subtype)
+                        .updateCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.UNKNOWN);
+                    if (initial) {
+                        acc.getService(subtype)
+                            .updateCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.UNKNOWN);
+                        initial = false;
+                    }
+                } else /* if (val === settings.payload.lockUnsecured) */ {
                     log.debug('> hap update', settings.name, 'LockCurrentState.UNSECURED');
                     acc.getService(subtype)
                         .updateCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.UNSECURED);
@@ -52,7 +87,13 @@ module.exports = function (iface) {
                     if (mqttStatus[settings.topic.statusLock] === settings.payload.lockSecured) {
                         log.debug('> hap re_get', settings.name, 'LockCurrentState.SECURED');
                         callback(null, Characteristic.LockCurrentState.SECURED);
-                    } else {
+                    } else if (mqttStatus[settings.topic.statusLock] === settings.payload.lockJammed) {
+                        log.debug('> hap re_get', settings.name, 'LockCurrentState.JAMMED');
+                        callback(null, Characteristic.LockCurrentState.JAMMED);
+                    } else if (mqttStatus[settings.topic.statusLock] === settings.payload.lockUnknwon) {
+                        log.debug('> hap re_get', settings.name, 'LockCurrentState.UNKNOWN');
+                        callback(null, Characteristic.LockCurrentState.UNKNOWN);
+                    } else if (mqttStatus[settings.topic.statusLock] === settings.payload.lockUnsecured) {
                         log.debug('> hap re_get', settings.name, 'LockCurrentState.UNSECURED');
                         callback(null, Characteristic.LockCurrentState.UNSECURED);
                     }
