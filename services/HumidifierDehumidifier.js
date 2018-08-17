@@ -19,7 +19,7 @@ module.exports = function (iface) {
             .setProps((settings.props || {}).WaterLevel)
             .on('get', callback => {
                 const humidity = mqttStatus[settings.topic.statusWaterLevel];
-                log.debug('< hap get', settings.name, 'TemperatureSensor', 'WaterLevel');
+                log.debug('< hap get', settings.name, 'WaterLevel');
                 log.debug('> hap re_get', settings.name, humidity);
                 callback(null, humidity);
             });
@@ -185,7 +185,7 @@ module.exports = function (iface) {
                 .getCharacteristic(Characteristic.WaterLevel)
                 .on('get', callback => {
                     const humidity = mqttStatus[settings.topic.statusWaterLevel] / (settings.payload.waterLevelFactor || 1);
-                    log.debug('< hap get', settings.name, 'TemperatureSensor', 'WaterLevel');
+                    log.debug('< hap get', settings.name, 'WaterLevel');
                     log.debug('> hap re_get', settings.name, humidity);
                     callback(null, humidity);
                 });
