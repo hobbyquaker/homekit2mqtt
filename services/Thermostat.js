@@ -103,22 +103,6 @@ module.exports = function (iface) {
             });
 
         /* istanbul ignore else */
-        if (settings.topic.statusCurrentRelativeHumidity) {
-            mqttSub(settings.topic.statusCurrentRelativeHumidity, val => {
-                log.debug('> hap update', settings.name, 'CurrentRelativeHumidity', val);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.CurrentRelativeHumidity, val);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.CurrentRelativeHumidity)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'CurrentRelativeHumidity');
-                    log.debug('> hap re_get', settings.name, 'CurrentRelativeHumidity', mqttStatus[settings.topic.statusCurrentRelativeHumidity]);
-                    callback(null, mqttStatus[settings.topic.statusCurrentRelativeHumidity]);
-                });
-        }
-
-        /* istanbul ignore else */
         if (settings.topic.statusTargetRelativeHumidity) {
             mqttSub(settings.topic.statusTargetRelativeHumidity, val => {
                 log.debug('> hap update', settings.name, 'TargetRelativeHumidity', val);
@@ -202,5 +186,6 @@ module.exports = function (iface) {
 
         require('../characteristics/CurrentTemperature')({acc, settings, subtype}, iface);
         require('../characteristics/TemperatureDisplayUnits')({acc, settings, subtype}, iface);
+        require('../characteristics/CurrentRelativeHumidity')({acc, settings, subtype}, iface);
     };
 };
