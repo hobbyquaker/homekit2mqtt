@@ -99,23 +99,6 @@ module.exports = function (iface) {
                 });
         }
 
-        /* istanbul ignore else */
-        if (settings.topic.statusObstruction) {
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.ObstructionDetected)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'ObstructionDetected');
-                    const obstruction = mqttStatus[settings.topic.statusObstruction] === settings.payload.onObstructionDetected;
-                    log.debug('> hap re_get', settings.name, 'ObstructionDetected', obstruction);
-                    callback(null, obstruction);
-                });
-
-            mqttSub(settings.topic.statusObstruction, val => {
-                const obstruction = val === settings.payload.onObstructionDetected;
-                log.debug('> hap update', settings.name, 'ObstructionDetected', obstruction);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.ObstructionDetected, obstruction);
-            });
-        }
+        require('../characteristics/ObstructionDetected')({acc, settings, subtype}, iface);
     };
 };

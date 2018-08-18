@@ -4,16 +4,6 @@ module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     return function createService_GarageDoorOpener(acc, settings, subtype) {
-        /* Required Characteristics
-         this.addCharacteristic(Characteristic.CurrentDoorState);
-         this.addCharacteristic(Characteristic.TargetDoorState);
-         this.addCharacteristic(Characteristic.ObstructionDetected);
-
-         // Optional Characteristics
-         this.addOptionalCharacteristic(Characteristic.LockCurrentState);
-         this.addOptionalCharacteristic(Characteristic.LockTargetState);
-         this.addOptionalCharacteristic(Characteristic.Name); */
-
         acc.addService(Service.GarageDoorOpener, settings.name, subtype)
             .getCharacteristic(Characteristic.TargetDoorState)
             .on('set', (value, callback) => {
@@ -94,25 +84,6 @@ module.exports = function (iface) {
         }
 
         /* istanbul ignore else */
-        if (settings.topic.statusObstruction) {
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.ObstructionDetected)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'ObstructionDetected');
-                    const obstruction = mqttStatus[settings.topic.statusObstruction] === settings.payload.onObstructionDetected;
-                    log.debug('> hap re_get', settings.name, 'ObstructionDetected', obstruction);
-                    callback(null, obstruction);
-                });
-
-            mqttSub(settings.topic.statusObstruction, val => {
-                const obstruction = val === settings.payload.onObstructionDetected;
-                log.debug('> hap update', settings.name, 'ObstructionDetected', obstruction);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.ObstructionDetected, obstruction);
-            });
-        }
-
-        /* istanbul ignore else */
         if (settings.topic.setLock) {
             acc.getService(subtype)
                 .getCharacteristic(Characteristic.LockTargetState)
@@ -158,5 +129,7 @@ module.exports = function (iface) {
                     }
                 });
         }
+
+        require('../characteristics/ObstructionDetected')({acc, settings, subtype}, iface);
     };
 };
