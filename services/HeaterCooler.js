@@ -14,39 +14,6 @@ module.exports = function (iface) {
 
         acc.addService(Service.HeaterCooler, settings.name, subtype);
 
-        acc.getService(subtype)
-            .getCharacteristic(Characteristic.CurrentTemperature)
-            .setProps((settings.props || {}).CurrentTemperature)
-            .on('get', callback => {
-                const temperature = mqttStatus[settings.topic.statusCurrentTemperature];
-                log.debug('< hap get', settings.name, 'TemperatureSensor', 'CurrentTemperature');
-                log.debug('> hap re_get', settings.name, temperature);
-                callback(null, temperature);
-            });
-
-        mqttSub(settings.topic.statusCurrentTemperature, val => {
-            log.debug('> hap update', settings.name, 'CurrentTemperature', val);
-            acc.getService(subtype)
-                .updateCharacteristic(Characteristic.CurrentTemperature, val);
-        });
-
-        acc.getService(subtype)
-            .getCharacteristic(Characteristic.TemperatureDisplayUnits)
-            .on('set', (value, callback) => {
-                log.debug('< hap set', settings.name, 'TemperatureDisplayUnits', value);
-                log.debug('> config', settings.name, 'TemperatureDisplayUnits', value);
-                settings.config.TemperatureDisplayUnits = value;
-                callback();
-            });
-
-        acc.getService(subtype)
-            .getCharacteristic(Characteristic.TemperatureDisplayUnits)
-            .on('get', callback => {
-                log.debug('< hap get', settings.name, 'TemperatureDisplayUnits');
-                log.debug('> hap re_get', settings.name, 'TemperatureDisplayUnits', settings.config.TemperatureDisplayUnits || 0);
-                callback(null, settings.config.TemperatureDisplayUnits || 0);
-            });
-
         mqttSub(settings.topic.statusCurrentHeaterCoolerState, val => {
             log.debug('> hap update', settings.name, 'CurrentHeaterCoolerState', val);
             acc.getService(subtype)
@@ -199,5 +166,7 @@ module.exports = function (iface) {
         }
 
         require('../characteristics/Active')({acc, settings, subtype}, iface);
+        require('../characteristics/CurrentTemperature')({acc, settings, subtype}, iface);
+        require('../characteristics/TemperatureDisplayUnits')({acc, settings, subtype}, iface);
     };
 };

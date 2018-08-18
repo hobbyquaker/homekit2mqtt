@@ -13,37 +13,6 @@ module.exports = function (iface) {
                 callback();
             });
 
-        acc.getService(subtype)
-            .getCharacteristic(Characteristic.TemperatureDisplayUnits)
-            .on('set', (value, callback) => {
-                log.debug('< hap set', settings.name, 'TemperatureDisplayUnits', value);
-                log.debug('> config', settings.name, 'TemperatureDisplayUnits', value);
-                settings.config.TemperatureDisplayUnits = value;
-                callback();
-            });
-
-        acc.getService(subtype)
-            .getCharacteristic(Characteristic.TemperatureDisplayUnits)
-            .on('get', callback => {
-                log.debug('< hap get', settings.name, 'TemperatureDisplayUnits');
-                log.debug('> hap re_get', settings.name, 'TemperatureDisplayUnits', settings.config.TemperatureDisplayUnits || 0);
-                callback(null, settings.config.TemperatureDisplayUnits || 0);
-            });
-
-        mqttSub(settings.topic.statusCurrentTemperature, val => {
-            log.debug('> hap update', settings.name, 'CurrentTemperature', mqttStatus[settings.topic.statusCurrentTemperature]);
-            acc.getService(subtype)
-                .updateCharacteristic(Characteristic.CurrentTemperature, val);
-        });
-        acc.getService(subtype)
-            .getCharacteristic(Characteristic.CurrentTemperature)
-            .setProps((settings.props || {}).CurrentTemperature || {})
-            .on('get', callback => {
-                log.debug('< hap get', settings.name, 'CurrentTemperature');
-                log.debug('> hap re_get', settings.name, 'CurrentTemperature', mqttStatus[settings.topic.statusCurrentTemperature]);
-                callback(null, mqttStatus[settings.topic.statusCurrentTemperature]);
-            });
-
         if (settings.topic.statusCurrentHeatingCoolingState) {
             mqttSub(settings.topic.statusCurrentHeatingCoolingState, val => {
                 log.debug('> hap update', settings.name, 'CurrentHeatingCoolingState', val);
@@ -230,5 +199,8 @@ module.exports = function (iface) {
                     callback(null, mqttStatus[settings.topic.statusHeatingThresholdTemperature]);
                 });
         }
+
+        require('../characteristics/CurrentTemperature')({acc, settings, subtype}, iface);
+        require('../characteristics/TemperatureDisplayUnits')({acc, settings, subtype}, iface);
     };
 };
