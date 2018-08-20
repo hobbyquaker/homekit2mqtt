@@ -67,35 +67,6 @@ module.exports = function (iface) {
             });
 
         /* istanbul ignore else */
-        if (settings.topic.setRotationSpeed) {
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.RotationSpeed)
-                .on('set', (value, callback) => {
-                    log.debug('< hap set', settings.name, 'RotationSpeed', value * (settings.payload.rotationSpeedFactor || 1));
-                    mqttPub(settings.topic.setRotationSpeed, value);
-                    callback();
-                });
-        }
-
-        /* istanbul ignore else */
-        if (settings.topic.statusRotationSpeed) {
-            mqttSub(settings.topic.statusRotationSpeed, val => {
-                val = Math.round(val / (settings.payload.rotationSpeedFactor || 1));
-                log.debug('> hap update', settings.name, 'RotationSpeed', val);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.RotationSpeed, val);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.RotationSpeed)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'RotationSpeed');
-                    const speed = Math.round(mqttStatus[settings.topic.statusRotationSpeed] / (settings.payload.rotationSpeedFactor || 1));
-                    log.debug('> hap re_get', settings.name, 'RotationSpeed', speed);
-                    callback(null, speed);
-                });
-        }
-
-        /* istanbul ignore else */
         if (settings.topic.setRelativeHumidityDehumidifierThreshold) {
             acc.getService(subtype)
                 .getCharacteristic(Characteristic.RelativeHumidityDehumidifierThreshold)
@@ -171,6 +142,7 @@ module.exports = function (iface) {
         }
 
         require('../characteristics/Active')({acc, settings, subtype}, iface);
+        require('../characteristics/RotationSpeed')({acc, settings, subtype}, iface);
         require('../characteristics/SwingMode')({acc, settings, subtype}, iface);
     };
 };
