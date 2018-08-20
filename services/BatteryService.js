@@ -10,7 +10,7 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.BatteryLevel)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'BatteryLevel');
-                const val = mqttStatus[settings.topic.statusBatteryLevel];
+                let val = mqttStatus[settings.topic.statusBatteryLevel];
                 if (settings.config && (typeof settings.payload.maxBatteryLevel !== 'undefined')) {
                     const max = settings.payload.maxBatteryLevel;
                     const min = settings.payload.minBatteryLevel || 0;
