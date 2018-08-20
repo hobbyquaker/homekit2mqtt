@@ -25,21 +25,6 @@ module.exports = function (iface) {
                 .updateCharacteristic(Characteristic.CarbonDioxideDetected, contact);
         });
 
-        if (settings.topic.statusCarbonDioxideLevel) {
-            mqttSub(settings.topic.statusCarbonDioxideLevel, val => {
-                log.debug('> hap update', settings.name, 'CarbonDioxideLevel', val);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.CarbonDioxideLevel, val);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.CarbonDioxideLevel)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'CarbonDioxideLevel');
-                    log.debug('> hap re_get', settings.name, 'CarbonDioxideLevel', mqttStatus[settings.topic.statusCarbonDioxideLevel]);
-                    callback(null, mqttStatus[settings.topic.statusCarbonDioxideLevel]);
-                });
-        }
-
         if (settings.topic.statusCarbonDioxidePeakLevel) {
             mqttSub(settings.topic.statusCarbonDioxidePeakLevel, val => {
                 log.debug('> hap update', settings.name, 'CarbonDioxidePeakLevel', val);
@@ -55,6 +40,7 @@ module.exports = function (iface) {
                 });
         }
 
+        require('../characteristics/CarbonDioxideLevel')({acc, settings, subtype}, iface);
         require('../characteristics/StatusLowBattery')({acc, settings, subtype}, iface);
         require('../characteristics/StatusActive')({acc, settings, subtype}, iface);
         require('../characteristics/StatusFault')({acc, settings, subtype}, iface);

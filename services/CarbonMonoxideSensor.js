@@ -25,6 +25,7 @@ module.exports = function (iface) {
                 .updateCharacteristic(Characteristic.CarbonMonoxideDetected, contact);
         });
 
+        require('../characteristics/CarbonMonoxideLevel')({acc, settings, subtype}, iface);
         require('../characteristics/StatusLowBattery')({acc, settings, subtype}, iface);
         require('../characteristics/StatusActive')({acc, settings, subtype}, iface);
         require('../characteristics/StatusFault')({acc, settings, subtype}, iface);

@@ -114,38 +114,8 @@ module.exports = function (iface) {
                 });
         }
 
-        /* istanbul ignore else */
-        if (settings.topic.statusCarbonMonoxideLevel) {
-            mqttSub(settings.topic.statusCarbonMonoxideLevel, val => {
-                log.debug('> hap update', settings.name, 'CarbonMonoxideLevel', val);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.CarbonMonoxideLevel, val);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.CarbonMonoxideLevel)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'CarbonMonoxideLevel');
-                    log.debug('> hap re_get', settings.name, 'CarbonMonoxideLevel', mqttStatus[settings.topic.statusCarbonMonoxideLevel]);
-                    callback(null, mqttStatus[settings.topic.statusCarbonMonoxideLevel]);
-                });
-        }
-
-        /* istanbul ignore else */
-        if (settings.topic.statusCarbonDioxideLevel) {
-            mqttSub(settings.topic.statusCarbonDioxideLevel, val => {
-                log.debug('> hap update', settings.name, 'CarbonDioxideLevel', val);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.CarbonDioxideLevel, val);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.CarbonDioxideLevel)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'CarbonDioxideLevel');
-                    log.debug('> hap re_get', settings.name, 'CarbonDioxideLevel', mqttStatus[settings.topic.statusCarbonDioxideLevel]);
-                    callback(null, mqttStatus[settings.topic.statusCarbonDioxideLevel]);
-                });
-        }
-
+        require('../characteristics/CarbonDioxideLevel')({acc, settings, subtype}, iface);
+        require('../characteristics/CarbonMonoxideLevel')({acc, settings, subtype}, iface);
         require('../characteristics/StatusLowBattery')({acc, settings, subtype}, iface);
         require('../characteristics/StatusActive')({acc, settings, subtype}, iface);
         require('../characteristics/StatusFault')({acc, settings, subtype}, iface);
