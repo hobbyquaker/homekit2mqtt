@@ -130,62 +130,13 @@ module.exports = function (iface) {
                 });
         }
 
-        /* istanbul ignore else */
-        if (settings.topic.setCoolingThresholdTemperature) {
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.CoolingThresholdTemperature)
-                .on('set', (value, callback) => {
-                    log.debug('< hap set', settings.name, 'CoolingThresholdTemperature', value);
-                    mqttPub(settings.topic.setCoolingThresholdTemperature, value);
-                    callback();
-                });
-        }
+        const obj = {acc, settings, subtype};
 
-        /* istanbul ignore else */
-        if (settings.topic.statusCoolingThresholdTemperature) {
-            mqttSub(settings.topic.statusCoolingThresholdTemperature, val => {
-                log.debug('> hap update', settings.name, 'CoolingThresholdTemperature', val);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.CoolingThresholdTemperature, val);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.CoolingThresholdTemperature)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'CoolingThresholdTemperature');
-                    log.debug('> hap re_get', settings.name, 'CoolingThresholdTemperature', mqttStatus[settings.topic.statusCoolingThresholdTemperature]);
-                    callback(null, mqttStatus[settings.topic.statusCoolingThresholdTemperature]);
-                });
-        }
+        require('../characteristics')('HeatingThresholdTemperature', obj, iface);
+        require('../characteristics')('CoolingThresholdTemperature', obj, iface);
 
-        /* istanbul ignore else */
-        if (settings.topic.setHeatingThresholdTemperature) {
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.HeatingThresholdTemperature)
-                .on('set', (value, callback) => {
-                    log.debug('< hap set', settings.name, 'HeatingThresholdTemperature', value);
-                    mqttPub(settings.topic.setHeatingThresholdTemperature, value);
-                    callback();
-                });
-        }
-
-        /* istanbul ignore else */
-        if (settings.topic.statusHeatingThresholdTemperature) {
-            mqttSub(settings.topic.statusHeatingThresholdTemperature, val => {
-                log.debug('> hap update', settings.name, 'HeatingThresholdTemperature', val);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.HeatingThresholdTemperature, val);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.HeatingThresholdTemperature)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'HeatingThresholdTemperature');
-                    log.debug('> hap re_get', settings.name, 'HeatingThresholdTemperature', mqttStatus[settings.topic.statusHeatingThresholdTemperature]);
-                    callback(null, mqttStatus[settings.topic.statusHeatingThresholdTemperature]);
-                });
-        }
-
-        require('../characteristics/CurrentTemperature')({acc, settings, subtype}, iface);
-        require('../characteristics/TemperatureDisplayUnits')({acc, settings, subtype}, iface);
-        require('../characteristics/CurrentRelativeHumidity')({acc, settings, subtype}, iface);
+        require('../characteristics/CurrentTemperature')(obj, iface);
+        require('../characteristics/TemperatureDisplayUnits')(obj, iface);
+        require('../characteristics/CurrentRelativeHumidity')(obj, iface);
     };
 };
