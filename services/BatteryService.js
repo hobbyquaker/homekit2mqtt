@@ -63,14 +63,8 @@ module.exports = function (iface) {
                 });
         }
 
-        /* istanbul ignore else */
-        if (settings.topic.statusLowBattery) {
-            mqttSub(settings.topic.statusLowBattery, val => {
-                val = (val === settings.payload.onLowBattery) ? 1 : 0;
-                log.debug('> hap update', settings.name, 'StatusLowBattery', val);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.StatusLowBattery, val);
-            });
-        }
+        const obj = {acc, settings, subtype};
+
+        require('../characteristics/StatusLowBattery')({acc, settings, subtype}, iface);
     };
 };
