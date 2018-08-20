@@ -26,11 +26,15 @@ module.exports = function (charName, obj, iface) {
             log.debug('> hap update', settings.name, charName, val);
             service.updateCharacteristic(Characteristic[charName], val);
         });
-        characteristic.on('get', callback => {
-            log.debug('< hap get', settings.name, charName);
-            log.debug('> hap re_get', settings.name, charName, mqttStatus[settings.topic[statusTopic]]);
-            callback(null, mqttStatus[settings.topic[statusTopic]]);
-        });
+
+        /* istanbul ignore else */
+        if (!eventOnlyCharacteristic) {
+            characteristic.on('get', callback => {
+                log.debug('< hap get', settings.name, charName);
+                log.debug('> hap re_get', settings.name, charName, mqttStatus[settings.topic[statusTopic]]);
+                callback(null, mqttStatus[settings.topic[statusTopic]]);
+            });
+        }
     }
 
     /* istanbul ignore else */
