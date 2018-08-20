@@ -13,6 +13,7 @@ module.exports = function (iface) {
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'BatteryLevel');
                     let val = mqttStatus[settings.topic.statusBatteryLevel];
+                    /* istanbul ignore else */
                     if (settings.config && (typeof settings.payload.maxBatteryLevel !== 'undefined')) {
                         const max = settings.payload.maxBatteryLevel;
                         const min = settings.payload.minBatteryLevel || 0;
@@ -24,6 +25,7 @@ module.exports = function (iface) {
                 });
 
             mqttSub(settings.topic.statusBatteryLevel, val => {
+                /* istanbul ignore else */
                 if (settings.config && (typeof settings.payload.maxBatteryLevel !== 'undefined')) {
                     const max = settings.payload.maxBatteryLevel;
                     const min = settings.payload.minBatteryLevel || 0;
