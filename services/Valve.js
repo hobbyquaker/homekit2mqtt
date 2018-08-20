@@ -71,23 +71,9 @@ module.exports = function (iface) {
                 });
         }
 
-        /* istanbul ignore else  */
-        if (settings.topic.statusRemainingDuration) {
-            mqttSub(settings.topic.statusRemainingDuration, val => {
-                log.debug('> hap update', settings.name, 'RemainingDuration', val);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.RemainingDuration, val);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.RemainingDuration)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'RemainingDuration');
-                    const inUse = mqttStatus[settings.topic.statusRemainingDuration];
-                    log.debug('> hap re_get', settings.name, 'RemainingDuration', inUse);
-                    callback(null, inUse);
-                });
-        }
+        const obj = {acc, settings, subtype};
 
+        require('../characteristics')('RemainingDuration', obj, iface);
         require('../characteristics/Active')({acc, settings, subtype}, iface);
         require('../characteristics/StatusFault')({acc, settings, subtype}, iface);
     };
