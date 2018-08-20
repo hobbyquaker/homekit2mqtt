@@ -49,7 +49,7 @@ module.exports = function (iface) {
                 log.debug('> hap re_get', settings.name, 'TargetHeaterCoolerState', state);
                 callback(null, state);
             });
-        
+
         const obj = {acc, settings, subtype};
 
         require('../characteristics')('CoolingThresholdTemperature', obj, iface);
