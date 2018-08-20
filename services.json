@@ -75,12 +75,11 @@
   "CarbonDioxideSensor": {
     "topic": [
       {"name": "statusCarbonDioxideDetected"},
-      {"name": "statusLowBattery", "optional": true},
+      {"name": "statusCarbonDioxideLevel", "optional": true},
+      {"name": "statusCarbonDioxidePeakLevel", "optional": true},
       {"name": "statusTampered", "optional": true},
       {"name": "statusActive", "optional": true},
-      {"name": "statusFault", "optional": true},
-      {"name": "statusCarbonDioxideLevel", "optional": true},
-      {"name": "statusCarbonDioxidePeakLevel", "optional": true}
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {"name": "onCarbonDioxideDetected"},
@@ -93,6 +92,8 @@
   "CarbonMonoxideSensor": {
     "topic": [
       {"name": "statusCarbonMonoxideDetected"},
+      {"name": "statusCarbonMonoxideLevel", "optional": true},
+      {"name": "statusCarbonMonoxidePeakLevel", "optional": true},
       {"name": "statusLowBattery", "optional": true},
       {"name": "statusTampered", "optional": true},
       {"name": "statusActive", "optional": true},

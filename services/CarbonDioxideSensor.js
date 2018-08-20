@@ -4,7 +4,9 @@ module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     return function createService_CarbonDioxideSensor(acc, settings, subtype) {
-        acc.addService(Service.CarbonDioxideSensor, settings.name, subtype)
+        acc.addService(Service.CarbonDioxideSensor, settings.name, subtype);
+
+        acc.getService(subtype)
             .getCharacteristic(Characteristic.CarbonDioxideDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'CarbonDioxideDetected');
@@ -25,20 +27,9 @@ module.exports = function (iface) {
                 .updateCharacteristic(Characteristic.CarbonDioxideDetected, contact);
         });
 
-        if (settings.topic.statusCarbonDioxidePeakLevel) {
-            mqttSub(settings.topic.statusCarbonDioxidePeakLevel, val => {
-                log.debug('> hap update', settings.name, 'CarbonDioxidePeakLevel', val);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.CarbonDioxidePeakLevel, val);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.CarbonDioxidePeakLevel)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'CarbonDioxidePeakLevel');
-                    log.debug('> hap re_get', settings.name, 'CarbonDioxidePeakLevel', mqttStatus[settings.topic.statusCarbonDioxidePeakLevel]);
-                    callback(null, mqttStatus[settings.topic.statusCarbonDioxidePeakLevel]);
-                });
-        }
+        const obj = {acc, settings, subtype};
+
+        require('../characteristics')('CarbonDioxidePeakLevel', obj, iface);
 
         require('../characteristics/CarbonDioxideLevel')({acc, settings, subtype}, iface);
         require('../characteristics/StatusLowBattery')({acc, settings, subtype}, iface);
