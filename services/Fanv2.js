@@ -125,35 +125,8 @@ module.exports = function (iface) {
                 callback(null, state);
             });
 
-        /* istanbul ignore else */
-        if (settings.topic.setLockPhysicalControls) {
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.LockPhysicalControls)
-                .on('set', (value, callback) => {
-                    log.debug('< hap set', settings.name, 'LockPhysicalControls', value);
-                    mqttPub(settings.topic.setLockPhysicalControls, value);
-                    callback();
-                });
-        }
-
-        /* istanbul ignore else */
-        if (settings.topic.statusLockPhysicalControls) {
-            mqttSub(settings.topic.statusLockPhysicalControls, val => {
-                log.debug('> hap update', settings.name, 'LockPhysicalControls', val);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.LockPhysicalControls, val);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.LockPhysicalControls)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'LockPhysicalControls');
-                    const state = mqttStatus[settings.topic.statusLockPhysicalControls];
-                    log.debug('> hap re_get', settings.name, 'LockPhysicalControls', state);
-                    callback(null, state);
-                });
-        }
-
         require('../characteristics/Active')({acc, settings, subtype}, iface);
+        require('../characteristics/LockPhysicalControls')({acc, settings, subtype}, iface);
         require('../characteristics/SwingMode')({acc, settings, subtype}, iface);
     };
 };
