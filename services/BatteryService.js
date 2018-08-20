@@ -18,7 +18,7 @@ module.exports = function (iface) {
                     val = ((val - min) / range) * 100;
                 }
                 log.debug('> hap re_get', settings.name, 'BatteryLevel', val);
-                callback(null, level);
+                callback(null, val);
             });
 
         /* istanbul ignore else */
