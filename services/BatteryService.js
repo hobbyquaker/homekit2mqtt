@@ -46,11 +46,10 @@ module.exports = function (iface) {
                 .getCharacteristic(Characteristic.ChargingState)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'ChargingState');
-                    let val = mqttStatus[settings.topic.statusChargingState];
+                    const val = mqttStatus[settings.topic.statusChargingState];
                     log.debug('> hap re_get', settings.name, 'ChargingState', val);
                     callback(null, val);
                 });
-
         } else {
             acc.getService(subtype)
                 .setCharacteristic(Characteristic.ChargingState, Characteristic.ChargingState.NOT_CHARGEABLE);
@@ -65,6 +64,6 @@ module.exports = function (iface) {
 
         const obj = {acc, settings, subtype};
 
-        require('../characteristics/StatusLowBattery')({acc, settings, subtype}, iface);
+        require('../characteristics/StatusLowBattery')(obj, iface);
     };
 };
