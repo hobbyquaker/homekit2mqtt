@@ -65,22 +65,6 @@ module.exports = function (iface) {
                 });
         }
 
-        if (settings.topic.statusSwingMode) {
-            mqttSub(settings.topic.statusSwingMode, val => {
-                log.debug('> hap update', settings.name, 'SwingMode', val);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.SwingMode, val);
-            });
-        }
-
-        if (settings.topic.setSwingMode) {
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.SwingMode)
-                .on('set', (value, callback) => {
-                    log.debug('< hap set', settings.name, 'SwingMode', value);
-                    mqttPub(settings.topic.setSwingMode, value);
-                    callback();
-                });
-        }
+        require('../characteristics/SwingMode')({acc, settings, subtype}, iface);
     };
 };
