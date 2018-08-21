@@ -34,20 +34,6 @@ module.exports = function (iface) {
 
         acc.addService(Service.IrrigationSystem, settings.name, subtype);
 
-        mqttSub(settings.topic.statusProgramMode, val => {
-            log.debug('> hap update', settings.name, 'ProgramMode', val);
-            acc.getService(subtype)
-                .updateCharacteristic(Characteristic.ProgramMode, val);
-        });
-        acc.getService(subtype)
-            .getCharacteristic(Characteristic.ProgramMode)
-            .on('get', callback => {
-                log.debug('< hap get', settings.name, 'ProgramMode');
-                const mode = mqttStatus[settings.topic.statusProgramMode];
-                log.debug('> hap re_get', settings.name, 'ProgramMode', mode);
-                callback(null, mode);
-            });
-
         mqttSub(settings.topic.statusInUse, val => {
             const inUse = val === settings.payload.inUseTrue ? 1 : 0;
             log.debug('> hap update', settings.name, 'InUse', inUse);
@@ -65,7 +51,9 @@ module.exports = function (iface) {
 
         const obj = {acc, settings, subtype};
 
+        require('../characteristics')('ProgramMode', obj, iface);
         require('../characteristics')('RemainingDuration', obj, iface);
+
         require('../characteristics/Active')(obj, iface);
         require('../characteristics/StatusFault')(obj, iface);
     };
