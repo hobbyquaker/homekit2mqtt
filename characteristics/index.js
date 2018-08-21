@@ -8,8 +8,19 @@ module.exports = function (charName, obj, iface) {
         throw new Error('Unknown Characteristic ' + charName);
     }
 
-    const setTopic = 'set' + charName;
-    const statusTopic = 'status' + charName.replace(/^Status/, '');
+    let setTopic = 'set' + charName;
+    let statusTopic = 'status' + charName;
+    const topicShort = charName.replace(/^Set|^Status/, '');
+    const setTopicShort = 'set' + topicShort;
+    const statusTopicShort = 'status' + topicShort;
+
+    if (setTopic !== setTopicShort && settings.topic[setTopicShort]) {
+        setTopic = setTopicShort;
+    }
+
+    if (statusTopic !== statusTopicShort && settings.topic[statusTopicShort]) {
+        statusTopic = statusTopicShort;
+    }
 
     const service = acc.getService(subtype);
     const characteristic = service.getCharacteristic(Characteristic[charName]);
@@ -41,7 +52,7 @@ module.exports = function (charName, obj, iface) {
     if (props.perms.includes(Characteristic.Perms.PAIRED_WRITE) && settings.topic[setTopic]) {
         characteristic.on('set', (value, callback) => {
             log.debug('< hap set', settings.name, charName, value);
-            mqttPub(settings.topic[setTopic], value);
+            mqttPub(settings.topic[setTopic], value, settings.mqttPublishOptions);
             callback();
         });
     }
