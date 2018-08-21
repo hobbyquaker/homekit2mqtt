@@ -36,24 +36,6 @@ module.exports = function (iface) {
                 });
         }
 
-        /* istanbul ignore else */
-        if (settings.topic.statusCurrentPosition) {
-            mqttSub(settings.topic.statusCurrentPosition, val => {
-                const pos = Math.round(val / (settings.payload.currentPositionFactor || 1));
-                log.debug('> hap update', settings.name, 'CurrentPosition', pos);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.CurrentPosition, pos);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.CurrentPosition)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'CurrentPosition');
-                    const position = Math.round(mqttStatus[settings.topic.statusCurrentPosition] / (settings.payload.currentPositionFactor || 1));
-                    log.debug('> hap re_get', settings.name, 'CurrentPosition', position);
-                    callback(null, position);
-                });
-        }
-
         if (settings.topic.setHoldPosition) {
             acc.getService(subtype)
                 .getCharacteristic(Characteristic.HoldPosition)
@@ -70,7 +52,11 @@ module.exports = function (iface) {
                 });
         }
 
-        require('../characteristics/PositionState')({acc, settings, subtype}, iface);
-        require('../characteristics/ObstructionDetected')({acc, settings, subtype}, iface);
+        const obj = {acc, settings, subtype};
+
+        require('../characteristics/CurrentPosition')(obj, iface);
+
+        require('../characteristics/PositionState')(obj, iface);
+        require('../characteristics/ObstructionDetected')(obj, iface);
     };
 };
