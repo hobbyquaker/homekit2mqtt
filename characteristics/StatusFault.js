@@ -4,6 +4,10 @@ module.exports = function (obj, iface) {
     const {acc, settings, subtype} = obj;
     const {mqttStatus, mqttSub, Characteristic, log} = iface;
 
+    if (typeof settings.payload.faultTrue !== 'undefined') {
+        settings.payload.onFault = settings.payload.faultTrue;
+    }
+
     /* istanbul ignore else */
     if (settings.topic.statusFault) {
         acc.getService(subtype)
