@@ -9,7 +9,7 @@ module.exports = function (charName, obj, iface) {
     }
 
     const setTopic = 'set' + charName;
-    const statusTopic = 'status' + charName;
+    const statusTopic = 'status' + charName.replace(/^Status/, '');
 
     const service = acc.getService(subtype);
     const characteristic = service.getCharacteristic(Characteristic[charName]);

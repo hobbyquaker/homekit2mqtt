@@ -31,26 +31,11 @@ module.exports = function (iface) {
                 callback(null, val);
             });
 
-        /* istanbul ignore else */
-        if (settings.topic.statusSecuritySystemAlarmType) {
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.StatusSecuritySystemAlarmType)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'StatusSecuritySystemAlarmType');
-                    const SecuritySystemAlarmType = mqttStatus[settings.topic.statusSecuritySystemAlarmType];
-                    log.debug('> hap re_get', settings.name, 'StatusSecuritySystemAlarmType', SecuritySystemAlarmType);
-                    callback(null, SecuritySystemAlarmType);
-                });
+        const obj = {acc, settings, subtype};
 
-            mqttSub(settings.topic.statusSecuritySystemAlarmType, val => {
-                const SecuritySystemAlarmType = val === settings.payload.onSecuritySystemAlarmType;
-                log.debug('> hap update', settings.name, 'StatusSecuritySystemAlarmType', SecuritySystemAlarmType);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.StatusSecuritySystemAlarmType, SecuritySystemAlarmType);
-            });
-        }
+        require('../characteristics')('StatusSecuritySystemAlarmType', obj, iface);
 
-        require('../characteristics/StatusFault')({acc, settings, subtype}, iface);
-        require('../characteristics/StatusTampered')({acc, settings, subtype}, iface);
+        require('../characteristics/StatusFault')(obj, iface);
+        require('../characteristics/StatusTampered')(obj, iface);
     };
 };
