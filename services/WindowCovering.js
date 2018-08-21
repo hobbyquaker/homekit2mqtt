@@ -41,7 +41,7 @@ module.exports = function (iface) {
         const obj = {acc, settings, subtype};
 
         require('../characteristics/CurrentPosition')(obj, iface);
-
+        require('../characteristics/HoldPosition')(obj, iface);
         require('../characteristics/PositionState')(obj, iface);
     };
 };

@@ -3,18 +3,6 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    /*
-     // Required Characteristics
-     this.addCharacteristic(Characteristic.CurrentPosition);
-     this.addCharacteristic(Characteristic.TargetPosition);
-     this.addCharacteristic(Characteristic.PositionState);
-
-     // Optional Characteristics
-     TODO this.addOptionalCharacteristic(Characteristic.HoldPosition);
-     this.addOptionalCharacteristic(Characteristic.ObstructionDetected);
-     this.addOptionalCharacteristic(Characteristic.Name);
-     */
-
     return function createService_Window(acc, settings, subtype) {
         acc.addService(Service.Window, settings.name, subtype)
             .getCharacteristic(Characteristic.TargetPosition)
@@ -49,6 +37,7 @@ module.exports = function (iface) {
         const obj = {acc, settings, subtype};
 
         require('../characteristics/CurrentPosition')(obj, iface);
+        require('../characteristics/HoldPosition')(obj, iface);
         require('../characteristics/PositionState')(obj, iface);
         require('../characteristics/ObstructionDetected')(obj, iface);
     };
