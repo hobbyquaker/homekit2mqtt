@@ -3,18 +3,6 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    /*
-   // Required Characteristics
-  this.addCharacteristic(Characteristic.Active);
-  this.addCharacteristic(Characteristic.ProgramMode);
-  this.addCharacteristic(Characteristic.InUse);
-
-  // Optional Characteristics
-  this.addOptionalCharacteristic(Characteristic.Name);
-  this.addOptionalCharacteristic(Characteristic.RemainingDuration);
-  this.addOptionalCharacteristic(Characteristic.StatusFault);
-     */
-
     return function createService_IrrigationSystem(acc, settings, subtype) {
         if (typeof settings.payload.activeTrue === 'undefined') {
             settings.payload.activeTrue = true;
