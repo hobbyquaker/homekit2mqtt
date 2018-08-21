@@ -4,6 +4,8 @@ module.exports = function (obj, iface) {
     const {acc, settings, subtype} = obj;
     const {mqttStatus, mqttPub, mqttSub, Characteristic, log} = iface;
 
+    settings.topic.setLock = settings.topic.setLock || settings.topic.setLockTargetState;
+
     /* istanbul ignore else */
     if (typeof settings.payload.lockUnknown === 'undefined') {
         settings.payload.lockUnknown = 3;

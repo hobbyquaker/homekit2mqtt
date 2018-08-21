@@ -83,53 +83,10 @@ module.exports = function (iface) {
                 });
         }
 
-        /* istanbul ignore else */
-        if (settings.topic.setLock) {
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.LockTargetState)
-                .on('set', (value, callback) => {
-                    log.debug('< hap set', settings.name, 'LockTargetState', value);
-                    /* istanbul ignore else */
-                    if (value === Characteristic.LockTargetState.UNSECURED) {
-                        mqttPub(settings.topic.setLock, settings.payload.lockUnsecured);
-                        callback();
-                    } else if (value === Characteristic.LockTargetState.SECURED) {
-                        mqttPub(settings.topic.setLock, settings.payload.lockSecured);
-                        callback();
-                    }
-                });
-        }
+        const obj = {acc, settings, subtype};
 
-        /* istanbul ignore else */
-        if (settings.topic.statusLock) {
-            mqttSub(settings.topic.statusLock, val => {
-                if (val === settings.payload.lockSecured) {
-                    log.debug('> hap update', settings.name, 'LockCurrentState.SECURED');
-                    acc.getService(subtype)
-                        .updateCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED);
-                } else {
-                    log.debug('> hap set', settings.name, 'LockCurrentState.UNSECURED');
-                    log.debug('> hap update', settings.name, 'LockCurrentState.UNSECURED');
-                    acc.getService(subtype)
-                        .updateCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.UNSECURED);
-                }
-            });
-
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.LockCurrentState)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'LockCurrentState');
-
-                    if (mqttStatus[settings.topic.statusLock] === settings.payload.lockSecured) {
-                        log.debug('> hap re_get', settings.name, 'LockCurrentState.SECURED');
-                        callback(null, Characteristic.LockCurrentState.SECURED);
-                    } else {
-                        log.debug('> hap re_get', settings.name, 'LockCurrentState.UNSECURED');
-                        callback(null, Characteristic.LockCurrentState.UNSECURED);
-                    }
-                });
-        }
-
-        require('../characteristics/ObstructionDetected')({acc, settings, subtype}, iface);
+        require('../characteristics/LockTargetState')(obj, iface);
+        require('../characteristics/LockCurrentState')(obj, iface);
+        require('../characteristics/ObstructionDetected')(obj, iface);
     };
 };
