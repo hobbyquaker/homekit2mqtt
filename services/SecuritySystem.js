@@ -33,7 +33,7 @@ module.exports = function (iface) {
 
         const obj = {acc, settings, subtype};
 
-        require('../characteristics')('StatusSecuritySystemAlarmType', obj, iface);
+        require('../characteristics')('SecuritySystemAlarmType', obj, iface);
 
         require('../characteristics/StatusFault')(obj, iface);
         require('../characteristics/StatusTampered')(obj, iface);
