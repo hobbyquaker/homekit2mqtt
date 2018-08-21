@@ -4,7 +4,22 @@ module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     return function createService_GarageDoorOpener(acc, settings, subtype) {
-        acc.addService(Service.GarageDoorOpener, settings.name, subtype)
+        if (typeof settings.payload.doorClosed === 'undefined') {
+            settings.payload.doorClosed = Characteristic.CurrentDoorState.CLOSED;
+        }
+        if (typeof settings.payload.doorOpening === 'undefined') {
+            settings.payload.doorOpening = Characteristic.CurrentDoorState.OPENING;
+        }
+        if (typeof settings.payload.doorClosing === 'undefined') {
+            settings.payload.doorClosing = Characteristic.CurrentDoorState.CLOSING;
+        }
+        if (typeof settings.payload.doorStopped === 'undefined') {
+            settings.payload.doorStopped = Characteristic.CurrentDoorState.STOPPED;
+        }
+
+        acc.addService(Service.GarageDoorOpener, settings.name, subtype);
+
+        acc.getService(subtype)
             .getCharacteristic(Characteristic.TargetDoorState)
             .on('set', (value, callback) => {
                 log.debug('< hap set', settings.name, 'TargetDoorState', value);

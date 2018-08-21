@@ -231,14 +231,13 @@
   "GarageDoorOpener": {
     "topic": [
       {"name": "setDoor"},
-      {"name": "statusDoor", "optional": true},
+      {"name": "statusDoor", "optional": true, "desc": "0 = OPEN, 1 = CLOSED; 2 = OPENING, 3 = CLOSING, 4 = STOPPED"},
       {"name": "statusObstruction", "optional": true},
       {"name": "setLock", "optional": true},
       {"name": "statusLock", "optional": true}
     ],
     "payload": [
-      {"name": "doorOpen"},
-      {"name": "doorClosed"},
+      {"name": "doorClosed", "optional": true},
       {"name": "doorOpening", "optional": true},
       {"name": "doorClosing", "optional": true},
       {"name": "doorStopped", "optional": true},
@@ -404,6 +403,29 @@
       {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
+  "LockManagement": {
+    "topic": [
+      {"name": "setLockControlPoint"},
+      {"name": "statusVersion"},
+      {"name": "statusVersion", "optional": true},
+      {"name": "statusLogs", "optional": true},
+      {"name": "setAudioFeedback", "optional": true},
+      {"name": "statusAudioFeedback", "optional": true},
+      {"name": "setLockManagementAutoSecurityTimeout", "optional": true, "desc": "Seconds"},
+      {"name": "statusLockManagementAutoSecurityTimeout", "optional": true, "desc": "Seconds"},
+      {"name": "setAdministratorOnlyAccess", "optional": true},
+      {"name": "statusAdministratorOnlyAccess", "optional": true},
+      {"name": "statusLockLastKnownAction", "optional": true, "desc": "0 = SECURED_PHYSICALLY_INTERIOR, 1 = UNSECURED_PHYSICALLY_INTERIOR, 2 = SECURED_PHYSICALLY_EXTERIOR, 3 = UNSECURED_PHYSICALLY_EXTERIOR, 4 = SECURED_BY_KEYPAD, 5 = UNSECURED_BY_KEYPAD, 6 = SECURED_REMOTELY, 7 = UNSECURED_REMOTELY, 8 = SECURED_BY_AUTO_SECURE_TIMEOUT"},
+      {"name": "statusCurrentDoorState", "optional": true, "desc": "0 = OPEN, 1 = CLOSED; 2 = OPENING, 3 = CLOSING, 4 = STOPPED"},
+      {"name": "statusMotionDetected", "optional": true}
+    ],
+    "payload": [
+      {"name": "doorClosed", "optional": true},
+      {"name": "doorOpening", "optional": true},
+      {"name": "doorClosing", "optional": true},
+      {"name": "doorStopped", "optional": true}
+    ]
+  },
   "LockMechanism": {
     "topic": [
       {"name": "setLock"},
@@ -413,7 +435,7 @@
       {"name": "lockSecured"},
       {"name": "lockUnsecured"},
       {"name": "lockJammed", "optional": true},
-      {"name": "lockUnknown", "optiomal": true}
+      {"name": "lockUnknown", "optional": true}
     ]
   },
   "Microphone": {

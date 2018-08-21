@@ -3,42 +3,81 @@
 module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
-    /* TODO #114
-
-    // Required Characteristics
-    this.addCharacteristic(Characteristic.LockControlPoint); Write, TLV8 // TODO clarify - what is this?! :)
-    this.addCharacteristic(Characteristic.Version); Read, Notify, String
-
-    // Optional Characteristics
-    this.addOptionalCharacteristic(Characteristic.Logs); Read, Notify, TLV8
-    this.addOptionalCharacteristic(Characteristic.AudioFeedback); Read, Write, Notify, Bool
-    this.addOptionalCharacteristic(Characteristic.LockManagementAutoSecurityTimeout); Read, Write, Notify, Uint32, Seconds
-    this.addOptionalCharacteristic(Characteristic.AdministratorOnlyAccess); Read, Write, Notify, Bool
-    this.addOptionalCharacteristic(Characteristic.LockLastKnownAction); Read, Notify, Uint8
-    this.addOptionalCharacteristic(Characteristic.CurrentDoorState); Read, Notify, Uint8
-    this.addOptionalCharacteristic(Characteristic.MotionDetected); Read, Notifdy, Bool
-    this.addOptionalCharacteristic(Characteristic.Name);
-
-    // The value property of CurrentDoorState must be one of the following:
-    Characteristic.CurrentDoorState.OPEN = 0;
-    Characteristic.CurrentDoorState.CLOSED = 1;
-    Characteristic.CurrentDoorState.OPENING = 2;
-    Characteristic.CurrentDoorState.CLOSING = 3;
-    Characteristic.CurrentDoorState.STOPPED = 4;
-
-    // The value property of LockLastKnownAction must be one of the following:
-    Characteristic.LockLastKnownAction.SECURED_PHYSICALLY_INTERIOR = 0;
-    Characteristic.LockLastKnownAction.UNSECURED_PHYSICALLY_INTERIOR = 1;
-    Characteristic.LockLastKnownAction.SECURED_PHYSICALLY_EXTERIOR = 2;
-    Characteristic.LockLastKnownAction.UNSECURED_PHYSICALLY_EXTERIOR = 3;
-    Characteristic.LockLastKnownAction.SECURED_BY_KEYPAD = 4;
-    Characteristic.LockLastKnownAction.UNSECURED_BY_KEYPAD = 5;
-    Characteristic.LockLastKnownAction.SECURED_REMOTELY = 6;
-    Characteristic.LockLastKnownAction.UNSECURED_REMOTELY = 7;
-    Characteristic.LockLastKnownAction.SECURED_BY_AUTO_SECURE_TIMEOUT = 8;
-    */
-
     return function createService_LockManagement(acc, settings, subtype) {
-        throw new Error('Service LockManagement not yet implemented');
+        acc.addService(Service.LockManagement, settings.name, subtype);
+
+        if (typeof settings.payload.doorClosed === 'undefined') {
+            settings.payload.doorClosed = Characteristic.CurrentDoorState.CLOSED;
+        }
+        if (typeof settings.payload.doorOpening === 'undefined') {
+            settings.payload.doorOpening = Characteristic.CurrentDoorState.OPENING;
+        }
+        if (typeof settings.payload.doorClosing === 'undefined') {
+            settings.payload.doorClosing = Characteristic.CurrentDoorState.CLOSING;
+        }
+        if (typeof settings.payload.doorStopped === 'undefined') {
+            settings.payload.doorStopped = Characteristic.CurrentDoorState.STOPPED;
+        }
+
+        /* istanbul ignore else */
+        if (settings.topic.statusCurrentDoorState) {
+            mqttSub(settings.topic.statusCurrentDoorState, val => {
+                if (val === settings.payload.doorClosed) {
+                    log.debug('> hap update', settings.name, 'CurrentDoorState.CLOSED');
+                    acc.getService(subtype)
+                        .updateCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.CLOSED);
+                } else if (val === settings.payload.doorOpening) {
+                    log.debug('> hap update', settings.name, 'CurrentDoorState.OPENING');
+                    acc.getService(subtype)
+                        .updateCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.OPENING);
+                } else if (val === settings.payload.doorClosing) {
+                    log.debug('> hap update', settings.name, 'CurrentDoorState.CLOSING');
+                    acc.getService(subtype)
+                        .updateCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.CLOSING);
+                } else if (val === settings.payload.doorStopped) {
+                    log.debug('> hap update', settings.name, 'CurrentDoorState.STOPPED');
+                    acc.getService(subtype)
+                        .updateCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.STOPPED);
+                } else {
+                    log.debug('> hap update', settings.name, 'CurrentDoorState.OPEN');
+                    acc.getService(subtype)
+                        .updateCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.OPEN);
+                }
+            });
+
+            acc.getService(subtype)
+                .getCharacteristic(Characteristic.CurrentDoorState)
+                .on('get', callback => {
+                    log.debug('< hap get', settings.name, 'CurrentDoorState');
+
+                    if (mqttStatus[settings.topic.statusCurrentDoorState] === settings.payload.doorClosed) {
+                        log.debug('> hap re_get', settings.name, 'CurrentDoorState.CLOSED');
+                        callback(null, Characteristic.CurrentDoorState.CLOSED);
+                    } else if (mqttStatus[settings.topic.statusCurrentDoorState] === settings.payload.doorOpening) {
+                        log.debug('> hap re_get', settings.name, 'CurrentDoorState.OPENING');
+                        callback(null, Characteristic.CurrentDoorState.OPENING);
+                    } else if (mqttStatus[settings.topic.statusCurrentDoorState] === settings.payload.doorClosing) {
+                        log.debug('> hap re_get', settings.name, 'CurrentDoorState.CLOSING');
+                        callback(null, Characteristic.CurrentDoorState.CLOSING);
+                    } else if (mqttStatus[settings.topic.statusCurrentDoorState] === settings.payload.doorStopped) {
+                        log.debug('> hap re_get', settings.name, 'CurrentDoorState.STOPPED');
+                        callback(null, Characteristic.CurrentDoorState.STOPPED);
+                    } else {
+                        log.debug('> hap re_get', settings.name, 'CurrentDoorState.OPEN');
+                        callback(null, Characteristic.CurrentDoorState.OPEN);
+                    }
+                });
+        }
+        const obj = {acc, settings, subtype};
+
+        require('../characteristics')('LockControlPoint', obj, iface);
+        require('../characteristics')('Version', obj, iface);
+        require('../characteristics')('Logs', obj, iface);
+        require('../characteristics')('AudioFeedback', obj, iface);
+        require('../characteristics')('LockManagementAutoSecurityTimeout', obj, iface);
+        require('../characteristics')('AdministratorOnlyAccess', obj, iface);
+        require('../characteristics')('LockLastKnownAction', obj, iface);
+
+        require('../characteristics/MotionDetected')(obj, iface);
     };
 };
