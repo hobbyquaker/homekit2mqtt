@@ -10,7 +10,11 @@ module.exports = function (obj, iface) {
             .getCharacteristic(Characteristic.StatusTampered)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'StatusTampered');
-                const tampered = mqttStatus[settings.topic.statusTampered] === settings.payload.onTampered ?
+                let bool = mqttStatus[settings.topic.statusTampered] === settings.payload.onTampered;
+                if (settings.payload.invertTampered) {
+                    bool = !bool;
+                }
+                const tampered = bool ?
                     Characteristic.StatusTampered.TAMPERED :
                     Characteristic.StatusTampered.NOT_TAMPERED;
                 log.debug('> hap re_get', settings.name, 'StatusTampered', tampered);
@@ -18,7 +22,11 @@ module.exports = function (obj, iface) {
             });
 
         mqttSub(settings.topic.statusTampered, val => {
-            const tampered = val === settings.payload.onTampered ?
+            let bool = val === settings.payload.onTampered;
+            if (settings.payload.invertTampered) {
+                bool = !bool;
+            }
+            const tampered = bool ?
                 Characteristic.StatusTampered.TAMPERED :
                 Characteristic.StatusTampered.NOT_TAMPERED;
             log.debug('> hap update', settings.name, 'StatusTampered', tampered);

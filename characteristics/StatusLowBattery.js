@@ -10,7 +10,11 @@ module.exports = function (obj, iface) {
             .getCharacteristic(Characteristic.StatusLowBattery)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'StatusLowBattery');
-                const bat = mqttStatus[settings.topic.statusLowBattery] === settings.payload.onLowBattery ?
+                let bool = mqttStatus[settings.topic.statusLowBattery] === settings.payload.onLowBattery;
+                if (settings.payload.invertLowBattery) {
+                    bool = !bool;
+                }
+                const bat = bool ?
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
                 log.debug('> hap re_get', settings.name, 'StatusLowBattery', bat);
@@ -18,7 +22,11 @@ module.exports = function (obj, iface) {
             });
 
         mqttSub(settings.topic.statusLowBattery, val => {
-            const bat = val === settings.payload.onLowBattery ?
+            let bool = val === settings.payload.onLowBattery;
+            if (settings.payload.invertLowBattery) {
+                bool = !bool;
+            }
+            const bat = bool ?
                 Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
                 Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
             log.debug('> hap update', settings.name, 'StatusLowBattery', bat);

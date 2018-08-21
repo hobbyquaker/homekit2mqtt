@@ -15,7 +15,7 @@
     ],
     "payload": [
       {"name": "activeTrue", "optional": true, "default": true},
-      {"name": "activeFalse", "optional": true, "default": false},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
       {"name": "rotationSpeedFactor", "type": "Number", "optional": true, "default": 1}
     ]
   },
@@ -37,9 +37,13 @@
     ],
     "payload": [
       {"name": "onLowBattery", "optional": true},
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onActive", "optional": true},
-      {"name": "onFault", "optional": true}
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
    "BatteryService": {
@@ -50,6 +54,7 @@
     ],
     "payload": [
       {"name": "onLowBattery"},
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
       {"name": "minBatteryLevel", "type": "Number", "optional": true, "default": 0},
       {"name": "maxBatteryLevel", "type": "Number", "optional": true, "default": 100}
     ]
@@ -84,9 +89,13 @@
     "payload": [
       {"name": "onCarbonDioxideDetected"},
       {"name": "onLowBattery", "optional": true},
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onActive", "optional": true},
-      {"name": "onFault", "optional": true}
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "CarbonMonoxideSensor": {
@@ -102,9 +111,13 @@
     "payload": [
       {"name": "onCarbonMonoxideDetected"},
       {"name": "onLowBattery", "optional": true},
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onActive", "optional": true},
-      {"name": "onFault", "optional": true}
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "ContactSensor": {
@@ -118,9 +131,13 @@
     "payload": [
       {"name": "onContactDetected"},
       {"name": "onLowBattery", "optional": true},
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onActive", "optional": true},
-      {"name": "onFault", "optional": true}
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "Door": {
@@ -186,7 +203,7 @@
     ],
     "payload": [
       {"name": "activeTrue", "optional": true, "default": true},
-      {"name": "activeFalse", "optional": true, "default": false},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
       {"name": "rotationSpeedFactor", "type": "Number", "optional": true, "default": 1}
     ]
   },
@@ -198,8 +215,9 @@
     ],
     "payload": [
       {"name": "activeTrue", "optional": true, "default": true},
-      {"name": "activeFalse", "optional": true, "default": false},
-      {"name": "faultTrue", "optional": true, "default": true}
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "faultTrue", "optional": true, "default": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "FilterMaintenance": {
@@ -250,7 +268,7 @@
     ],
     "payload": [
       {"name": "activeTrue", "optional": true, "default": true},
-      {"name": "activeFalse", "optional": true, "default": false},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
       {"name": "rotationSpeedFactor", "type": "Number", "optional": true, "default": 1}
     ],
     "config": [
@@ -282,7 +300,7 @@
     ],
     "payload": [
       {"name": "activeTrue", "optional": true, "default": true},
-      {"name": "activeFalse", "optional": true, "default": false},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
       {"name": "rotationSpeedFactor", "type": "Number", "optional": true, "default": 1},
       {"name": "waterLevelFactor", "type": "Number", "optional": true, "default": 1}
     ]
@@ -297,9 +315,13 @@
     ],
     "payload": [
       {"name": "onLowBattery", "optional": true},
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onActive", "optional": true},
-      {"name": "onFault", "optional": true}
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "IrrigationSystem": {
@@ -313,8 +335,9 @@
     ],
     "payload": [
       {"name": "activeTrue", "optional": true, "default": true},
-      {"name": "activeFalse", "optional": true, "default": false},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
       {"name": "faultTrue", "optional": true, "default": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"},
       {"name": "inUseTrue", "optional": true, "default": true}
     ]
   },
@@ -329,9 +352,13 @@
     "payload": [
       {"name": "onLeakDetected"},
       {"name": "onLowBattery", "optional": true},
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onActive", "optional": true},
-      {"name": "onFault", "optional": true}
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "Lightbulb": {
@@ -368,9 +395,13 @@
     "payload": [
       {"name": "ambientLightLevelFactor", "optional": true, "default": 1},
       {"name": "onLowBattery", "optional": true},
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onActive", "optional": true},
-      {"name": "onFault", "optional": true}
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "LockMechanism": {
@@ -411,8 +442,11 @@
       {"name": "onLowBattery", "optional": true},
 
       {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onActive", "optional": true},
-      {"name": "onFault", "optional": true}
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "OccupancySensor": {
@@ -422,7 +456,8 @@
     ],
     "payload": [
       {"name": "onOccupancyDetected"},
-      {"name": "onLowBattery", "optional": true}
+      {"name": "onLowBattery", "optional": true},
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "Outlet": {
@@ -448,8 +483,11 @@
     ],
     "payload": [
       {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onActive", "optional": true},
-      {"name": "onFault", "optional": true}
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "Slat": {
@@ -477,9 +515,12 @@
     "payload": [
       {"name": "onSmokeDetected"},
       {"name": "onLowBattery", "optional": true},
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onActive", "optional": true},
-      {"name": "onFault", "optional": true}
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "Speaker": {
@@ -529,9 +570,14 @@
         "default": false
       },
       {"name": "onLowBattery", "optional": true},
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
       {"name": "onActive", "optional": true},
-      {"name": "onFault", "optional": true}
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
+
     ],
     "props": [
       {"name": "CurrentTemperature", "minValue": -100, "maxValue": 100}
@@ -575,8 +621,9 @@
     ],
     "payload": [
       {"name": "activeTrue", "optional": true, "default": true},
-      {"name": "activeFalse", "optional": true, "default": false},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
       {"name": "faultTrue", "optional": true, "default": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"},
       {"name": "inUseTrue", "optional": true, "default": true}
     ],
     "config": [
@@ -604,7 +651,7 @@
       {"name": "setTargetPosition"},
       {"name": "statusTargetPosition", "optional": true},
       {"name": "statusCurrentPosition", "optional": true},
-      {"name": "statusPositionState", "optional": true}
+      {"name": "statusPositionState", "optional": true},
       {"name": "statusTargetHorizontalTiltAngle", "optional": true},
       {"name": "setTargetHorizontalTiltAngle", "optional": true},
       {"name": "statusTargetVerticalTiltAngle", "optional": true},
