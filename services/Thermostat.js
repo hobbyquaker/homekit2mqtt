@@ -13,6 +13,21 @@ module.exports = function (iface) {
                 callback();
             });
 
+        mqttSub(settings.topic.statusTargetTemperature, val => {
+            log.debug('> hap update', settings.name, 'TargetTemperature', val);
+            acc.getService(subtype)
+                .updateCharacteristic(Characteristic.TargetTemperature, val);
+        });
+
+        acc.getService(subtype)
+            .getCharacteristic(Characteristic.TargetTemperature)
+            .setProps((settings.props || {}).TargetTemperature || {minValue: 4})
+            .on('get', callback => {
+                log.debug('< hap get', settings.name, 'TargetTemperature');
+                log.debug('> hap re_get', settings.name, 'TargetTemperature', mqttStatus[settings.topic.statusTargetTemperature]);
+                callback(null, mqttStatus[settings.topic.statusTargetTemperature]);
+            });
+
         if (settings.topic.statusCurrentHeatingCoolingState) {
             mqttSub(settings.topic.statusCurrentHeatingCoolingState, val => {
                 log.debug('> hap update', settings.name, 'CurrentHeatingCoolingState', val);
@@ -87,51 +102,9 @@ module.exports = function (iface) {
                 });
         }
 
-        mqttSub(settings.topic.statusTargetTemperature, val => {
-            log.debug('> hap update', settings.name, 'TargetTemperature', val);
-            acc.getService(subtype)
-                .updateCharacteristic(Characteristic.TargetTemperature, val);
-        });
-
-        acc.getService(subtype)
-            .getCharacteristic(Characteristic.TargetTemperature)
-            .setProps((settings.props || {}).TargetTemperature || {minValue: 4})
-            .on('get', callback => {
-                log.debug('< hap get', settings.name, 'TargetTemperature');
-                log.debug('> hap re_get', settings.name, 'TargetTemperature', mqttStatus[settings.topic.statusTargetTemperature]);
-                callback(null, mqttStatus[settings.topic.statusTargetTemperature]);
-            });
-
-        /* istanbul ignore else */
-        if (settings.topic.statusTargetRelativeHumidity) {
-            mqttSub(settings.topic.statusTargetRelativeHumidity, val => {
-                log.debug('> hap update', settings.name, 'TargetRelativeHumidity', val);
-                acc.getService(subtype)
-                    .updateCharacteristic(Characteristic.TargetRelativeHumidity, val);
-            });
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.TargetRelativeHumidity)
-                .on('get', callback => {
-                    log.debug('< hap get', settings.name, 'TargetRelativeHumidity');
-                    log.debug('> hap re_get', settings.name, 'TargetRelativeHumidity', mqttStatus[settings.topic.statusTargetRelativeHumidity]);
-                    callback(null, mqttStatus[settings.topic.statusTargetRelativeHumidity]);
-                });
-        }
-
-        /* istanbul ignore else */
-        if (settings.topic.setTargetRelativeHumidity) {
-            acc.getService(subtype)
-                .getCharacteristic(Characteristic.TargetRelativeHumidity)
-                .on('set', (value, callback) => {
-                    log.debug('< hap set', settings.name, 'TargetRelativeHumidity', value);
-                    log.debug('> mqtt', settings.topic.setTargetRelativeHumidity, value);
-                    mqttPub(settings.topic.setTargetRelativeHumidity, value);
-                    callback();
-                });
-        }
-
         const obj = {acc, settings, subtype};
 
+        require('../characteristics')('TargetRelativeHumidity', obj, iface);
         require('../characteristics')('HeatingThresholdTemperature', obj, iface);
         require('../characteristics')('CoolingThresholdTemperature', obj, iface);
 
