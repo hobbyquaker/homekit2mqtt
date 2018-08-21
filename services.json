@@ -605,6 +605,12 @@
       {"name": "statusTargetPosition", "optional": true},
       {"name": "statusCurrentPosition", "optional": true},
       {"name": "statusPositionState", "optional": true}
+      {"name": "statusTargetHorizontalTiltAngle", "optional": true},
+      {"name": "setTargetHorizontalTiltAngle", "optional": true},
+      {"name": "statusTargetVerticalTiltAngle", "optional": true},
+      {"name": "setTargetVerticalTiltAngle", "optional": true},
+      {"name": "statusCurrentHorizontalTiltAngle", "optional": true},
+      {"name": "statusCurrentVerticalTiltAngle", "optional": true}
     ],
     "payload": [
       {"name": "targetPositionFactor", "type": "Number", "optional": true, "default": 1},
