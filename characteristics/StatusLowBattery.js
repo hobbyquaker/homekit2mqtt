@@ -10,7 +10,7 @@ module.exports = function (obj, iface) {
             .getCharacteristic(Characteristic.StatusLowBattery)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'StatusLowBattery');
-                let bool = mqttStatus[settings.topic.statusLowBattery] === settings.payload.onLowBattery;
+                let bool = mqttStatus(settings.topic.statusLowBattery, settings.json.statusLowBattery) === settings.payload.onLowBattery;
                 if (settings.payload.invertLowBattery) {
                     bool = !bool;
                 }
@@ -21,7 +21,7 @@ module.exports = function (obj, iface) {
                 callback(null, bat);
             });
 
-        mqttSub(settings.topic.statusLowBattery, val => {
+        mqttSub(settings.topic.statusLowBattery, settings.json.statusLowBattery, val => {
             let bool = val === settings.payload.onLowBattery;
             if (settings.payload.invertLowBattery) {
                 bool = !bool;

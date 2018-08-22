@@ -20,13 +20,13 @@ module.exports = function (iface) {
                 .getCharacteristic(Characteristic.WaterLevel)
                 .setProps((settings.props || {}).WaterLevel)
                 .on('get', callback => {
-                    const water = mqttStatus[settings.topic.statusWaterLevel] / (settings.payload.waterLevelFactor || 1);
+                    const water = mqttStatus(settings.topic.statusWaterLevel, settings.json.statusWaterLevel) / (settings.payload.waterLevelFactor || 1);
                     log.debug('< hap get', settings.name, 'WaterLevel');
                     log.debug('> hap re_get', settings.name, water);
                     callback(null, water);
                 });
 
-            mqttSub(settings.topic.statusWaterLevel, val => {
+            mqttSub(settings.topic.statusWaterLevel, settings.json.statusWaterLevel, val => {
                 val /= (settings.payload.waterLevelFactor || 1);
                 log.debug('> hap update', settings.name, 'WaterLevel', val);
                 acc.getService(subtype)

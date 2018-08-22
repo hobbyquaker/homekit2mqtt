@@ -8,7 +8,7 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.ContactSensorState)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'ContactSensorState');
-                const contact = mqttStatus[settings.topic.statusContactSensorState] === settings.payload.onContactDetected ?
+                const contact = mqttStatus(settings.topic.statusContactSensorState, settings.json.statusContactSensorState) === settings.payload.onContactDetected ?
                     Characteristic.ContactSensorState.CONTACT_DETECTED :
                     Characteristic.ContactSensorState.CONTACT_NOT_DETECTED;
 
@@ -16,7 +16,7 @@ module.exports = function (iface) {
                 callback(null, contact);
             });
 
-        mqttSub(settings.topic.statusContactSensorState, val => {
+        mqttSub(settings.topic.statusContactSensorState, settings.json.statusContactSensorState, val => {
             const contact = val === settings.payload.onContactDetected ?
                 Characteristic.ContactSensorState.CONTACT_DETECTED :
                 Characteristic.ContactSensorState.CONTACT_NOT_DETECTED;

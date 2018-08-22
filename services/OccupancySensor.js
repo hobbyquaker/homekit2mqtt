@@ -8,7 +8,7 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.OccupancyDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'OccupancyDetected');
-                const motion = mqttStatus[settings.topic.statusOccupancyDetected] === settings.payload.onOccupancyDetected;
+                const motion = mqttStatus(settings.topic.statusOccupancyDetected, settings.json.statusOccupancyDetected) === settings.payload.onOccupancyDetected;
 
                 log.debug('> hap re_get', settings.name, 'OccupancyDetected', motion ?
                     Characteristic.OccupancyDetected.OCCUPANCY_DETECTED :
@@ -16,7 +16,7 @@ module.exports = function (iface) {
                 callback(null, motion);
             });
 
-        mqttSub(settings.topic.statusOccupancyDetected, val => {
+        mqttSub(settings.topic.statusOccupancyDetected, settings.json.statusOccupancyDetected, val => {
             const motion = val === settings.payload.onOccupancyDetected;
             log.debug('> hap update', settings.name, 'OccupancyDetected', motion);
             acc.getService(subtype)

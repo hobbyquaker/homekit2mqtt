@@ -29,7 +29,7 @@ module.exports = function (obj, iface) {
 
     /* istanbul ignore else */
     if (settings.topic.statusLock) {
-        mqttSub(settings.topic.statusLock, val => {
+        mqttSub(settings.topic.statusLock, settings.json.statusLock, val => {
             if (val === settings.payload.lockSecured) {
                 log.debug('> hap update', settings.name, 'LockCurrentState.SECURED');
                 service.updateCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED);
@@ -65,16 +65,16 @@ module.exports = function (obj, iface) {
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'LockCurrentState');
 
-                if (mqttStatus[settings.topic.statusLock] === settings.payload.lockSecured) {
+                if (mqttStatus(settings.topic.statusLock, settings.json.statusLock) === settings.payload.lockSecured) {
                     log.debug('> hap re_get', settings.name, 'LockCurrentState.SECURED');
                     callback(null, Characteristic.LockCurrentState.SECURED);
-                } else if (mqttStatus[settings.topic.statusLock] === settings.payload.lockJammed) {
+                } else if (mqttStatus(settings.topic.statusLock, settings.json.statusLock) === settings.payload.lockJammed) {
                     log.debug('> hap re_get', settings.name, 'LockCurrentState.JAMMED');
                     callback(null, Characteristic.LockCurrentState.JAMMED);
-                } else if (mqttStatus[settings.topic.statusLock] === settings.payload.lockUnknwon) {
+                } else if (mqttStatus(settings.topic.statusLock, settings.json.statusLock) === settings.payload.lockUnknwon) {
                     log.debug('> hap re_get', settings.name, 'LockCurrentState.UNKNOWN');
                     callback(null, Characteristic.LockCurrentState.UNKNOWN);
-                } else if (mqttStatus[settings.topic.statusLock] === settings.payload.lockUnsecured) {
+                } else if (mqttStatus(settings.topic.statusLock, settings.json.statusLock) === settings.payload.lockUnsecured) {
                     log.debug('> hap re_get', settings.name, 'LockCurrentState.UNSECURED');
                     callback(null, Characteristic.LockCurrentState.UNSECURED);
                 }

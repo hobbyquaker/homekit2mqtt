@@ -8,7 +8,7 @@ module.exports = function (obj, iface) {
 
     /* istanbul ignore else */
     if (settings.topic.statusCurrentRelativeHumidity) {
-        mqttSub(settings.topic.statusCurrentRelativeHumidity, val => {
+        mqttSub(settings.topic.statusCurrentRelativeHumidity, settings.json.statusCurrentRelativeHumidity, val => {
             log.debug('> hap update', settings.name, 'CurrentRelativeHumidity', val);
             acc.getService(subtype)
                 .updateCharacteristic(Characteristic.CurrentRelativeHumidity, val);
@@ -17,7 +17,7 @@ module.exports = function (obj, iface) {
             .getCharacteristic(Characteristic.CurrentRelativeHumidity)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'CurrentRelativeHumidity');
-                log.debug('> hap re_get', settings.name, 'CurrentRelativeHumidity', mqttStatus[settings.topic.statusCurrentRelativeHumidity]);
+                log.debug('> hap re_get', settings.name, 'CurrentRelativeHumidity', mqttStatus(settings.topic.statusCurrentRelativeHumidity, settings.json.statusCurrentRelativeHumidity));
                 callback(null, mqttStatus[settings.topic.statusCurrentRelativeHumidity]);
             });
     }

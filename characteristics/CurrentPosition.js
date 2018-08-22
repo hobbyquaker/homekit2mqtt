@@ -8,7 +8,7 @@ module.exports = function (obj, iface) {
 
     /* istanbul ignore else */
     if (settings.topic.statusCurrentPosition) {
-        mqttSub(settings.topic.statusCurrentPosition, val => {
+        mqttSub(settings.topic.statusCurrentPosition, settings.json.statusCurrentPosition, val => {
             const position = Math.round(val / settings.payload.currentPositionFactor);
             log.debug('> hap update', settings.name, 'CurrentPosition', position);
             acc.getService(subtype)
@@ -18,7 +18,7 @@ module.exports = function (obj, iface) {
             .getCharacteristic(Characteristic.CurrentPosition)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'CurrentPosition');
-                const position = Math.round(mqttStatus[settings.topic.statusCurrentPosition] / settings.payload.currentPositionFactor);
+                const position = Math.round(mqttStatus(settings.topic.statusCurrentPosition, settings.json.statusCurrentPosition) / settings.payload.currentPositionFactor);
                 log.debug('> hap re_get', settings.name, 'CurrentPosition', position);
                 callback(null, position);
             });

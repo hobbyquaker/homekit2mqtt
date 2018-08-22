@@ -33,7 +33,7 @@ module.exports = function (obj, iface) {
 
     /* istanbul ignore else */
     if (settings.topic.statusActive) {
-        mqttSub(settings.topic.statusActive, val => {
+        mqttSub(settings.topic.statusActive, settings.json.statusActive, val => {
             const active = val === settings.payload.activeActive ?
                 Characteristic.Active.ACTIVE :
                 Characteristic.Active.INACTIVE;
@@ -45,7 +45,7 @@ module.exports = function (obj, iface) {
             .getCharacteristic(Characteristic.Active)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'Active');
-                const active = mqttStatus[settings.topic.statusActive] === settings.payload.activeActive ?
+                const active = mqttStatus(settings.topic.statusActive, settings.json.statusActive) === settings.payload.activeActive ?
                     Characteristic.Active.ACTIVE :
                     Characteristic.Active.INACTIVE;
                 log.debug('> hap re_get', settings.name, 'Active', active);

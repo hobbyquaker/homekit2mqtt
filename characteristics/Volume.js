@@ -18,7 +18,7 @@ module.exports = function (obj, iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusVolume) {
-            mqttSub(settings.topic.statusVolume, value => {
+            mqttSub(settings.topic.statusVolume, settings.json.statusVolume, value => {
                 /* istanbul ignore next */
                 const volume = (value / (settings.payload.volumeFactor || 1)) || 0;
                 log.debug('> hap update', settings.name, 'Volume', volume);
@@ -31,7 +31,7 @@ module.exports = function (obj, iface) {
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'Volume');
                     /* istanbul ignore next */
-                    const volume = (mqttStatus[settings.topic.statusVolume] / (settings.payload.volumeFactor || 1)) || 0;
+                    const volume = (mqttStatus(settings.topic.statusVolume, settings.json.statusVolume) / (settings.payload.volumeFactor || 1)) || 0;
                     log.debug('> hap re_get', settings.name, 'Volume', volume);
                     callback(null, volume);
                 });

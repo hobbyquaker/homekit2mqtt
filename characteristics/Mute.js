@@ -15,7 +15,7 @@ module.exports = function (obj, iface) {
 
     /* istanbul ignore else */
     if (settings.topic.statusMute) {
-        mqttSub(settings.topic.statusMute, val => {
+        mqttSub(settings.topic.statusMute, settings.json.statusMute, val => {
             const mute = val === settings.payload.muteTrue;
             log.debug('> hap update', settings.name, 'Mute', mute);
             acc.getService(subtype)
@@ -27,7 +27,7 @@ module.exports = function (obj, iface) {
         .getCharacteristic(Characteristic.Mute)
         .on('get', callback => {
             log.debug('< hap get', settings.name, 'Mute');
-            const mute = mqttStatus[settings.topic.statusMute] === settings.payload.muteTrue;
+            const mute = mqttStatus(settings.topic.statusMute, settings.json.statusMute) === settings.payload.muteTrue;
             log.debug('> hap re_get', settings.name, 'Mute', mute);
             callback(null, mute);
         });

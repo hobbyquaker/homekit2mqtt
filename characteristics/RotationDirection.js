@@ -32,9 +32,9 @@ module.exports = function (obj, iface) {
 
     /* istanbul ignore else */
     if (settings.topic.statusRotationDirection) {
-        mqttSub(settings.topic.statusRotationDirection, val => {
+        mqttSub(settings.topic.statusRotationDirection, settings.json.statusRotationDirection, val => {
             /* istanbul ignore next */
-            const dir = mqttStatus[settings.topic.statusRotationDirection] === settings.payload.rotationDirectionCounterClockwise ?
+            const dir = val === settings.payload.rotationDirectionCounterClockwise ?
                 Characteristic.RotationDirection.COUNTER_CLOCKWISE :
                 Characteristic.RotationDirection.CLOCKWISE;
             log.debug('> hap update', settings.name, 'RotationDirection', dir);
@@ -46,7 +46,7 @@ module.exports = function (obj, iface) {
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'RotationDirection');
                 /* istanbul ignore next */
-                const dir = mqttStatus[settings.topic.statusRotationDirection] === settings.payload.rotationDirectionCounterClockwise ?
+                const dir = mqttStatus(settings.topic.statusRotationDirection, settings.json.statusRotationDirection) === settings.payload.rotationDirectionCounterClockwise ?
                     Characteristic.RotationDirection.COUNTER_CLOCKWISE :
                     Characteristic.RotationDirection.CLOCKWISE;
                 log.debug('> hap re_get', settings.name, 'RotationDirection', dir);

@@ -8,7 +8,7 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.LeakDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'LeakDetected');
-                const contact = mqttStatus[settings.topic.statusLeakDetected] === settings.payload.onLeakDetected ?
+                const contact = mqttStatus(settings.topic.statusLeakDetected, settings.json.statusLeakDetected) === settings.payload.onLeakDetected ?
                     Characteristic.LeakDetected.LEAK_DETECTED :
                     Characteristic.LeakDetected.LEAK_NOT_DETECTED;
 
@@ -16,7 +16,7 @@ module.exports = function (iface) {
                 callback(null, contact);
             });
 
-        mqttSub(settings.topic.statusLeakDetected, val => {
+        mqttSub(settings.topic.statusLeakDetected, settings.json.statusLeakDetected, val => {
             const contact = val === settings.payload.onLeakDetected ?
                 Characteristic.LeakDetected.LEAK_DETECTED :
                 Characteristic.LeakDetected.LEAK_NOT_DETECTED;

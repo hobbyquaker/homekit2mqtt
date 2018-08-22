@@ -10,7 +10,7 @@ module.exports = function (obj, iface) {
             .getCharacteristic(Characteristic.StatusTampered)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'StatusTampered');
-                let bool = mqttStatus[settings.topic.statusTampered] === settings.payload.onTampered;
+                let bool = mqttStatus(settings.topic.statusTampered, settings.json.statusTampered) === settings.payload.onTampered;
                 if (settings.payload.invertTampered) {
                     bool = !bool;
                 }
@@ -21,7 +21,7 @@ module.exports = function (obj, iface) {
                 callback(null, tampered);
             });
 
-        mqttSub(settings.topic.statusTampered, val => {
+        mqttSub(settings.topic.statusTampered, settings.json.statusTampered, val => {
             let bool = val === settings.payload.onTampered;
             if (settings.payload.invertTampered) {
                 bool = !bool;

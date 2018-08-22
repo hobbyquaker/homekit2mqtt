@@ -452,6 +452,7 @@ $(document).ready(() => {
                 name: $.trim($name.val()),
                 service,
                 topic: {},
+                json: {},
                 payload: {},
                 config: {},
                 props: {}
@@ -463,6 +464,9 @@ $(document).ready(() => {
                 s.topic.forEach(topic => {
                     const val = $.trim($('#topic-' + topic.name).val());
                     result.topic[topic.name] = val;
+                    if (topic.name.startsWith('status')) {
+                        result.json[topic.name] = $.trim($('#json-' + topic.name).val());
+                    }
                 });
             }
             if (s.payload) {
@@ -614,6 +618,14 @@ $(document).ready(() => {
             });
         }
 
+        if (s.json) {
+            Object.keys(s.json).forEach(topic => {
+                if (typeof s.json[topic] !== 'undefined') {
+                    $('#json-' + topic).val(s.json[topic]);
+                }
+            });
+        }
+
         if (s.payload) {
             Object.keys(s.payload).forEach(payload => {
                 let type;
@@ -737,22 +749,52 @@ $(document).ready(() => {
             $configuration.append('<h4>MQTT Topics</h4>');
 
             s.topic.forEach(t => {
-                $configuration.append(`
-                <div class="form-group">
+                let row = '';
+                row += (`
+                <div class="form-group group-topic">
                     <div class="row">
-                        <label for="topic-${t.name}" class="attr-name col-sm-4 col-form-label">${t.name}</label>
+                        <div class="col-sm-4 col-form-label">
+                        <label for="topic-${t.name}" class="attr-name ">
+                            ${t.name}
+                        </label>`);
+
+                if (t.desc) {
+                    row += (`
+                            <a style="float:right" tabindex="0" class="fa fa-info-circle" data-container="body" data-trigger="focus" data-toggle="popover" data-placement="right" data-content="${t.desc || ''}"></a>
+                    `);
+                }
+
+                row += (`     
+                        </div>       
                         <div class="col-sm-8">
                             <input type="text" class="form-control topic" id="topic-${t.name}" data-topic="${t.name}" autocomplete="off">
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-4"></div><div class="col-sm-8 attr-desc">${t.desc || ''}</div>
-                    </div>
-               </div>`);
+                    </div>`);
+
+
+
+
+                if (t.name.startsWith('status')) {
+                    row += (`
+                    <div class="row row-prop">
+                        <label for="json-${t.name}" class="attr-prop col-sm-4 col-form-label">JSON Property</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control topic-prop" id="json-${t.name}" data-json="${t.name}" autocomplete="off">
+                        </div>
+                    </div>`);
+                }
+
+                row += ('</div>');
+                $configuration.append(row);
+
             });
 
             $('input.topic').each(function () {
                 $(this).typeahead({source: topics});
+            });
+
+            $('[data-toggle="popover"]').popover({
+
             });
         }
 

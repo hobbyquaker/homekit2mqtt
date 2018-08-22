@@ -10,12 +10,12 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.OutletInUse)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'OutletInUse');
-                const inUse = mqttStatus[settings.topic.statusOutletInUse] === settings.payload.onOutletInUse;
+                const inUse = mqttStatus(settings.topic.statusOutletInUse, settings.json.statusOutletInUse) === settings.payload.onOutletInUse;
                 log.debug('> hap re_get', settings.name, 'OutletInUse', inUse);
                 callback(null, inUse);
             });
 
-        mqttSub(settings.topic.statusOutletInUse, val => {
+        mqttSub(settings.topic.statusOutletInUse, settings.json.statusOutletInUse, val => {
             const inUse = val === settings.payload.onOutletInUse;
             log.debug('> hap update', settings.name, 'OutletInUse', inUse);
             acc.getService(subtype)

@@ -14,7 +14,7 @@ module.exports = function (obj, iface) {
             .getCharacteristic(Characteristic.StatusFault)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'StatusFault');
-                let bool = mqttStatus[settings.topic.statusFault] === settings.payload.onFault;
+                let bool = mqttStatus(settings.topic.statusFault, settings.json.statusFault) === settings.payload.onFault;
                 if (settings.payload.invertFault) {
                     bool = !bool;
                 }
@@ -25,7 +25,7 @@ module.exports = function (obj, iface) {
                 callback(null, fault);
             });
 
-        mqttSub(settings.topic.statusFault, val => {
+        mqttSub(settings.topic.statusFault, settings.json.statusFault, val => {
             let bool = val === settings.payload.onFault;
             if (settings.payload.invertFault) {
                 bool = !bool;

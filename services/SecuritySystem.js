@@ -12,7 +12,7 @@ module.exports = function (iface) {
                 callback();
             });
 
-        mqttSub(settings.topic.statusSecuritySystemCurrentState, val => {
+        mqttSub(settings.topic.statusSecuritySystemCurrentState, settings.json.statusSecuritySystemCurrentState, val => {
             log.debug('> hap update', settings.name, 'SecuritySystemCurrentState', val);
             acc.getService(subtype)
                 .setCharacteristic(Characteristic.SecuritySystemCurrentState, val);
@@ -26,7 +26,7 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.SecuritySystemCurrentState)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'SecuritySystemCurrentState');
-                const val = mqttStatus[settings.topic.statusSecuritySystemCurrentState];
+                const val = mqttStatus(settings.topic.statusSecuritySystemCurrentState, settings.json.statusSecuritySystemCurrentState);
                 log.debug('> hap re_get', settings.name, 'SecuritySystemCurrentState', val);
                 callback(null, val);
             });

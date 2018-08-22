@@ -8,7 +8,7 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.SmokeDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'SmokeDetected');
-                const smoke = mqttStatus[settings.topic.statusSmokeDetected] === settings.payload.onSmokeDetected ?
+                const smoke = mqttStatus(settings.topic.statusSmokeDetected, settings.json.statusSmokeDetected) === settings.payload.onSmokeDetected ?
                     Characteristic.SmokeDetected.SMOKE_DETECTED :
                     Characteristic.SmokeDetected.SMOKE_NOT_DETECTED;
 
@@ -16,7 +16,7 @@ module.exports = function (iface) {
                 callback(null, smoke);
             });
 
-        mqttSub(settings.topic.statusSmokeDetected, val => {
+        mqttSub(settings.topic.statusSmokeDetected, settings.json.statusSmokeDetected, val => {
             const smoke = val === settings.payload.onSmokeDetected ?
                 Characteristic.SmokeDetected.SMOKE_DETECTED :
                 Characteristic.SmokeDetected.SMOKE_NOT_DETECTED;

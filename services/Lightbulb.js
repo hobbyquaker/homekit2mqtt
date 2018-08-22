@@ -25,7 +25,7 @@ module.exports = function (iface) {
         }
 
         if (settings.topic.statusRGB) {
-            mqttSub(settings.topic.statusRGB, val => {
+            mqttSub(settings.topic.statusRGB, settings.json.statusRGB, val => {
                 val = String(val);
                 const r = parseInt(val.substr(1, 2), 16);
                 const g = parseInt(val.substr(3, 2), 16);
@@ -67,8 +67,8 @@ module.exports = function (iface) {
                 callback();
             });
 
-        mqttSub(settings.topic.statusOn, val => {
-            const on = mqttStatus[settings.topic.statusOn] !== settings.payload.onFalse;
+        mqttSub(settings.topic.statusOn, settings.json.statusOn, val => {
+            const on = val !== settings.payload.onFalse;
             log.debug('> hap update', settings.name, 'On', on);
             current.on = on;
             acc.getService(subtype)
@@ -79,7 +79,7 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.On)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'On');
-                const on = mqttStatus[settings.topic.statusOn] !== settings.payload.onFalse;
+                const on = mqttStatus(settings.topic.statusOn, settings.json.statusOn) !== settings.payload.onFalse;
                 log.debug('> hap re_get', settings.name, 'On', on);
                 callback(null, on);
             });
@@ -100,9 +100,9 @@ module.exports = function (iface) {
 
             /* istanbul ignore else */
             if (settings.topic.statusBrightness) {
-                mqttSub(settings.topic.statusBrightness, val => {
+                mqttSub(settings.topic.statusBrightness, settings.json.statusBrightness, val => {
                     /* istanbul ignore next */
-                    const brightness = Math.round(mqttStatus[settings.topic.statusBrightness] / (settings.payload.brightnessFactor || 1)) || 0;
+                    const brightness = Math.round(val / (settings.payload.brightnessFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Brightness', brightness);
                     current.bri = brightness;
                     acc.getService(subtype)
@@ -114,7 +114,7 @@ module.exports = function (iface) {
                     .on('get', callback => {
                         log.debug('< hap get', settings.name, 'Brightness');
                         /* istanbul ignore next */
-                        const brightness = Math.round(mqttStatus[settings.topic.statusBrightness] / (settings.payload.brightnessFactor || 1)) || 0;
+                        const brightness = Math.round(mqttStatus(settings.topic.statusBrightness, settings.json.statusBrightness) / (settings.payload.brightnessFactor || 1)) || 0;
                         log.debug('> hap re_get', settings.name, 'Brightness', brightness);
                         callback(null, brightness);
                     });
@@ -136,7 +136,7 @@ module.exports = function (iface) {
                 });
             /* istanbul ignore else */
             if (settings.topic.statusHue) {
-                mqttSub(settings.topic.statusHue, val => {
+                mqttSub(settings.topic.statusHue, settings.json.statusHue, val => {
                     /* istanbul ignore next */
                     const hue = (val / (settings.payload.hueFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Hue', hue);
@@ -149,7 +149,7 @@ module.exports = function (iface) {
                     .on('get', callback => {
                         log.debug('< hap get', settings.name, 'Hue');
                         /* istanbul ignore next */
-                        const hue = (mqttStatus[settings.topic.statusHue] / (settings.payload.hueFactor || 1)) || 0;
+                        const hue = (mqttStatus(settings.topic.statusHue, settings.json.statusHue) / (settings.payload.hueFactor || 1)) || 0;
                         log.debug('> hap re_get', settings.name, 'Hue', hue);
                         callback(null, hue);
                     });
@@ -171,7 +171,7 @@ module.exports = function (iface) {
                 });
             /* istanbul ignore else */
             if (settings.topic.statusSaturation) {
-                mqttSub(settings.topic.statusSaturation, val => {
+                mqttSub(settings.topic.statusSaturation, settings.json.statusSaturation, val => {
                     /* istanbul ignore next */
                     const sat = (val / (settings.payload.saturationFactor || 1)) || 0;
                     log.debug('> hap update', settings.name, 'Saturation', sat);
@@ -184,7 +184,7 @@ module.exports = function (iface) {
                     .on('get', callback => {
                         log.debug('< hap get', settings.name, 'Saturation');
                         /* istanbul ignore next */
-                        const saturation = (mqttStatus[settings.topic.statusSaturation] / (settings.payload.saturationFactor || 1)) || 0;
+                        const saturation = (mqttStatus(settings.topic.statusSaturation, settings.json.statusSaturation) / (settings.payload.saturationFactor || 1)) || 0;
                         log.debug('> hap re_get', settings.name, 'Saturation', saturation);
                         callback(null, saturation);
                     });
@@ -203,7 +203,7 @@ module.exports = function (iface) {
                 });
             /* istanbul ignore else */
             if (settings.topic.statusColorTemperature) {
-                mqttSub(settings.topic.statusColorTemperature, val => {
+                mqttSub(settings.topic.statusColorTemperature, settings.json.statusColorTemperature, val => {
                     const sat = val;
                     log.debug('> hap update', settings.name, 'ColorTemperature', sat);
                     acc.getService(subtype)
@@ -214,7 +214,7 @@ module.exports = function (iface) {
                     .on('get', callback => {
                         log.debug('< hap get', settings.name, 'ColorTemperature');
                         /* istanbul ignore next */
-                        const saturation = mqttStatus[settings.topic.statusColorTemperature];
+                        const saturation = mqttStatus(settings.topic.statusColorTemperature, settings.json.statusColorTemperature);
                         log.debug('> hap re_get', settings.name, 'ColorTemperature', saturation);
                         callback(null, saturation);
                     });

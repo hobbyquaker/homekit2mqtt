@@ -14,7 +14,7 @@ module.exports = function (obj, iface) {
             .getCharacteristic(Characteristic.StatusActive)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'StatusActive');
-                let act = mqttStatus[settings.topic.statusActive] === settings.payload.onActive;
+                let act = mqttStatus(settings.topic.statusActive, settings.json.statusActive) === settings.payload.onActive;
                 if (settings.payload.invertActive) {
                     act = !act;
                 }
@@ -22,7 +22,7 @@ module.exports = function (obj, iface) {
                 callback(null, act);
             });
 
-        mqttSub(settings.topic.statusActive, val => {
+        mqttSub(settings.topic.statusActive, settings.json.statusActive, val => {
             let act = val === settings.payload.onActive;
             if (settings.payload.invertActive) {
                 act = !act;

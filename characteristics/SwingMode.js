@@ -17,7 +17,7 @@ module.exports = function (obj, iface) {
 
     /* istanbul ignore else */
     if (settings.topic.statusSwingMode) {
-        mqttSub(settings.topic.statusSwingMode, val => {
+        mqttSub(settings.topic.statusSwingMode, settings.json.statusSwingMode, val => {
             log.debug('> hap update', settings.name, 'SwingMode', val);
             acc.getService(subtype)
                 .updateCharacteristic(Characteristic.SwingMode, val);
@@ -26,7 +26,7 @@ module.exports = function (obj, iface) {
             .getCharacteristic(Characteristic.SwingMode)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'SwingMode');
-                const state = mqttStatus[settings.topic.statusSwingMode];
+                const state = mqttStatus(settings.topic.statusSwingMode, settings.json.statusSwingMode);
                 log.debug('> hap re_get', settings.name, 'SwingMode', state);
                 callback(null, state);
             });

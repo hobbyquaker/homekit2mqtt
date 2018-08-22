@@ -13,7 +13,7 @@ module.exports = function (iface) {
                 callback();
             });
 
-        mqttSub(settings.topic.statusTargetTemperature, val => {
+        mqttSub(settings.topic.statusTargetTemperature, settings.json.statusTargetTemperature, val => {
             log.debug('> hap update', settings.name, 'TargetTemperature', val);
             acc.getService(subtype)
                 .updateCharacteristic(Characteristic.TargetTemperature, val);
@@ -24,12 +24,12 @@ module.exports = function (iface) {
             .setProps((settings.props || {}).TargetTemperature || {minValue: 4})
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'TargetTemperature');
-                log.debug('> hap re_get', settings.name, 'TargetTemperature', mqttStatus[settings.topic.statusTargetTemperature]);
+                log.debug('> hap re_get', settings.name, 'TargetTemperature', mqttStatus(settings.topic.statusTargetTemperature, settings.json.statusTargetTemperature));
                 callback(null, mqttStatus[settings.topic.statusTargetTemperature]);
             });
 
         if (settings.topic.statusCurrentHeatingCoolingState) {
-            mqttSub(settings.topic.statusCurrentHeatingCoolingState, val => {
+            mqttSub(settings.topic.statusCurrentHeatingCoolingState, settings.json.statusCurrentHeatingCoolingState, val => {
                 log.debug('> hap update', settings.name, 'CurrentHeatingCoolingState', val);
                 acc.getService(subtype)
                     .updateCharacteristic(Characteristic.CurrentHeatingCoolingState, val);
@@ -38,8 +38,9 @@ module.exports = function (iface) {
                 .getCharacteristic(Characteristic.CurrentHeatingCoolingState)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'CurrentHeatingCoolingState');
-                    log.debug('> hap re_get', settings.name, 'CurrentHeatingCoolingState', mqttStatus[settings.topic.statusCurrentHeatingCoolingState]);
-                    callback(null, mqttStatus[settings.topic.statusCurrentHeatingCoolingState]);
+                    const val = mqttStatus(settings.topic.statusCurrentHeatingCoolingState, settings.json.statusCurrentHeatingCoolingState);
+                    log.debug('> hap re_get', settings.name, 'CurrentHeatingCoolingState', val);
+                    callback(null, val);
                 });
         } else {
             const state = 1; // HEATING as default
@@ -56,7 +57,7 @@ module.exports = function (iface) {
         }
 
         if (settings.topic.statusTargetHeatingCoolingState) {
-            mqttSub(settings.topic.statusTargetHeatingCoolingState, val => {
+            mqttSub(settings.topic.statusTargetHeatingCoolingState, settings.json.statusTargetHeatingCoolingState, val => {
                 log.debug('> hap update', settings.name, 'TargetHeatingCoolingState', val);
                 acc.getService(subtype)
                     .updateCharacteristic(Characteristic.TargetHeatingCoolingState, val);
@@ -66,8 +67,9 @@ module.exports = function (iface) {
                 .setProps((settings.props || {}).TargetHeatingCoolingState || {})
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'TargetHeatingCoolingState');
-                    log.debug('> hap re_get', settings.name, 'TargetHeatingCoolingState', mqttStatus[settings.topic.statusTargetHeatingCoolingState]);
-                    callback(null, mqttStatus[settings.topic.statusTargetHeatingCoolingState]);
+                    const val = mqttStatus(settings.topic.statusTargetHeatingCoolingState, settings.json.statusTargetHeatingCoolingState);
+                    log.debug('> hap re_get', settings.name, 'TargetHeatingCoolingState', val);
+                    callback(null, val);
                 });
         } else {
             const state = 1; // HEATING as default

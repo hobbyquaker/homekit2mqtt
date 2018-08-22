@@ -10,7 +10,7 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.CarbonDioxideDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'CarbonDioxideDetected');
-                const contact = mqttStatus[settings.topic.statusCarbonDioxideDetected] === settings.payload.onCarbonDioxideDetected ?
+                const contact = mqttStatus(settings.topic.statusCarbonDioxideDetected, settings.json.statusCarbonDioxideDetected) === settings.payload.onCarbonDioxideDetected ?
                     Characteristic.CarbonDioxideDetected.CO2_LEVELS_ABNORMAL :
                     Characteristic.CarbonDioxideDetected.CO2_LEVELS_NORMAL;
 
@@ -18,7 +18,7 @@ module.exports = function (iface) {
                 callback(null, contact);
             });
 
-        mqttSub(settings.topic.statusCarbonDioxideDetected, val => {
+        mqttSub(settings.topic.statusCarbonDioxideDetected, settings.json.statusCarbonDioxideDetected, val => {
             const contact = val === settings.payload.onCarbonDioxideDetected ?
                 Characteristic.CarbonDioxideDetected.CO2_LEVELS_ABNORMAL :
                 Characteristic.CarbonDioxideDetected.CO2_LEVELS_NORMAL;

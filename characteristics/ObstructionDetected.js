@@ -10,12 +10,12 @@ module.exports = function (obj, iface) {
             .getCharacteristic(Characteristic.ObstructionDetected)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'ObstructionDetected');
-                const obstruction = mqttStatus[settings.topic.statusObstruction] === settings.payload.onObstructionDetected;
+                const obstruction = mqttStatus(settings.topic.statusObstruction, settings.json.statusObstruction) === settings.payload.onObstructionDetected;
                 log.debug('> hap re_get', settings.name, 'ObstructionDetected', obstruction);
                 callback(null, obstruction);
             });
 
-        mqttSub(settings.topic.statusObstruction, val => {
+        mqttSub(settings.topic.statusObstruction, settings.json.statusObstruction, val => {
             const obstruction = val === settings.payload.onObstructionDetected;
             log.debug('> hap update', settings.name, 'ObstructionDetected', obstruction);
             acc.getService(subtype)

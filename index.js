@@ -7,6 +7,7 @@ const Mqtt = require('mqtt');
 const chalk = require('chalk');
 const qrcode = require('qrcode-terminal');
 const nextport = require('nextport');
+const oe = require('obj-ease');
 const express = require('express');
 const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
@@ -24,7 +25,16 @@ log.setLevel(config.verbosity);
 log(pkg.name + ' ' + pkg.version + ' starting');
 process.title = pkg.name;
 
-const mqttStatus = {}; // Holds the payloads of the last-received message, keys are the topics.
+const mqttStatusRaw = {}; // Holds the payloads of the last-received message, keys are the topics.
+
+function mqttStatus(topic, attr) { // Holds the payloads of the last-received message, keys are the topics.
+    if (attr && typeof mqttStatusRaw[topic] === 'object') {
+        return oe.getProp(mqttStatusRaw[topic], attr);
+    } else {
+        return mqttStatus[topic];
+    }
+}
+
 const mqttCallbacks = {}; // Holds arrays of subscription callbacks, keys are the topics.
 let mqttConnected;
 
@@ -96,10 +106,10 @@ function mqttSub(topic, /* string, optional, default "val" */ attr, callback) {
     if (typeof attr === 'function') {
         callback = attr;
         attr = 'val';
-    } else if (typeof attr === 'undefined' || attr === '') {
-        attr = 'val';
-    } else {
+    } else if (attr) {
         attr = String(attr);
+    } else {
+        attr = 'val';
     }
     /* istanbul ignore else */
     if (typeof callback === 'function') {
@@ -272,40 +282,33 @@ function convertMapping() {
 function createBridge() {
     mqtt.on('message', (topic, payload) => {
         payload = payload.toString();
-        let state;
-        if (payload.indexOf('{') === -1 || config.disableJsonParse) {
-            state = typeGuess(payload);
-        } else {
+        let json;
+        if (payload.indexOf('{') !== -1 && !config.disableJsonParse) {
             try {
-                // We got an Object - let's hope it follows mqtt-smarthome architecture and has an attribute "val"
-                // see https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/Architecture.md
-                // TODO make attribute configurable to support non-mqtt-smarthome json payloads https://github.com/hobbyquaker/homekit2mqtt/issues/67
-                // the attibute configuration has to be part of the service settings
-                state = JSON.parse(payload).val;
-                if (typeof state === 'undefined') {
-                    // :-( attribute does not exist
-                    throw new TypeError('attribute val undefined');
-                }
-            } catch (err) {
-                state = typeGuess(payload);
-            }
+                json = JSON.parse(payload);
+            } catch (err) {}
         }
-
+        let state = typeGuess(payload);
         log.debug('< mqtt', topic, state, payload);
-        // TODO take care when mqttStatus is used on hap get, these have to handle the attribute themselfes https://github.com/hobbyquaker/homekit2mqtt/issues/67
-        mqttStatus[topic] = state;
+
+        mqttStatusRaw[topic] = json || state;
+        mqttStatus[topic] = (json && typeof json.val !== 'undefined') ? json.val : state;
+
         /* istanbul ignore else */
         if (mqttCallbacks[topic]) {
             mqttCallbacks[topic].forEach(obj => {
-                const {attr, callback} = obj; // eslint-disable-line no-unused-vars
+                const {attr, callback} = obj;
                 if (typeof callback === 'function') {
-                    // TODO make attribute configurable to support non-mqtt-smarthome json payloads https://github.com/hobbyquaker/homekit2mqtt/issues/67
-                    callback(state);
+                    if (attr) {
+                        callback(json ? oe.getProp(json, attr) : state);
+                    } else {
+                        callback(state);
+                    }
                 }
             });
         }
         // Topics array Used for autocomplete in web ui)
-        if (topics.indexOf(topic) === -1 && topic !== config.name + '/connected') {
+        if (topics.indexOf(topic) === -1 && topic !== (config.name + '/connected')) {
             topics.push(topic);
         }
     });
@@ -329,6 +332,9 @@ function createBridge() {
             }
             if (!addService[s.service]) {
                 loadService(s.service);
+            }
+            if (!s.json) {
+                s.json = {};
             }
             log.debug('adding service', s.service, 'to accessory', accConfig.name);
             addService[s.service](acc, s, String(i));

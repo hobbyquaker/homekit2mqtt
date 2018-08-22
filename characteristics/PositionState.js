@@ -6,7 +6,7 @@ module.exports = function (obj, iface) {
 
     /* istanbul ignore else */
     if (settings.topic.statusPositionState) {
-        mqttSub(settings.topic.statusPositionState, val => {
+        mqttSub(settings.topic.statusPositionState, settings.json.statusPositionState, val => {
             let state;
             if (val === settings.payload.positionStatusDecreasing) {
                 state = Characteristic.PositionState.DECREASING;
@@ -26,10 +26,10 @@ module.exports = function (obj, iface) {
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'PositionState');
 
-                if (mqttStatus[settings.topic.statusPositionState] === settings.payload.positionStatusDecreasing) {
+                if (mqttStatus(settings.topic.statusPositionState, settings.json.statusPositionState) === settings.payload.positionStatusDecreasing) {
                     log.debug('> hap re_get', settings.name, 'PositionState.DECREASING');
                     callback(null, Characteristic.PositionState.DECREASING);
-                } else if (mqttStatus[settings.topic.statusPositionState] === settings.payload.positionStatusIncreasing) {
+                } else if (mqttStatus(settings.topic.statusPositionState, settings.json.statusPositionState) === settings.payload.positionStatusIncreasing) {
                     log.debug('> hap re_get', settings.name, 'PositionState.INCREASING');
                     callback(null, Characteristic.PositionState.INCREASING);
                 } else {

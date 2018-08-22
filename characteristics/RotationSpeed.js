@@ -21,7 +21,7 @@ module.exports = function (obj, iface) {
 
     /* istanbul ignore else */
     if (settings.topic.statusRotationSpeed) {
-        mqttSub(settings.topic.statusRotationSpeed, val => {
+        mqttSub(settings.topic.statusRotationSpeed, settings.json.statusRotationSpeed, val => {
             /* istanbul ignore next */
             const speed = (val / settings.payload.rotationSpeedFactor) || 0;
             log.debug('> hap update', settings.name, 'RotationSpeed', speed);
@@ -33,7 +33,7 @@ module.exports = function (obj, iface) {
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'RotationSpeed');
                 /* istanbul ignore next */
-                const speed = (mqttStatus[settings.topic.statusRotationSpeed] / settings.payload.rotationSpeedFactor) || 0;
+                const speed = (mqttStatus(settings.topic.statusRotationSpeed, settings.json.statusRotationSpeed) / settings.payload.rotationSpeedFactor) || 0;
                 log.debug('> hap re_get', settings.name, 'RotationSpeed', speed);
                 callback(null, speed);
             });

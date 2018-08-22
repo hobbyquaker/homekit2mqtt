@@ -22,7 +22,7 @@ module.exports = function (iface) {
 
         acc.addService(Service.IrrigationSystem, settings.name, subtype);
 
-        mqttSub(settings.topic.statusInUse, val => {
+        mqttSub(settings.topic.statusInUse, settings.json.statusInUse, val => {
             const inUse = val === settings.payload.inUseTrue ? 1 : 0;
             log.debug('> hap update', settings.name, 'InUse', inUse);
             acc.getService(subtype)
@@ -32,7 +32,7 @@ module.exports = function (iface) {
             .getCharacteristic(Characteristic.InUse)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'InUse');
-                const inUse = mqttStatus[settings.topic.statusInUse] === settings.payload.inUseTrue ? 1 : 0;
+                const inUse = mqttStatus(settings.topic.statusInUse, settings.json.statusInUse) === settings.payload.inUseTrue ? 1 : 0;
                 log.debug('> hap re_get', settings.name, 'InUse', inUse);
                 callback(null, inUse);
             });

@@ -35,7 +35,7 @@ module.exports = function (iface) {
 
         /* istanbul ignore else */
         if (settings.topic.statusDoor) {
-            mqttSub(settings.topic.statusDoor, val => {
+            mqttSub(settings.topic.statusDoor, settings.json.statusDoor, val => {
                 if (val === settings.payload.doorClosed) {
                     log.debug('> hap update', settings.name, 'CurrentDoorState.CLOSED');
                     acc.getService(subtype)
@@ -79,16 +79,18 @@ module.exports = function (iface) {
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'CurrentDoorState');
 
-                    if (mqttStatus[settings.topic.statusDoor] === settings.payload.doorClosed) {
+                    const val = mqttStatus(settings.topic.statusDoor, settings.json.statusDoor);
+
+                    if (val === settings.payload.doorClosed) {
                         log.debug('> hap re_get', settings.name, 'CurrentDoorState.CLOSED');
                         callback(null, Characteristic.CurrentDoorState.CLOSED);
-                    } else if (mqttStatus[settings.topic.statusDoor] === settings.payload.doorOpening) {
+                    } else if (val === settings.payload.doorOpening) {
                         log.debug('> hap re_get', settings.name, 'CurrentDoorState.OPENING');
                         callback(null, Characteristic.CurrentDoorState.OPENING);
-                    } else if (mqttStatus[settings.topic.statusDoor] === settings.payload.doorClosing) {
+                    } else if (val === settings.payload.doorClosing) {
                         log.debug('> hap re_get', settings.name, 'CurrentDoorState.CLOSING');
                         callback(null, Characteristic.CurrentDoorState.CLOSING);
-                    } else if (mqttStatus[settings.topic.statusDoor] === settings.payload.doorStopped) {
+                    } else if (val === settings.payload.doorStopped) {
                         log.debug('> hap re_get', settings.name, 'CurrentDoorState.STOPPED');
                         callback(null, Characteristic.CurrentDoorState.STOPPED);
                     } else {

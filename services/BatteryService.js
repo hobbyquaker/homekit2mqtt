@@ -12,7 +12,7 @@ module.exports = function (iface) {
                 .getCharacteristic(Characteristic.BatteryLevel)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'BatteryLevel');
-                    let val = mqttStatus[settings.topic.statusBatteryLevel];
+                    let val = mqttStatus(settings.topic.statusBatteryLevel, settings.json.statusBatteryLevel);
                     /* istanbul ignore else */
                     if (settings.config && (typeof settings.payload.maxBatteryLevel !== 'undefined')) {
                         const max = settings.payload.maxBatteryLevel;
@@ -24,7 +24,7 @@ module.exports = function (iface) {
                     callback(null, val);
                 });
 
-            mqttSub(settings.topic.statusBatteryLevel, val => {
+            mqttSub(settings.topic.statusBatteryLevel, settings.json.statusBatteryLevel, val => {
                 /* istanbul ignore else */
                 if (settings.config && (typeof settings.payload.maxBatteryLevel !== 'undefined')) {
                     const max = settings.payload.maxBatteryLevel;
@@ -39,7 +39,7 @@ module.exports = function (iface) {
         }
 
         if (settings.topic.statusChargingState) {
-            mqttSub(settings.topic.statusChargingState, val => {
+            mqttSub(settings.topic.statusChargingState, settings.json.statusChargingState, val => {
                 log.debug('> hap update', settings.name, 'ChargingState', val);
                 acc.getService(subtype)
                     .updateCharacteristic(Characteristic.ChargingState, val);
@@ -48,7 +48,7 @@ module.exports = function (iface) {
                 .getCharacteristic(Characteristic.ChargingState)
                 .on('get', callback => {
                     log.debug('< hap get', settings.name, 'ChargingState');
-                    const val = mqttStatus[settings.topic.statusChargingState];
+                    const val = mqttStatus(settings.topic.statusChargingState, settings.json.statusChargingState);
                     log.debug('> hap re_get', settings.name, 'ChargingState', val);
                     callback(null, val);
                 });

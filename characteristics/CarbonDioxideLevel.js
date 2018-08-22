@@ -6,7 +6,7 @@ module.exports = function (obj, iface) {
 
     /* istanbul ignore else */
     if (settings.topic.statusCarbonDioxideLevel) {
-        mqttSub(settings.topic.statusCarbonDioxideLevel, val => {
+        mqttSub(settings.topic.statusCarbonDioxideLevel, settings.json.statusCarbonDioxideLevel, val => {
             log.debug('> hap update', settings.name, 'CarbonDioxideLevel', val);
             acc.getService(subtype)
                 .updateCharacteristic(Characteristic.CarbonDioxideLevel, val);
@@ -16,7 +16,7 @@ module.exports = function (obj, iface) {
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'CarbonDioxideLevel');
                 log.debug('> hap re_get', settings.name, 'CarbonDioxideLevel', mqttStatus[settings.topic.statusCarbonDioxideLevel]);
-                callback(null, mqttStatus[settings.topic.statusCarbonDioxideLevel]);
+                callback(null, mqttStatus(settings.topic.statusCarbonDioxideLevel, settings.json.statusCarbonDioxideLevel));
             });
     }
 };

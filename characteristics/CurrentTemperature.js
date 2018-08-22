@@ -18,13 +18,13 @@ module.exports = function (obj, iface) {
         .getCharacteristic(Characteristic.CurrentTemperature)
         .setProps((settings.props || {}).CurrentTemperature || {minValue: -100})
         .on('get', callback => {
-            const temperature = convertTemperature(settings, mqttStatus[settings.topic.statusCurrentTemperature]);
+            const temperature = convertTemperature(settings, mqttStatus(settings.topic.statusCurrentTemperature, settings.json.statusCurrentTemperature));
             log.debug('< hap get', settings.name, 'CurrentTemperature');
             log.debug('> hap re_get', settings.name, temperature);
             callback(null, temperature);
         });
 
-    mqttSub(settings.topic.statusCurrentTemperature, val => {
+    mqttSub(settings.topic.statusCurrentTemperature, settings.json.statusCurrentTemperature, val => {
         const temperature = convertTemperature(settings, val);
         log.debug('> hap update', settings.name, 'CurrentTemperature', temperature);
         acc.getService(subtype)

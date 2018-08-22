@@ -17,7 +17,7 @@ module.exports = function (obj, iface) {
 
     /* istanbul ignore else */
     if (settings.topic.statusLockPhysicalControls) {
-        mqttSub(settings.topic.statusLockPhysicalControls, val => {
+        mqttSub(settings.topic.statusLockPhysicalControls, settings.json.statusLockPhysicalControls, val => {
             log.debug('> hap update', settings.name, 'LockPhysicalControls', val);
             acc.getService(subtype)
                 .updateCharacteristic(Characteristic.LockPhysicalControls, val);
@@ -26,7 +26,7 @@ module.exports = function (obj, iface) {
             .getCharacteristic(Characteristic.LockPhysicalControls)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'LockPhysicalControls');
-                const state = mqttStatus[settings.topic.statusLockPhysicalControls];
+                const state = mqttStatus(settings.topic.statusLockPhysicalControls, settings.json.statusLockPhysicalControls);
                 log.debug('> hap re_get', settings.name, 'LockPhysicalControls', state);
                 callback(null, state);
             });

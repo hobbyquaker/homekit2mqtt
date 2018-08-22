@@ -15,7 +15,7 @@ module.exports = function (obj, iface) {
 
     /* istanbul ignore else */
     if (settings.topic.statusOn) {
-        mqttSub(settings.topic.statusOn, val => {
+        mqttSub(settings.topic.statusOn, settings.json.statusOn, val => {
             const on = val === settings.payload.onTrue;
             log.debug('> hap update', settings.name, 'On', on);
             acc.getService(subtype)
@@ -25,7 +25,7 @@ module.exports = function (obj, iface) {
             .getCharacteristic(Characteristic.On)
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'On');
-                const on = mqttStatus[settings.topic.statusOn] === settings.payload.onTrue;
+                const on = mqttStatus(settings.topic.statusOn, settings.json.statusOn) === settings.payload.onTrue;
                 log.debug('> hap re_get', settings.name, 'On', on);
                 callback(null, on);
             });

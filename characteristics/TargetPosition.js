@@ -22,9 +22,9 @@ module.exports = function (obj, iface) {
 
     /* istanbul ignore else */
     if (settings.topic.statusTargetPosition) {
-        mqttSub(settings.topic.statusTargetPosition, val => {
+        mqttSub(settings.topic.statusTargetPosition, settings.json.statusTargetPosition, val => {
             /* istanbul ignore next */
-            const position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / settings.payload.targetPositionFactor);
+            const position = Math.round(val / settings.payload.targetPositionFactor);
             log.debug('> hap update', settings.name, 'TargetPosition', position);
             acc.getService(subtype)
                 .updateCharacteristic(Characteristic.TargetPosition, position);
@@ -34,7 +34,7 @@ module.exports = function (obj, iface) {
             .on('get', callback => {
                 log.debug('< hap get', settings.name, 'TargetPosition');
                 /* istanbul ignore next */
-                const position = Math.round(mqttStatus[settings.topic.statusTargetPosition] / settings.payload.targetPositionFactor);
+                const position = Math.round(mqttStatus(settings.topic.statusTargetPosition, settings.json.statusTargetPosition) / settings.payload.targetPositionFactor);
                 log.debug('> hap re_get', settings.name, 'TargetPosition', position);
                 callback(null, position);
             });

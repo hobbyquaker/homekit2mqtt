@@ -8,13 +8,13 @@ module.exports = function (obj, iface) {
         .getCharacteristic(Characteristic.MotionDetected)
         .on('get', callback => {
             log.debug('< hap get', settings.name, 'MotionDetected');
-            const motion = mqttStatus[settings.topic.statusMotionDetected] === settings.payload.onMotionDetected;
+            const motion = mqttStatus(settings.topic.statusMotionDetected, settings.json.statusMotionDetected) === settings.payload.onMotionDetected;
 
             log.debug('> hap re_get', settings.name, 'MotionDetected', motion);
             callback(null, motion);
         });
 
-    mqttSub(settings.topic.statusMotionDetected, val => {
+    mqttSub(settings.topic.statusMotionDetected, settings.json.statusMotionDetected, val => {
         const motion = val === settings.payload.onMotionDetected;
         log.debug('> hap update', settings.name, 'MotionDetected', motion);
         acc.getService(subtype)

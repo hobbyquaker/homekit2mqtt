@@ -89,11 +89,20 @@ input[type=checkbox] {
     margin-top: 0.5em;
 }
 
-.attr-desc {
+.row-prop {
+    padding-top: 3px;
     font-size: 11px;
-    color: #888;
+    color: #555;
 }
 
 .attr-name {
     word-wrap: break-word;
+}
+
+a.fa-info-circle {
+    font-size: 1.5em;
+}
+
+a.fa-info-circle:hover {
+    text-decoration: none;
 }
