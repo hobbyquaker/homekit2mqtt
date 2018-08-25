@@ -157,7 +157,7 @@ topic
 payload
 
 * activeTrue (optional, default: `true`)
-* activeFalse (optional, default: `false`)
+* invertActive (optional, default: `false`)
 * rotationSpeedFactor (optional, default: `1`)
 
 
@@ -183,9 +183,13 @@ topic
 payload
 
 * onLowBattery (optional)
+* invertLowBattery (optional, default: `false`)
 * onTampered (optional)
+* invertTampered (optional, default: `false`)
 * onActive (optional)
+* invertActive (optional, default: `false`)
 * onFault (optional)
+* invertFault (optional, default: `false`)
 
 
 #### BatteryService
@@ -202,6 +206,7 @@ topic
 payload
 
 * onLowBattery
+* invertLowBattery (optional, default: `false`)
 * minBatteryLevel (optional, default: `0`)
 * maxBatteryLevel (optional, default: `100`)
 
@@ -242,20 +247,23 @@ config
 topic
 
 * statusCarbonDioxideDetected
-* statusLowBattery (optional)
+* statusCarbonDioxideLevel (optional)
+* statusCarbonDioxidePeakLevel (optional)
 * statusTampered (optional)
 * statusActive (optional)
 * statusFault (optional)
-* statusCarbonDioxideLevel (optional)
-* statusCarbonDioxidePeakLevel (optional)
 
 payload
 
 * onCarbonDioxideDetected
 * onLowBattery (optional)
+* invertLowBattery (optional, default: `false`)
 * onTampered (optional)
+* invertTampered (optional, default: `false`)
 * onActive (optional)
+* invertActive (optional, default: `false`)
 * onFault (optional)
+* invertFault (optional, default: `false`)
 
 
 #### CarbonMonoxideSensor
@@ -263,6 +271,8 @@ payload
 topic
 
 * statusCarbonMonoxideDetected
+* statusCarbonMonoxideLevel (optional)
+* statusCarbonMonoxidePeakLevel (optional)
 * statusLowBattery (optional)
 * statusTampered (optional)
 * statusActive (optional)
@@ -272,9 +282,13 @@ payload
 
 * onCarbonMonoxideDetected
 * onLowBattery (optional)
+* invertLowBattery (optional, default: `false`)
 * onTampered (optional)
+* invertTampered (optional, default: `false`)
 * onActive (optional)
+* invertActive (optional, default: `false`)
 * onFault (optional)
+* invertFault (optional, default: `false`)
 
 
 #### ContactSensor
@@ -291,9 +305,13 @@ payload
 
 * onContactDetected
 * onLowBattery (optional)
+* invertLowBattery (optional, default: `false`)
 * onTampered (optional)
+* invertTampered (optional, default: `false`)
 * onActive (optional)
+* invertActive (optional, default: `false`)
 * onFault (optional)
+* invertFault (optional, default: `false`)
 
 
 #### Door
@@ -380,7 +398,7 @@ topic
 payload
 
 * activeTrue (optional, default: `true`)
-* activeFalse (optional, default: `false`)
+* invertActive (optional, default: `false`)
 * rotationSpeedFactor (optional, default: `1`)
 
 
@@ -395,8 +413,9 @@ topic
 payload
 
 * activeTrue (optional, default: `true`)
-* activeFalse (optional, default: `false`)
+* invertActive (optional, default: `false`)
 * faultTrue (optional, default: `true`)
+* invertFault (optional, default: `false`)
 
 
 #### FilterMaintenance
@@ -417,15 +436,15 @@ payload
 topic
 
 * setDoor
-* statusDoor (optional)
+* statusDoor (optional)    
+  0 = OPEN, 1 = CLOSED; 2 = OPENING, 3 = CLOSING, 4 = STOPPED
 * statusObstruction (optional)
 * setLock (optional)
 * statusLock (optional)
 
 payload
 
-* doorOpen
-* doorClosed
+* doorClosed (optional)
 * doorOpening (optional)
 * doorClosing (optional)
 * doorStopped (optional)
@@ -467,7 +486,7 @@ topic
 payload
 
 * activeTrue (optional, default: `true`)
-* activeFalse (optional, default: `false`)
+* invertActive (optional, default: `false`)
 * rotationSpeedFactor (optional, default: `1`)
 
 config
@@ -511,7 +530,7 @@ topic
 payload
 
 * activeTrue (optional, default: `true`)
-* activeFalse (optional, default: `false`)
+* invertActive (optional, default: `false`)
 * rotationSpeedFactor (optional, default: `1`)
 * waterLevelFactor (optional, default: `1`)
 
@@ -529,9 +548,13 @@ topic
 payload
 
 * onLowBattery (optional)
+* invertLowBattery (optional, default: `false`)
 * onTampered (optional)
+* invertTampered (optional, default: `false`)
 * onActive (optional)
+* invertActive (optional, default: `false`)
 * onFault (optional)
+* invertFault (optional, default: `false`)
 
 
 #### IrrigationSystem
@@ -548,8 +571,9 @@ topic
 payload
 
 * activeTrue (optional, default: `true`)
-* activeFalse (optional, default: `false`)
+* invertActive (optional, default: `false`)
 * faultTrue (optional, default: `true`)
+* invertFault (optional, default: `false`)
 * inUseTrue (optional, default: `true`)
 
 
@@ -567,9 +591,13 @@ payload
 
 * onLeakDetected
 * onLowBattery (optional)
+* invertLowBattery (optional, default: `false`)
 * onTampered (optional)
+* invertTampered (optional, default: `false`)
 * onActive (optional)
+* invertActive (optional, default: `false`)
 * onFault (optional)
+* invertFault (optional, default: `false`)
 
 
 #### Lightbulb
@@ -613,9 +641,43 @@ payload
 
 * ambientLightLevelFactor (optional, default: `1`)
 * onLowBattery (optional)
+* invertLowBattery (optional, default: `false`)
 * onTampered (optional)
+* invertTampered (optional, default: `false`)
 * onActive (optional)
+* invertActive (optional, default: `false`)
 * onFault (optional)
+* invertFault (optional, default: `false`)
+
+
+#### LockManagement
+
+topic
+
+* setLockControlPoint
+* statusVersion
+* statusVersion (optional)
+* statusLogs (optional)
+* setAudioFeedback (optional)
+* statusAudioFeedback (optional)
+* setLockManagementAutoSecurityTimeout (optional)    
+  Seconds
+* statusLockManagementAutoSecurityTimeout (optional)    
+  Seconds
+* setAdministratorOnlyAccess (optional)
+* statusAdministratorOnlyAccess (optional)
+* statusLockLastKnownAction (optional)    
+  0 = SECURED_PHYSICALLY_INTERIOR, 1 = UNSECURED_PHYSICALLY_INTERIOR, 2 = SECURED_PHYSICALLY_EXTERIOR, 3 = UNSECURED_PHYSICALLY_EXTERIOR, 4 = SECURED_BY_KEYPAD, 5 = UNSECURED_BY_KEYPAD, 6 = SECURED_REMOTELY, 7 = UNSECURED_REMOTELY, 8 = SECURED_BY_AUTO_SECURE_TIMEOUT
+* statusCurrentDoorState (optional)    
+  0 = OPEN, 1 = CLOSED; 2 = OPENING, 3 = CLOSING, 4 = STOPPED
+* statusMotionDetected (optional)
+
+payload
+
+* doorClosed (optional)
+* doorOpening (optional)
+* doorClosing (optional)
+* doorStopped (optional)
 
 
 #### LockMechanism
@@ -628,6 +690,9 @@ topic
 payload
 
 * lockSecured
+* lockUnsecured
+* lockJammed (optional)
+* lockUnknown (optional)
 
 
 #### Microphone
@@ -652,11 +717,20 @@ topic
 
 * statusMotionDetected
 * statusLowBattery (optional)
+* statusTampered (optional)
+* statusActive (optional)
+* statusFault (optional)
 
 payload
 
 * onMotionDetected
 * onLowBattery (optional)
+* onTampered (optional)
+* invertTampered (optional, default: `false`)
+* onActive (optional)
+* invertActive (optional, default: `false`)
+* onFault (optional)
+* invertFault (optional, default: `false`)
 
 
 #### OccupancySensor
@@ -670,6 +744,7 @@ payload
 
 * onOccupancyDetected
 * onLowBattery (optional)
+* invertLowBattery (optional, default: `false`)
 
 
 #### Outlet
@@ -703,8 +778,11 @@ topic
 payload
 
 * onTampered (optional)
+* invertTampered (optional, default: `false`)
 * onActive (optional)
+* invertActive (optional, default: `false`)
 * onFault (optional)
+* invertFault (optional, default: `false`)
 
 
 #### Slat
@@ -744,9 +822,12 @@ payload
 
 * onSmokeDetected
 * onLowBattery (optional)
+* invertLowBattery (optional, default: `false`)
 * onTampered (optional)
+* invertTampered (optional, default: `false`)
 * onActive (optional)
 * onFault (optional)
+* invertFault (optional, default: `false`)
 
 
 #### Speaker
@@ -804,9 +885,13 @@ payload
 * fahrenheit (default: `false`)    
   Set to true if your sensor publishes values in degree fahrenheit
 * onLowBattery (optional)
+* invertLowBattery (optional, default: `false`)
 * onTampered (optional)
+* invertTampered (optional, default: `false`)
 * onActive (optional)
+* invertActive (optional, default: `false`)
 * onFault (optional)
+* invertFault (optional, default: `false`)
 
 
 #### Thermostat
@@ -853,8 +938,9 @@ topic
 payload
 
 * activeTrue (optional, default: `true`)
-* activeFalse (optional, default: `false`)
+* invertActive (optional, default: `false`)
 * faultTrue (optional, default: `true`)
+* invertFault (optional, default: `false`)
 * inUseTrue (optional, default: `true`)
 
 config
@@ -890,6 +976,12 @@ topic
 * statusTargetPosition (optional)
 * statusCurrentPosition (optional)
 * statusPositionState (optional)
+* statusTargetHorizontalTiltAngle (optional)
+* setTargetHorizontalTiltAngle (optional)
+* statusTargetVerticalTiltAngle (optional)
+* setTargetVerticalTiltAngle (optional)
+* statusCurrentHorizontalTiltAngle (optional)
+* statusCurrentVerticalTiltAngle (optional)
 
 payload
 
