@@ -1852,6 +1852,98 @@ describe('Lightbulb Hue', () => {
     });
 });
 
+describe('LightbulbJson Hue', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        subscribe('homekit', /hap update LightbulbJson Hue 360/, () => {
+            done();
+        });
+        mqtt.publish('LightbulbJson/status', '{"hue":65535}');
+    });
+    it('client should get the status of the Lightbulb', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        cp.exec(clientCmd + ' get --aid ' + aid.LightbulbJson + ' --iid ' + iid.LightbulbJson.Hue, (err, stdout, stderr) => {
+            if (stdout === '360\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        subscribe('homekit', /hap update LightbulbJson Hue 0/, () => {
+            done();
+        });
+        mqtt.publish('LightbulbJson/status', '{"hue":0}');
+    });
+    it('client should get the status of the Lightbulb', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        cp.exec(clientCmd + ' get --aid ' + aid.LightbulbJson + ' --iid ' + iid.LightbulbJson.Hue, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        subscribe('homekit', /hap update LightbulbJson Hue 360/, () => {
+            done();
+        });
+        mqtt.publish('LightbulbJson/status', '{"hue":65535}');
+    });
+});
+
+describe('LightbulbJson Brightness', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        subscribe('homekit', /hap update LightbulbJson Brightness 100/, () => {
+            done();
+        });
+        mqtt.publish('LightbulbJson/status', '{"bri":254}');
+    });
+    it('client should get the status of the Lightbulb', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        cp.exec(clientCmd + ' get --aid ' + aid.LightbulbJson + ' --iid ' + iid.LightbulbJson.Brightness, (err, stdout, stderr) => {
+            if (stdout === '100\n') {
+                done();
+            }
+        });
+    });
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        subscribe('homekit', /hap update LightbulbJson Brightness 0/, () => {
+            done();
+        });
+        mqtt.publish('LightbulbJson/status', '{"bri":0,"on":true,"hue":0}');
+    });
+    it('client should get the status of the Lightbulb', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        cp.exec(clientCmd + ' get --aid ' + aid.LightbulbJson + ' --iid ' + iid.LightbulbJson.Brightness, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        subscribe('homekit', /hap update LightbulbJson Brightness 100/, () => {
+            done();
+        });
+        mqtt.publish('LightbulbJson/status', '{"bri":254,"hue":0,"on":true}');
+    });
+});
+
 describe('LightSensor', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(36000);
@@ -1976,10 +2068,10 @@ describe('MotionSensor MotionSensorState', () => {
     });
 });
 
-testLowBattery('MotionSensor');
-testActive('MotionSensor');
-testFault('MotionSensor');
-testTampered('MotionSensor');
+testLowBattery('MotionSensor', true);
+testActive('MotionSensor', true);
+testFault('MotionSensor', true);
+testTampered('MotionSensor', true);
 
 stopHomekit();
 initTest(__dirname + '/test-oz.json');
@@ -3086,15 +3178,15 @@ describe('WindowCovering PositionState', () => {
 
 end(0);
 
-function testLowBattery(name) {
-    describe(name + ' StatusLowBattery', () => {
+function testLowBattery(name, invert) {
+    describe(name + ' StatusLowBattery invert=' + Boolean(invert), () => {
         it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
             this.timeout(36000);
             this.retries(5);
             subscribe('homekit', new RegExp('hap update ' + name + ' StatusLowBattery 1'), () => {
                 done();
             });
-            mqtt.publish(name + '/status/LowBattery', '{"val":1}');
+            mqtt.publish(name + '/status/LowBattery', JSON.stringify({val: invert ? 0 : 1}));
         });
         it('client should get the status of the ' + name, function (done) {
             this.timeout(36000);
@@ -3111,7 +3203,7 @@ function testLowBattery(name) {
             subscribe('homekit', new RegExp('hap update ' + name + ' StatusLowBattery 0'), () => {
                 done();
             });
-            mqtt.publish(name + '/status/LowBattery', '{"val":0}');
+            mqtt.publish(name + '/status/LowBattery', JSON.stringify({val: invert ? 1 : 0}));
         });
         it('client should get the status of ' + name, function (done) {
             this.timeout(36000);
@@ -3125,15 +3217,15 @@ function testLowBattery(name) {
     });
 }
 
-function testActive(name) {
-    describe(name + ' StatusActive', () => {
+function testActive(name, invert) {
+    describe(name + ' StatusActive invert=' + Boolean(invert), () => {
         it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
             this.timeout(36000);
             this.retries(5);
             subscribe('homekit', new RegExp('hap update ' + name + ' StatusActive true'), () => {
                 done();
             });
-            mqtt.publish(name + '/status/Active', '{"val":1}');
+            mqtt.publish(name + '/status/Active', JSON.stringify({val: invert ? 0 : 1}));
         });
         it('client should get the status of the ' + name, function (done) {
             this.timeout(36000);
@@ -3150,7 +3242,7 @@ function testActive(name) {
             subscribe('homekit', new RegExp('hap update ' + name + ' StatusActive false'), () => {
                 done();
             });
-            mqtt.publish(name + '/status/Active', '{"val":0}');
+            mqtt.publish(name + '/status/Active', JSON.stringify({val: invert ? 1 : 0}));
         });
         it('client should get the status of ' + name, function (done) {
             this.timeout(36000);
@@ -3164,15 +3256,15 @@ function testActive(name) {
     });
 }
 
-function testFault(name) {
-    describe(name + ' StatusFault', () => {
+function testFault(name, invert) {
+    describe(name + ' StatusFault invert=' + Boolean(invert), () => {
         it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
             this.timeout(36000);
             this.retries(5);
             subscribe('homekit', new RegExp('hap update ' + name + ' StatusFault 1'), () => {
                 done();
             });
-            mqtt.publish(name + '/status/Fault', '{"val":1}');
+            mqtt.publish(name + '/status/Fault', JSON.stringify({val: invert ? 0 : 1}));
         });
         it('client should get the status of the ' + name, function (done) {
             this.timeout(36000);
@@ -3189,7 +3281,7 @@ function testFault(name) {
             subscribe('homekit', new RegExp('hap update ' + name + ' StatusFault 0'), () => {
                 done();
             });
-            mqtt.publish(name + '/status/Fault', '{"val":0}');
+            mqtt.publish(name + '/status/Fault', JSON.stringify({val: invert ? 1 : 0}));
         });
         it('client should get the status of ' + name, function (done) {
             this.timeout(36000);
@@ -3203,15 +3295,15 @@ function testFault(name) {
     });
 }
 
-function testTampered(name) {
-    describe(name + ' StatusTampered', () => {
+function testTampered(name, invert) {
+    describe(name + ' StatusTampered invert=' + Boolean(invert), () => {
         it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
             this.timeout(36000);
             this.retries(5);
             subscribe('homekit', new RegExp('hap update ' + name + ' StatusTampered 1'), () => {
                 done();
             });
-            mqtt.publish(name + '/status/Tampered', '{"val":1}');
+            mqtt.publish(name + '/status/Tampered', JSON.stringify({val: invert ? 0 : 1}));
         });
         it('client should get the status of the ' + name, function (done) {
             this.timeout(36000);
@@ -3228,7 +3320,7 @@ function testTampered(name) {
             subscribe('homekit', new RegExp('hap update ' + name + ' StatusTampered 0'), () => {
                 done();
             });
-            mqtt.publish(name + '/status/Tampered', '{"val":0}');
+            mqtt.publish(name + '/status/Tampered', JSON.stringify({val: invert ? 1 : 0}));
         });
         it('client should get the status of ' + name, function (done) {
             this.timeout(36000);

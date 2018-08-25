@@ -414,6 +414,47 @@
     "topicIdentify": "Lightbulb/set/identify",
     "payloadIdentify": "select"
   },
+  "LightbulbJson": {
+    "name": "LightbulbJson",
+    "manufacturer": "Generic",
+    "model": "Lightbulb Color",
+    "services": [
+      {
+        "name": "LightbulbJson",
+        "service": "Lightbulb",
+        "topic": {
+          "setOn": "LightbulbJson/set",
+          "setBrightness": "LightbulbJson/set/Brightness",
+          "setHue": "LightbulbJson/set/Hue",
+          "setSaturation": "LightbulbJson/set/Saturation",
+          "setColorTemperature": "LightbulbJson/set/ColorTemperature",
+          "statusOn": "LightbulbJson/status",
+          "statusBrightness": "LightbulbJson/status",
+          "statusHue": "LightbulbJson/status",
+          "statusSaturation": "LightbulbJson/status",
+          "statusColorTemperature": "LightbulbJson/status"
+        },
+        "json": {
+          "statusOn": "on",
+          "statusBrightness": "bri",
+          "statusHue": "hue",
+          "statusSaturation": "sat",
+          "statusColorTemperature": "ct"
+        },
+        "payload": {
+          "onTrue": 254,
+          "onFalse": 0,
+          "brightnessFactor": 2.54,
+          "hueFactor": 182.04166666666666,
+          "saturationFactor": 2.54
+        },
+        "config": {},
+        "props": {}
+      }
+    ],
+    "topicIdentify": "LightbulbJson/set/identify",
+    "payloadIdentify": "select"
+  },
   "LightSensor": {
     "name": "LightSensor",
     "manufacturer": "Generic",
@@ -497,9 +538,13 @@
         "payload": {
           "onMotionDetected": 1,
           "onLowBattery": 1,
+          "invertLowBattery": true,
           "onActive": 1,
+          "invertActive": true,
           "onFault": 1,
-          "onTampered": 1
+          "invertFault": true,
+          "onTampered": 1,
+          "invertTampered": true
         },
         "config": {},
         "props": {}
