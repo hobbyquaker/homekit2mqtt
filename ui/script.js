@@ -771,9 +771,6 @@ $(document).ready(() => {
                         </div>
                     </div>`);
 
-
-
-
                 if (t.name.startsWith('status')) {
                     row += (`
                     <div class="row row-prop">
@@ -786,7 +783,6 @@ $(document).ready(() => {
 
                 row += ('</div>');
                 $configuration.append(row);
-
             });
 
             $('input.topic').each(function () {

@@ -30,9 +30,8 @@ const mqttStatusRaw = {}; // Holds the payloads of the last-received message, ke
 function mqttStatus(topic, attr) { // Holds the payloads of the last-received message, keys are the topics.
     if (attr && typeof mqttStatusRaw[topic] === 'object') {
         return oe.getProp(mqttStatusRaw[topic], attr);
-    } else {
-        return mqttStatus[topic];
     }
+    return mqttStatus[topic];
 }
 
 const mqttCallbacks = {}; // Holds arrays of subscription callbacks, keys are the topics.
@@ -288,7 +287,7 @@ function createBridge() {
                 json = JSON.parse(payload);
             } catch (err) {}
         }
-        let state = typeGuess(payload);
+        const state = typeGuess(payload);
         log.debug('< mqtt', topic, state, payload);
 
         mqttStatusRaw[topic] = json || state;
