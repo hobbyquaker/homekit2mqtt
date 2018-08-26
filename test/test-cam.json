@@ -1,1 +1,58 @@
-{}
+{
+  "CamWhz": {
+    "id": "CamWhz",
+    "name": "Cam Wohnzimmer",
+    "payloadIdentify": "",
+    "services": [
+      {
+        "name": "CamWhz",
+        "service": "CameraRTSPStreamManagement",
+        "topic": {},
+        "payload": {},
+        "config": {
+          "source": "-rtsp_transport tcp -re -i rtsp://use:pass@cam-whz",
+          "stillImageSource": "-i https://user:passcam-whz/snap.jpg?JpegSize=M",
+          "maxStreams": 2,
+          "maxWidth": 1920,
+          "maxHeight": 1080,
+          "maxFPS": 30,
+          "maxBitrate": 300,
+          "vcodec": "libx264",
+          "audio": false,
+          "packetSize": 1316,
+          "debug": false,
+          "videoProcessor": "ffmpeg"
+        },
+        "props": {}
+      }
+    ],
+    "payload": {},
+    "config": {}
+  },
+  "Switch": {
+    "id": "Switch",
+    "name": "Switch",
+    "category": 8,
+    "payloadIdentify": "",
+    "services": [
+      {
+        "name": "Switch",
+        "service": "Switch",
+        "topic": {
+          "setOn": "test/switch/set",
+          "statusOn": "test/switch/status"
+        },
+        "json": {
+          "statusOn": "on"
+        },
+        "payload": {
+          "onFalse": false,
+          "onTrue": true
+        },
+        "config": {},
+        "props": {}
+      }
+    ],
+    "fileChangeIndicator": "lhj34y"
+  }
+}

@@ -108,11 +108,15 @@ function matchSubscriptions(type, data) {
     });
 }
 
-function startHomekit(mapFile) {
-    config = require(mapFile);
-    const homekitArgs = ['-m', mapFile, '-v', 'debug', '-a', 'CC:22:3D:' + randomHex() + ':' + randomHex() + ':' + randomHex()];
+function startHomekit(args) {
+    if (typeof args === 'string') {
+        config = require(args);
+        args = ['-m', args, '-v', 'debug', '-a', 'CC:22:3D:' + randomHex() + ':' + randomHex() + ':' + randomHex()];
+    } else {
+        config = {};
+    }
 
-    homekit = cp.spawn(homekitCmd, homekitArgs);
+    homekit = cp.spawn(homekitCmd, args);
     homekitPipeOut = homekit.stdout.pipe(streamSplitter('\n'));
     homekitPipeErr = homekit.stderr.pipe(streamSplitter('\n'));
     homekitPipeOut.on('token', data => {
@@ -238,7 +242,6 @@ function initTest(mapFile, cam) {
             it('should pair without error', function (done) {
                 this.timeout(180000);
                 subscribe('homekit', /hap bridge paired/, val => {
-                    console.log(val);
                     setTimeout(() => {
                         done();
                     }, 3000);
@@ -321,6 +324,29 @@ function initTest(mapFile, cam) {
         });
     }
 }
+
+
+describe('command line params', () => {
+    it('should throw on invalid username', function (done) {
+        subscribe('homekit', /Error: Argument username has to be a colon separated 6 byte hex value/, () => {
+            done();
+        });
+        startHomekit(['-m', 'test-cam.json', '-v', 'debug', '-a', 'invalid-user-name']);
+    });
+    it('should throw on invalid pincode', function (done) {
+        subscribe('homekit', /Error: Argument pincode has to be a eight digit decimal number the format/, () => {
+            done();
+        });
+        startHomekit(['-m', 'test-cam.json', '-v', 'debug', '-c', 'abc-de-fgh', '-a', 'CC:22:3D:' + randomHex() + ':' + randomHex() + ':' + randomHex()]);
+    });
+    it('should throw on invalid pincode', function (done) {
+        subscribe('homekit', /Error: Argument pincode has to be a eight digit decimal number the format/, () => {
+            done();
+        });
+        startHomekit(['-m', 'test-cam.json', '-v', 'debug', '-c', '123-456-78', '-a', 'CC:22:3D:' + randomHex() + ':' + randomHex() + ':' + randomHex()]);
+    });
+});
+
 
 mqtt.publish('test/retain', '1', {retain: true});
 
@@ -3225,18 +3251,31 @@ describe('http server', () => {
     */
 
     it('should respond on get /config', done => {
-        const conf = require('./test-cam.json');
         request.get({url: 'http://homekit:031-45-154@localhost:51888/config', json: true}, (err, res, body) => {
-            body.should.containDeep(conf);
+            body.should.containDeep(config);
             done();
         });
     });
 
-    it('should respond on post /config', done => {
+    it('should save config on post /config', function (done) {
+        this.timeout(15000);
         const conf = require('./test-cam.json');
-        request.post({url: 'http://homekit:031-45-154@localhost:51888/config', body: JSON.stringify(conf)}, (err, res, body) => {
+        const rand = Math.random().toString(36).substring(7);
+        conf.Switch.fileChangeIndicator = rand;
+        request.post({
+            url: 'http://homekit:031-45-154@localhost:51888/config',
+            headers: {
+                contentType: 'application/json'
+            },
+            json: true,
+            body: conf
+        }, (err, res, body) => {
             res.statusCode.should.equal(200);
-            done();
+            setTimeout(() => {
+                JSON.parse(require('fs').readFileSync(__dirname + '/test-cam.json').toString()).Switch.fileChangeIndicator.should.equal(rand);
+                done();
+            }, 1000);
+
         });
     });
 
