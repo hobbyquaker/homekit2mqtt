@@ -4,18 +4,22 @@ module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     return function createService_IrrigationSystem(acc, settings, subtype) {
+        /* istanbul ignore else */
         if (typeof settings.payload.activeTrue === 'undefined') {
             settings.payload.activeTrue = true;
         }
 
+        /* istanbul ignore if */
         if (typeof settings.payload.inUseTrue === 'undefined') {
             settings.payload.inUseTrue = true;
         }
 
+        /* istanbul ignore else */
         if (typeof settings.payload.faultTrue === 'undefined') {
             settings.payload.faultTrue = true;
         }
 
+        /* istanbul ignore else */
         if (typeof settings.payload.activeFalse === 'undefined') {
             settings.payload.activeFalse = false;
         }

@@ -13,14 +13,17 @@ module.exports = function (iface) {
     */
 
     return function createService_Faucet(acc, settings, subtype) {
+        /* istanbul ignore else */
         if (typeof settings.payload.activeTrue === 'undefined') {
             settings.payload.activeTrue = true;
         }
 
+        /* istanbul ignore else */
         if (typeof settings.payload.activeFalse === 'undefined') {
             settings.payload.activeFalse = false;
         }
 
+        /* istanbul ignore if */
         if (typeof settings.payload.faultTrue === 'undefined') {
             settings.payload.faultTrue = true;
         }

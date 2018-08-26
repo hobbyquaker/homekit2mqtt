@@ -322,14 +322,16 @@
         "name": "IrrigationSystem",
         "service": "IrrigationSystem",
         "topic": {
-          "setActive": "IrrigationSystem/set",
-          "statusActive": "IrrigationSystem/status",
+          "setActive": "IrrigationSystem/set/Active",
+          "statusActive": "IrrigationSystem/status/Active",
           "statusProgramMode": "IrrigationSystem/status/ProgramMode",
           "statusInUse": "IrrigationSystem/status/InUse",
           "statusRemainingDuration": "IrrigationSystem/status/RemainingDuration",
           "statusFault": "IrrigationSystem/status/Fault"
         },
-        "payload": {},
+        "payload": {
+          "inUseTrue": 1
+        },
         "config": {},
         "props": {}
       }

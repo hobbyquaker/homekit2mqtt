@@ -1640,6 +1640,67 @@ describe('HumiditySensor', () => {
 
 testLowBattery('HumiditySensor');
 
+describe('IrrigationSystem ProgramMode', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        subscribe('homekit', /hap update IrrigationSystem ProgramMode 1/, () => {
+            done();
+        });
+        mqtt.publish('IrrigationSystem/status/ProgramMode', '1');
+    });
+    xit('client should get the ProgramMode', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        console.log('iid.IrrigationSystem', iid.IrrigationSystem);
+        cp.exec(clientCmd + ' get --aid ' + aid.IrrigationSystem + ' --iid ' + iid.IrrigationSystem.ProgramMode, (err, stdout, stderr) => {
+            if (stdout === '1\n') {
+                done();
+            }
+        });
+    });
+});
+describe('IrrigationSystem InUse', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        subscribe('homekit', /hap update IrrigationSystem InUse 1/, () => {
+            done();
+        });
+        mqtt.publish('IrrigationSystem/status/InUse', '1');
+    });
+    xit('client should get the InUse', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        console.log('iid.IrrigationSystem', iid.IrrigationSystem);
+        cp.exec(clientCmd + ' get --aid ' + aid.IrrigationSystem + ' --iid ' + iid.IrrigationSystem.InUse, (err, stdout, stderr) => {
+            if (stdout === '1\n') {
+                done();
+            }
+        });
+    });
+});
+describe('IrrigationSystem RemainingDuration', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        subscribe('homekit', /hap update IrrigationSystem RemainingDuration 100/, () => {
+            done();
+        });
+        mqtt.publish('IrrigationSystem/status/RemainingDuration', '100');
+    });
+    xit('client should get the RemainingDuration', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        console.log('iid.IrrigationSystem', iid.IrrigationSystem);
+        cp.exec(clientCmd + ' get --aid ' + aid.IrrigationSystem + ' --iid ' + iid.IrrigationSystem.RemainingDuration, (err, stdout, stderr) => {
+            if (stdout === '100\n') {
+                done();
+            }
+        });
+    });
+});
+
 describe('LeakSensor LeakSensorState', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(36000);
@@ -3028,6 +3089,27 @@ describe('ThermostatSimple TemperatureDisplayUnits', () => {
         this.retries(5);
         cp.exec(clientCmd + ' get --aid ' + aid.ThermostatSimple + ' --iid ' + iid.ThermostatSimple.TemperatureDisplayUnits, (err, stdout, stderr) => {
             if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+});
+
+describe('Valve InUse', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        subscribe('homekit', /hap update Valve InUse 1/, () => {
+            done();
+        });
+        mqtt.publish('Valve/status/InUse', '1');
+    });
+    xit('client should get the status of InUse', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        console.log('iid.Valve', iid.Valve);
+        cp.exec(clientCmd + ' get --aid ' + aid.Valve + ' --iid ' + iid.Valve.InUse, (err, stdout, stderr) => {
+            if (stdout === '1\n') {
                 done();
             }
         });

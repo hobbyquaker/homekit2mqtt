@@ -28,18 +28,22 @@ module.exports = function (iface) {
      */
 
     return function createService_Valve(acc, settings, subtype) {
+        /* istanbul ignore if */
         if (typeof settings.payload.activeTrue === 'undefined') {
             settings.payload.activeTrue = true;
         }
 
+        /* istanbul ignore if */
         if (typeof settings.payload.inUseTrue === 'undefined') {
             settings.payload.inUseTrue = true;
         }
 
+        /* istanbul ignore if */
         if (typeof settings.payload.faultTrue === 'undefined') {
             settings.payload.faultTrue = true;
         }
 
+        /* istanbul ignore if */
         if (typeof settings.payload.activeFalse === 'undefined') {
             settings.payload.activeFalse = false;
         }

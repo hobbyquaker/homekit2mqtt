@@ -6,19 +6,19 @@ module.exports = function (obj, iface) {
 
     settings.topic.statusLock = settings.topic.statusLock || settings.topic.statusLockCurrentState;
 
-    /* istanbul ignore else */
+    /* istanbul ignore if */
     if (typeof settings.payload.lockUnknown === 'undefined') {
         settings.payload.lockUnknown = 3;
     }
-    /* istanbul ignore else */
+    /* istanbul ignore if */
     if (typeof settings.payload.lockJammed === 'undefined') {
         settings.payload.lockJammed = 2;
     }
-    /* istanbul ignore else */
+    /* istanbul ignore if */
     if (typeof settings.payload.lockSecured === 'undefined') {
         settings.payload.lockSecured = 1;
     }
-    /* istanbul ignore else */
+    /* istanbul ignore if */
     if (typeof settings.payload.lockUnsecured === 'undefined') {
         settings.payload.lockUnsecured = 0;
     }
