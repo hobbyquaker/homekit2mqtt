@@ -4,7 +4,7 @@ module.exports = function (iface) {
     const {mqttPub, mqttSub, mqttStatus, log, Service, Characteristic} = iface;
 
     return function createService_Fanv2(acc, settings, subtype) {
-        acc.addService(Service.Fanv2);
+        acc.addService(Service.Fanv2, settings.name, subtype);
 
         const obj = {acc, settings, subtype};
 
