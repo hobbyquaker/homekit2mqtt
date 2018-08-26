@@ -6,6 +6,7 @@ require('should');
 
 const cp = require('child_process');
 const path = require('path');
+const request = require('request');
 const streamSplitter = require('stream-splitter');
 const Mqtt = require('mqtt');
 
@@ -170,7 +171,7 @@ process.on('exit', () => {
     end();
 });
 
-function initTest(mapFile) {
+function initTest(mapFile, cam) {
     describe('start homekit2mqtt', () => {
         it('should start without error', function (done) {
             this.timeout(20000);
@@ -273,50 +274,124 @@ function initTest(mapFile) {
         });
     });
 
-    describe('hap-client - homekit2mqtt', function () {
-        this.retries(5);
-        it('should be able to dump accessories', function (done) {
-            this.timeout(36000);
+    if (!cam) {
+        describe('hap-client - homekit2mqtt', function () {
             this.retries(5);
+            it('should be able to dump accessories', function (done) {
+                this.timeout(36000);
+                this.retries(5);
 
-            cp.exec(clientCmd + ' dump', {maxBuffer: 1024 * 2048}, (err, stdout, stderr) => {
-                if (err) {
-                    done(err);
-                }
-                let clientAccs;
-                try {
-                    clientAccs = JSON.parse(stdout).accessories;
-                } catch (err) {
-                    done(err);
-                }
-                aid = {};
-                iid = {};
-                clientAccs.forEach(acc => {
-                    let name;
-                    const iidTmp = {};
+                cp.exec(clientCmd + ' dump', {maxBuffer: 1024 * 2048}, (err, stdout, stderr) => {
+                    if (err) {
+                        done(err);
+                    }
+                    let clientAccs;
+                    try {
+                        clientAccs = JSON.parse(stdout).accessories;
+                    } catch (err) {
+                        done(err);
+                    }
+                    aid = {};
+                    iid = {};
+                    clientAccs.forEach(acc => {
+                        let name;
+                        const iidTmp = {};
 
-                    acc.services.forEach(service => {
-                        service.characteristics.forEach(ch => {
-                            iidTmp[String(ch.Name).replace(/ /g, '')] = ch.iid;
-                            if (ch.Name === 'Name') {
-                                name = ch.value;
-                            }
+                        acc.services.forEach(service => {
+                            service.characteristics.forEach(ch => {
+                                iidTmp[String(ch.Name).replace(/ /g, '')] = ch.iid;
+                                if (ch.Name === 'Name') {
+                                    name = ch.value;
+                                }
+                            });
                         });
+                        aid[name] = acc.aid;
+                        iid[name] = iidTmp;
                     });
-                    aid[name] = acc.aid;
-                    iid[name] = iidTmp;
-                });
 
-                // Add one because the bridge itself is also an accessory
-                if (clientAccs.length === (Object.keys(config).length + 1)) {
-                    done();
-                } else {
-                    done(new Error('wrong clientAccs length'));
-                }
+                    // Add one because the bridge itself is also an accessory
+                    if (clientAccs.length === (Object.keys(config).length + 1)) {
+                        done();
+                    } else {
+                        done(new Error('wrong clientAccs length'));
+                    }
+                });
             });
         });
-    });
+    }
+
 }
+
+mqtt.publish('test/retain', '1', {retain: true});
+
+initTest(__dirname + '/test-cam.json', true);
+
+describe('Camera', () => {
+    it('should publish the camera', function (done) {
+        subscribe('homekit', /hap publishing camera accessory Cam Wohnzimmer/, () => {
+            done();
+        });
+    });
+    it('should open listening port for the camera', function (done) {
+        subscribe('homekit', /hap camera Cam Wohnzimmer listening on port /, () => {
+            done();
+        });
+    });
+});
+
+describe('http server', () => {
+    it('should open listening port for the web server', function (done) {
+        subscribe('homekit', /http server listening on port 51888/, () => {
+            done();
+        });
+    });
+
+    it('should respond http 401 on missing credentials', function (done) {
+        request.get('http://localhost:51888/quit', (err, res, body) => {
+            if (res.statusCode === 401) {
+                done();
+            }
+        });
+    });
+
+    it('should respond on get /config', function (done) {
+        const conf = require('./test-cam.json');
+        request.get({url: 'http://homekit:031-45-154@localhost:51888/config', json: true}, (err, res, body) => {
+            body.should.containDeep(conf);
+            done();
+        });
+    });
+
+    it('should respond on get /topics', function (done) {
+        request.get({url: 'http://homekit:031-45-154@localhost:51888/topics', json: true}, (err, res, body) => {
+            res.statusCode.should.equal(200);
+            body.should.deepEqual(['test/retain']);
+            done();
+        });
+    });
+
+    it('should respond on get /categories', function (done) {
+        request.get({url: 'http://homekit:031-45-154@localhost:51888/categories', json: true}, (err, res, body) => {
+            res.statusCode.should.equal(200);
+            done();
+        });
+    });
+
+
+    it('should repsond ok on get /quit', function (done) {
+        request.get('http://homekit:031-45-154@localhost:51888/quit', (err, res, body) => {
+            if (res.statusCode === 200 && body.match(/ok/)) {
+                done();
+            }
+        });
+    });
+
+    it('should quit', function (done) {
+        subscribe('homekit', /http < quit/, () => {
+            done();
+        });
+    });
+});
 
 initTest(__dirname + '/test-am.json');
 
@@ -3333,6 +3408,8 @@ function testTampered(name, invert) {
         });
     });
 }
+
+
 
 setTimeout(() => {
     homekit.kill();

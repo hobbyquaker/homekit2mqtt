@@ -63,6 +63,7 @@
     "hap-client-cli": "latest",
     "mocha": "latest",
     "nyc": "latest",
+    "request": "^2.88.0",
     "should": "latest",
     "stream-splitter": "latest",
     "xo": "latest"
