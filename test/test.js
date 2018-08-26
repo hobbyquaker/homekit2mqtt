@@ -698,10 +698,19 @@ describe('BatteryService BatteryLevel', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(36000);
         this.retries(5);
-        subscribe('homekit', /hap update BatteryService BatteryLevel 80/, () => {
+        subscribe('homekit', /hap update BatteryService BatteryLevel 50/, () => {
             done();
         });
-        mqtt.publish('BatteryService/status', '80');
+        mqtt.publish('BatteryService/status/BatteryLevel', '2.5');
+    });
+    it('client should get the status of the BatteryLevel', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        cp.exec(clientCmd + ' get --aid ' + aid.BatteryService + ' --iid ' + iid.BatteryService.BatteryLevel, (err, stdout, stderr) => {
+            if (stdout === '50\n') {
+                done();
+            }
+        });
     });
 });
 
@@ -713,6 +722,15 @@ describe('BatteryService ChargingState', () => {
             done();
         });
         mqtt.publish('BatteryService/status/ChargingState', '2');
+    });
+    it('client should get the status of ChargingState', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        cp.exec(clientCmd + ' get --aid ' + aid.BatteryService + ' --iid ' + iid.BatteryService.ChargingState, (err, stdout, stderr) => {
+            if (stdout === '2\n') {
+                done();
+            }
+        });
     });
 });
 
@@ -733,6 +751,16 @@ describe('BatteryService StatusLowBattery', () => {
             done();
         });
         mqtt.publish('BatteryService/status/LowBattery', '0');
+    });
+
+    it('client should get the status of StatusLowBattery', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        cp.exec(clientCmd + ' get --aid ' + aid.BatteryService + ' --iid ' + iid.BatteryService.StatusLowBattery, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
     });
 });
 

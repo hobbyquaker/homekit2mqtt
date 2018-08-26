@@ -41,12 +41,14 @@
         "name": "BatteryService",
         "service": "BatteryService",
         "topic": {
-          "statusBatteryLevel": "BatteryService/status",
+          "statusBatteryLevel": "BatteryService/status/BatteryLevel",
           "statusChargingState": "BatteryService/status/ChargingState",
           "statusLowBattery": "BatteryService/status/LowBattery"
         },
         "payload": {
-          "onLowBattery": 1
+          "onLowBattery": 1,
+          "maxBatteryLevel": 3,
+          "minBatteryLevel": 2
         },
         "config": {},
         "props": {}
@@ -327,12 +329,7 @@
           "statusRemainingDuration": "IrrigationSystem/status/RemainingDuration",
           "statusFault": "IrrigationSystem/status/Fault"
         },
-        "payload": {
-          "inUseTrue": 1,
-          "faultTrue": 1,
-          "activeTrue": 1,
-          "activeFalse": 0
-        },
+        "payload": {},
         "config": {},
         "props": {}
       }
