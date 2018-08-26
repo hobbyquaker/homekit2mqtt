@@ -1256,6 +1256,125 @@ describe('Fan RotationDirection', () => {
     });
 });
 
+describe('Fanv2 Active', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        subscribe('homekit', /hap update Fanv2 Active 1/, () => {
+            done();
+            console.log('iid.Fanv2', iid.Fanv2);
+        });
+        mqtt.publish('Fanv2/status/Active', '1');
+    });
+    /* TODO iid.Fanv2.Active undefined :( */
+    it('client should get the status of the Fan', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        cp.exec(clientCmd + ' get --aid ' + aid.Fanv2 + ' --iid ' + /* iid.Fanv2.Active */ 10, (err, stdout, stderr) => {
+            console.log(aid.Fanv2, iid.Fanv2.Active);
+            console.log(err, stdout, stderr);
+            if (stdout === '1\n') {
+                done();
+            }
+        });
+    });
+
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        subscribe('homekit', /hap update Fanv2 Active 0/, () => {
+            done();
+        });
+        mqtt.publish('Fanv2/status/Active', '0');
+    });
+    /* TODO iid.Fanv2.Active undefined :( */
+    it('client should get the status of the Fan', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        cp.exec(clientCmd + ' get --aid ' + aid.Fanv2 + ' --iid ' + /* iid.Fanv2.Active */ 10, (err, stdout, stderr) => {
+            if (stdout === '0\n') {
+                done();
+            }
+        });
+    });
+
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        mqttSubscribe('Fanv2/set/Active', payload => {
+            if (payload === '1') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.Fanv2 + ' --iid ' + /* iid.Fanv2.Active */ 10 + ' 1';
+        cp.exec(cmd);
+    });
+});
+
+describe('Fanv2 LockPhysicalControls', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        subscribe('homekit', /hap update Fanv2 LockPhysicalControls 1/, () => {
+            done();
+        });
+        mqtt.publish('Fanv2/status/LockPhysicalControls', '1');
+    });
+    it('client should get the status of the Fanv2', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        cp.exec(clientCmd + ' get --aid ' + aid.Fanv2 + ' --iid ' + iid.Fanv2.LockPhysicalControls, (err, stdout, stderr) => {
+            if (stdout === '1\n') {
+                done();
+            }
+        });
+    });
+
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        mqttSubscribe('Fanv2/set/LockPhysicalControls', payload => {
+            if (payload === '0') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.Fanv2 + ' --iid ' + iid.Fanv2.LockPhysicalControls + ' 0';
+        cp.exec(cmd);
+    });
+});
+
+describe('Fanv2 SwingMode', () => {
+    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        subscribe('homekit', /hap update Fanv2 SwingMode 1/, () => {
+            done();
+        });
+        mqtt.publish('Fanv2/status/SwingMode', '1');
+    });
+    it('client should get the status of the Fanv2', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        cp.exec(clientCmd + ' get --aid ' + aid.Fanv2 + ' --iid ' + iid.Fanv2.SwingMode, (err, stdout, stderr) => {
+            if (stdout === '1\n') {
+                done();
+            }
+        });
+    });
+
+    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+        this.timeout(36000);
+        this.retries(5);
+        mqttSubscribe('Fanv2/set/SwingMode', payload => {
+            if (payload === '0') {
+                done();
+            }
+        });
+        const cmd = clientCmd + ' set --aid ' + aid.Fanv2 + ' --iid ' + iid.Fanv2.SwingMode + ' 0';
+        cp.exec(cmd);
+    });
+});
+
 describe('GarageDoorOpener CurrentDoorState', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(36000);
@@ -1673,37 +1792,36 @@ describe('Lightbulb Brightness', () => {
     });
 });
 
-/* TODO iid.Lightbulb.ColorTemperature undefined...
+/* TODO iid.Lightbulb.ColorTemperature undefined... */
 describe('Lightbulb ColorTemperature', () => {
-
-    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+    xit('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(36000);
-this.retries(5);
+        this.retries(5);
         subscribe('homekit', /hap update Lightbulb ColorTemperature 254/, () => {
             done();
         });
         mqtt.publish('Lightbulb/status/ColorTemperature', '254');
     });
-    it('client should get the status of the Lightbulb', function (done) {
+    xit('client should get the status of the Lightbulb', function (done) {
         this.timeout(36000);
-this.retries(5);
+        this.retries(5);
         cp.exec(clientCmd + ' get --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.ColorTemperature, (err, stdout, stderr) => {
             if (stdout === '254\n') {
                 done();
             }
         });
     });
-    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+    xit('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(36000);
-this.retries(5);
+        this.retries(5);
         subscribe('homekit', /hap update Lightbulb ColorTemperature 330/, () => {
             done();
         });
         mqtt.publish('Lightbulb/status/ColorTemperature', '330');
     });
-    it('client should get the status of the Lightbulb', function (done) {
+    xit('client should get the status of the Lightbulb', function (done) {
         this.timeout(36000);
-this.retries(5);
+        this.retries(5);
         cp.exec(clientCmd + ' get --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.ColorTemperature, (err, stdout, stderr) => {
             if (stdout === '330\n') {
                 done();
@@ -1711,10 +1829,10 @@ this.retries(5);
         });
     });
 
-    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+    xit('homekit2mqtt should publish on mqtt after client did a set', function (done) {
         this.timeout(36000);
-this.retries(5);
-        let id = mqttSubscribe('Lightbulb/set/ColorTemperature', payload => {
+        this.retries(5);
+        const id = mqttSubscribe('Lightbulb/set/ColorTemperature', payload => {
             if (payload === '254') {
                 mqttUnsubscribe('Lightbulb/set/ColorTemperature', id);
                 done();
@@ -1723,17 +1841,17 @@ this.retries(5);
         const cmd = clientCmd + ' set --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.ColorTemperature + ' 254';
         cp.exec(cmd);
     });
-    it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
+    xit('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
         this.timeout(36000);
-this.retries(5);
+        this.retries(5);
         subscribe('homekit', /hap update Lightbulb ColorTemperature 200/, () => {
             done();
         });
         mqtt.publish('Lightbulb/status/ColorTemperature', '200');
     });
-    it('homekit2mqtt should publish on mqtt after client did a set', function (done) {
+    xit('homekit2mqtt should publish on mqtt after client did a set', function (done) {
         this.timeout(36000);
-this.retries(5);
+        this.retries(5);
         mqttSubscribe('Lightbulb/set/ColorTemperature', payload => {
             if (payload === '200') {
                 done();
@@ -1742,9 +1860,7 @@ this.retries(5);
         const cmd = clientCmd + ' set --aid ' + aid.Lightbulb + ' --iid ' + iid.Lightbulb.ColorTemperature + ' 200';
         cp.exec(cmd);
     });
-
 });
-*/
 
 describe('Lightbulb Saturation', () => {
     it('homekit2mqtt should receive a status via mqtt and update it on hap', function (done) {
@@ -2306,17 +2422,16 @@ describe('Slat CurrentTiltAngle', () => {
         });
         mqtt.publish('Slat/status/CurrentTiltAngle', '30');
     });
-    /* TODO iid.Slat.CurrentTiltAngle undefined
-    it('client should get the CurrentTiltAngle of the Slat', function (done) {
+    /* TODO iid.Slat.CurrentTiltAngle undefined */
+    xit('client should get the CurrentTiltAngle of the Slat', function (done) {
         this.timeout(36000);
-this.retries(5);
+        this.retries(5);
         cp.exec(clientCmd + ' get --aid ' + aid.Slat + ' --iid ' + iid.Slat.CurrentTiltAngle, (err, stdout, stderr) => {
             if (stdout === '30\n') {
                 done();
             }
         });
     });
-    */
 });
 
 describe('SmokeSensor SmokeSensorState', () => {

@@ -206,6 +206,38 @@
       }
     ]
   },
+  "Fanv2": {
+    "name": "Fanv2",
+    "manufacturer": "Generic",
+    "model": "Fanv2",
+    "services": [
+      {
+        "name": "Fanv2",
+        "service": "Fanv2",
+        "topic": {
+          "statusActive": "Fanv2/status/Active",
+          "setActive": "Fanv2/set/Active",
+          "statusCurrentFanState": "Fanv2/status/CurrentFanState",
+          "statusTargetFanState": "Fanv2/status/TargetFanState",
+          "setTargetFanState": "Fanv2/set/TargetFanState",
+          "statusRotationDirection": "Fanv2/status/RotationDirection",
+          "setRotationDirection": "Fanv2/set/RotationDirection",
+          "statusRotationSpeed": "Fanv2/status/RotationSpeed",
+          "setRotationSpeed": "Fanv2/set/RotationSpeed",
+          "statusLockPhysicalControls": "Fanv2/status/LockPhysicalControls",
+          "setLockPhysicalControls": "Fanv2/set/LockPhysicalControls",
+          "statusSwingMode": "Fanv2/status/SwingMode",
+          "setSwingMode": "Fanv2/set/SwingMode"
+        },
+        "payload": {
+          "rotationDirectionCounterClockwise": "left",
+          "rotationDirectionClockwise": "right"
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
+  },
   "Faucet": {
     "name": "Faucet",
     "services": [
