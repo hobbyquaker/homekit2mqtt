@@ -49,7 +49,7 @@ const mqtt = Mqtt.connect(config.url, {
 mqtt.on('connect', () => {
     mqttConnected = true;
     log.info('mqtt connected ' + config.url);
-    /* istanbul ignore if */
+    /* istanbul ignore next */
     if (!bridgeListening) {
         mqttPub(config.name + '/connected', '1', {retain: true});
     }
@@ -137,14 +137,15 @@ function mqttPub(topic, payload, options) {
         /* istanbul ignore if */
         if (typeof payload === 'object') {
             payload = JSON.stringify(payload);
-        /* istanbul ignore if */
+        /* istanbul ignore next */
         } else if (typeof payload === 'undefined') {
             payload = '';
         } else if (typeof payload !== 'string') {
             payload = String(payload);
         }
         log.debug('> mqtt', topic, payload);
-        /* istanbul ignore else */
+
+        /* istanbul ignore if */
         if (config.retain) {
             if (!options) {
                 options = {};
@@ -305,6 +306,7 @@ function createBridge() {
                 const {attr, callback} = obj;
                 /* istanbul ignore else */
                 if (typeof callback === 'function') {
+                    /* istanbul ignore else */
                     if (attr) {
                         callback(json ? oe.getProp(json, attr) : state);
                     } else {
@@ -369,6 +371,7 @@ function createBridge() {
                     console.log('  ');
                 });
 
+                /* istanbul ignore next */
                 acc._server.on('pair', username => {
                     log('hap camera', camName, 'paired', username);
                 });
@@ -482,6 +485,7 @@ if (config.disableWeb) {
         realm: 'homekit2mqtt ui'
     }));
 
+    /* istanbul ignore next */
     app.get('/', (req, res) => {
         res.redirect(301, '/ui');
     });
