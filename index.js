@@ -477,8 +477,11 @@ if (config.disableWeb) {
         res.redirect(301, '/ui');
     });
     app.use('/ui', express.static(path.join(__dirname, '/ui')));
-    app.use('/node_modules', express.static(path.join(__dirname, '/node_modules')));
     app.use('/services.json', express.static(path.join(__dirname, '/services.json')));
+
+    module.paths.forEach(folder => {
+        app.use('/node_modules', express.static(folder));
+    });
 
     app.get('/topics', (req, res) => {
         log.info('http > topics');
