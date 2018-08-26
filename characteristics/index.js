@@ -4,6 +4,7 @@ module.exports = function (charName, obj, iface) {
     const {acc, settings, subtype} = obj;
     const {mqttStatus, mqttPub, mqttSub, Characteristic, log} = iface;
 
+    /* istanbul ignore if */
     if (!Characteristic[charName]) {
         throw new Error('Unknown Characteristic ' + charName);
     }
@@ -18,6 +19,7 @@ module.exports = function (charName, obj, iface) {
         setTopic = setTopicShort;
     }
 
+    /* istanbul ignore if */
     if (statusTopic !== statusTopicShort && settings.topic[statusTopicShort]) {
         statusTopic = statusTopicShort;
     }

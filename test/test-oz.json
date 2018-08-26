@@ -218,7 +218,11 @@
           "fahrenheit": true
         },
         "config": {},
-        "props": {}
+        "props": {
+          "CurrentTemperature": {
+            "minValue": -50
+          }
+        }
       }
     ]
   },
