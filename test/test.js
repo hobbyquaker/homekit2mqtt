@@ -323,75 +323,6 @@ function initTest(mapFile, cam) {
 
 mqtt.publish('test/retain', '1', {retain: true});
 
-initTest(__dirname + '/test-cam.json', true);
-
-describe('Camera', () => {
-    it('should publish the camera', function (done) {
-        subscribe('homekit', /hap publishing camera accessory Cam Wohnzimmer/, () => {
-            done();
-        });
-    });
-    it('should open listening port for the camera', function (done) {
-        subscribe('homekit', /hap camera Cam Wohnzimmer listening on port /, () => {
-            done();
-        });
-    });
-});
-
-describe('http server', () => {
-    it('should open listening port for the web server', function (done) {
-        subscribe('homekit', /http server listening on port 51888/, () => {
-            done();
-        });
-    });
-
-    it('should respond http 401 on missing credentials', function (done) {
-        request.get('http://localhost:51888/quit', (err, res, body) => {
-            if (res.statusCode === 401) {
-                done();
-            }
-        });
-    });
-
-    it('should respond on get /config', function (done) {
-        const conf = require('./test-cam.json');
-        request.get({url: 'http://homekit:031-45-154@localhost:51888/config', json: true}, (err, res, body) => {
-            body.should.containDeep(conf);
-            done();
-        });
-    });
-
-    it('should respond on get /topics', function (done) {
-        request.get({url: 'http://homekit:031-45-154@localhost:51888/topics', json: true}, (err, res, body) => {
-            res.statusCode.should.equal(200);
-            body.should.deepEqual(['test/retain']);
-            done();
-        });
-    });
-
-    it('should respond on get /categories', function (done) {
-        request.get({url: 'http://homekit:031-45-154@localhost:51888/categories', json: true}, (err, res, body) => {
-            res.statusCode.should.equal(200);
-            done();
-        });
-    });
-
-
-    it('should repsond ok on get /quit', function (done) {
-        request.get('http://homekit:031-45-154@localhost:51888/quit', (err, res, body) => {
-            if (res.statusCode === 200 && body.match(/ok/)) {
-                done();
-            }
-        });
-    });
-
-    it('should quit', function (done) {
-        subscribe('homekit', /http < quit/, () => {
-            done();
-        });
-    });
-});
-
 initTest(__dirname + '/test-am.json');
 
 describe('AirQualitySensor AirQuality', () => {
@@ -3250,7 +3181,75 @@ describe('WindowCovering PositionState', () => {
     });
 });
 
-end(0);
+stopHomekit();
+initTest(__dirname + '/test-cam.json', true);
+
+describe('Camera', () => {
+    it('should publish the camera', function (done) {
+        subscribe('homekit', /hap publishing camera accessory Cam Wohnzimmer/, () => {
+            done();
+        });
+    });
+    it('should open listening port for the camera', function (done) {
+        subscribe('homekit', /hap camera Cam Wohnzimmer listening on port /, () => {
+            done();
+        });
+    });
+});
+
+describe('http server', () => {
+    it('should open listening port for the web server', function (done) {
+        subscribe('homekit', /http server listening on port 51888/, () => {
+            done();
+        });
+    });
+
+    it('should respond http 401 on missing credentials', function (done) {
+        request.get('http://localhost:51888/quit', (err, res, body) => {
+            if (res.statusCode === 401) {
+                done();
+            }
+        });
+    });
+
+    it('should respond on get /config', function (done) {
+        const conf = require('./test-cam.json');
+        request.get({url: 'http://homekit:031-45-154@localhost:51888/config', json: true}, (err, res, body) => {
+            body.should.containDeep(conf);
+            done();
+        });
+    });
+
+    it('should respond on get /topics', function (done) {
+        request.get({url: 'http://homekit:031-45-154@localhost:51888/topics', json: true}, (err, res, body) => {
+            res.statusCode.should.equal(200);
+            body.should.deepEqual(['test/retain']);
+            done();
+        });
+    });
+
+    it('should respond on get /categories', function (done) {
+        request.get({url: 'http://homekit:031-45-154@localhost:51888/categories', json: true}, (err, res, body) => {
+            res.statusCode.should.equal(200);
+            done();
+        });
+    });
+
+    it('should repsond ok on get /quit', function (done) {
+        request.get('http://homekit:031-45-154@localhost:51888/quit', (err, res, body) => {
+            if (res.statusCode === 200 && body.match(/ok/)) {
+                done();
+            }
+        });
+    });
+
+    it('should quit', function (done) {
+        homekit.on('close', () => {
+            done();
+        });
+    });
+});
+
 
 function testLowBattery(name, invert) {
     describe(name + ' StatusLowBattery invert=' + Boolean(invert), () => {
