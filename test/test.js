@@ -325,28 +325,26 @@ function initTest(mapFile, cam) {
     }
 }
 
-
 describe('command line params', () => {
-    it('should throw on invalid username', function (done) {
+    it('should throw on invalid username', done => {
         subscribe('homekit', /Error: Argument username has to be a colon separated 6 byte hex value/, () => {
             done();
         });
         startHomekit(['-m', 'test-cam.json', '-v', 'debug', '-a', 'invalid-user-name']);
     });
-    it('should throw on invalid pincode', function (done) {
+    it('should throw on invalid pincode', done => {
         subscribe('homekit', /Error: Argument pincode has to be a eight digit decimal number the format/, () => {
             done();
         });
         startHomekit(['-m', 'test-cam.json', '-v', 'debug', '-c', 'abc-de-fgh', '-a', 'CC:22:3D:' + randomHex() + ':' + randomHex() + ':' + randomHex()]);
     });
-    it('should throw on invalid pincode', function (done) {
+    it('should throw on invalid pincode', done => {
         subscribe('homekit', /Error: Argument pincode has to be a eight digit decimal number the format/, () => {
             done();
         });
         startHomekit(['-m', 'test-cam.json', '-v', 'debug', '-c', '123-456-78', '-a', 'CC:22:3D:' + randomHex() + ':' + randomHex() + ':' + randomHex()]);
     });
 });
-
 
 mqtt.publish('test/retain', '1', {retain: true});
 
@@ -3275,7 +3273,6 @@ describe('http server', () => {
                 JSON.parse(require('fs').readFileSync(__dirname + '/test-cam.json').toString()).Switch.fileChangeIndicator.should.equal(rand);
                 done();
             }, 1000);
-
         });
     });
 
