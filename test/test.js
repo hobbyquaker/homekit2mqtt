@@ -236,6 +236,7 @@ function initTest(mapFile, cam) {
         this.timeout(180000);
         it('should pair without error', function (done) {
             this.timeout(180000);
+            this.retries(3);
             subscribe('homekit', /hap bridge paired/, () => {
                 setTimeout(() => {
                     done();
