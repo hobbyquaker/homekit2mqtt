@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-/* global describe, it */
-/* eslint-disable no-unused-vars, handle-callback-err, import/no-unassigned-import, no-path-concat */
+/* global describe, it, xit */
+/* eslint-disable no-unused-vars, handle-callback-err, import/no-unassigned-import, no-path-concat, capitalized-comments, spaced-comment */
 
 require('should');
 
@@ -1262,7 +1262,7 @@ describe('Fanv2 Active', () => {
         this.retries(5);
         subscribe('homekit', /hap update Fanv2 Active 1/, () => {
             done();
-            console.log('iid.Fanv2', iid.Fanv2);
+            //console.log('iid.Fanv2', iid.Fanv2);
         });
         mqtt.publish('Fanv2/status/Active', '1');
     });
