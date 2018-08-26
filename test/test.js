@@ -198,25 +198,6 @@ function initTest(mapFile, cam) {
         });
     });
 
-    describe('homekit2mqtt - mqtt connection', () => {
-        it('homekit2mqtt should connect to the mqtt broker', function (done) {
-            this.timeout(36000);
-            this.retries(5);
-            subscribe('homekit', /mqtt connected/, () => {
-                done();
-            });
-        });
-        it('should publish connected=2 on mqtt', function (done) {
-            this.timeout(15000);
-            mqttSubscribe('homekit/connected', payload => {
-                if (payload === '2') {
-                    mqttUnsubscribe('homekit/connected');
-                    done();
-                }
-            });
-        });
-    });
-
     /*
     If (process.platform !== 'darwin' && process.env.TRAVIS) {
         describe('start dbus', function () {
@@ -232,50 +213,67 @@ function initTest(mapFile, cam) {
     }
     */
 
-    describe('hap-client - homekit2mqtt pairing', function () {
-        this.timeout(180000);
-        it('should pair without error', function (done) {
-            this.timeout(180000);
-            this.retries(3);
-            subscribe('homekit', /hap bridge paired/, () => {
-                setTimeout(() => {
+    if (!cam) {
+        describe('homekit2mqtt - mqtt connection', () => {
+            it('homekit2mqtt should connect to the mqtt broker', function (done) {
+                this.timeout(36000);
+                this.retries(5);
+                subscribe('homekit', /mqtt connected/, () => {
                     done();
-                }, 3000);
+                });
             });
-
-            // Console.log('--- trying to pair...');
-            try {
-                const pair = cp.spawn(path.join(__dirname, '/../node_modules/.bin/hap-client-tool'), ['-d', '127.0.0.1', '-p', '51826', 'pair']);
-
-                pair.on('close', code => {
-                    // Console.log(`--- pair close - child process exited with code ${code}`);
-                });
-                pair.on('exit', code => {
-                    // Console.log(`--- pair exit- child process exited with code ${code}`);
-                });
-                pair.on('error', err => {
-                    done(err);
-                    // Console.log('--- pair error - Failed to start child process.', err);
-                });
-                pair.stdout.on('data', data => {
-                    data = data.toString();
-                    // Console.log('pair stdout', data);
-                    if (data.match(/pin code/)) {
-                        // Console.log('--- writing pin to stdin');
-                        pair.stdin.write('031-45-154\n');
-                        pair.stdin.write('\n');
+            it('should publish connected=2 on mqtt', function (done) {
+                this.timeout(15000);
+                mqttSubscribe('homekit/connected', payload => {
+                    if (payload === '2') {
+                        mqttUnsubscribe('homekit/connected');
+                        done();
                     }
                 });
-                pair.stderr.on('data', data => {
-                    console.log('pair stderr', data.toString());
-                });
-            } catch (err) {
-                done(err);
-            }
+            });
         });
-    });
+        describe('hap-client - homekit2mqtt pairing', function () {
+            this.timeout(180000);
+            it('should pair without error', function (done) {
+                this.timeout(180000);
+                this.retries(3);
+                subscribe('homekit', /hap bridge paired/, () => {
+                    setTimeout(() => {
+                        done();
+                    }, 3000);
+                });
 
-    if (!cam) {
+                // Console.log('--- trying to pair...');
+                try {
+                    const pair = cp.spawn(path.join(__dirname, '/../node_modules/.bin/hap-client-tool'), ['-d', '127.0.0.1', '-p', '51826', 'pair']);
+
+                    pair.on('close', code => {
+                        // Console.log(`--- pair close - child process exited with code ${code}`);
+                    });
+                    pair.on('exit', code => {
+                        // Console.log(`--- pair exit- child process exited with code ${code}`);
+                    });
+                    pair.on('error', err => {
+                        done(err);
+                        // Console.log('--- pair error - Failed to start child process.', err);
+                    });
+                    pair.stdout.on('data', data => {
+                        data = data.toString();
+                        // Console.log('pair stdout', data);
+                        if (data.match(/pin code/)) {
+                            // Console.log('--- writing pin to stdin');
+                            pair.stdin.write('031-45-154\n');
+                            pair.stdin.write('\n');
+                        }
+                    });
+                    pair.stderr.on('data', data => {
+                        console.log('pair stderr', data.toString());
+                    });
+                } catch (err) {
+                    done(err);
+                }
+            });
+        });
         describe('hap-client - homekit2mqtt', function () {
             this.retries(5);
             it('should be able to dump accessories', function (done) {
