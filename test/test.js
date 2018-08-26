@@ -134,6 +134,7 @@ function stopHomekit() {
         it('should stop the bridge', done => {
             if (homekit && homekit.kill) {
                 homekit.on('close', () => {
+                    homekitBuffer.length = 0;
                     done();
                 });
                 homekit.kill();
@@ -236,14 +237,14 @@ function initTest(mapFile, cam) {
             this.timeout(180000);
             it('should pair without error', function (done) {
                 this.timeout(180000);
-                this.retries(3);
-                subscribe('homekit', /hap bridge paired/, () => {
+                subscribe('homekit', /hap bridge paired/, (val) => {
+                    console.log(val)
                     setTimeout(() => {
                         done();
                     }, 3000);
                 });
 
-                // Console.log('--- trying to pair...');
+                console.log('--- trying to pair...');
                 try {
                     const pair = cp.spawn(path.join(__dirname, '/../node_modules/.bin/hap-client-tool'), ['-d', '127.0.0.1', '-p', '51826', 'pair']);
 
@@ -259,9 +260,9 @@ function initTest(mapFile, cam) {
                     });
                     pair.stdout.on('data', data => {
                         data = data.toString();
-                        // Console.log('pair stdout', data);
+                        console.log('pair stdout', data);
                         if (data.match(/pin code/)) {
-                            // Console.log('--- writing pin to stdin');
+                            console.log('--- writing pin to stdin');
                             pair.stdin.write('031-45-154\n');
                             pair.stdin.write('\n');
                         }
@@ -270,6 +271,7 @@ function initTest(mapFile, cam) {
                         console.log('pair stderr', data.toString());
                     });
                 } catch (err) {
+                    console.log('--- err', err);
                     done(err);
                 }
             });
