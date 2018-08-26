@@ -237,8 +237,8 @@ function initTest(mapFile, cam) {
             this.timeout(180000);
             it('should pair without error', function (done) {
                 this.timeout(180000);
-                subscribe('homekit', /hap bridge paired/, (val) => {
-                    console.log(val)
+                subscribe('homekit', /hap bridge paired/, val => {
+                    console.log(val);
                     setTimeout(() => {
                         done();
                     }, 3000);
@@ -320,7 +320,6 @@ function initTest(mapFile, cam) {
             });
         });
     }
-
 }
 
 mqtt.publish('test/retain', '1', {retain: true});
@@ -3187,12 +3186,12 @@ stopHomekit();
 initTest(__dirname + '/test-cam.json', true);
 
 describe('Camera', () => {
-    it('should publish the camera', function (done) {
+    it('should publish the camera', done => {
         subscribe('homekit', /hap publishing camera accessory Cam Wohnzimmer/, () => {
             done();
         });
     });
-    it('should open listening port for the camera', function (done) {
+    it('should open listening port for the camera', done => {
         subscribe('homekit', /hap camera Cam Wohnzimmer listening on port /, () => {
             done();
         });
@@ -3200,13 +3199,13 @@ describe('Camera', () => {
 });
 
 describe('http server', () => {
-    it('should open listening port for the web server', function (done) {
+    it('should open listening port', done => {
         subscribe('homekit', /http server listening on port 51888/, () => {
             done();
         });
     });
 
-    it('should respond http 401 on missing credentials', function (done) {
+    it('should respond http 401 on missing credentials', done => {
         request.get('http://localhost:51888/quit', (err, res, body) => {
             if (res.statusCode === 401) {
                 done();
@@ -3214,7 +3213,18 @@ describe('http server', () => {
         });
     });
 
-    it('should respond on get /config', function (done) {
+    /*
+    It('should respond http 301 on /', function (done) {
+        request.get('http://homekit:031-45-154@localhost:51888/', (err, res, body) => {
+            console.log(res.statusCode);
+            if (res.statusCode === 301) {
+                done();
+            }
+        });
+    });
+    */
+
+    it('should respond on get /config', done => {
         const conf = require('./test-cam.json');
         request.get({url: 'http://homekit:031-45-154@localhost:51888/config', json: true}, (err, res, body) => {
             body.should.containDeep(conf);
@@ -3222,7 +3232,15 @@ describe('http server', () => {
         });
     });
 
-    it('should respond on get /topics', function (done) {
+    it('should respond on post /config', done => {
+        const conf = require('./test-cam.json');
+        request.post({url: 'http://homekit:031-45-154@localhost:51888/config', body: JSON.stringify(conf)}, (err, res, body) => {
+            res.statusCode.should.equal(200);
+            done();
+        });
+    });
+
+    it('should respond on get /topics', done => {
         request.get({url: 'http://homekit:031-45-154@localhost:51888/topics', json: true}, (err, res, body) => {
             res.statusCode.should.equal(200);
             body.should.deepEqual(['test/retain']);
@@ -3230,14 +3248,14 @@ describe('http server', () => {
         });
     });
 
-    it('should respond on get /categories', function (done) {
+    it('should respond on get /categories', done => {
         request.get({url: 'http://homekit:031-45-154@localhost:51888/categories', json: true}, (err, res, body) => {
             res.statusCode.should.equal(200);
             done();
         });
     });
 
-    it('should repsond ok on get /quit', function (done) {
+    it('should repsond ok on get /quit', done => {
         request.get('http://homekit:031-45-154@localhost:51888/quit', (err, res, body) => {
             if (res.statusCode === 200 && body.match(/ok/)) {
                 done();
@@ -3245,13 +3263,12 @@ describe('http server', () => {
         });
     });
 
-    it('should quit', function (done) {
+    it('should quit', done => {
         homekit.on('close', () => {
             done();
         });
     });
 });
-
 
 function testLowBattery(name, invert) {
     describe(name + ' StatusLowBattery invert=' + Boolean(invert), () => {
@@ -3408,8 +3425,6 @@ function testTampered(name, invert) {
         });
     });
 }
-
-
 
 setTimeout(() => {
     homekit.kill();

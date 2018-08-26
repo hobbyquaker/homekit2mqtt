@@ -98,10 +98,12 @@ function typeGuess(payload) {
 // Not meant to be used with wildcards!
 function mqttSub(topic, /* string, optional, default "val" */ attr, callback) {
     topic = String(topic);
+    /* istanbul ignore next */
     if (topic === '') {
         log.error('trying to subscribe empty topic');
         return;
     }
+    /* istanbul ignore if */
     if (typeof attr === 'function') {
         callback = attr;
         attr = 'val';
@@ -135,12 +137,14 @@ function mqttPub(topic, payload, options) {
         /* istanbul ignore if */
         if (typeof payload === 'object') {
             payload = JSON.stringify(payload);
+        /* istanbul ignore if */
         } else if (typeof payload === 'undefined') {
             payload = '';
         } else if (typeof payload !== 'string') {
             payload = String(payload);
         }
         log.debug('> mqtt', topic, payload);
+        /* istanbul ignore else */
         if (config.retain) {
             if (!options) {
                 options = {};
@@ -234,6 +238,7 @@ let mapping;
 let accCount;
 
 /* Convert old config file schema to keep compatiblity */
+/* istanbul ignore next */
 function convertMapping() {
     let isConverted;
     Object.keys(mapping).forEach(id => {
@@ -249,6 +254,7 @@ function convertMapping() {
             delete accConfig.topic.identify;
             isConverted = true;
         }
+
         if (accConfig.payload && accConfig.payload.identify) {
             accConfig.payloadIdentify = accConfig.payload.identify;
             delete accConfig.payload.identify;
@@ -297,6 +303,7 @@ function createBridge() {
         if (mqttCallbacks[topic]) {
             mqttCallbacks[topic].forEach(obj => {
                 const {attr, callback} = obj;
+                /* istanbul ignore else */
                 if (typeof callback === 'function') {
                     if (attr) {
                         callback(json ? oe.getProp(json, attr) : state);
@@ -433,6 +440,7 @@ function saveMapping() {
 let isStarted = false;
 
 function start() {
+    /* istanbul ignore if */
     if (isStarted) {
         log.error('already started');
         return;
@@ -443,6 +451,7 @@ function start() {
     createBridge();
 }
 
+/* istanbul ignore if */
 if (config.disableWeb) {
     createBridge();
 } else {
