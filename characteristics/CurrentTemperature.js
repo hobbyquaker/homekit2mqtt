@@ -13,6 +13,7 @@ module.exports = function (obj, iface) {
     }
 
     settings.topic.statusCurrentTemperature = settings.topic.statusCurrentTemperature || settings.topic.statusTemperature;
+    settings.json.statusCurrentTemperature = settings.json.statusCurrentTemperature || settings.json.statusTemperature;
 
     acc.getService(subtype)
         .getCharacteristic(Characteristic.CurrentTemperature)
